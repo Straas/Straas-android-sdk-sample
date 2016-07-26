@@ -20,6 +20,6 @@ compile 'io.straas.android.sdk:straas-media-core:+'
 compile 'io.straas.android.sdk:straas-messaging:+'
 ```
 
-Learn about Android SDK 
+Learn about Android SDK
 ------------------
 - [SDK Explained](https://github.com/StraaS/android-sdk-sample/wiki)
