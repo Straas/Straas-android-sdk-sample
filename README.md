@@ -20,6 +20,11 @@ compile 'io.straas.android.sdk:straas-media-core:+'
 compile 'io.straas.android.sdk:straas-messaging:+'
 ```
 
+- Chatroom UI
+```
+compile 'io.straas.android.sdk:straas-messaging-ui:+'
+```
+
 Learn about Android SDK
 ------------------
 - [SDK Explained](https://github.com/StraaS/android-sdk-sample/wiki)
