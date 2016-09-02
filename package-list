@@ -1,0 +1,5 @@
+io.straas.android.sdk.base.credential
+io.straas.android.sdk.base.identity
+io.straas.android.sdk.base.interfaces
+io.straas.android.sdk.messaging
+io.straas.android.sdk.messaging.interfaces
