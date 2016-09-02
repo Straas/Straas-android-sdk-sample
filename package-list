@@ -3,3 +3,5 @@ io.straas.android.sdk.base.identity
 io.straas.android.sdk.base.interfaces
 io.straas.android.sdk.messaging
 io.straas.android.sdk.messaging.interfaces
+io.straas.android.sdk.messaging.ui
+io.straas.android.sdk.messaging.ui.interfaces
