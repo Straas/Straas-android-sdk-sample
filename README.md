@@ -15,12 +15,12 @@ compile 'io.straas.android.sdk:straas-extension-ima:+'
 compile 'io.straas.android.sdk:straas-media-core:+'
 ```
 
-- Chatroom
+- ChatRoom
 ```
 compile 'io.straas.android.sdk:straas-messaging:+'
 ```
 
-- Chatroom UI
+- ChatRoom with UI
 ```
 compile 'io.straas.android.sdk:straas-messaging-ui:+'
 ```
