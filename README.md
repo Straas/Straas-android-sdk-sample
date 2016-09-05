@@ -1,3 +1,5 @@
+[![Download](https://api.bintray.com/packages/straas-io/maven/straas-base/images/download.svg) ](https://bintray.com/bintray/jcenter?filterByPkgName=straas)
+
 # android-sdk-sample
 Samples & documentation for the StraaS Android SDK.
 
