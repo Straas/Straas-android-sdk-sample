@@ -4,10 +4,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <io.straas.android.sdk.messaging.ui.ChatRoomView
+    <io.straas.android.sdk.messaging.ui.ChatroomView
         android:id="@+id/chat_room"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-    </io.straas.android.sdk.messaging.ui.ChatRoomView>
+    </io.straas.android.sdk.messaging.ui.ChatroomView>
 
 </RelativeLayout>
