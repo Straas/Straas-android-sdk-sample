@@ -3,6 +3,10 @@
 # android-sdk-sample
 Samples & documentation for the StraaS Android SDK.
 
+Developer Authentication
+-----
+Read [Credential](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/SDK-Credential) first.
+
 Usage
 -----
 To add these dependencies on jCenter using Gradle.

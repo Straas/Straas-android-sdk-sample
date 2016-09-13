@@ -32,11 +32,7 @@ public class MainActivity extends AppCompatActivity {
         chatroom.setSendMessageListener(mSendMessageListener);
         chatroom.setSignInListener(mSignInListener);
 
-        //Before connecting to a chat room, developer have to fill some data.
-        //See https://github.com/StraaS/StraaS-android-sdk-sample/wiki/SDK-Credential for more
-        // information about initialization.
-        //See https://github.com/StraaS/StraaS-android-sdk-sample/wiki/Messaging for more
-        // information about StraaS Messaging SDK.
+        //Read README.md to get started.
         Identity identity = new Identity("");
         chatroom.connect(CHATROOM_NAME, identity);
     }
