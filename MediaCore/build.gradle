@@ -1,0 +1,29 @@
+apply plugin: 'com.android.application'
+
+repositories {
+    maven { url "https://jitpack.io" }
+}
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.2"
+
+    defaultConfig {
+        applicationId "io.straas.android.media.demo"
+        minSdkVersion 16
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+    }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile 'com.github.bumptech.glide:glide:3.7.0'
+
+    compile "io.straas.android.sdk:straas-extension-ima:${STRAAS_SDK_VERSION}"
+    // use this if don't want to include video ads
+    //compile "io.straas.android.sdk:straas-media-core:${STRAAS_SDK_VERSION}"
+}

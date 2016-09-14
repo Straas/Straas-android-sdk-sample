@@ -1,1 +1,1 @@
-include ':Messaging'
+include ':Messaging', ':MediaCore'

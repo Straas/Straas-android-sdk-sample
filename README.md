@@ -7,28 +7,39 @@ Developer Authentication
 -----
 Read [Credential](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/SDK-Credential) first.
 
+To run our sample, you have to copy `client_id`s into [`gradle.properties` at project root](https://github.com/StraaS/StraaS-android-sdk-sample/blob/master/gradle.properties#L8):
+```
+your_debug_client_id=xxxxx
+your_release_client_id=xxxxx
+```
+
+User Identity
+-----
+Read [Identity](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/User-Identity) first.
+To change the identity in out sample, change the Identity declared in `MemberIdentity.ME`.
+
 Usage
 -----
 To add these dependencies on jCenter using Gradle.
 
 - Media browser & playback + Ad integration:
 ```
-compile 'io.straas.android.sdk:straas-extension-ima:+'
+compile 'io.straas.android.sdk:straas-extension-ima:0.3.1'
 ```
 
 - Media browser & playback only:
 ```
-compile 'io.straas.android.sdk:straas-media-core:+'
+compile 'io.straas.android.sdk:straas-media-core:0.3.1'
 ```
 
 - ChatRoom
 ```
-compile 'io.straas.android.sdk:straas-messaging:+'
+compile 'io.straas.android.sdk:straas-messaging:0.3.1'
 ```
 
 - ChatRoom with UI
 ```
-compile 'io.straas.android.sdk:straas-messaging-ui:+'
+compile 'io.straas.android.sdk:straas-messaging-ui:0.3.1'
 ```
 
 Learn about Android SDK

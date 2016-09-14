@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="StraasLayout">
+        <attr name="defaultWidget" format="boolean"/>
+        <attr name="defaultSwitchQualityIcon" format="boolean"/>
+        <attr name="defaultSwitchQualityDialog" format="boolean"/>
+        <attr name="defaultChannelName" format="boolean"/>
+        <attr name="defaultSummaryViewer" format="boolean"/>
+        <attr name="defaultLoadingProgressBar" format="boolean"/>
+        <attr name="defaultContentSeekbar" format="boolean"/>
+        <attr name="defaultPlay" format="boolean"/>
+        <attr name="defaultPause" format="boolean"/>
+        <attr name="defaultReplay" format="boolean"/>
+        <attr name="defaultSkipToPrevious" format="boolean"/>
+        <attr name="defaultSkipToNext" format="boolean"/>
+        <attr name="defaultErrorMessage" format="boolean"/>
+        <attr name="defaultBroadcastStateMessage" format="boolean"/>
+    </declare-styleable>
+</resources>

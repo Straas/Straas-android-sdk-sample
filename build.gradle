@@ -18,6 +18,24 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+
+allprojects { project ->
+    if(project == rootProject) return
+    apply plugin: 'com.android.application'
+    android {
+        signingConfigs {
+            debug {
+                storeFile file("../debug.keystore")
+            }
+        }
+        buildTypes {
+            debug {
+                resValue "string", "client_id", "$your_debug_client_id"
+            }
+            release {
+                resValue "string", "client_id", "$your_release_client_id"
+            }
+        }
+        sourceSets.main.java.srcDirs = ['src/main/java', '../MemberIdentity']
+    }
 }

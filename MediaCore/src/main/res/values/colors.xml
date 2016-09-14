@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#51C0C2</color>
+    <color name="colorPrimaryDark">#2D8787</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="orange">#ed6d00</color>
+    <color name="grey_light">#f9f9f9</color>
+
+    <color name="color_background_seekbar">#66ffffff</color>
+    <color name="color_second_progress_seekbar">@android:color/white</color>
+    <color name="color_progress_seekbar">@color/colorPrimaryDark</color>
+
+    <color name="color_controller_background_dark">#99000000</color>
+
+    <color name="color_summary_viewer">@android:color/white</color>
+    <color name="color_live">@android:color/white</color>
+    <color name="color_channel_name">@android:color/white</color>
+    <color name="color_error_message">#f9f9f9</color>
+    <color name="color_error_message_background">@android:color/black</color>
+
+    <color name="color_content_seekbar_time_current">@android:color/white</color>
+    <color name="color_content_seekbar_time_duration">@android:color/white</color>
+
+    <color name="color_offline_background">#333333</color>
+    <color name="color_offline_message_color">#999999</color>
+
+</resources>

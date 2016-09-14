@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/time_current"
+    android:layout_width="60dp"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:textColor="@color/color_content_seekbar_time_current"
+    android:textSize="@dimen/content_seekbar_time_current_size" />

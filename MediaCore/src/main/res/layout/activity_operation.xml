@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/root"
+    android:orientation="vertical"
+    tools:context="io.straas.android.media.demo.OperationActivity">
+    <SurfaceView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"/>
+    <com.google.android.exoplayer.AspectRatioFrameLayout
+        android:id="@+id/aspectRatioFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black">
+        <io.straas.android.media.demo.widget.StraasPlayerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/straas"/>
+    </com.google.android.exoplayer.AspectRatioFrameLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="play video id directly"
+                android:onClick="playVodId"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="play video id directly with seek time(ms)"
+                android:onClick="playAndSeekVodId"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="play live streaming"
+                android:onClick="playLiveStreaming"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="play url"
+                android:onClick="playUrl"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="play video url without filename extension"
+                android:onClick="playUrlWithoutExtension"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="play VR 360 url"
+                android:onClick="playVR360Url"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="play playlist"
+                android:onClick="playPlaylist"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="query item info"
+                android:onClick="queryMediaItemInfo"/>
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

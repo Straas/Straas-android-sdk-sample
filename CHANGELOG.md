@@ -1,5 +1,14 @@
 Change Log
 ==========
+## Version 0.3.1
+
+_2016-09-14_
+
+*   **Important Change**: process `client_id` string at gradle, more convenient to switch between build-types/flavors.
+*   **Important Change**: guest now represent as `Identity.GUEST` instead of `new Identity("")`.
+*   feat: update Android Support Library to 24.2.1
+*   release **straas-media-core**, **straas-extension-ima**
+
 
 ## Version 0.2.2
 

@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import io.straas.android.sdk.base.credential.CredentialFailReason;
-import io.straas.android.sdk.base.identity.Identity;
 import io.straas.android.sdk.messaging.ChatMode;
 import io.straas.android.sdk.messaging.ChatroomManager;
 import io.straas.android.sdk.messaging.Message;
@@ -16,6 +15,7 @@ import io.straas.android.sdk.messaging.ui.ChatroomView;
 import io.straas.android.sdk.messaging.ui.interfaces.CredentialAuthorizeListener;
 import io.straas.android.sdk.messaging.ui.interfaces.SendMessageListener;
 import io.straas.android.sdk.messaging.ui.interfaces.SignInListener;
+import io.straas.sdk.demo.MemberIdentity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,9 +32,7 @@ public class MainActivity extends AppCompatActivity {
         chatroom.setSendMessageListener(mSendMessageListener);
         chatroom.setSignInListener(mSignInListener);
 
-        //Read README.md to get started.
-        Identity identity = new Identity("");
-        chatroom.connect(CHATROOM_NAME, identity);
+        chatroom.connect(CHATROOM_NAME, MemberIdentity.ME);
     }
 
     private CredentialAuthorizeListener mCredentialAuthorizeListener =

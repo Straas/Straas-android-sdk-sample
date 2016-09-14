@@ -1,0 +1,31 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="io.straas.android.sdk.mediacore.demo">
+
+    <application android:allowBackup="true"
+                 android:icon="@mipmap/ic_launcher"
+                 android:label="@string/app_name"
+                 android:supportsRtl="true"
+                 android:theme="@style/AppTheme">
+
+        <activity android:name="io.straas.android.media.demo.StraasDemoActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name="io.straas.android.media.demo.StraasPlayerActivity"
+                  android:label="VideoList"/>
+
+        <activity android:name="io.straas.android.media.demo.OperationActivity"
+                  android:label="Operation"
+                  android:screenOrientation="portrait"/>
+
+        <activity android:name="io.straas.android.media.demo.StraasPlayerViewCustomizationActivity"
+                  android:label="Player view customization"
+                  android:configChanges="orientation|keyboardHidden|screenSize"/>
+
+    </application>
+
+</manifest>

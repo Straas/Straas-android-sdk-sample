@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/root"
+    android:orientation="vertical">
+
+    <io.straas.android.media.demo.widget.StraasPlayerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/straas"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set Quality icon to Top Right"
+                android:onClick="onClickTopRight"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set Quality icon to Bottom Left"
+                android:onClick="onClickBottomLeft"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set Quality icon to Bottom Right1"
+                android:onClick="onClickBottomRight1"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set Quality icon to Bottom Right2"
+                android:onClick="onClickBottomRight2"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set Logo to to Top Right1"
+                android:onClick="onClickLogoTopRight"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set Logo to to Bottom Left"
+                android:onClick="onClickLogoBottomLeft"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set Logo to to Bottom Right1"
+                android:onClick="onClickLogoBottomRight1"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set Logo to to Bottom Right2"
+                android:onClick="onClickLogoBottomRight2"/>
+
+
+
+
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Remove Top Right"
+                android:onClick="onClickRemoveCustomTopRight"/>
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Remove Bottom Left"
+                android:onClick="onClickRemoveCustomBottomLeft1"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Remove Bottom Right1"
+                android:onClick="onClickRemoveCustomBottomRight1"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Remove Bottom Right2"
+                android:onClick="onClickRemoveCustomBottomRight2"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Remove all custom column"
+                android:onClick="onClickRemoveAllCustomColumn"/>
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set custom icon to Top Right"
+                android:onClick="onClickSetIconOnTopRight"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set custom icon to Bottom Left"
+                android:onClick="onClickSetIconOnBottomLeft"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set custom icon to Bottom Right1"
+                android:onClick="onClickSetIconOnBottomRight1"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Set custom icon to Bottom Right2"
+                android:onClick="onClickSetIconOnBottomRight2"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
