@@ -46,7 +46,6 @@ public class PlayerControl implements MediaController.MediaPlayerControl {
                 mLastMediaMetadataCompat = metadata;
             }
         };
-        mMediaControllerCompat.unregisterCallback(mCallback);
         mMediaControllerCompat.registerCallback(mCallback);
         mLastMediaMetadataCompat = mMediaControllerCompat.getMetadata();
         processPlaybackState(mMediaControllerCompat.getPlaybackState(), mediaController);
