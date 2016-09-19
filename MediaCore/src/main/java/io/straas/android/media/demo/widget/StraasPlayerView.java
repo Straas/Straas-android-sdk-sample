@@ -2,6 +2,7 @@ package io.straas.android.media.demo.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.media.MediaBrowserCompat.ConnectionCallback;
@@ -18,6 +20,7 @@ import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat.QueueItem;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v4.view.GestureDetectorCompat;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.text.TextUtils;
@@ -275,6 +278,8 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             }
             if (mEnableDefaultErrorMessage) {
                 TextView errorMessageTextView = (TextView) View.inflate(mThemeContext, R.layout.error_message, null);
+                Drawable drawable = VectorDrawableCompat.create(getResources(), R.drawable.ic_error_player, null);
+                TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(errorMessageTextView, drawable, null, null, null);
                 setCustomErrorMessage(errorMessageTextView);
             }
             if (mEnableDefaultBroadcastStateMessage) {
