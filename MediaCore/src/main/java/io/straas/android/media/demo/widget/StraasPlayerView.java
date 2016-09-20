@@ -1297,7 +1297,9 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             setContentSeekBarVisibility(GONE);
             setSummaryViewerVisibility(INVISIBLE);
 
-            View live = View.inflate(mThemeContext, R.layout.live_view, null);
+            TextView live = (TextView) View.inflate(mThemeContext, R.layout.live_view, null);
+            Drawable drawable = VectorDrawableCompat.create(getResources(), R.drawable.ic_live_player, null);
+            TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(live, drawable, null, null, null);
             setCustomViewToColumn(live, CUSTOM_COLUMN_BOTTOM_LEFT);
         } else {
             setContentSeekBarVisibility(VISIBLE);

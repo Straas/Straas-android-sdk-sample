@@ -3,7 +3,6 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:clickable="false"
-    android:drawableLeft="@drawable/ic_live_player"
     android:drawablePadding="4dp"
     android:gravity="center"
     android:text="@string/live"
