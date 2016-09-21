@@ -6,10 +6,11 @@ android {
 
     defaultConfig {
         applicationId "io.straas.android.sdk.messaging.demo"
-        minSdkVersion 10
+        minSdkVersion 11
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
     }
 }
 
