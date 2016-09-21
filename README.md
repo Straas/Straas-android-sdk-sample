@@ -24,22 +24,22 @@ To add these dependencies on jCenter using Gradle.
 
 - Media browser & playback + Ad integration:
 ```
-compile 'io.straas.android.sdk:straas-extension-ima:0.3.1'
+compile 'io.straas.android.sdk:straas-extension-ima:0.3.2'
 ```
 
 - Media browser & playback only:
 ```
-compile 'io.straas.android.sdk:straas-media-core:0.3.1'
+compile 'io.straas.android.sdk:straas-media-core:0.3.2'
 ```
 
 - ChatRoom
 ```
-compile 'io.straas.android.sdk:straas-messaging:0.3.1'
+compile 'io.straas.android.sdk:straas-messaging:0.3.2'
 ```
 
 - ChatRoom with UI
 ```
-compile 'io.straas.android.sdk:straas-messaging-ui:0.3.1'
+compile 'io.straas.android.sdk:straas-messaging-ui:0.3.2'
 ```
 
 Learn about Android SDK
