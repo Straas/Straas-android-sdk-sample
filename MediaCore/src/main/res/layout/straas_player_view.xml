@@ -10,15 +10,16 @@
         android:layout_height="0dp"
         android:visibility="gone"/>
 
-    <FrameLayout
+    <com.google.android.exoplayer2.ui.AspectRatioFrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/straasPlayer">
+        android:id="@+id/straasPlayer"
+        android:background="@android:color/black">
         <io.straas.android.media.demo.widget.StraasPlayerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/straas"/>
-    </FrameLayout>
+    </com.google.android.exoplayer2.ui.AspectRatioFrameLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@android:id/list"

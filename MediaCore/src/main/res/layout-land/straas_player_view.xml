@@ -13,7 +13,6 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/straasPlayer"
         android:background="@android:color/black">
         <io.straas.android.media.demo.widget.StraasPlayerView
             android:layout_width="match_parent"

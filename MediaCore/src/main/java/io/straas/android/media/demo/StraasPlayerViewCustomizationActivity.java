@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -39,6 +41,9 @@ public class StraasPlayerViewCustomizationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.straas_player_customization);
+
+        AspectRatioFrameLayout aspectRatioFrameLayout = (AspectRatioFrameLayout) findViewById(R.id.straasPlayer);
+        aspectRatioFrameLayout.setAspectRatio(1.778f);
 
         mStraasPlayerView = (StraasPlayerView) findViewById(R.id.straas);
         mStraasPlayerView.initialize(this);

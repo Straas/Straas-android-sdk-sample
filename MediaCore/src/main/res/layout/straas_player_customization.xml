@@ -4,11 +4,16 @@
     android:layout_height="match_parent"
     android:id="@+id/root"
     android:orientation="vertical">
-
-    <io.straas.android.media.demo.widget.StraasPlayerView
+    <com.google.android.exoplayer2.ui.AspectRatioFrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/straas"/>
+        android:id="@+id/straasPlayer"
+        android:background="@android:color/black">
+        <io.straas.android.media.demo.widget.StraasPlayerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/straas"/>
+    </com.google.android.exoplayer2.ui.AspectRatioFrameLayout>
 
     <ScrollView
         android:layout_width="match_parent"

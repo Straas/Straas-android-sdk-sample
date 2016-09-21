@@ -3,7 +3,7 @@ package io.straas.android.media.demo;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
 
-import com.google.android.exoplayer.util.Util;
+import com.google.android.exoplayer2.util.Util;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

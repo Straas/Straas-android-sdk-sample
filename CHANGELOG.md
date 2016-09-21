@@ -1,5 +1,15 @@
 Change Log
 ==========
+## Version 0.3.3
+
+_2016-09-22_
+
+*   straas-media-core
+    *   feat: upgrade to ExoPlayer v2
+*   straas-extension-ima
+    *   feat: upgrade Google Play Services Ads
+
+
 ## Version 0.3.2
 
 _2016-09-21_

@@ -39,7 +39,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.exoplayer.MediaFormat;
+import com.google.android.exoplayer2.Format;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -48,16 +48,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import io.straas.android.sdk.media.StraasMediaCore;
-import io.straas.android.sdk.media.StraasMediaCore.ErrorReason;
-import io.straas.android.sdk.media.VideoCustomMetadata;
 import io.straas.android.media.demo.MediaControllerCompatHelper;
 import io.straas.android.media.demo.MediaControllerCompatHelper.VideoQualityInfo;
 import io.straas.android.media.demo.MediaControllerCompatHelper.VideoQualityInfoCallback;
-import io.straas.android.sdk.mediacore.demo.R;
 import io.straas.android.media.demo.Utils;
 import io.straas.android.media.demo.widget.ui.ContentSeekBar;
 import io.straas.android.media.demo.widget.ui.SwitchQualityDialog;
+import io.straas.android.sdk.media.StraasMediaCore;
+import io.straas.android.sdk.media.StraasMediaCore.ErrorReason;
+import io.straas.android.sdk.media.VideoCustomMetadata;
+import io.straas.android.sdk.mediacore.demo.R;
 
 public final class StraasPlayerView extends FrameLayout implements StraasMediaCore.UiContainer {
     private static final String TAG = StraasPlayerView.class.getSimpleName();
@@ -136,7 +136,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private String mLiveState = null;
 
     public interface SwitchQualityViewClickListener {
-        void onMediaFormatCallback(ArrayList<MediaFormat> mediaFormats, int currentIndex);
+        void onFormatCallback(ArrayList<Format> formats, int currentIndex);
     }
 
     public static final int CUSTOM_COLUMN_TOP_RIGHT = 0;
@@ -1147,14 +1147,14 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                         public void onGetVideoQualityInfo(VideoQualityInfo info) {
                             if (mEnableDefaultSwitchQualityDialog) {
                                 SwitchQualityDialog dialog = SwitchQualityDialog.newInstance(
-                                        info.mMediaFormats,
+                                        info.mFormats,
                                         info.mCurrentSelectedIndex);
                                 dialog.show(mFragmentActivity.getSupportFragmentManager(),
                                         SwitchQualityDialog.class.getSimpleName());
                             }
 
                             if (mSwitchQualityViewListener != null) {
-                                mSwitchQualityViewListener.onMediaFormatCallback(info.mMediaFormats,
+                                mSwitchQualityViewListener.onFormatCallback(info.mFormats,
                                         info.mCurrentSelectedIndex);
                             }
                         }
