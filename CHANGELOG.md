@@ -1,5 +1,14 @@
 Change Log
 ==========
+## Version 0.3.2
+
+_2016-09-21_
+
+*   straas-messaging-ui
+    *   fix: crash in API 20 and older version
+    *   feat: support vector drawables
+
+
 ## Version 0.3.1
 
 _2016-09-14_

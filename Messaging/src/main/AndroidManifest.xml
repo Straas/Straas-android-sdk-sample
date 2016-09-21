@@ -15,10 +15,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-        <meta-data
-            android:name="io.straas.sdk.ApplicationId"
-            android:value="@string/client_id" />
     </application>
 
 </manifest>
