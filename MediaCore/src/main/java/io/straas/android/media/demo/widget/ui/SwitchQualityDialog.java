@@ -9,15 +9,15 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 
-import com.google.android.exoplayer.MediaFormat;
+import com.google.android.exoplayer2.Format;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import io.straas.android.media.demo.Utils;
 import io.straas.android.sdk.media.StraasMediaCore;
 import io.straas.android.sdk.mediacore.demo.R;
-import io.straas.android.media.demo.Utils;
 
 import static android.support.v7.appcompat.R.attr.alertDialogStyle;
 import static android.support.v7.appcompat.R.styleable.AlertDialog;
@@ -31,46 +31,50 @@ public class SwitchQualityDialog extends DialogFragment implements
     private static final String KEY_SELECT_STREAM_QUALITY = "key_select_stream_quality";
 
     private int mSelectIndex;
-    private ArrayList<MediaFormat> mMediaFormats;
-    private MediaFormat[] mIncreasingBandwidthMediaFormats;
+    private ArrayList<Format> mFormats;
+    private Format[] mIncreasingBandwidthFormats;
 
-    private String mappingVariantString(MediaFormat mediaFormat) {
+    private String mappingVariantString(Format format) {
         String mapping;
-        if (mediaFormat.adaptive) {
+        if (isFormatAdaptive(format)) {
             mapping = getString(R.string.quality_auto);
-        } else if (mediaFormat.trackId.contains("240")) {
+        } else if (format.id.contains("240")) {
             mapping = getString(R.string.quality_low);
-        } else if (mediaFormat.trackId.contains("360")) {
+        } else if (format.id.contains("360")) {
             mapping = getString(R.string.quality_medium);
-        } else if (mediaFormat.trackId.contains("720")) {
+        } else if (format.id.contains("720")) {
             mapping = getString(R.string.quality_high);
-        } else if (mediaFormat.trackId.contains("1080")) {
+        } else if (format.id.contains("1080")) {
             mapping = getString(R.string.quality_source);
         } else {
-            mapping = mediaFormat.height + "p";
+            mapping = format.height + "p";
         }
         return mapping;
     }
 
+    private boolean isFormatAdaptive(Format format) {
+        return format.id == null && format.bitrate == Format.NO_VALUE;
+    }
+
     private String getAutoItemText(){
-        MediaFormat selectedMediaFormat = mIncreasingBandwidthMediaFormats[mSelectIndex];
-        if (!selectedMediaFormat.adaptive) {
+        Format selectedFormat = mIncreasingBandwidthFormats[mSelectIndex];
+        if (!isFormatAdaptive(selectedFormat)) {
             return getString(R.string.quality_auto);
         }
-        for (MediaFormat mediaFormat : mIncreasingBandwidthMediaFormats) {
-            if (mediaFormat.adaptive) {
+        for (Format format : mIncreasingBandwidthFormats) {
+            if (isFormatAdaptive(format)) {
                 continue;
             }
-            if (mediaFormat.height == selectedMediaFormat.height &&
-                    mediaFormat.width == selectedMediaFormat.width) {
+            if (format.height == selectedFormat.height &&
+                    format.width == selectedFormat.width) {
                 return String.format(AUTO_WITH_POSTFIX_FORMAT, getString(R.string.quality_auto),
-                        mappingVariantString(mediaFormat));
+                        mappingVariantString(format));
             }
         }
         return "";
     }
 
-    public static SwitchQualityDialog newInstance(ArrayList<MediaFormat> variantList,
+    public static SwitchQualityDialog newInstance(ArrayList<Format> variantList,
                                                   int currentVariantIndex) {
         SwitchQualityDialog dialog = new SwitchQualityDialog();
 
@@ -85,11 +89,11 @@ public class SwitchQualityDialog extends DialogFragment implements
     }
 
     public static SwitchQualityDialog newInstance(@NonNull Bundle resultData) {
-        resultData.setClassLoader(MediaFormat.class.getClassLoader());
+        resultData.setClassLoader(Format.class.getClassLoader());
         if (resultData.containsKey(StraasMediaCore.KEY_CURRENT_VIDEO_FORMAT_INDEX)) {
-            ArrayList<MediaFormat> mediaFormats = resultData.getParcelableArrayList(StraasMediaCore.KEY_ALL_VIDEO_FORMATS);
+            ArrayList<Format> Formats = resultData.getParcelableArrayList(StraasMediaCore.KEY_ALL_VIDEO_FORMATS);
             int selectedIndex = resultData.getInt(StraasMediaCore.KEY_CURRENT_VIDEO_FORMAT_INDEX);
-            return newInstance(mediaFormats, selectedIndex);
+            return newInstance(Formats, selectedIndex);
         }
         return new SwitchQualityDialog();
     }
@@ -101,26 +105,26 @@ public class SwitchQualityDialog extends DialogFragment implements
 
     public void getParameter() {
         Bundle bundle = getArguments();
-        mMediaFormats = bundle.getParcelableArrayList(KEY_STREAM_QUALITY_LIST);
+        mFormats = bundle.getParcelableArrayList(KEY_STREAM_QUALITY_LIST);
         int selectIndex = bundle.getInt(KEY_SELECT_STREAM_QUALITY);
-        if (mMediaFormats != null && mMediaFormats.size() > 0) {
-            ArrayList<MediaFormat> mediaFormats = new ArrayList<>();
-            MediaFormat selectedMediaFormat = mMediaFormats.get(selectIndex);
-            for (MediaFormat mediaFormat : mMediaFormats) {
-                if (!TextUtils.equals(mediaFormat.mimeType, selectedMediaFormat.mimeType)) {
+        if (mFormats != null && mFormats.size() > 0) {
+            ArrayList<Format> formats = new ArrayList<>();
+            Format selectedFormat = mFormats.get(selectIndex);
+            for (Format format : mFormats) {
+                if (!TextUtils.equals(format.sampleMimeType, selectedFormat.sampleMimeType)) {
                     continue;
                 }
-                mediaFormats.add(mediaFormat);
+                formats.add(format);
             }
-            mIncreasingBandwidthMediaFormats = mediaFormats.toArray(new MediaFormat[0]);
-            Arrays.sort(mIncreasingBandwidthMediaFormats, new Comparator<MediaFormat>() {
+            mIncreasingBandwidthFormats = formats.toArray(new Format[0]);
+            Arrays.sort(mIncreasingBandwidthFormats, new Comparator<Format>() {
                 @Override
-                public int compare(MediaFormat lhs, MediaFormat rhs) {
+                public int compare(Format lhs, Format rhs) {
                     return lhs.bitrate - rhs.bitrate;
                 }
             });
-            for (int i = 0, size = mIncreasingBandwidthMediaFormats.length; i < size; i++) {
-                if (mIncreasingBandwidthMediaFormats[i].equals(selectedMediaFormat)) {
+            for (int i = 0, size = mIncreasingBandwidthFormats.length; i < size; i++) {
+                if (mIncreasingBandwidthFormats[i].equals(selectedFormat)) {
                     mSelectIndex = i;
                     break;
                 }
@@ -137,7 +141,7 @@ public class SwitchQualityDialog extends DialogFragment implements
 
         builder.setNegativeButton(R.string.common_cancel, null);
 
-        if (mIncreasingBandwidthMediaFormats != null && mIncreasingBandwidthMediaFormats.length > 0) {
+        if (mIncreasingBandwidthFormats != null && mIncreasingBandwidthFormats.length > 0) {
             String[] optionList = initOptionList();
 
             TypedArray a = builder.getContext().obtainStyledAttributes(null, AlertDialog,
@@ -164,7 +168,7 @@ public class SwitchQualityDialog extends DialogFragment implements
         if (getActivity().getSupportMediaController() != null) {
             getActivity().getSupportMediaController().getTransportControls().sendCustomAction(
                     StraasMediaCore.COMMAND_SET_FORMAT_INDEX, Utils.setNewFormatIndex(
-                            mMediaFormats.indexOf(mIncreasingBandwidthMediaFormats[i])));
+                            mFormats.indexOf(mIncreasingBandwidthFormats[i])));
         }
 
         dialog.dismiss();
@@ -173,17 +177,17 @@ public class SwitchQualityDialog extends DialogFragment implements
 
     private String[] initOptionList() {
         ArrayList<String> strings = new ArrayList<>();
-        String selectedMimeType = mIncreasingBandwidthMediaFormats[mSelectIndex].mimeType;
+        String selectedMimeType = mIncreasingBandwidthFormats[mSelectIndex].sampleMimeType;
 
-        for (MediaFormat mediaFormat : mIncreasingBandwidthMediaFormats) {
+        for (Format format : mIncreasingBandwidthFormats) {
             String quality;
-            if (!TextUtils.equals(mediaFormat.mimeType, selectedMimeType)) {
+            if (!TextUtils.equals(format.sampleMimeType, selectedMimeType)) {
                 continue;
             }
-            if (mediaFormat.adaptive) {
+            if (isFormatAdaptive(format)) {
                 quality = getAutoItemText();
             } else {
-                quality = mappingVariantString(mediaFormat);
+                quality = mappingVariantString(format);
             }
             strings.add(quality);
         }

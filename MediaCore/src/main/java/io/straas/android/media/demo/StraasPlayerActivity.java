@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,6 +59,11 @@ public class StraasPlayerActivity extends AppCompatActivity {
             getSupportActionBar().hide();
             getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+
+        AspectRatioFrameLayout aspectRatioFrameLayout = (AspectRatioFrameLayout) findViewById(R.id.straasPlayer);
+        if (aspectRatioFrameLayout != null) {
+            aspectRatioFrameLayout.setAspectRatio(1.778f);
         }
 
         final StraasPlayerView playerView = (StraasPlayerView) findViewById(R.id.straas);

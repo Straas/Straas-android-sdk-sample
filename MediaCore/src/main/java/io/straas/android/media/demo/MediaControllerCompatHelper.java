@@ -8,13 +8,13 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.media.session.MediaControllerCompat;
 
-import com.google.android.exoplayer.MediaFormat;
+import com.google.android.exoplayer2.Format;
 
 import java.util.ArrayList;
 
-import io.straas.android.sdk.media.StraasMediaCore;
 import io.straas.android.media.demo.MediaContentTypeHelper.ContentType;
 import io.straas.android.media.demo.widget.ui.SwitchQualityDialog;
+import io.straas.android.sdk.media.StraasMediaCore;
 
 /**
  * This class wrap some {@link MediaControllerCompat} functionality which needs {@link Bundle}
@@ -105,7 +105,7 @@ public class MediaControllerCompatHelper {
 
     /**
      * Set new video quality index.
-     * @param index the index from {@link VideoQualityInfo#mMediaFormats}
+     * @param index the index from {@link VideoQualityInfo#mFormats}
      */
     public static void setVideoQualityIndex(@NonNull MediaControllerCompat controller, int index) {
         controller.getTransportControls().sendCustomAction(
@@ -114,7 +114,7 @@ public class MediaControllerCompatHelper {
 
     /**
      * Set new video quality index.
-     * @param index the index from {@link VideoQualityInfo#mMediaFormats}
+     * @param index the index from {@link VideoQualityInfo#mFormats}
      */
     public static void setVideoQualityIndex(FragmentActivity activity, int index) {
         if (activity == null || activity.getSupportMediaController() == null) {
@@ -124,7 +124,7 @@ public class MediaControllerCompatHelper {
     }
 
     /**
-     * Retrieve all video {@link MediaFormat} and current selected index from current media playback.
+     * Retrieve all video {@link Format} and current selected index from current media playback.
      * <p>
      * Later you could use {@link MediaControllerCompatHelper#setVideoQualityIndex(FragmentActivity, int)}
      * or {@link MediaControllerCompatHelper#setVideoQualityIndex(MediaControllerCompat, int)} to
@@ -136,11 +136,11 @@ public class MediaControllerCompatHelper {
                 new ResultReceiver(new Handler()) {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
-                        resultData.setClassLoader(MediaFormat.class.getClassLoader());
+                        resultData.setClassLoader(Format.class.getClassLoader());
                         if (resultData.containsKey(StraasMediaCore.KEY_CURRENT_VIDEO_FORMAT_INDEX)) {
-                            ArrayList<MediaFormat> mediaFormats = resultData.getParcelableArrayList(StraasMediaCore.KEY_ALL_VIDEO_FORMATS);
+                            ArrayList<Format> formats = resultData.getParcelableArrayList(StraasMediaCore.KEY_ALL_VIDEO_FORMATS);
                             int selectedIndex = resultData.getInt(StraasMediaCore.KEY_CURRENT_VIDEO_FORMAT_INDEX);
-                            callback.onGetVideoQualityInfo(new VideoQualityInfo(mediaFormats, selectedIndex));
+                            callback.onGetVideoQualityInfo(new VideoQualityInfo(formats, selectedIndex));
                         }
                     }
                 });
@@ -162,7 +162,7 @@ public class MediaControllerCompatHelper {
     }
 
     /**
-     * Retrieve all video {@link MediaFormat} and current selected index from current media playback.
+     * Retrieve all video {@link Format} and current selected index from current media playback.
      * <p>
      * Later you could use {@link MediaControllerCompatHelper#setVideoQualityIndex(FragmentActivity, int)}
      * or {@link MediaControllerCompatHelper#setVideoQualityIndex(MediaControllerCompat, int)} to
@@ -176,11 +176,11 @@ public class MediaControllerCompatHelper {
     }
 
     public static class VideoQualityInfo {
-        public ArrayList<MediaFormat> mMediaFormats;
+        public ArrayList<Format> mFormats;
         public int mCurrentSelectedIndex;
 
-        public VideoQualityInfo(ArrayList<MediaFormat> mediaFormats, int currentSelectedIndex) {
-            mMediaFormats = mediaFormats;
+        public VideoQualityInfo(ArrayList<Format> formats, int currentSelectedIndex) {
+            mFormats = formats;
             mCurrentSelectedIndex = currentSelectedIndex;
         }
     }
