@@ -1,5 +1,15 @@
 Change Log
 ==========
+## Version 0.3.4
+
+_2016-09-23_
+
+*   straas-media-core
+    *   fix: analytics issue related to ExoPlayer v2 migration
+*   straas-messaging
+    *   fix: add consumer proguard file
+
+
 ## Version 0.3.3
 
 _2016-09-22_

@@ -22,24 +22,27 @@ Usage
 -----
 To add these dependencies on jCenter using Gradle.
 
+X.X.X is the your preferred version. For the version information, see 
+[CHANGELOG](https://github.com/StraaS/StraaS-android-sdk-sample/blob/master/CHANGELOG.md)
+
 - Media browser & playback + Ad integration:
 ```
-compile 'io.straas.android.sdk:straas-extension-ima:0.3.3'
+compile 'io.straas.android.sdk:straas-extension-ima:X.X.X'
 ```
 
 - Media browser & playback only:
 ```
-compile 'io.straas.android.sdk:straas-media-core:0.3.3'
+compile 'io.straas.android.sdk:straas-media-core:X.X.X'
 ```
 
 - ChatRoom
 ```
-compile 'io.straas.android.sdk:straas-messaging:0.3.3'
+compile 'io.straas.android.sdk:straas-messaging:X.X.X'
 ```
 
 - ChatRoom with UI
 ```
-compile 'io.straas.android.sdk:straas-messaging-ui:0.3.3'
+compile 'io.straas.android.sdk:straas-messaging-ui:X.X.X'
 ```
 
 Learn about Android SDK
