@@ -1049,6 +1049,16 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         return super.onInterceptTouchEvent(event);
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_UP) {
+            mGestureDetector.onTouchEvent(event);
+            return super.onTouchEvent(event);
+        } else {
+            return true;
+        }
+    }
+
     public void setTitle(CharSequence title) {
         if (mChannelNameTextView != null) {
             mChannelNameTextView.setText(title);

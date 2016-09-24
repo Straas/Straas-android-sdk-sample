@@ -10,7 +10,7 @@
     <string name="common_cancel">Cancel</string>
     <string name="common_view_count">views</string>
 
-    <string name="live">LIVE</string>
+    <string name="live" translatable="false">LIVE</string>
 
     <string name="broadcast_state_offline">Offline</string>
     <string name="broadcast_state_wait_for_stream">Unplanned outages happened. Please wait…</string>
