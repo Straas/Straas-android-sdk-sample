@@ -1,5 +1,20 @@
 Change Log
 ==========
+## Version 0.3.5
+
+_2016-09-25_
+
+*   straas-media-core
+    *   fix: 0.3.4 crash issue
+    *   fix: proguard rule
+    *   fix: handle playlist video with post-roll Ad
+    *   feat: upgrade Socket.io library
+*   straas-extension-ima
+    *   feat: upgrade Google Play Services Ads
+*   straas-messaging
+    *   feat: upgrade Socket.io library
+    
+
 ## Version 0.3.4
 
 _2016-09-23_
