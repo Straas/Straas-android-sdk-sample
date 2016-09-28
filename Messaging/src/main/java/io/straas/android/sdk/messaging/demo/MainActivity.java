@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onInputIntervalChanged(int i) {
+        public void onInputIntervalChanged(int interval) {
 
         }
 
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onMessageRemoved(String s) {
+        public void onMessageRemoved(String messageId) {
 
         }
 
@@ -106,12 +106,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onUserLeft(Integer[] integers) {
+        public void onUserLeft(Integer[] userLabels) {
 
         }
 
         @Override
-        public void userCount(int i, int i1) {
+        public void userCount(int userCount) {
 
         }
     };
