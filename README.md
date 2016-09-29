@@ -7,7 +7,7 @@ Developer Authentication
 -----
 Read [Credential](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/SDK-Credential) first.
 
-To run our sample, you have to copy `client_id`s into [`gradle.properties` at project root](https://github.com/StraaS/StraaS-android-sdk-sample/blob/master/gradle.properties#L8):
+To run our sample, you have to copy your [`client_id`](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/SDK-Credential#get-client-id) into [`gradle.properties`](https://github.com/StraaS/StraaS-android-sdk-sample/blob/master/gradle.properties#L8):
 ```
 your_debug_client_id=xxxxx
 your_release_client_id=xxxxx
