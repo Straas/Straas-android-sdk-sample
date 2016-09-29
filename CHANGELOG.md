@@ -1,18 +1,27 @@
 Change Log
 ==========
+## Version 0.3.6
+
+_2016-09-28_
+
+*   feat: upgrade Socket.io library
+*   straas-messaging
+    *   **Important Change**: replace EventListener method `void userCount(int guestCount, int memberCount)` by `void userCount(int userCount)`.
+    *   **Important Change**: replace ChatroomManager method `int getMemberCount()` and `int getGuestCount()` by `int getUserCount()`.
+    *   feat: provide immediate user count by `void userCount(int userCount)` in EventListener and `int getUserCount()` in ChatroomManager.
+
+
 ## Version 0.3.5
 
 _2016-09-25_
 
+*   feat: upgrade Socket.io library
 *   straas-media-core
     *   fix: 0.3.4 crash issue
     *   fix: proguard rule
     *   fix: handle playlist video with post-roll Ad
-    *   feat: upgrade Socket.io library
 *   straas-extension-ima
     *   feat: upgrade Google Play Services Ads
-*   straas-messaging
-    *   feat: upgrade Socket.io library
     
 
 ## Version 0.3.4

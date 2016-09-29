@@ -20,19 +20,20 @@ import io.straas.sdk.demo.MemberIdentity;
 public class MainActivity extends AppCompatActivity {
 
     private static final String CHATROOM_NAME = "test_chatroom";
+    private ChatroomView mChatroomView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ChatroomView chatroom = (ChatroomView) findViewById(R.id.chat_room);
-        chatroom.setCredentialAuthorizeListener(mCredentialAuthorizeListener);
-        chatroom.setEventListener(mEventListener);
-        chatroom.setSendMessageListener(mSendMessageListener);
-        chatroom.setSignInListener(mSignInListener);
+        mChatroomView = (ChatroomView) findViewById(R.id.chat_room);
+        mChatroomView.setCredentialAuthorizeListener(mCredentialAuthorizeListener);
+        mChatroomView.setEventListener(mEventListener);
+        mChatroomView.setSendMessageListener(mSendMessageListener);
+        mChatroomView.setSignInListener(mSignInListener);
 
-        chatroom.connect(CHATROOM_NAME, MemberIdentity.ME);
+        mChatroomView.connect(CHATROOM_NAME, MemberIdentity.ME);
     }
 
     private CredentialAuthorizeListener mCredentialAuthorizeListener =
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onInputIntervalChanged(int i) {
+        public void onInputIntervalChanged(int interval) {
 
         }
 
@@ -85,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onMessageRemoved(String s) {
+        public void onMessageRemoved(String messageId) {
 
         }
 
@@ -105,12 +106,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onUserLeft(Integer[] integers) {
+        public void onUserLeft(Integer[] userLabels) {
 
         }
 
         @Override
-        public void userCount(int i, int i1) {
+        public void userCount(int userCount) {
 
         }
     };
@@ -133,5 +134,11 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mChatroomView.disconnect();
+    }
 }
 
