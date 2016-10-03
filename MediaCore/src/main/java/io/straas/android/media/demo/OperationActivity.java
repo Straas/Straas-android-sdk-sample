@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 
 import org.json.JSONException;
@@ -130,7 +131,7 @@ public class OperationActivity extends AppCompatActivity {
                 + "ipbits=0&expire=19000000000&signature=51AF5F39AB0CEC3E5497CD9C900EBFEAECCCB5C7."
                 + "8506521BFC350652163895D4C26DEE124209AA9E&key=ik0";
         MediaControllerCompatHelper.playAndSeekFromUri(this, Uri.parse(dashStreamLink),
-                MediaContentTypeHelper.CONTENT_TYPE_DASH, 0);
+                C.TYPE_DASH, 0);
     }
 
     public void playVR360Url(View view) {
