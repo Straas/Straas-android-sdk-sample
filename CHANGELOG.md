@@ -1,5 +1,13 @@
 Change Log
 ==========
+## Version 0.3.7
+
+_2016-10-03_
+
+*   straas-media-core
+    *   feat: upgrade ExoPlayer library
+
+
 ## Version 0.3.6
 
 _2016-09-28_
