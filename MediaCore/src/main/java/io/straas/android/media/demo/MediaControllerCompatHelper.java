@@ -8,11 +8,11 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.media.session.MediaControllerCompat;
 
+import com.google.android.exoplayer2.C.ContentType;
 import com.google.android.exoplayer2.Format;
 
 import java.util.ArrayList;
 
-import io.straas.android.media.demo.MediaContentTypeHelper.ContentType;
 import io.straas.android.media.demo.widget.ui.SwitchQualityDialog;
 import io.straas.android.sdk.media.StraasMediaCore;
 
