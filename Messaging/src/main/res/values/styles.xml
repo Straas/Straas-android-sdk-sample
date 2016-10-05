@@ -8,4 +8,16 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="ChatroomTheme">
+        <item name="backgroundColor">@android:color/white</item>
+        <item name="msgAuthorColor">@android:color/black</item>
+        <item name="msgTextColor">#8b000000</item>
+        <item name="msgDividerColor">#EBEBEB</item>
+        <item name="msgRelativeTimeColor">#808080</item>
+        <item name="textSize">14sp</item>
+        <item name="bottomBarColor">#EFEFEF</item>
+        <item name="inputHintColor">#808080</item>
+        <item name="sendButtonColor">?attr/colorPrimary</item>
+    </style>
+
 </resources>

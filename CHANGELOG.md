@@ -1,5 +1,17 @@
 Change Log
 ==========
+## Version 0.3.9
+
+_2016-10-05_
+
+*   straas-messaging
+    *   feat: enable auto create flag in `ChatroomManager.connect()`
+*   straas-messaging-ui
+    *   feat: enable custom style, see [Style](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/Chatroom-UI#style)
+*   straas-media-core
+    handle non-public item in public playlist
+
+
 ## Version 0.3.7
 
 _2016-10-03_
