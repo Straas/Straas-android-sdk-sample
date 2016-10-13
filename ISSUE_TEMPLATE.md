@@ -1,5 +1,7 @@
 Welcome to StraaS.io and thanks for submitting an issue!
 
+Please search the existing issues before filing a new one, including issues that
+are closed. 
 
 Please feel free to fill in the following info so we can help faster!
 
@@ -10,14 +12,19 @@ Please feel free to fill in the following info so we can help faster!
 
 ### Step 2: Describe your environment
 
-  * SDK: [Message UI| Message non-UI| streaming]
+  * SDK: [messaging-ui| messaging| media-core| extension-ima]
+  * SDK version: _____
   * Android device: _____
   * Android OS version: _____
   * Google Play Services version: _____
   
 ### Step 3: Describe the problem:
+  * A bug report taken from the device just after the issue occurs, attached as a
+  file. A bug report can be captured using `adb bugreport`. Output from `adb
+  logcat` or a log snippet is not sufficient.
 
 #### Steps to reproduce:
+  * Steps describing how the issue can be reproduced, ideally in the demo app.
 
   1. _____
   2. _____
