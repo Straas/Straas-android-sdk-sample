@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:id="@+id/root"
     android:orientation="vertical"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
     tools:context="io.straas.android.media.demo.OperationActivity">
     <SurfaceView
         android:layout_width="0dp"
@@ -27,25 +29,71 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="?listPreferredItemPaddingLeft"
+            android:paddingStart="?listPreferredItemPaddingLeft"
+            android:paddingRight="?listPreferredItemPaddingRight"
+            android:paddingEnd="?listPreferredItemPaddingRight"
             android:orientation="vertical">
 
-            <Button
-                android:layout_width="wrap_content"
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="play video id directly"
-                android:onClick="playVodId"/>
+                android:layout_marginBottom="16dp">
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/vod"
+                    android:hint="VOD ID:"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="play video id directly"
+                    android:onClick="playVodId"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="play video id directly with seek time(ms)"
+                    android:onClick="playAndSeekVodId"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="query item info"
+                    android:onClick="queryMediaItemInfo"/>
+            </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:layout_width="wrap_content"
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="play video id directly with seek time(ms)"
-                android:onClick="playAndSeekVodId"/>
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp">
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/live"
+                    android:hint="Live event ID:"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="play live streaming"
+                    android:onClick="playLiveStreaming"/>
+            </android.support.design.widget.TextInputLayout>
 
-            <Button
-                android:layout_width="wrap_content"
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="play live streaming"
-                android:onClick="playLiveStreaming"/>
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp">
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/playlist"
+                    android:hint="Playlist ID:"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="play playlist"
+                    android:onClick="playPlaylist"/>
+            </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:layout_width="wrap_content"
@@ -65,17 +113,6 @@
                 android:text="play VR 360 url"
                 android:onClick="playVR360Url"/>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="play playlist"
-                android:onClick="playPlaylist"/>
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="query item info"
-                android:onClick="queryMediaItemInfo"/>
         </LinearLayout>
 
     </ScrollView>

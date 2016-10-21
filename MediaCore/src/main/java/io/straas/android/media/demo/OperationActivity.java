@@ -10,9 +10,12 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.C;
@@ -35,9 +38,9 @@ import io.straas.sdk.demo.MemberIdentity;
  */
 public class OperationActivity extends AppCompatActivity {
     // change these three attributes to fit with your CMS.
-    public static final String PLAYLIST_ID = "";
-    public static final String VIDEO_ID = "";
-    public static final String LIVE_VIDEO_ID = "";
+    private String PLAYLIST_ID = "";
+    private String VIDEO_ID = "";
+    private String LIVE_VIDEO_ID = "";
 
     private static final String TAG = OperationActivity.class.getSimpleName();
     private StraasMediaCore mStraasMediaCore;
@@ -51,6 +54,8 @@ public class OperationActivity extends AppCompatActivity {
 
         StraasPlayerView playerView = (StraasPlayerView) findViewById(R.id.straas);
         playerView.initialize(this);
+
+        prepareEditText();
 
         mStraasMediaCore = new StraasMediaCore(playerView, MemberIdentity.ME,
                 new ConnectionCallback() {
@@ -233,4 +238,69 @@ public class OperationActivity extends AppCompatActivity {
             }
         }
     };
+
+    private void prepareEditText() {
+        TextView vod = (TextView) findViewById(R.id.vod);
+        TextView live = (TextView) findViewById(R.id.live);
+        TextView playlist = (TextView) findViewById(R.id.playlist);
+        if (!TextUtils.isEmpty(VIDEO_ID)) {
+            vod.setText(VIDEO_ID);
+        }
+        if (!TextUtils.isEmpty(LIVE_VIDEO_ID)) {
+            live.setText(LIVE_VIDEO_ID);
+        }
+        if (!TextUtils.isEmpty(PLAYLIST_ID)) {
+            playlist.setText(PLAYLIST_ID);
+        }
+        vod.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                VIDEO_ID = s.toString();
+            }
+        });
+
+        live.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                LIVE_VIDEO_ID = s.toString();
+            }
+        });
+
+        playlist.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                PLAYLIST_ID = s.toString();
+            }
+        });
+    }
 }
