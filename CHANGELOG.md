@@ -1,5 +1,16 @@
 Change Log
 ==========
+## Version 0.3.10
+
+_2016-10-21_
+
+*   straas-messaging
+    *   feat: provide `block/revive users` and `remove message`
+*   straas-media-core
+    *   feat: upgrade ExoPlayer library to [v2.0.4](https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#r204)
+    *   fix: playlist Ad behavior
+
+
 ## Version 0.3.9
 
 _2016-10-05_
