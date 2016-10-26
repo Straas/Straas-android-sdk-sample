@@ -19,6 +19,7 @@ import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.MediaSessionCompat.QueueItem;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.v4.util.SparseArrayCompat;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.AppCompatImageButton;
@@ -44,9 +45,7 @@ import com.google.android.exoplayer2.Format;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.straas.android.media.demo.MediaControllerCompatHelper;
 import io.straas.android.media.demo.MediaControllerCompatHelper.VideoQualityInfo;
@@ -131,7 +130,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private BroadcastStateListener mBroadcastStateListener = new BroadcastStateListener();
 
     private List<ConnectionCallback> mMediaConnectedListenerList = new ArrayList<>();
-    private Map<Integer, ViewGroup> mCustomColumnList = new HashMap<>();
+    private SparseArrayCompat<ViewGroup> mCustomColumnList = new SparseArrayCompat<>();
     private List<QueueItem> mLastQueueList;
     private String mLiveState = null;
 
