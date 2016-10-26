@@ -26,4 +26,8 @@ dependencies {
     compile "io.straas.android.sdk:straas-extension-ima:${STRAAS_SDK_VERSION}"
     // use this if don't want to include video ads
     //compile "io.straas.android.sdk:straas-media-core:${STRAAS_SDK_VERSION}"
+
+    // only for danmaku effect demo
+    compile 'com.github.ctiao:DanmakuFlameMaster:0.5.4'
+    compile "io.straas.android.sdk:straas-messaging-ui:${STRAAS_SDK_VERSION}"
 }

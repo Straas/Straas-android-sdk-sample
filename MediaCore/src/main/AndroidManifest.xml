@@ -26,6 +26,10 @@
                   android:label="Player view customization"
                   android:configChanges="orientation|keyboardHidden|screenSize"/>
 
+        <activity android:name="io.straas.android.media.demo.LiveDanmakuActivity"
+                  android:label="Live stream + Danmaku"
+                  android:configChanges="orientation|keyboardHidden|screenSize"/>
+
     </application>
 
 </manifest>
