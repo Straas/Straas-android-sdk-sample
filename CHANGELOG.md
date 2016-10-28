@@ -1,5 +1,13 @@
 Change Log
 ==========
+## Version 0.3.11
+
+_2016-10-28_
+
+*   straas-messaging-ui
+    *   feat: support showing sticker messages in chat room
+
+
 ## Version 0.3.10
 
 _2016-10-21_
