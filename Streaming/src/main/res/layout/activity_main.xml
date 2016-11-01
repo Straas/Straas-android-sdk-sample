@@ -28,21 +28,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/start"
-            android:enabled="false"/>
+            android:enabled="false"
+            android:onClick="onClick"/>
 
         <Button
             android:id="@+id/switch_camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/switch_camera"
-            android:enabled="false"/>
+            android:enabled="false"
+            android:onClick="onClick"/>
 
         <Button
             android:id="@+id/flash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/flash"
-            android:enabled="false"/>
+            android:enabled="false"
+            android:onClick="onClick"/>
 
     </LinearLayout>
 
