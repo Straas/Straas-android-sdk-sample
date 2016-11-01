@@ -10,4 +10,8 @@
 
     <dimen name="content_seekbar_time_current_size">14sp</dimen>
     <dimen name="content_seekbar_time_duration_size">14sp</dimen>
+
+    <dimen name="danmaku_text_size">16sp</dimen>
+    <dimen name="danmaku_text_height">18dp</dimen>
+    <dimen name="danmaku_shadow_radius">2dp</dimen>
 </resources>
