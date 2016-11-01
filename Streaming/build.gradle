@@ -10,11 +10,10 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
-        vectorDrawables.useSupportLibrary = true
     }
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile "com.android.support:appcompat-v7:${SUPPORT_LIBRARY_VERSION}"
     compile "io.straas.android.sdk:straas-streaming:${STRAAS_SDK_VERSION}"
 }
