@@ -45,6 +45,11 @@ compile 'io.straas.android.sdk:straas-messaging:X.X.X'
 compile 'io.straas.android.sdk:straas-messaging-ui:X.X.X'
 ```
 
+- Streaming
+```
+compile 'io.straas.android.sdk:straas-streaming:X.X.X'
+```
+
 Learn about Android SDK
 ------------------
 - [SDK Explained](https://github.com/StraaS/android-sdk-sample/wiki)
