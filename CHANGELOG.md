@@ -4,6 +4,16 @@ Change Log
 
 _2016-10-28_
 
+*   feat: add straas-streaming sdk.
+*   straas-messaging
+    *   feat: support two and more EventListeners.
+*   straas-messaging-ui
+    *   feat: divide input bar and output view for more flexible
+
+## Version 0.3.11
+
+_2016-10-28_
+
 *   straas-messaging-ui
     *   feat: support showing sticker messages in chat room
 
