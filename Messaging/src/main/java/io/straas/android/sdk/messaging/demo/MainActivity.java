@@ -5,35 +5,37 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import io.straas.android.sdk.base.credential.CredentialFailReason;
+import io.straas.android.sdk.base.interfaces.OnResultListener;
 import io.straas.android.sdk.messaging.ChatMode;
 import io.straas.android.sdk.messaging.ChatroomManager;
 import io.straas.android.sdk.messaging.Message;
 import io.straas.android.sdk.messaging.MessagingError;
 import io.straas.android.sdk.messaging.User;
 import io.straas.android.sdk.messaging.interfaces.EventListener;
-import io.straas.android.sdk.messaging.ui.ChatroomView;
+import io.straas.android.sdk.messaging.ui.ChatroomInputView;
+import io.straas.android.sdk.messaging.ui.ChatroomOutputView;
 import io.straas.android.sdk.messaging.ui.interfaces.CredentialAuthorizeListener;
-import io.straas.android.sdk.messaging.ui.interfaces.SendMessageListener;
 import io.straas.android.sdk.messaging.ui.interfaces.SignInListener;
 import io.straas.sdk.demo.MemberIdentity;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String CHATROOM_NAME = "test_chatroom";
-    private ChatroomView mChatroomView;
+    private ChatroomOutputView mChatroomOutputView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mChatroomView = (ChatroomView) findViewById(R.id.chat_room);
-        mChatroomView.setCredentialAuthorizeListener(mCredentialAuthorizeListener);
-        mChatroomView.setEventListener(mEventListener);
-        mChatroomView.setSendMessageListener(mSendMessageListener);
-        mChatroomView.setSignInListener(mSignInListener);
+        mChatroomOutputView = (ChatroomOutputView) findViewById(R.id.chat_room);
+        mChatroomOutputView.setChatroomInputView((ChatroomInputView) findViewById(android.R.id.inputArea));
+        mChatroomOutputView.setCredentialAuthorizeListener(mCredentialAuthorizeListener);
+        mChatroomOutputView.setEventListener(mEventListener);
+        mChatroomOutputView.setSendMessageListener(mSendMessageListener);
+        mChatroomOutputView.setSignInListener(mSignInListener);
 
-        mChatroomView.connect(CHATROOM_NAME, MemberIdentity.ME);
+        mChatroomOutputView.connect(CHATROOM_NAME, MemberIdentity.ME);
     }
 
     private CredentialAuthorizeListener mCredentialAuthorizeListener =
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private SendMessageListener mSendMessageListener = new SendMessageListener() {
+    private OnResultListener<Void, MessagingError> mSendMessageListener = new OnResultListener<Void, MessagingError>() {
         @Override
         public void onSuccess(Void aVoid) {
 
@@ -138,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mChatroomView.disconnect();
+        mChatroomOutputView.disconnect();
     }
 }
 

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">StreamingDemo</string>
+
+    <string name="hint_need_permission">Need permission to continue</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="switch_camera">Switch</string>
+    <string name="flash">Flash</string>
+</resources>

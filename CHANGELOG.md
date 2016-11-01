@@ -1,5 +1,15 @@
 Change Log
 ==========
+## Version 0.4.1
+
+_2016-11-01_
+
+*   **feat: add straas-streaming sdk**.
+*   straas-messaging
+    *   feat: support two and more EventListeners.
+*   straas-messaging-ui
+    *   feat: divide input bar and output view for more flexible
+
 ## Version 0.3.11
 
 _2016-10-28_
