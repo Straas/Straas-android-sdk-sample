@@ -29,7 +29,7 @@ import static io.straas.android.sdk.streaming.demo.R.id.flash;
 import static io.straas.android.sdk.streaming.demo.R.id.switch_camera;
 import static io.straas.android.sdk.streaming.demo.R.id.trigger;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Streaming";
     private StreamManager mStreamManager;
@@ -56,11 +56,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mTextureView.setKeepScreenOn(true);
 
         btn_trigger = (Button) findViewById(trigger);
-        btn_trigger.setOnClickListener(this);
         btn_switch = (Button) findViewById(switch_camera);
-        btn_switch.setOnClickListener(this);
         btn_flash = (Button) findViewById(flash);
-        btn_flash.setOnClickListener(this);
         mEditTitle = (EditText) findViewById(R.id.edit_title);
         mEditSynopsis = (EditText) findViewById(R.id.edit_synopsis);
 
@@ -114,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case trigger:
