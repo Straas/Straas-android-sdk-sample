@@ -29,11 +29,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mChatroomOutputView = (ChatroomOutputView) findViewById(R.id.chat_room);
-        mChatroomOutputView.setChatroomInputView((ChatroomInputView) findViewById(android.R.id.inputArea));
         mChatroomOutputView.setCredentialAuthorizeListener(mCredentialAuthorizeListener);
         mChatroomOutputView.setEventListener(mEventListener);
-        mChatroomOutputView.setSendMessageListener(mSendMessageListener);
-        mChatroomOutputView.setSignInListener(mSignInListener);
 
         mChatroomOutputView.connect(CHATROOM_NAME, MemberIdentity.ME);
     }
@@ -42,7 +39,10 @@ public class MainActivity extends AppCompatActivity {
             new CredentialAuthorizeListener() {
                 @Override
                 public void onSuccess(ChatroomManager chatRoomManager) {
-
+                    final ChatroomInputView chatroomInputView = (ChatroomInputView) findViewById(android.R.id.inputArea);
+                    chatroomInputView.setChatroomManager(chatRoomManager);
+                    chatroomInputView.setSendMessageListener(mSendMessageListener);
+                    chatroomInputView.setSignInListener(mSignInListener);
                 }
 
                 @Override

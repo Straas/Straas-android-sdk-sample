@@ -55,7 +55,6 @@ public class LiveDanmakuActivity extends AppCompatActivity {
 
         mChatroomOutputView = (ChatroomOutputView) findViewById(R.id.chat_room);
         mChatroomInputView = (ChatroomInputView) findViewById(android.R.id.inputArea);
-        mChatroomOutputView.setChatroomInputView(mChatroomInputView);
         handleConfiguration(getResources().getConfiguration());
         mDanmakuManager = new DanmakuManager(new DanmakuSurfaceView(this));
         playerView.addView(mDanmakuManager.getDanmakuView(),
@@ -69,6 +68,7 @@ public class LiveDanmakuActivity extends AppCompatActivity {
                 mChatroomManager.connect(CHATROOM_NAME, MemberIdentity.ME, true);
                 mChatroomManager.addEventListener(mDanmakuManager);
                 mChatroomOutputView.setChatroomManager(result);
+                mChatroomInputView.setChatroomManager(result);
             }
 
             @Override
