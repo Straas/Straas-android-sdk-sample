@@ -1,5 +1,13 @@
 Change Log
 ==========
+## Version 0.4.2
+
+_2016-11-02_
+*   straas-messaging-ui
+    *   refactor: move input functionality from ChatroomOutputView into ChatroomInputView
+    *   feat: feed ChatroomManager into ChatroomInputView
+    *   feat: touch listener will be notified when input is available for typing
+
 ## Version 0.4.1
 
 _2016-11-01_
@@ -8,7 +16,8 @@ _2016-11-01_
 *   straas-messaging
     *   feat: support two and more EventListeners.
 *   straas-messaging-ui
-    *   feat: divide input bar and output view for more flexible
+    *   feat: divide input/output view for more flexible
+    *   feat: adjust the visibility of messages avatar
 
 ## Version 0.3.11
 
