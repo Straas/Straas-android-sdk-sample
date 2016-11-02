@@ -18,6 +18,7 @@
         <item name="bottomBarColor">#EFEFEF</item>
         <item name="inputHintColor">#808080</item>
         <item name="sendButtonColor">?attr/colorPrimary</item>
+        <item name="showAvatar">true</item>
     </style>
 
 </resources>
