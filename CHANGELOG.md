@@ -1,8 +1,28 @@
 Change Log
 ==========
+## Version 0.4.3
+
+_2016-11-04_
+
+*   using cookies to store user information (internally) 
+    *   **[Please add jitpack maven repo](https://github.com/StraaS/StraaS-android-sdk-sample/blob/master/build.gradle#L18)** `maven { url "https://jitpack.io" }`
+*   streaming
+    *   feat: add getStreamState() for getting StreamingManager state
+    *   feat: create new event automatically when stream key expires
+    *   fix: developer may receive onError when stopStreaming soon after startStreaming
+*   straas-messaging-ui
+    *   fix: ChatroomView may receive old ChatroomManager event
+    *   feat: add flag to control show relative time or absolute time of a message
+    *   feat: support fake message/nickname for blocked users
+    *   feat: ANCHOR chat mode UI*
+    *   feat: remove message when receiving onMessageRemoved*
+    *   fix: TouchListener for ChatroomInputView could receive MotionEvent.ACTION_UP & MotionEvent.ACTION_DOWN
+    
+
 ## Version 0.4.2
 
 _2016-11-02_
+
 *   straas-messaging-ui
     *   refactor: move input functionality from ChatroomOutputView into ChatroomInputView
     *   feat: feed ChatroomManager into ChatroomInputView
