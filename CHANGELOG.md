@@ -6,6 +6,8 @@ _2016-11-04_
 
 *   using cookies to store user information (internally) 
     *   **[Please add jitpack maven repo](https://github.com/StraaS/StraaS-android-sdk-sample/blob/master/build.gradle#L18)** `maven { url "https://jitpack.io" }`
+*   using TLSv1.2 on Android API levels 16~20 
+    *   [16~20 not enabled TLSv1.2 by default] (https://developer.android.com/reference/javax/net/ssl/SSLSocket.html)
 *   streaming
     *   feat: add getStreamState() for getting StreamingManager state
     *   feat: create new event automatically when stream key expires
