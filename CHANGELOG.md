@@ -1,5 +1,20 @@
 Change Log
 ==========
+## Version 0.4.4
+
+_2016-11-22_
+
+*   **[Please add maven repo for showing emoticon panel] (https://github.com/StraaS/StraaS-android-sdk-sample/blob/master/build.gradle#L19)**  
+`maven { url "https://raw.github.com/laenger/maven-releases/master/releases" }`
+*   straas-extension-ima
+  *   feat: upgrade IMA & Google Play Services Ads
+*   straas-messaging-ui
+  *   feat: support emoticon panel
+  *   feat: save/restore ChatroomInputView & ChatroomOutputView state
+  *   feat: use StreamModelLoader to set Glide HTTP client, independent of GlideModule
+  *   fix: duplicate message, remove pagination loading
+
+
 ## Version 0.4.3
 
 _2016-11-04_
