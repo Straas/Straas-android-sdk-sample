@@ -1,5 +1,15 @@
 Change Log
 ==========
+## Version 0.4.5
+
+_2016-12-02_
+
+*   straas-media-core
+    *   fix: conflict of okhttp-ws version
+*   straas-streaming
+    *   feat: add interface for setting video filter. see [filter](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/Streaming#filter)
+
+
 ## Version 0.4.4
 
 _2016-11-22_
@@ -7,13 +17,13 @@ _2016-11-22_
 *   **[Please add maven repo for showing sticker panel] (https://github.com/StraaS/StraaS-android-sdk-sample/blob/master/build.gradle#L19)**  
 `maven { url "https://raw.github.com/laenger/maven-releases/master/releases" }`
 *   straas-extension-ima
-  *   feat: upgrade IMA & Google Play Services Ads
+    *   feat: upgrade IMA & Google Play Services Ads
 *   straas-messaging-ui
-  *   feat: support sticker panel
+    *   feat: support sticker panel
         * FragmentActivity is required to enable this feature
-  *   feat: save/restore ChatroomInputView & ChatroomOutputView state
-  *   feat: use StreamModelLoader to set Glide HTTP client, independent of GlideModule
-  *   fix: duplicate message, remove pagination loading
+    *   feat: save/restore ChatroomInputView & ChatroomOutputView state
+    *   feat: use StreamModelLoader to set Glide HTTP client, independent of GlideModule
+    *   fix: duplicate message, remove pagination loading
 
 
 ## Version 0.4.3
@@ -24,7 +34,7 @@ _2016-11-04_
     *   **[Please add jitpack maven repo](https://github.com/StraaS/StraaS-android-sdk-sample/blob/master/build.gradle#L18)** `maven { url "https://jitpack.io" }`
 *   using TLSv1.2 on Android API levels 16~20 
     *   [16~20 not enabled TLSv1.2 by default] (https://developer.android.com/reference/javax/net/ssl/SSLSocket.html)
-*   streaming
+*   straas-streaming
     *   feat: add getStreamState() for getting StreamingManager state
     *   feat: create new event automatically when stream key expires
     *   fix: developer may receive onError when stopStreaming soon after startStreaming
