@@ -26,8 +26,4 @@ dependencies {
     // only for danmaku effect demo
     compile 'com.github.ctiao:DanmakuFlameMaster:0.5.4'
     compile "io.straas.android.sdk:straas-messaging-ui:${STRAAS_SDK_VERSION}"
-
-    compile('com.squareup.okhttp3:okhttp:3.4.2') {
-        force = true
-    }
 }
