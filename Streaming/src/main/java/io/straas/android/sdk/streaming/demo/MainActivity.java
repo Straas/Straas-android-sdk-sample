@@ -20,11 +20,15 @@ import io.straas.android.sdk.base.interfaces.OnResultListener;
 import io.straas.android.sdk.streaming.CameraController;
 import io.straas.android.sdk.streaming.StreamConfig;
 import io.straas.android.sdk.streaming.StreamManager;
+import io.straas.android.sdk.streaming.demo.filter.GPUImageSupportFilter;
+import io.straas.android.sdk.streaming.demo.filter.GrayImageFilter;
 import io.straas.android.sdk.streaming.error.PrepareError;
 import io.straas.android.sdk.streaming.error.StreamError;
 import io.straas.android.sdk.streaming.interfaces.EventListener;
 import io.straas.sdk.demo.MemberIdentity;
+import jp.co.cyberagent.android.gpuimage.GPUImageColorInvertFilter;
 
+import static io.straas.android.sdk.streaming.demo.R.id.filter;
 import static io.straas.android.sdk.streaming.demo.R.id.flash;
 import static io.straas.android.sdk.streaming.demo.R.id.switch_camera;
 import static io.straas.android.sdk.streaming.demo.R.id.trigger;
@@ -37,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private TextureView mTextureView;
     private EditText mEditTitle;
     private EditText mEditSynopsis;
-    private Button btn_trigger, btn_switch, btn_flash;
+    private Button btn_trigger, btn_switch, btn_flash, btn_filter;
+    private int mFilter = 0;
 
     private static final String[] STREAM_PERMISSIONS = {
             Manifest.permission.CAMERA,
@@ -58,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
         btn_trigger = (Button) findViewById(trigger);
         btn_switch = (Button) findViewById(switch_camera);
         btn_flash = (Button) findViewById(flash);
+        btn_filter = (Button) findViewById(filter);
         mEditTitle = (EditText) findViewById(R.id.edit_title);
         mEditSynopsis = (EditText) findViewById(R.id.edit_synopsis);
 
@@ -139,6 +145,21 @@ public class MainActivity extends AppCompatActivity {
                     mCameraController.toggleFlash();
                 }
                 break;
+            case filter:
+                if (mStreamManager != null) {
+                    switch(mFilter) {
+                        case 0:
+                            mFilter += mStreamManager.setFilter(new GrayImageFilter()) ? 1 : 0;
+                            break;
+                        case 1:
+                            mFilter += mStreamManager.setFilter(new GPUImageSupportFilter<>(new GPUImageColorInvertFilter())) ? 1 : 0;
+                            break;
+                        case 2:
+                            mFilter += mStreamManager.setFilter(null) ? 1 : 0;
+                            break;
+                    }
+                    mFilter %= 3;
+                }
         }
     }
 
@@ -169,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
         btn_trigger.setEnabled(true);
         btn_switch.setEnabled(true);
         btn_flash.setEnabled(true);
+        btn_filter.setEnabled(true);
     }
 
     private OnResultListener<CameraController, PrepareError> mPrepareListener =

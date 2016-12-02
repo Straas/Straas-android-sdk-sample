@@ -47,6 +47,14 @@
             android:enabled="false"
             android:onClick="onClick"/>
 
+        <Button
+            android:id="@+id/filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/filter"
+            android:enabled="false"
+            android:onClick="onClick"/>
+
     </LinearLayout>
 
     <LinearLayout
