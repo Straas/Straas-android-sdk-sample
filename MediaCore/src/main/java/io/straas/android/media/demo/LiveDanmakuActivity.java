@@ -13,7 +13,6 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 
 import io.straas.android.media.demo.widget.StraasPlayerView;
 import io.straas.android.sdk.media.StraasMediaCore;

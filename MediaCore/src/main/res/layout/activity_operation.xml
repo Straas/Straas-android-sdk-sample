@@ -113,6 +113,30 @@
                 android:text="play VR 360 url"
                 android:onClick="playVR360Url"/>
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="crop"
+                android:onClick="crop"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="fit"
+                android:onClick="fit"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="normal"
+                android:onClick="normal"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="cardboard"
+                android:onClick="cardboard"/>
+
         </LinearLayout>
 
     </ScrollView>

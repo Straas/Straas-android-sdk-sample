@@ -195,6 +195,22 @@ public class OperationActivity extends AppCompatActivity {
         });
     }
 
+    public void crop(View view) {
+        mStraasMediaCore.setPlaneProjectionMode(StraasMediaCore.PLANE_PROJECTION_MODE_CROP);
+    }
+
+    public void fit(View view) {
+        mStraasMediaCore.setPlaneProjectionMode(StraasMediaCore.PLANE_PROJECTION_MODE_FIT);
+    }
+
+    public void normal(View view) {
+        mStraasMediaCore.setDisplayMode(StraasMediaCore.DISPLAY_MODE_NORMAL);
+    }
+
+    public void cardboard(View view) {
+        mStraasMediaCore.setDisplayMode(StraasMediaCore.DISPLAY_MODE_CARDBOARD);
+    }
+
     private final MediaControllerCompat.Callback mMediaControllerCallback = new MediaControllerCompat.Callback() {
 
         @Override
