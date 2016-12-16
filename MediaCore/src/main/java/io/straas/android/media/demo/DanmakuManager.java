@@ -7,13 +7,16 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.util.ArrayMap;
+import android.support.v4.util.SimpleArrayMap;
 import android.text.TextPaint;
+import android.util.Log;
 import android.view.View;
 
 import io.straas.android.sdk.mediacore.demo.R;
 import io.straas.android.sdk.messaging.ChatMode;
 import io.straas.android.sdk.messaging.Message;
 import io.straas.android.sdk.messaging.MessagingError;
+import io.straas.android.sdk.messaging.RawData;
 import io.straas.android.sdk.messaging.User;
 import io.straas.android.sdk.messaging.interfaces.EventListener;
 import master.flame.danmaku.controller.DrawHandler;
@@ -133,6 +136,26 @@ class DanmakuManager implements Application.ActivityLifecycleCallbacks, EventLis
     @Override
     public void onConnectFailed(MessagingError error) {
 
+    }
+
+    @Override
+    public void onConnectFailed(Exception error) {
+        Log.e("chatroom", error.toString());
+    }
+
+    @Override
+    public void onError(Exception error) {
+        Log.e("chatroom", error.toString());
+    }
+
+    @Override
+    public void onAggregatedDataAdded(SimpleArrayMap<String, Integer> map) {
+        Log.d("onAggregatedData", map.toString());
+    }
+
+    @Override
+    public void onRawDataAdded(RawData message) {
+        Log.d("onRawData", message.getJsonText());
     }
 
     @Override

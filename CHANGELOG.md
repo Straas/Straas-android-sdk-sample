@@ -1,5 +1,33 @@
 Change Log
 ==========
+## Version 0.5.0
+
+_2016-12-16_
+
+*   Upgrade support library to v25.0.1
+*   Upgrade Google Play Service to 10.0.1
+*   The age of [Tasks](https://developers.google.com/android/guides/tasks), APIs with OnResultListener injection
+are `deprecated` and return a [Task<T>](https://developers.google.com/android/reference/com/google/android/gms/tasks/Task.html) for you.
+*   Error enums are `deprecated`, using Exception to get more details about the error reason. 
+*   straas-messaging
+    *   **feat: data channel and personal chat**
+        * enable them via `ChatroomManager.WITH_DATA_CHANNEL` and `ChatroomManager.IS_PERSONAL_CHAT` flags
+        * data channel provide aggregated and raw data types of message
+            * `chatroomManager.sendAggregatedDataTypeMessage("love")` will receive one or more love being aggregated in 
+            `onAggregatedDataAdded(SimpleArrayMap<String, Integer>)`
+            * `chatroomManager.sendRawData(RawData)` will receive a single JSON data in `onRawDataAdded(RawData)`. 
+            We also provide built-in JSON converter let you use own class model to communicate!  
+    *   connect API now return a [Task<T>](https://developers.google.com/android/reference/com/google/android/gms/tasks/Task.html), so you could know the chatroom is connected directly within a code block!
+    *   feat: add time filter for getMessages
+*   straas-streaming
+    *   **Change method `validate` naming to `initialize`**
+    *   feat: decide resolution by texture aspect ratio.
+    *   feat: add limit resolution
+    *   fix: switch camera crash issue
+    *   startStreaming/stopStreaming/destroy APIs now return a [Task<T>](https://developers.google.com/android/reference/com/google/android/gms/tasks/Task.html).
+*   straas-media-core
+    *   feat: upgrade ExoPlayer library to [v2.1.0](https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#r210)
+    
 ## Version 0.4.5
 
 _2016-12-02_
