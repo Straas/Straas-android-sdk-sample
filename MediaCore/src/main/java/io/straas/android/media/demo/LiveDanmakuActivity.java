@@ -2,6 +2,7 @@ package io.straas.android.media.demo;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,10 +10,12 @@ import android.view.WindowManager;
 import android.widget.RelativeLayout.LayoutParams;
 
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 
 import io.straas.android.media.demo.widget.StraasPlayerView;
-import io.straas.android.sdk.base.credential.CredentialFailReason;
-import io.straas.android.sdk.base.interfaces.OnResultListener;
 import io.straas.android.sdk.media.StraasMediaCore;
 import io.straas.android.sdk.mediacore.demo.R;
 import io.straas.android.sdk.messaging.ChatroomManager;
@@ -61,21 +64,25 @@ public class LiveDanmakuActivity extends AppCompatActivity {
                 playerView.indexOfChild(playerView.getVideoContainer()) + 1,
                 new LayoutParams(MATCH_PARENT, MATCH_PARENT));
 
-        ChatroomManager.initialize(new OnResultListener<ChatroomManager, CredentialFailReason>() {
-            @Override
-            public void onSuccess(ChatroomManager result) {
-                mChatroomManager = result;
-                mChatroomManager.connect(CHATROOM_NAME, MemberIdentity.ME, true);
-                mChatroomManager.addEventListener(mDanmakuManager);
-                mChatroomOutputView.setChatroomManager(result);
-                mChatroomInputView.setChatroomManager(result);
-            }
-
-            @Override
-            public void onFailure(CredentialFailReason error) {
-
-            }
-        });
+        ChatroomManager.initialize()
+                .continueWithTask(new Continuation<ChatroomManager, Task<Void>>() {
+                    @Override
+                    public Task<Void> then(@NonNull Task<ChatroomManager> task) throws Exception {
+                        if (task.isSuccessful()) {
+                            mChatroomManager = task.getResult();
+                            mChatroomManager.addEventListener(mDanmakuManager);
+                            return mChatroomManager.connect(CHATROOM_NAME, MemberIdentity.ME, 0);
+                        }
+                        throw task.getException();
+                    }
+                })
+                .addOnSuccessListener(this, new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        mChatroomOutputView.setChatroomManager(mChatroomManager);
+                        mChatroomInputView.setChatroomManager(mChatroomManager);
+                    }
+                });
     }
 
     @Override

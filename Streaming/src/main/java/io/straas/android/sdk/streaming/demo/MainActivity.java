@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,16 +14,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
+
 import java.util.ArrayList;
 
-import io.straas.android.sdk.base.credential.CredentialFailReason;
-import io.straas.android.sdk.base.interfaces.OnResultListener;
 import io.straas.android.sdk.streaming.CameraController;
 import io.straas.android.sdk.streaming.StreamConfig;
 import io.straas.android.sdk.streaming.StreamManager;
 import io.straas.android.sdk.streaming.demo.filter.GPUImageSupportFilter;
 import io.straas.android.sdk.streaming.demo.filter.GrayImageFilter;
-import io.straas.android.sdk.streaming.error.PrepareError;
 import io.straas.android.sdk.streaming.error.StreamError;
 import io.straas.android.sdk.streaming.interfaces.EventListener;
 import io.straas.sdk.demo.MemberIdentity;
@@ -56,7 +59,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        StreamManager.validate(mInitListener);
+        StreamManager.initialize()
+                .continueWithTask(new Continuation<StreamManager, Task<CameraController>>() {
+                    @Override
+                    public Task<CameraController> then(@NonNull Task<StreamManager> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                            Log.d(TAG, "init fail " + task.getException());
+                            throw task.getException();
+                        }
+                        mStreamManager = task.getResult();
+                        return preview();
+                    }
+                });
         mTextureView = (TextureView) findViewById(R.id.preview);
         mTextureView.setKeepScreenOn(true);
 
@@ -89,32 +103,18 @@ public class MainActivity extends AppCompatActivity {
         return requestArray.toArray(new String[0]);
     }
 
-    private OnResultListener<StreamManager, CredentialFailReason> mInitListener =
-            new OnResultListener<StreamManager, CredentialFailReason>() {
-        @Override
-        public void onSuccess(StreamManager streamManager) {
-            Log.d(TAG, "init success");
-            mStreamManager = streamManager;
-            preview();
-        }
-
-        @Override
-        public void onFailure(CredentialFailReason error) {
-            Log.d(TAG, "init fail");
-        }
-    };
-
     private StreamConfig getConfig() {
-        StreamConfig config = new StreamConfig();
-        config.setOutputSize(480, 480);
-        config.setCamera(StreamConfig.CAMERA_FRONT);
-        return config;
+        return new StreamConfig()
+                .setCamera(StreamConfig.CAMERA_FRONT)
+                .setFitAllCamera(true);
     }
 
-    private void preview() {
+    private Task<CameraController> preview() {
         if (mStreamManager != null) {
-            mStreamManager.prepare(getConfig(), mTextureView, mPrepareListener);
+            return mStreamManager.prepare(getConfig(), mTextureView)
+                    .addOnCompleteListener(this, mPrepareListener);
         }
+        return Tasks.forException(new IllegalStateException());
     }
 
     public void onClick(View v) {
@@ -193,18 +193,17 @@ public class MainActivity extends AppCompatActivity {
         btn_filter.setEnabled(true);
     }
 
-    private OnResultListener<CameraController, PrepareError> mPrepareListener =
-            new OnResultListener<CameraController, PrepareError>() {
+    private OnCompleteListener<CameraController> mPrepareListener =
+            new OnCompleteListener<CameraController>() {
                 @Override
-                public void onSuccess(CameraController cameraController) {
-                    Log.d(TAG, "Prepare success");
-                    mCameraController = cameraController;
-                    enableAllButtons();
-                }
-
-                @Override
-                public void onFailure(PrepareError error) {
-                    Log.d(TAG, "Prepare failure " + error);
+                public void onComplete(@NonNull Task<CameraController> task) {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "Prepare success");
+                        mCameraController = task.getResult();
+                        enableAllButtons();
+                    } else {
+                        Log.e(TAG, "Prepare failure " + task.getException());
+                    }
                 }
             };
 
@@ -216,6 +215,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onError(StreamError error, String liveId) {
+
+        }
+
+        @Override
+        public void onError(Exception error, @Nullable String liveId) {
             Log.d(TAG, "onError " + error);
             btn_trigger.setText(getResources().getString(R.string.start));
         }
