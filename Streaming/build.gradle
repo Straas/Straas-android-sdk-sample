@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "25.0.2"
+    compileSdkVersion COMPILE_TARGET_SDK_VERSION.toInteger()
+    buildToolsVersion BUILD_TOOLS_VERSION
 
     defaultConfig {
         applicationId "io.straas.android.sdk.messaging.demo"
         minSdkVersion 18
-        targetSdkVersion 24
+        targetSdkVersion COMPILE_TARGET_SDK_VERSION.toInteger()
         versionCode 1
         versionName "1.0"
     }
