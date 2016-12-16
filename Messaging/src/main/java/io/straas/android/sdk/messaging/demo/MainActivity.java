@@ -83,12 +83,12 @@ public class MainActivity extends AppCompatActivity {
             // if you enable ChatroomManager.WITH_DATA_CHANNEL flag
             //Ppap[] PPAP = new Ppap[2];
             //PPAP[0] = new Ppap();
-            //PPAP[0].mIHaveA = new String[]{"pen", "apple"};
-            //PPAP[0].Uh = "Apple Pen!";
+            //PPAP[0].mIhaveA = new String[]{"pen", "apple"};
+            //PPAP[0].mUh = "Apple Pen!";
             //
             //PPAP[1] = new Ppap();
-            //PPAP[1].mIHaveA = new String[]{"pen", "pineapple"};
-            //PPAP[1].Uh = "Pineapple Pen!";
+            //PPAP[1].mIhaveA = new String[]{"pen", "pineapple"};
+            //PPAP[1].mUh = "Pineapple Pen!";
             //
             //mChatroomOutputView.getChatroomManager().sendRawData(
             //        new RawData.Builder().setObject(PPAP).build());
@@ -100,9 +100,9 @@ public class MainActivity extends AppCompatActivity {
             //try {
             //    Ppap[] PPAP = raw.getJsonTextAsData(Ppap[].class);
             //    Log.d("raw data", String.format("I have a %s, I have an %s, Uh! %s",
-            //            PPAP[0].mIHaveA[0], PPAP[0].mIHaveA[1], PPAP[0].Uh));
+            //            PPAP[0].mIhaveA[0], PPAP[0].mIhaveA[1], PPAP[0].mUh));
             //    Log.d("raw data", String.format("I have a %s, I have an %s, Uh! %s",
-            //            PPAP[1].mIHaveA[0], PPAP[1].mIHaveA[1], PPAP[1].Uh));
+            //            PPAP[1].mIhaveA[0], PPAP[1].mIhaveA[1], PPAP[1].mUh));
             //} catch (IOException e) {
             //    e.printStackTrace();
             //} catch (JSONException e) {
@@ -195,8 +195,8 @@ public class MainActivity extends AppCompatActivity {
      * Class for demo {@link RawData}
      */
     private static class Ppap {
-        public String[] mIHaveA;
-        public String Uh;
+        public String[] mIhaveA;
+        public String mUh;
     }
 
 }
