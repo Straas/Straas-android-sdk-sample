@@ -4,6 +4,7 @@ io.straas.android.sdk.base.interfaces
 io.straas.android.sdk.media
 io.straas.android.sdk.messaging
 io.straas.android.sdk.messaging.interfaces
+io.straas.android.sdk.messaging.message
 io.straas.android.sdk.messaging.ui
 io.straas.android.sdk.messaging.ui.interfaces
 io.straas.android.sdk.streaming
