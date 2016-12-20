@@ -58,30 +58,34 @@ public class StraasPlayerViewCustomizationActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (getSupportMediaController() != null) {
-            getSupportMediaController().getTransportControls().pause();
+        if (getMediaControllerCompat() != null) {
+            getMediaControllerCompat().getTransportControls().pause();
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (getSupportMediaController() != null) {
-            getSupportMediaController().getTransportControls().stop();
+        if (getMediaControllerCompat() != null) {
+            getMediaControllerCompat().getTransportControls().stop();
         }
         mStraasMediaCore.getMediaBrowser().disconnect();
+    }
+
+    private MediaControllerCompat getMediaControllerCompat() {
+        return MediaControllerCompat.getMediaController(this);
     }
 
     private MediaBrowserCompat.ConnectionCallback mCallback = new MediaBrowserCompat.ConnectionCallback() {
         @Override
         public void onConnected() {
-            getSupportMediaController().registerCallback(mMediaControllerCallback);
+            getMediaControllerCompat().registerCallback(mMediaControllerCallback);
             if (TextUtils.isEmpty(VIDEO_ID)) {
                 Toast.makeText(StraasPlayerViewCustomizationActivity.this, "ID is empty!",
                         Toast.LENGTH_SHORT).show();
                 return;
             }
-            getSupportMediaController().getTransportControls().playFromMediaId(VIDEO_ID, null);
+            getMediaControllerCompat().getTransportControls().playFromMediaId(VIDEO_ID, null);
         }
     };
 

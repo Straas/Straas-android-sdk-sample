@@ -342,7 +342,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             if (mediaId.startsWith(StraasMediaCore.LIVE_ID_PREFIX)) {
                 switchMode(true);
                 Bundle liveBundle = (mLiveBundle != null) ? mLiveBundle :
-                        mFragmentActivity.getSupportMediaController().getExtras();
+                        getMediaControllerCompat().getExtras();
 
                 handleMediaSessionExtra(liveBundle, true);
             } else {
@@ -385,7 +385,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 @ErrorReason.ErrorReasonType String errorType = state.getErrorMessage().toString();
                 mErrorMessageListener.onError(mErrorMessageTextView, errorType);
                 if (mIsLive) {
-                    Bundle liveBundle = (mLiveBundle != null) ? mLiveBundle : mFragmentActivity.getSupportMediaController().getExtras();
+                    Bundle liveBundle = (mLiveBundle != null) ? mLiveBundle : getMediaControllerCompat().getExtras();
 
                     handleMediaSessionExtra(liveBundle, true);
                 }
@@ -463,7 +463,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                     case PlaybackStateCompat.STATE_STOPPED:
                         if (mIsLive) {
                             Bundle liveBundle = (mLiveBundle != null) ? mLiveBundle :
-                                    mFragmentActivity.getSupportMediaController().getExtras();
+                                    getMediaControllerCompat().getExtras();
 
                             handleMediaSessionExtra(liveBundle, true);
                         }
@@ -906,7 +906,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
                 mCanToggleControllerUi = true;
 
-                mFragmentActivity.getSupportMediaController().getTransportControls().play();
+                getMediaControllerCompat().getTransportControls().play();
 
                 resetPlayPauseUiWithControllerVisibility();
                 switchToPause();
@@ -924,7 +924,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             @Override
             public void onClick(View view) {
                 mColumnAdPlay.setVisibility(GONE);
-                mFragmentActivity.getSupportMediaController().getTransportControls().play();
+                getMediaControllerCompat().getTransportControls().play();
             }
         });
         mColumnAdPlay.addView(imageButton);
@@ -947,7 +947,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             public void onClick(View view) {
                 mCanToggleControllerUi = false;
 
-                mFragmentActivity.getSupportMediaController().getTransportControls().pause();
+                getMediaControllerCompat().getTransportControls().pause();
                 showControllerUi();
                 showPlayUi();
             }
@@ -971,7 +971,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             @Override
             public void onClick(View view) {
                 mCanToggleControllerUi = true;
-                mFragmentActivity.getSupportMediaController().getTransportControls().seekTo(0);
+                getMediaControllerCompat().getTransportControls().seekTo(0);
                 switchToPause();
             }
         });
@@ -993,7 +993,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         imageButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                mFragmentActivity.getSupportMediaController().getTransportControls().skipToPrevious();
+                getMediaControllerCompat().getTransportControls().skipToPrevious();
             }
         });
         mColumnPrevious.addView(imageButton);
@@ -1014,7 +1014,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         imageButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                mFragmentActivity.getSupportMediaController().getTransportControls().skipToNext();
+                getMediaControllerCompat().getTransportControls().skipToNext();
             }
         });
         mColumnNext.addView(imageButton);
@@ -1147,10 +1147,14 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         }
     }
 
+    private MediaControllerCompat getMediaControllerCompat() {
+        return MediaControllerCompat.getMediaController(mFragmentActivity);
+    }
+
     private OnClickListener mSwitchQualityClickListener = new OnClickListener() {
         @Override
         public void onClick(final View view) {
-            MediaControllerCompatHelper.getVideoQualityInfo(mFragmentActivity.getSupportMediaController(),
+            MediaControllerCompatHelper.getVideoQualityInfo(getMediaControllerCompat(),
                     new VideoQualityInfoCallback() {
                         @Override
                         public void onGetVideoQualityInfo(VideoQualityInfo info) {
@@ -1211,7 +1215,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mIsBind = false;
         mStraasMediaCore = client;
 
-        MediaControllerCompat mediaControllerCompat = mFragmentActivity.getSupportMediaController();
+        MediaControllerCompat mediaControllerCompat = getMediaControllerCompat();
         if (mediaControllerCompat != null) {
             mediaControllerCompat.unregisterCallback(mMediaControllerCallback);
         }
@@ -1231,18 +1235,18 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             Log.e(TAG, "It's not FragmentActivity.");
             return;
         }
-        mFragmentActivity.setSupportMediaController(client.getMediaController());
+        MediaControllerCompat.setMediaController(mFragmentActivity, client.getMediaController());
         for (ConnectionCallback connectionCallback : mMediaConnectedListenerList) {
             connectionCallback.onConnected();
         }
 
-        mMediaControllerCallback.onExtrasChanged(mFragmentActivity.getSupportMediaController().getExtras());
-        mMediaControllerCallback.onMetadataChanged(mFragmentActivity.getSupportMediaController().getMetadata());
-        mMediaControllerCallback.onPlaybackStateChanged(mFragmentActivity.getSupportMediaController().getPlaybackState());
-        mMediaControllerCallback.onQueueChanged(mFragmentActivity.getSupportMediaController().getQueue());
-        mMediaControllerCallback.onQueueTitleChanged(mFragmentActivity.getSupportMediaController().getQueueTitle());
+        mMediaControllerCallback.onExtrasChanged(getMediaControllerCompat().getExtras());
+        mMediaControllerCallback.onMetadataChanged(getMediaControllerCompat().getMetadata());
+        mMediaControllerCallback.onPlaybackStateChanged(getMediaControllerCompat().getPlaybackState());
+        mMediaControllerCallback.onQueueChanged(getMediaControllerCompat().getQueue());
+        mMediaControllerCallback.onQueueTitleChanged(getMediaControllerCompat().getQueueTitle());
 
-        mFragmentActivity.getSupportMediaController().registerCallback(mMediaControllerCallback);
+        getMediaControllerCompat().registerCallback(mMediaControllerCallback);
 
         if (mContentSeekBar != null) {
             mContentSeekBar.setMediaPlayer(new PlayerControl(mFragmentActivity, null));

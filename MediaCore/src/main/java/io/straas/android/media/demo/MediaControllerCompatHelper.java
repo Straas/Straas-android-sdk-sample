@@ -1,5 +1,6 @@
 package io.straas.android.media.demo;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,11 +41,11 @@ public class MediaControllerCompatHelper {
      * @param mediaId The id of the requested media.
      * @param positionMs The seek position.
      */
-    public static void playAndSeekFromMediaId(FragmentActivity activity, String mediaId, long positionMs) {
-        if (activity == null || activity.getSupportMediaController() == null) {
+    public static void playAndSeekFromMediaId(Activity activity, String mediaId, long positionMs) {
+        if (activity == null || MediaControllerCompat.getMediaController(activity) == null) {
             return;
         }
-        playAndSeekFromMediaId(activity.getSupportMediaController(), mediaId, positionMs);
+        playAndSeekFromMediaId(MediaControllerCompat.getMediaController(activity), mediaId, positionMs);
     }
 
     /**
@@ -67,11 +68,11 @@ public class MediaControllerCompatHelper {
      * @param uri The link of the requested media, which needs filename extension explicitly.
      * @param positionMs The seek position.
      */
-    public static void playAndSeekFromUri(FragmentActivity activity, Uri uri, long positionMs) {
-        if (activity == null || activity.getSupportMediaController() == null) {
+    public static void playAndSeekFromUri(Activity activity, Uri uri, long positionMs) {
+        if (activity == null || MediaControllerCompat.getMediaController(activity) == null) {
             return;
         }
-        playAndSeekFromUri(activity.getSupportMediaController(), uri, positionMs);
+        playAndSeekFromUri(MediaControllerCompat.getMediaController(activity), uri, positionMs);
     }
 
     /**
@@ -95,12 +96,12 @@ public class MediaControllerCompatHelper {
      * @param uri The link of the requested media.
      * @param positionMs The seek position.
      */
-    public static void playAndSeekFromUri(FragmentActivity activity, Uri uri, @ContentType int type,
+    public static void playAndSeekFromUri(Activity activity, Uri uri, @ContentType int type,
                                           long positionMs) {
-        if (activity == null || activity.getSupportMediaController() == null) {
+        if (activity == null || MediaControllerCompat.getMediaController(activity) == null) {
             return;
         }
-        playAndSeekFromUri(activity.getSupportMediaController(), uri, type, positionMs);
+        playAndSeekFromUri(MediaControllerCompat.getMediaController(activity), uri, type, positionMs);
     }
 
     /**
@@ -116,17 +117,17 @@ public class MediaControllerCompatHelper {
      * Set new video quality index.
      * @param index the index from {@link VideoQualityInfo#mFormats}
      */
-    public static void setVideoQualityIndex(FragmentActivity activity, int index) {
-        if (activity == null || activity.getSupportMediaController() == null) {
+    public static void setVideoQualityIndex(Activity activity, int index) {
+        if (activity == null || MediaControllerCompat.getMediaController(activity) == null) {
             return;
         }
-        setVideoQualityIndex(activity.getSupportMediaController(), index);
+        setVideoQualityIndex(MediaControllerCompat.getMediaController(activity), index);
     }
 
     /**
      * Retrieve all video {@link Format} and current selected index from current media playback.
      * <p>
-     * Later you could use {@link MediaControllerCompatHelper#setVideoQualityIndex(FragmentActivity, int)}
+     * Later you could use {@link MediaControllerCompatHelper#setVideoQualityIndex(Activity, int)}
      * or {@link MediaControllerCompatHelper#setVideoQualityIndex(MediaControllerCompat, int)} to
      * change new index.
      */
@@ -147,11 +148,11 @@ public class MediaControllerCompatHelper {
     }
 
     public static void showVideoQualityListDialog(final FragmentActivity activity) {
-        if (activity == null || activity.getSupportMediaController() == null) {
+        if (activity == null || MediaControllerCompat.getMediaController(activity) == null) {
             return;
         }
 
-        activity.getSupportMediaController().sendCommand(StraasMediaCore.COMMAND_GET_VIDEO_FORMATS, null,
+        MediaControllerCompat.getMediaController(activity).sendCommand(StraasMediaCore.COMMAND_GET_VIDEO_FORMATS, null,
                 new ResultReceiver(new Handler()) {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
@@ -164,15 +165,15 @@ public class MediaControllerCompatHelper {
     /**
      * Retrieve all video {@link Format} and current selected index from current media playback.
      * <p>
-     * Later you could use {@link MediaControllerCompatHelper#setVideoQualityIndex(FragmentActivity, int)}
+     * Later you could use {@link MediaControllerCompatHelper#setVideoQualityIndex(Activity, int)}
      * or {@link MediaControllerCompatHelper#setVideoQualityIndex(MediaControllerCompat, int)} to
      * change new index.
      */
-    public static void getVideoQualityInfo(FragmentActivity activity, VideoQualityInfoCallback callback) {
-        if (activity == null || activity.getSupportMediaController() == null || callback == null) {
+    public static void getVideoQualityInfo(Activity activity, VideoQualityInfoCallback callback) {
+        if (activity == null || MediaControllerCompat.getMediaController(activity) == null || callback == null) {
             return;
         }
-        getVideoQualityInfo(activity.getSupportMediaController(), callback);
+        getVideoQualityInfo(MediaControllerCompat.getMediaController(activity), callback);
     }
 
     public static class VideoQualityInfo {
