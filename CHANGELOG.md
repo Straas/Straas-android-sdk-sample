@@ -1,5 +1,25 @@
 Change Log
 ==========
+## Version 0.5.1
+_2016_12-23_
+
+*   Upgrade support library to v25.0.1
+*   straas-messaging-ui
+    *   `ChatroomInputView` will auto expand the height when text length grows up. Use
+     [setInputMaxLines](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ui/ChatroomInputView.html#setInputMaxLines-int-)
+     to change at most many lines tall, default is 4 lines. 
+*   straas-media-core   
+    *   [issue 209385](https://code.google.com/p/android/issues/detail?id=209385) and [issue 210013](https://code.google.com/p/android/issues/detail?id=210013)
+    are fixed, so we don't have to put json string in `onSessionEvent` anymore. 
+        *   Use `playbackState.getExtras().getString(StraasMediaCore.EVENT_PLAYER_ERROR_MESSAGE, "")` when state is error.
+    *   Now you could set [crop](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#PLANE_PROJECTION_MODE_CROP)/
+    [fit](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#PLANE_PROJECTION_MODE_FIT)/
+    [full](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#PLANE_PROJECTION_MODE_FULL) 
+    using [setPlaneProjectionMode](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#setPlaneProjectionMode-int-). 
+    If you are using the [cardboard](https://vr.google.com/cardboard/), remember switch to [DISPLAY_MODE_CARDBOARD](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#DISPLAY_MODE_CARDBOARD)
+    using [setDisplayMode](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#setDisplayMode-int-) and enjoy the VR world.
+    
+
 ## Version 0.5.0
 
 _2016-12-16_
