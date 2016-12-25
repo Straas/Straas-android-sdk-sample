@@ -21,9 +21,6 @@ import android.widget.Toast;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.List;
 
 import io.straas.android.media.demo.widget.StraasPlayerView;
@@ -61,7 +58,7 @@ public class OperationActivity extends AppCompatActivity {
                 new ConnectionCallback() {
                     @Override
                     public void onConnected() {
-                        getSupportMediaController().registerCallback(mMediaControllerCallback);
+                        getMediaControllerCompat().registerCallback(mMediaControllerCallback);
                     }
                 })
                 // remove setImaHelper if you don't want to include ad system (IMA)
@@ -72,20 +69,24 @@ public class OperationActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (getSupportMediaController() != null) {
-            getSupportMediaController().getTransportControls().play();
+        if (getMediaControllerCompat() != null) {
+            getMediaControllerCompat().getTransportControls().play();
         }
+    }
+
+    private MediaControllerCompat getMediaControllerCompat() {
+        return MediaControllerCompat.getMediaController(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (getSupportMediaController() != null) {
+        if (getMediaControllerCompat() != null) {
             if (isFinishing()) {
-                getSupportMediaController().unregisterCallback(mMediaControllerCallback);
-                getSupportMediaController().getTransportControls().stop();
+                getMediaControllerCompat().unregisterCallback(mMediaControllerCallback);
+                getMediaControllerCompat().getTransportControls().stop();
             } else {
-                getSupportMediaController().getTransportControls().pause();
+                getMediaControllerCompat().getTransportControls().pause();
             }
         }
     }
@@ -101,9 +102,9 @@ public class OperationActivity extends AppCompatActivity {
     }
 
     public void playVodId(View view) {
-        if (checkId(VIDEO_ID) || getSupportMediaController() == null) return;
+        if (checkId(VIDEO_ID) || getMediaControllerCompat() == null) return;
         // play video id directly
-        getSupportMediaController().getTransportControls().playFromMediaId(VIDEO_ID, null);
+        getMediaControllerCompat().getTransportControls().playFromMediaId(VIDEO_ID, null);
     }
 
     private boolean checkId(String id) {
@@ -121,11 +122,11 @@ public class OperationActivity extends AppCompatActivity {
     }
 
     public void playUrl(View view) {
-        if (getSupportMediaController() == null) {
+        if (getMediaControllerCompat() == null) {
             return;
         }
         // play video url directly
-        getSupportMediaController().getTransportControls().playFromUri(
+        getMediaControllerCompat().getTransportControls().playFromUri(
                 Uri.parse("http://rmcdn.2mdn.net/MotifFiles/html/1248596/android_1330378998288.mp4"), null);
     }
 
@@ -140,37 +141,37 @@ public class OperationActivity extends AppCompatActivity {
     }
 
     public void playVR360Url(View view) {
-        if (getSupportMediaController() == null) {
+        if (getMediaControllerCompat() == null) {
             return;
         }
         // play 360 video
         Bundle bundle = new Bundle();
         bundle.putInt(StraasMediaCore.KEY_VIDEO_RENDER_TYPE, StraasMediaCore.VIDEO_RENDER_TYPE_360);
 
-        getSupportMediaController().getTransportControls().playFromUri(
+        getMediaControllerCompat().getTransportControls().playFromUri(
                 Uri.parse("https://eu-storage-bitcodin.storage.googleapis.com/bitStorage/" +
                         "6_9420dbf3e029ff61639267a40b89436e/105560_716c9b2b8abe754541275a8d39d251a3/mpds/105560.mpd"), bundle);
     }
 
     public void playPlaylist(View view) {
-        if (checkId(PLAYLIST_ID) || getSupportMediaController() == null) return;
+        if (checkId(PLAYLIST_ID) || getMediaControllerCompat() == null) return;
         getMediaBrowser().subscribe(PLAYLIST_ID, new MediaBrowserCompat.SubscriptionCallback() {
             @Override
             public void onChildrenLoaded(@NonNull String parentId, List<MediaBrowserCompat.MediaItem> children) {
-                getSupportMediaController().getTransportControls().playFromMediaId(children.get(0).getMediaId(), null);
+                getMediaControllerCompat().getTransportControls().playFromMediaId(children.get(0).getMediaId(), null);
             }
         });
     }
 
     public void playLiveStreaming(View view) {
-        if (checkId(LIVE_VIDEO_ID) || getSupportMediaController() == null) return;
+        if (checkId(LIVE_VIDEO_ID) || getMediaControllerCompat() == null) return;
         // play live stream
-        getSupportMediaController().getTransportControls()
+        getMediaControllerCompat().getTransportControls()
                 .playFromMediaId(StraasMediaCore.LIVE_ID_PREFIX + LIVE_VIDEO_ID, null);
     }
 
     public void queryMediaItemInfo(View view) {
-        if (checkId(VIDEO_ID) || getSupportMediaController() == null) return;
+        if (checkId(VIDEO_ID) || getMediaControllerCompat() == null) return;
         // query video info only
         getMediaBrowser().getItem(VIDEO_ID, new MediaBrowserCompat.ItemCallback() {
             @Override
@@ -195,6 +196,22 @@ public class OperationActivity extends AppCompatActivity {
         });
     }
 
+    public void crop(View view) {
+        mStraasMediaCore.setPlaneProjectionMode(StraasMediaCore.PLANE_PROJECTION_MODE_CROP);
+    }
+
+    public void fit(View view) {
+        mStraasMediaCore.setPlaneProjectionMode(StraasMediaCore.PLANE_PROJECTION_MODE_FIT);
+    }
+
+    public void normal(View view) {
+        mStraasMediaCore.setDisplayMode(StraasMediaCore.DISPLAY_MODE_NORMAL);
+    }
+
+    public void cardboard(View view) {
+        mStraasMediaCore.setDisplayMode(StraasMediaCore.DISPLAY_MODE_CARDBOARD);
+    }
+
     private final MediaControllerCompat.Callback mMediaControllerCallback = new MediaControllerCompat.Callback() {
 
         @Override
@@ -213,28 +230,18 @@ public class OperationActivity extends AppCompatActivity {
             if (TextUtils.isEmpty(state.getErrorMessage())) {
                 Log.d(TAG, state.toString());
             } else {
-                Log.e(TAG, state.toString());
+                Log.e(TAG, state.toString() + " " + state.getExtras().getString(StraasMediaCore.EVENT_PLAYER_ERROR_MESSAGE, ""));
             }
         }
 
         @Override
         public void onSessionEvent(String event, Bundle extras) {
-            try {
-                JSONObject jsonObject = new JSONObject(event);
-                String eventType = jsonObject.getString(StraasMediaCore.EVENT_TYPE);
-                switch (eventType) {
-                    case StraasMediaCore.EVENT_PLAYER_ERROR_MESSAGE:
-                        String error = jsonObject.getString(eventType);
-                        Log.e(eventType, error);
-                        break;
-                    case StraasMediaCore.EVENT_MEDIA_BROWSER_SERVICE_ERROR:
-                        String errorReason = jsonObject.getString(StraasMediaCore.KEY_MEDIA_BROWSER_ERROR_REASON);
-                        String errorMessage = jsonObject.getString(StraasMediaCore.KEY_MEDIA_BROWSER_ERROR_MESSAGE);
-                        Log.e(eventType, errorReason + ": " + errorMessage);
-                        break;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            switch (event) {
+                case StraasMediaCore.EVENT_MEDIA_BROWSER_SERVICE_ERROR:
+                    String errorReason = extras.getString(StraasMediaCore.KEY_MEDIA_BROWSER_ERROR_REASON);
+                    String errorMessage = extras.getString(StraasMediaCore.KEY_MEDIA_BROWSER_ERROR_MESSAGE);
+                    Log.e(event, errorReason + ": " + errorMessage);
+                    break;
             }
         }
     };

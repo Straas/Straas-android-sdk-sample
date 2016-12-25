@@ -6,7 +6,6 @@ import android.content.ContextWrapper;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v4.media.MediaBrowserCompat;
@@ -28,9 +27,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,7 +80,7 @@ public class StraasPlayerActivity extends AppCompatActivity {
                 mStraasMediaCore.setUiContainer(playerView)
                         // remove setImaHelper if you don't want to include ad system (IMA)
                         .setImaHelper(ImaHelper.newInstance());
-                getSupportMediaController().registerCallback(mMediaControllerCallback);
+                getMediaControllerCompat().registerCallback(mMediaControllerCallback);
                 if (mAdapter != null) {
                     getMediaBrowser().unsubscribe(getMediaBrowser().getRoot());
                     getMediaBrowser().subscribe(getMediaBrowser().getRoot(), mSubscriptionCallback);
@@ -119,27 +115,32 @@ public class StraasPlayerActivity extends AppCompatActivity {
         return mStraasMediaCore.getMediaBrowser();
     }
 
+
+    private MediaControllerCompat getMediaControllerCompat() {
+        return MediaControllerCompat.getMediaController(this);
+    }
+    
     @Override
     protected void onStart() {
         super.onStart();
-        if (getSupportMediaController() != null) {
-            getSupportMediaController().getTransportControls().play();
+        if (getMediaControllerCompat() != null) {
+            getMediaControllerCompat().getTransportControls().play();
         }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (!isFinishing() && getSupportMediaController() != null) {
-            getSupportMediaController().getTransportControls().pause();
+        if (!isFinishing() && getMediaControllerCompat() != null) {
+            getMediaControllerCompat().getTransportControls().pause();
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (getSupportMediaController() != null) {
-            getSupportMediaController().unregisterCallback(mMediaControllerCallback);
+        if (getMediaControllerCompat() != null) {
+            getMediaControllerCompat().unregisterCallback(mMediaControllerCallback);
         }
     }
 
@@ -177,28 +178,18 @@ public class StraasPlayerActivity extends AppCompatActivity {
             if (TextUtils.isEmpty(state.getErrorMessage())) {
                 Log.d(TAG, state.toString());
             } else {
-                Log.e(TAG, state.toString());
+                Log.e(TAG, state.toString() + " " + state.getExtras().getString(StraasMediaCore.EVENT_PLAYER_ERROR_MESSAGE, ""));
             }
         }
 
         @Override
         public void onSessionEvent(String event, Bundle extras) {
-            try {
-                JSONObject jsonObject = new JSONObject(event);
-                String eventType = jsonObject.getString(StraasMediaCore.EVENT_TYPE);
-                switch (eventType) {
-                    case StraasMediaCore.EVENT_PLAYER_ERROR_MESSAGE:
-                        String error = jsonObject.getString(eventType);
-                        Log.e(eventType, error);
-                        break;
-                    case StraasMediaCore.EVENT_MEDIA_BROWSER_SERVICE_ERROR:
-                        String errorReason = jsonObject.getString(StraasMediaCore.KEY_MEDIA_BROWSER_ERROR_REASON);
-                        String errorMessage = jsonObject.getString(StraasMediaCore.KEY_MEDIA_BROWSER_ERROR_MESSAGE);
-                        Log.e(eventType, errorReason + ": " + errorMessage);
-                        break;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            switch (event) {
+                case StraasMediaCore.EVENT_MEDIA_BROWSER_SERVICE_ERROR:
+                    String errorReason = extras.getString(StraasMediaCore.KEY_MEDIA_BROWSER_ERROR_REASON);
+                    String errorMessage = extras.getString(StraasMediaCore.KEY_MEDIA_BROWSER_ERROR_MESSAGE);
+                    Log.e(event, errorReason + ": " + errorMessage);
+                    break;
             }
         }
     };
@@ -310,7 +301,7 @@ public class StraasPlayerActivity extends AppCompatActivity {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        MediaControllerCompat controller = ((FragmentActivity)getActivity(v)).getSupportMediaController();
+                        MediaControllerCompat controller = MediaControllerCompat.getMediaController(getActivity(v));
                         if (controller != null) {
                             if (item.isPlayable()) {
                                 controller.getTransportControls().playFromMediaId(item.getMediaId(), null);

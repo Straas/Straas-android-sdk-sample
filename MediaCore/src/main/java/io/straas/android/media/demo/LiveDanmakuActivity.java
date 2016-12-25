@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.media.MediaBrowserCompat;
+import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,7 +14,6 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 
 import io.straas.android.media.demo.widget.StraasPlayerView;
 import io.straas.android.sdk.media.StraasMediaCore;
@@ -50,7 +50,7 @@ public class LiveDanmakuActivity extends AppCompatActivity {
                 new MediaBrowserCompat.ConnectionCallback() {
                     @Override
                     public void onConnected() {
-                        getSupportMediaController().getTransportControls().playFromMediaId(
+                        getMediaControllerCompat().getTransportControls().playFromMediaId(
                                 StraasMediaCore.LIVE_ID_PREFIX + LIVE_ID, null);
                     }
                 });
@@ -88,19 +88,19 @@ public class LiveDanmakuActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if (getSupportMediaController() != null) {
-            getSupportMediaController().getTransportControls().play();
+        if (getMediaControllerCompat() != null) {
+            getMediaControllerCompat().getTransportControls().play();
         }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (getSupportMediaController() != null) {
+        if (getMediaControllerCompat() != null) {
             if (isFinishing()) {
-                getSupportMediaController().getTransportControls().stop();
+                getMediaControllerCompat().getTransportControls().stop();
             } else {
-                getSupportMediaController().getTransportControls().pause();
+                getMediaControllerCompat().getTransportControls().pause();
             }
         }
     }
@@ -114,6 +114,10 @@ public class LiveDanmakuActivity extends AppCompatActivity {
 
     private MediaBrowserCompat getMediaBrowser() {
         return mStraasMediaCore.getMediaBrowser();
+    }
+
+    private MediaControllerCompat getMediaControllerCompat() {
+        return MediaControllerCompat.getMediaController(this);
     }
 
     @Override
