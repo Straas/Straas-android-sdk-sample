@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText mEditSynopsis;
     private Button btn_trigger, btn_switch, btn_flash, btn_filter;
     private int mFilter = 0;
-
+    private String mLiveId;
     private static final String[] STREAM_PERMISSIONS = {
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO
@@ -59,15 +61,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        StreamManager.initialize()
+        StreamManager.initialize(MemberIdentity.ME)
                 .continueWithTask(new Continuation<StreamManager, Task<CameraController>>() {
                     @Override
                     public Task<CameraController> then(@NonNull Task<StreamManager> task) throws Exception {
                         if (!task.isSuccessful()) {
-                            Log.d(TAG, "init fail " + task.getException());
+                            Log.e(TAG, "init fail " + task.getException());
                             throw task.getException();
                         }
                         mStreamManager = task.getResult();
+                        mStreamManager.addEventListener(mEventListener);
                         return preview();
                     }
                 });
@@ -102,13 +105,11 @@ public class MainActivity extends AppCompatActivity {
         }
         return requestArray.toArray(new String[0]);
     }
-
     private StreamConfig getConfig() {
         return new StreamConfig()
                 .setCamera(StreamConfig.CAMERA_FRONT)
                 .setFitAllCamera(true);
     }
-
     private Task<CameraController> preview() {
         if (mStreamManager != null) {
             return mStreamManager.prepare(getConfig(), mTextureView)
@@ -116,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return Tasks.forException(new IllegalStateException());
     }
-
     public void onClick(View v) {
         switch (v.getId()) {
             case trigger:
@@ -125,13 +125,36 @@ public class MainActivity extends AppCompatActivity {
                         btn_trigger.setText(getResources().getString(R.string.stop));
                         String title = mEditTitle.getText().toString();
                         String synopsis = mEditSynopsis.getText().toString();
-                        mStreamManager.startStreaming(MemberIdentity.ME, title, synopsis, true, true,
-                                mEventListener);
+                        mStreamManager.startStreaming(title, synopsis, true, true)
+                                .addOnCompleteListener(new OnCompleteListener<String>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<String> task) {
+                                        if (task.isSuccessful()) {
+                                            mLiveId = task.getResult();
+                                            Log.d(TAG, "Streaming: " + task.getResult());
+                                        } else {
+                                            btn_trigger.setText(getResources().getString(R.string.start));
+                                            Log.e(TAG, "Start exception: " + task.getException());
+                                        }
+                                    }
+                                });
                     }
                 } else {
-                    btn_trigger.setText(getResources().getString(R.string.start));
+                    btn_trigger.setEnabled(false);
                     if (mStreamManager != null) {
-                        mStreamManager.stopStreaming();
+                        mStreamManager.stopStreaming().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    btn_trigger.setText(getResources().getString(R.string.start));
+                                    btn_trigger.setEnabled(true);
+                                    endLiveEvent();
+                                    Log.d(TAG, "Stop success");
+                                } else {
+                                    Log.e(TAG, "Stop exception: " + task.getException());
+                                }
+                            }
+                        });
                     }
                 }
                 break;
@@ -192,6 +215,16 @@ public class MainActivity extends AppCompatActivity {
         btn_flash.setEnabled(true);
         btn_filter.setEnabled(true);
     }
+    private void endLiveEvent() {
+        if (mStreamManager != null || !TextUtils.isEmpty(mLiveId)) {
+            mStreamManager.cleanLiveEvent(mLiveId).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    mLiveId = null;
+                }
+            });
+        }
+    }
 
     private OnCompleteListener<CameraController> mPrepareListener =
             new OnCompleteListener<CameraController>() {
@@ -210,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
     private EventListener mEventListener = new EventListener() {
         @Override
         public void onStreaming(String liveId) {
-            Log.d(TAG, "onStreaming " + liveId);
         }
 
         @Override
@@ -220,14 +252,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onError(Exception error, @Nullable String liveId) {
-            Log.d(TAG, "onError " + error);
+            Log.e(TAG, "onError " + error);
             btn_trigger.setText(getResources().getString(R.string.start));
         }
 
         @Override
-        public void onFinished(boolean complete) {
-            Log.d(TAG, "onFinished " + complete);
-            btn_trigger.setText(getResources().getString(R.string.start));
+        public void onFinished() {
         }
     };
 }
