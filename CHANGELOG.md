@@ -1,5 +1,17 @@
 Change Log
 ==========
+## Version 0.5.2
+_2016_12-28_
+
+*   straas-streaming
+    *   **Important Change**: [Identity](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/base/identity/Identity.html) is only needed in [initialize](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#initialize-io.straas.android.sdk.base.identity.Identity-io.straas.android.sdk.base.interfaces.OnResultListener-) now.
+    *   **Important Change**: [stopStreaming](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#stopStreaming--) won't set current live event to ended now.
+    *   **Important Change**: Remove parameter sent by [EventListener.onFinish](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/interfaces/EventListener.html#onFinished--).
+    *   **Important Change**: Separate [addEventListener](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#addEventListener-io.straas.android.sdk.streaming.interfaces.EventListener-) and [startStreaming](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#startStreaming-java.lang.String-java.lang.String-boolean-boolean-).
+    *   feat: Add [createLiveEvent](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#createLiveEvent-java.lang.String-java.lang.String-boolean-boolean-) and [startStreaming](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#startStreaming-java.lang.String-).
+    *   fix: TextureView aspect ratio unexpected issue
+    *   deprecated: [EventListener.onFinished](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/interfaces/EventListener.html#onFinished--) and [EventListener.onStreaming](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/interfaces/EventListener.html#onStreaming-java.lang.String-). You could get the result by methods in [StreamManager](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html).
+
 ## Version 0.5.1
 _2016_12-23_
 
