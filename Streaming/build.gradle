@@ -5,7 +5,7 @@ android {
     buildToolsVersion BUILD_TOOLS_VERSION
 
     defaultConfig {
-        applicationId "io.straas.android.sdk.messaging.demo"
+        applicationId "io.straas.android.sdk.streaming.demo"
         minSdkVersion 18
         targetSdkVersion COMPILE_TARGET_SDK_VERSION.toInteger()
         versionCode 1
