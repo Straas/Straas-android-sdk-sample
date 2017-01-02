@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@android:color/black"
     tools:context="io.straas.android.sdk.streaming.demo.MainActivity">
 
     <TextureView
         android:id="@+id/preview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/black"/>
+        android:layout_height="match_parent"/>
 
     <LinearLayout
         android:id="@+id/operation"

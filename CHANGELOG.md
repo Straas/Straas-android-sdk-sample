@@ -1,5 +1,16 @@
 Change Log
 ==========
+## Version 0.5.3
+_2017_01_03_
+
+*   Fix proguard issue ([#48](https://github.com/StraaS/StraaS-android-sdk-sample/issues/48))
+*   straas-streaming
+    * fix: preview upside down when ROTATION_90
+*   straas-messaging
+    * feat: [disconnect()](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#disconnect--) now return
+     a [Task](https://developers.google.com/android/reference/com/google/android/gms/tasks/Task.html) as well.
+
+
 ## Version 0.5.2
 _2016_12-28_
 
