@@ -1,7 +1,7 @@
 Change Log
 ==========
 ## Version 0.5.3
-_2017_01_03_
+_2017-01-03_
 
 *   Fix proguard issue ([#48](https://github.com/StraaS/StraaS-android-sdk-sample/issues/48))
 *   straas-streaming
@@ -12,7 +12,7 @@ _2017_01_03_
 
 
 ## Version 0.5.2
-_2016_12-28_
+_2016-12-28_
 
 *   straas-streaming
     *   **Important Change**: [Identity](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/base/identity/Identity.html) is only needed in [initialize](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#initialize-io.straas.android.sdk.base.identity.Identity-io.straas.android.sdk.base.interfaces.OnResultListener-) now.
@@ -24,7 +24,7 @@ _2016_12-28_
     *   deprecated: [EventListener.onFinished](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/interfaces/EventListener.html#onFinished--) and [EventListener.onStreaming](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/interfaces/EventListener.html#onStreaming-java.lang.String-). You could get the result by methods in [StreamManager](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html).
 
 ## Version 0.5.1
-_2016_12-23_
+_2016-12-23_
 
 *   Upgrade support library to v25.0.1
 *   straas-messaging-ui
