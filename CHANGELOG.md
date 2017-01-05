@@ -1,11 +1,21 @@
 Change Log
 ==========
+## Version 0.5.5
+_2017-01-05_
+
+*   straas-streaming
+    *   fix: [createLiveEvent](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#createLiveEvent-java.lang.String-java.lang.String-boolean-boolean-) before [prepare](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#prepare-io.straas.android.sdk.streaming.StreamConfig-android.view.TextureView-) will fail issue
+    *   fix: [prepare](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#prepare-io.straas.android.sdk.streaming.StreamConfig-android.view.TextureView-) after [destroy](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#destroy--) may crash issue
+    *   fix: [switchCamera](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/CameraController.html#switchCamera--) fails in certain condition
+
+
 ## Version 0.5.4
 _2017-01-03_
 
 Bugfix release only. 
 *   straas-streaming
     *   fix: back camera preview upside down issue
+
 
 ## Version 0.5.3
 _2017-01-03_
@@ -23,7 +33,7 @@ _2016-12-28_
 
 *   straas-streaming
     *   **Important Change**: [Identity](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/base/identity/Identity.html) is only needed in [initialize](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#initialize-io.straas.android.sdk.base.identity.Identity-io.straas.android.sdk.base.interfaces.OnResultListener-) now.
-    *   **Important Change**: [stopStreaming](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#stopStreaming--) won't set current live event to ended now.
+    *   **Important Change**: [stopStreaming](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#stopStreaming--) and [destroy](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#destroy--) won't set current live event to ended now.
     *   **Important Change**: Remove parameter sent by [EventListener.onFinish](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/interfaces/EventListener.html#onFinished--).
     *   **Important Change**: Separate [addEventListener](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#addEventListener-io.straas.android.sdk.streaming.interfaces.EventListener-) and [startStreaming](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#startStreaming-java.lang.String-java.lang.String-boolean-boolean-).
     *   feat: Add [createLiveEvent](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#createLiveEvent-java.lang.String-java.lang.String-boolean-boolean-) and [startStreaming](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#startStreaming-java.lang.String-).
