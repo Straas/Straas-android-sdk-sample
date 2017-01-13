@@ -27,14 +27,14 @@
             android:layout_height="wrap_content"
             android:text="@string/start"
             android:enabled="false"
-            android:onClick="onClick"/>
+            android:onClick="trigger"/>
         <Button
             android:id="@+id/switch_camera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/switch_camera"
             android:enabled="false"
-            android:onClick="onClick"/>
+            android:onClick="switchCamera"/>
 
         <Button
             android:id="@+id/flash"
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:text="@string/flash"
             android:enabled="false"
-            android:onClick="onClick"/>
+            android:onClick="flash"/>
 
         <Button
             android:id="@+id/filter"
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:text="@string/filter"
             android:enabled="false"
-            android:onClick="onClick"/>
+            android:onClick="changeFilter"/>
 
     </LinearLayout>
 
