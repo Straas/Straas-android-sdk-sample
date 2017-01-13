@@ -1,5 +1,20 @@
 Change Log
 ==========
+## Version 0.5.7
+_2017-01-13_
+
+*   straas-streaming
+    *   feat: add live category and highest resolution setter in new [StreamManager.createLiveEvent()](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#createLiveEvent-io.straas.android.sdk.streaming.LiveEventConfig-)
+    *   deprecated: [StreamManager.startStreaming()](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#startStreaming-java.lang.String-java.lang.String-boolean-boolean-)
+    *   deprecated: [StreamManager.createLiveEvent()](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#createLiveEvent-java.lang.String-java.lang.String-boolean-boolean-)
+    *   deprecated: [EventListener.onError()](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/interfaces/EventListener.html#onError-io.straas.android.sdk.streaming.error.StreamError-java.lang.String-)
+*   straas-messaging
+    *   feat: changes for adapting to new server
+*   straas-media-core
+    *   fix: be able to re-attach the same [video container](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.UiContainer.html#getVideoContainer--) in the middle of playback
+*   straas-extension-ima:
+    *   fix/feat: enhance the stability and functionality
+
 ## Version 0.5.5
 _2017-01-05_
 

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
@@ -24,11 +25,13 @@ import com.google.android.gms.tasks.Tasks;
 import java.util.ArrayList;
 
 import io.straas.android.sdk.streaming.CameraController;
+import io.straas.android.sdk.streaming.LiveEventConfig;
 import io.straas.android.sdk.streaming.StreamConfig;
 import io.straas.android.sdk.streaming.StreamManager;
 import io.straas.android.sdk.streaming.demo.filter.GPUImageSupportFilter;
 import io.straas.android.sdk.streaming.demo.filter.GrayImageFilter;
 import io.straas.android.sdk.streaming.error.StreamError;
+import io.straas.android.sdk.streaming.error.StreamException.LiveCountLimitException;
 import io.straas.android.sdk.streaming.interfaces.EventListener;
 import io.straas.sdk.demo.MemberIdentity;
 import jp.co.cyberagent.android.gpuimage.GPUImageColorInvertFilter;
@@ -54,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.RECORD_AUDIO
     };
     private static final int STREAM_PERMISSION_REQUEST = 1;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +89,14 @@ public class MainActivity extends AppCompatActivity {
         checkPermissions();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mStreamManager != null) {
+            mStreamManager.destroy();
+        }
+    }
+
     private void checkPermissions() {
         String[] requestPermissions = getPermissionsRequestArray(STREAM_PERMISSIONS);
         if (requestPermissions.length != 0) {
@@ -105,92 +115,149 @@ public class MainActivity extends AppCompatActivity {
         }
         return requestArray.toArray(new String[0]);
     }
+
     private StreamConfig getConfig() {
         return new StreamConfig()
                 .setCamera(StreamConfig.CAMERA_FRONT)
                 .setFitAllCamera(true);
     }
+
     private Task<CameraController> preview() {
-        if (mStreamManager != null) {
+        if (mStreamManager != null && mStreamManager.getStreamState() == StreamManager.STATE_IDLE) {
             return mStreamManager.prepare(getConfig(), mTextureView)
-                    .addOnCompleteListener(this, mPrepareListener);
+                    .addOnCompleteListener(this, new OnCompleteListener<CameraController>() {
+                        @Override
+                        public void onComplete(@NonNull Task<CameraController> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "Prepare succeeds");
+                                mCameraController = task.getResult();
+                                enableAllButtons();
+                            } else {
+                                Log.e(TAG, "Prepare fails " + task.getException());
+                            }
+                        }
+                    });
         }
         return Tasks.forException(new IllegalStateException());
     }
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case trigger:
-                if (btn_trigger.getText().equals(getResources().getString(R.string.start))) {
-                    if (mStreamManager != null) {
-                        btn_trigger.setText(getResources().getString(R.string.stop));
-                        String title = mEditTitle.getText().toString();
-                        String synopsis = mEditSynopsis.getText().toString();
-                        mStreamManager.startStreaming(title, synopsis, true, true)
-                                .addOnCompleteListener(new OnCompleteListener<String>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<String> task) {
-                                        if (task.isSuccessful()) {
-                                            mLiveId = task.getResult();
-                                            Log.d(TAG, "Streaming: " + task.getResult());
-                                        } else {
-                                            btn_trigger.setText(getResources().getString(R.string.start));
-                                            Log.e(TAG, "Start exception: " + task.getException());
-                                        }
-                                    }
-                                });
+
+    private void enableAllButtons() {
+        btn_trigger.setEnabled(true);
+        btn_switch.setEnabled(true);
+        btn_flash.setEnabled(true);
+        btn_filter.setEnabled(true);
+    }
+
+    private void startStreaming(String title, String synopsis) {
+        mStreamManager.createLiveEvent(new LiveEventConfig.Builder()
+                .title(title)
+                .synopsis(synopsis)
+                .build())
+                .addOnSuccessListener(new OnSuccessListener<String>() {
+                    @Override
+                    public void onSuccess(String liveId) {
+                        Log.d(TAG, "Create live event succeeds: " + liveId);
+                        mLiveId = liveId;
+                        startStreaming(mLiveId);
                     }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception error) {
+                        if (error instanceof LiveCountLimitException){
+                            mLiveId = ((LiveCountLimitException)error).getLiveId();
+                            Log.d(TAG, "Existing live event: " + mLiveId);
+                            startStreaming(mLiveId);
+                        } else {
+                            Log.e(TAG, "Create live event fails: " + error);
+                            btn_trigger.setText(getResources().getString(R.string.start));
+                        }
+                    }
+                });
+    }
+
+    private void startStreaming(String liveId) {
+        mStreamManager.startStreaming(liveId).addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "Start streaming succeeds");
                 } else {
-                    btn_trigger.setEnabled(false);
-                    if (mStreamManager != null) {
-                        mStreamManager.stopStreaming().addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    btn_trigger.setText(getResources().getString(R.string.start));
-                                    btn_trigger.setEnabled(true);
-                                    endLiveEvent();
-                                    Log.d(TAG, "Stop success");
-                                } else {
-                                    Log.e(TAG, "Stop exception: " + task.getException());
-                                }
-                            }
-                        });
-                    }
+                    Log.e(TAG, "Start streaming fails " + task.getException());
+                    btn_trigger.setText(getResources().getString(R.string.start));
                 }
-                break;
-            case switch_camera:
-                if (mCameraController != null) {
-                    mCameraController.switchCamera();
+            }
+        });
+    }
+
+    private void stopStreaming() {
+        mStreamManager.stopStreaming().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "Stop succeeds");
+                    btn_trigger.setText(getResources().getString(R.string.start));
+                    btn_trigger.setEnabled(true);
+                    endLiveEvent();
+                } else {
+                    Log.e(TAG, "Stop fails: " + task.getException());
                 }
-                break;
-            case flash:
-                if (mCameraController != null) {
-                    mCameraController.toggleFlash();
+            }
+        });
+    }
+
+    private void endLiveEvent() {
+        if (mStreamManager != null || !TextUtils.isEmpty(mLiveId)) {
+            mStreamManager.cleanLiveEvent(mLiveId).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "End live event succeeds: " + mLiveId);
+                    mLiveId = null;
                 }
-                break;
-            case filter:
-                if (mStreamManager != null) {
-                    switch(mFilter) {
-                        case 0:
-                            mFilter += mStreamManager.setFilter(new GrayImageFilter()) ? 1 : 0;
-                            break;
-                        case 1:
-                            mFilter += mStreamManager.setFilter(new GPUImageSupportFilter<>(new GPUImageColorInvertFilter())) ? 1 : 0;
-                            break;
-                        case 2:
-                            mFilter += mStreamManager.setFilter(null) ? 1 : 0;
-                            break;
-                    }
-                    mFilter %= 3;
-                }
+            });
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void trigger(View view) {
+        if (btn_trigger.getText().equals(getResources().getString(R.string.start))) {
+            if (mStreamManager != null) {
+                btn_trigger.setText(getResources().getString(R.string.stop));
+                startStreaming(mEditTitle.getText().toString(), mEditSynopsis.getText().toString());
+            }
+        } else {
+            btn_trigger.setEnabled(false);
+            if (mStreamManager != null) {
+                stopStreaming();
+            }
+        }
+    }
+
+    public void switchCamera(View view) {
+        if (mCameraController != null) {
+            mCameraController.switchCamera();
+        }
+    }
+
+    public void flash(View view) {
+        if (mCameraController != null) {
+            mCameraController.toggleFlash();
+        }
+    }
+
+    public void changeFilter(View view) {
         if (mStreamManager != null) {
-            mStreamManager.destroy();
+            switch(mFilter) {
+                case 0:
+                    mFilter += mStreamManager.setFilter(new GrayImageFilter()) ? 1 : 0;
+                    break;
+                case 1:
+                    mFilter += mStreamManager.setFilter(new GPUImageSupportFilter<>(new GPUImageColorInvertFilter())) ? 1 : 0;
+                    break;
+                case 2:
+                    mFilter += mStreamManager.setFilter(null) ? 1 : 0;
+                    break;
+            }
+            mFilter %= 3;
         }
     }
 
@@ -208,37 +275,6 @@ public class MainActivity extends AppCompatActivity {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
-
-    private void enableAllButtons() {
-        btn_trigger.setEnabled(true);
-        btn_switch.setEnabled(true);
-        btn_flash.setEnabled(true);
-        btn_filter.setEnabled(true);
-    }
-    private void endLiveEvent() {
-        if (mStreamManager != null || !TextUtils.isEmpty(mLiveId)) {
-            mStreamManager.cleanLiveEvent(mLiveId).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    mLiveId = null;
-                }
-            });
-        }
-    }
-
-    private OnCompleteListener<CameraController> mPrepareListener =
-            new OnCompleteListener<CameraController>() {
-                @Override
-                public void onComplete(@NonNull Task<CameraController> task) {
-                    if (task.isSuccessful()) {
-                        Log.d(TAG, "Prepare success");
-                        mCameraController = task.getResult();
-                        enableAllButtons();
-                    } else {
-                        Log.e(TAG, "Prepare failure " + task.getException());
-                    }
-                }
-            };
 
     private EventListener mEventListener = new EventListener() {
         @Override
