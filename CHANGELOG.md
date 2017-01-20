@@ -4,7 +4,8 @@ Change Log
 _2017-01-13_
 
 *   straas-streaming
-    *   feat: add live category and highest resolution setter in new [StreamManager.createLiveEvent()](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#createLiveEvent-io.straas.android.sdk.streaming.LiveEventConfig-)
+    *   feat: add live category and highest resolution setter in new [StreamManager.createLiveEvent()](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#createLiveEvent-io.straas.android.sdk.streaming.LiveEventConfig-).
+    reuseLiveEvent flag doesn't exist in this method any more, you will always receive [LiveCountLimitException](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/error/StreamException.LiveCountLimitException.html) if there is a not-ended live event.
     *   deprecated: [StreamManager.startStreaming()](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#startStreaming-java.lang.String-java.lang.String-boolean-boolean-)
     *   deprecated: [StreamManager.createLiveEvent()](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#createLiveEvent-java.lang.String-java.lang.String-boolean-boolean-)
     *   deprecated: [EventListener.onError()](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/interfaces/EventListener.html#onError-io.straas.android.sdk.streaming.error.StreamError-java.lang.String-)
