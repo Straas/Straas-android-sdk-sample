@@ -7,6 +7,7 @@ io.straas.android.sdk.messaging.interfaces
 io.straas.android.sdk.messaging.message
 io.straas.android.sdk.messaging.ui
 io.straas.android.sdk.messaging.ui.interfaces
+io.straas.android.sdk.messaging.user
 io.straas.android.sdk.streaming
 io.straas.android.sdk.streaming.error
 io.straas.android.sdk.streaming.interfaces
