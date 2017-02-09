@@ -1,5 +1,19 @@
 Change Log
 ==========
+## Version 0.5.8
+_2017-02-09_
+
+*   straas-base
+    *   feat: Upgrade okhttp to [v3.6.0](https://github.com/square/okhttp/blob/master/CHANGELOG.md#version-360).
+*   straas-messaging
+    *   **Important Change**: The RawData received from [onRawDataAdded(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/interfaces/EventListener.html#onRawDataAdded-io.straas.android.sdk.messaging.Message-) now changes to [Message](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/Message.html), you could use [getRawData()](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/Message.html#getRawData--) to retrive the RawData.
+    *   **Important Change**: String in [ChatroomManager.sendMessage(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#sendMessage-java.lang.String-) should be within 300 characters or task will fail.
+    *   feat: New [ChatroomManager.getUsers(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#getUsers-io.straas.android.sdk.messaging.user.UserType-).
+    *   deprecated: [ChatroomManager.getUsers(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#getUsers-int-int-)
+	*   deprecated: connect flags within [connect(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#connect-java.lang.String-io.straas.android.sdk.base.identity.Identity-int-) simplify to `boolean isPersonalChat`.
+*   straas-media-core
+    *   feat: Upgrade ExoPlayer library to [v2.2.0](https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#r220).
+    
 ## Version 0.5.7
 _2017-01-13_
 

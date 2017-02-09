@@ -36,8 +36,7 @@ public class MainActivity extends AppCompatActivity {
         mChatroomOutputView = (ChatroomOutputView) findViewById(R.id.chat_room);
         mChatroomOutputView.setCredentialAuthorizeListener(mCredentialAuthorizeListener);
         mChatroomOutputView.setEventListener(mEventListener);
-        mChatroomOutputView.connect(CHATROOM_NAME, MemberIdentity.ME,
-                0 /*ChatroomManager.IS_PERSONAL_CHAT|ChatroomManager.WITH_DATA_CHANNEL*/);
+        mChatroomOutputView.connect(CHATROOM_NAME, MemberIdentity.ME, false);
     }
 
     private CredentialAuthorizeListener mCredentialAuthorizeListener =
@@ -95,10 +94,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public void onRawDataAdded(RawData raw) {
+        public void onRawDataAdded(Message message) {
             // if you enable ChatroomManager.WITH_DATA_CHANNEL flag
             //try {
-            //    Ppap[] PPAP = raw.getJsonTextAsData(Ppap[].class);
+            //    Ppap[] PPAP = message.getRawData().getJsonTextAsData(Ppap[].class);
             //    Log.d("raw data", String.format("I have a %s, I have an %s, Uh! %s",
             //            PPAP[0].mIhaveA[0], PPAP[0].mIhaveA[1], PPAP[0].mUh));
             //    Log.d("raw data", String.format("I have a %s, I have an %s, Uh! %s",
