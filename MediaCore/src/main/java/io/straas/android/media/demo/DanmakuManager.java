@@ -16,7 +16,6 @@ import io.straas.android.sdk.mediacore.demo.R;
 import io.straas.android.sdk.messaging.ChatMode;
 import io.straas.android.sdk.messaging.Message;
 import io.straas.android.sdk.messaging.MessagingError;
-import io.straas.android.sdk.messaging.RawData;
 import io.straas.android.sdk.messaging.User;
 import io.straas.android.sdk.messaging.interfaces.EventListener;
 import master.flame.danmaku.controller.DrawHandler;
@@ -154,8 +153,8 @@ class DanmakuManager implements Application.ActivityLifecycleCallbacks, EventLis
     }
 
     @Override
-    public void onRawDataAdded(RawData message) {
-        Log.d("onRawData", message.getJsonText());
+    public void onRawDataAdded(Message message) {
+        Log.d("onRawData", message.getRawData().getJsonText());
     }
 
     @Override
