@@ -249,6 +249,8 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             }
             if (mEnableDefaultSummaryViewer) {
                 TextView summaryViewerTextView = (TextView) View.inflate(mThemeContext, R.layout.summary_viewer, null);
+                TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(summaryViewerTextView,
+                        VectorDrawableCompat.create(getResources(), R.drawable.ic_eye_24dp, null), null, null, null);
                 setCustomSummaryViewerView(summaryViewerTextView);
             }
             if (mEnableDefaultLoadingProgressBar) {
@@ -1067,8 +1069,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private class SummaryViewerMetadataListener {
         void onMetaChanged(TextView summaryViewerTextView, long summaryViewer) {
             if (summaryViewerTextView != null) {
-                summaryViewerTextView.setText(Utils.convertLong(summaryViewer) + " " +
-                        getContext().getString(R.string.common_view_count));
+                summaryViewerTextView.setText(Utils.convertLong(summaryViewer));
             }
         }
     }

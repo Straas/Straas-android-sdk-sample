@@ -5,4 +5,5 @@
     android:clickable="false"
     android:gravity="center"
     android:textColor="@color/color_summary_viewer"
+    android:drawablePadding="3dp"
     android:textSize="@dimen/summary_viewer_size" />
