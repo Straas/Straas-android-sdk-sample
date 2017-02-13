@@ -661,11 +661,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             return;
         }
 
-        if (Build.VERSION.SDK_INT < 23) {
-            mChannelNameTextView.setTextAppearance(mThemeContext, resId);
-        } else {
-            mChannelNameTextView.setTextAppearance(resId);
-        }
+        TextViewCompat.setTextAppearance(mChannelNameTextView, resId);
     }
 
     /**
@@ -691,11 +687,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             return;
         }
 
-        if (Build.VERSION.SDK_INT < 23) {
-            mSummaryViewerTextView.setTextAppearance(mThemeContext, resId);
-        } else {
-            mSummaryViewerTextView.setTextAppearance(resId);
-        }
+        TextViewCompat.setTextAppearance(mSummaryViewerTextView, resId);
     }
 
     /**
