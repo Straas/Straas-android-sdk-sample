@@ -9,11 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import io.straas.android.sdk.base.credential.CredentialFailReason;
 import io.straas.android.sdk.messaging.ChatMode;
 import io.straas.android.sdk.messaging.ChatroomManager;
 import io.straas.android.sdk.messaging.Message;
-import io.straas.android.sdk.messaging.MessagingError;
 import io.straas.android.sdk.messaging.RawData;
 import io.straas.android.sdk.messaging.User;
 import io.straas.android.sdk.messaging.interfaces.EventListener;
@@ -51,11 +49,6 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Exception error) {
-
-                }
-
-                @Override
-                public void onFailure(CredentialFailReason credentialFailReason) {
 
                 }
             };
@@ -107,16 +100,6 @@ public class MainActivity extends AppCompatActivity {
             //} catch (JSONException e) {
             //    e.printStackTrace();
             //}
-        }
-
-        @Override
-        public void onConnectFailed(MessagingError messagingError) {
-
-        }
-
-        @Override
-        public void onError(MessagingError messagingError) {
-
         }
 
         @Override
