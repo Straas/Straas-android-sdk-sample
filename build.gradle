@@ -33,10 +33,10 @@ allprojects { project ->
         }
         buildTypes {
             debug {
-                resValue "string", "client_id", "$your_debug_client_id"
+                manifestPlaceholders = [straas_client_id: "$your_debug_client_id"]
             }
             release {
-                resValue "string", "client_id", "$your_release_client_id"
+                manifestPlaceholders = [straas_client_id: "$your_release_client_id"]
             }
         }
         sourceSets.main.java.srcDirs = ['src/main/java', '../MemberIdentity']

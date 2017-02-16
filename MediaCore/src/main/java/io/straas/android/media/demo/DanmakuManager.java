@@ -15,7 +15,6 @@ import android.view.View;
 import io.straas.android.sdk.mediacore.demo.R;
 import io.straas.android.sdk.messaging.ChatMode;
 import io.straas.android.sdk.messaging.Message;
-import io.straas.android.sdk.messaging.MessagingError;
 import io.straas.android.sdk.messaging.User;
 import io.straas.android.sdk.messaging.interfaces.EventListener;
 import master.flame.danmaku.controller.DrawHandler;
@@ -133,11 +132,6 @@ class DanmakuManager implements Application.ActivityLifecycleCallbacks, EventLis
     }
 
     @Override
-    public void onConnectFailed(MessagingError error) {
-
-    }
-
-    @Override
     public void onConnectFailed(Exception error) {
         Log.e("chatroom", error.toString());
     }
@@ -155,11 +149,6 @@ class DanmakuManager implements Application.ActivityLifecycleCallbacks, EventLis
     @Override
     public void onRawDataAdded(Message message) {
         Log.d("onRawData", message.getRawData().getJsonText());
-    }
-
-    @Override
-    public void onError(MessagingError error) {
-
     }
 
     @Override

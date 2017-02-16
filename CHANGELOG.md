@@ -1,5 +1,22 @@
 Change Log
 ==========
+## Version 0.6.0
+_2017-02-16_
+*   **Important Change**: [client id](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/SDK-Credential#get-client-id) now declares through `straas_client_id` key-value pair with [manifestPlaceholders](http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.ProductFlavor.html#com.android.build.gradle.internal.dsl.ProductFlavor:manifestPlaceholders) property instead of [resValue](http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.ProductFlavor.html#com.android.build.gradle.internal.dsl.ProductFlavor:resValue(java.lang.String, java.lang.String, java.lang.String)):
+```
+manifestPlaceholders = [straas_client_id: "$your_client_id"]
+```
+*   Retire all deprecated APIs in `0.5.x`.
+*   Upgrade support library to v25.1.1.
+*   straas-messaging
+    *   feat: Add [order parameter](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/message/MessageRequest.Builder.html#order-java.lang.String-) for determining the order of messages request.
+*   straas-streaming
+    *   fix: Clear variable reference of preview after [destroy](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#destroy--).
+    *   fix: [Prepare](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#prepare-io.straas.android.sdk.streaming.StreamConfig-android.view.TextureView-) fails in some devices.
+* straas-media-core
+    *   feat: Add [RTMP](https://en.wikipedia.org/wiki/Real-Time_Messaging_Protocol) playback functionality, you could feel the power by filling a RTMP link in [playFromUri(...)](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#playFromUri(android.net.Uri, android.os.Bundle)).
+    *   fix: Incorrect metadata value with `CUSTOM_METADATA_VIEWS_COUNT` and `CUSTOM_METADATA_VIEWERS_COUNT`.
+
 ## Version 0.5.8
 _2017-02-09_
 

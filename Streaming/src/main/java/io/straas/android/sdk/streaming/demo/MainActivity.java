@@ -30,7 +30,6 @@ import io.straas.android.sdk.streaming.StreamConfig;
 import io.straas.android.sdk.streaming.StreamManager;
 import io.straas.android.sdk.streaming.demo.filter.GPUImageSupportFilter;
 import io.straas.android.sdk.streaming.demo.filter.GrayImageFilter;
-import io.straas.android.sdk.streaming.error.StreamError;
 import io.straas.android.sdk.streaming.error.StreamException.LiveCountLimitException;
 import io.straas.android.sdk.streaming.interfaces.EventListener;
 import io.straas.sdk.demo.MemberIdentity;
@@ -278,22 +277,9 @@ public class MainActivity extends AppCompatActivity {
 
     private EventListener mEventListener = new EventListener() {
         @Override
-        public void onStreaming(String liveId) {
-        }
-
-        @Override
-        public void onError(StreamError error, String liveId) {
-
-        }
-
-        @Override
         public void onError(Exception error, @Nullable String liveId) {
             Log.e(TAG, "onError " + error);
             btn_trigger.setText(getResources().getString(R.string.start));
-        }
-
-        @Override
-        public void onFinished() {
         }
     };
 }
