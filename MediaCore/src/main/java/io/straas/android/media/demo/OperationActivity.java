@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaBrowserCompat.ConnectionCallback;
+import android.support.v4.media.MediaBrowserCompat.MediaItem;
 import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
@@ -157,7 +158,7 @@ public class OperationActivity extends AppCompatActivity {
         if (checkId(PLAYLIST_ID) || getMediaControllerCompat() == null) return;
         getMediaBrowser().subscribe(PLAYLIST_ID, new MediaBrowserCompat.SubscriptionCallback() {
             @Override
-            public void onChildrenLoaded(@NonNull String parentId, List<MediaBrowserCompat.MediaItem> children) {
+            public void onChildrenLoaded(@NonNull String parentId, List<MediaItem> children) {
                 getMediaControllerCompat().getTransportControls().playFromMediaId(children.get(0).getMediaId(), null);
             }
         });
@@ -180,7 +181,7 @@ public class OperationActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onItemLoaded(MediaBrowserCompat.MediaItem item) {
+            public void onItemLoaded(MediaItem item) {
                 if (item == null) {
                     return;
                 }
@@ -191,6 +192,21 @@ public class OperationActivity extends AppCompatActivity {
                     ", Description: " + mediaDescription.getDescription() + ", Thumbnail: " + mediaDescription.getIconUri() +
                     ", Views: " + mediaDescription.getExtras().getLong(VideoCustomMetadata.CUSTOM_METADATA_VIEWS_COUNT) +
                     ", Duration: " + mediaDescription.getExtras().getLong(MediaMetadataCompat.METADATA_KEY_DURATION));
+                } else if (item.isBrowsable()) {
+                    getMediaBrowser().subscribe(VIDEO_ID, new MediaBrowserCompat.SubscriptionCallback() {
+                        @Override
+                        public void onChildrenLoaded(@NonNull String parentId, List<MediaItem> children) {
+                            for (MediaItem mediaItem : children) {
+                                MediaDescriptionCompat mediaDescription = mediaItem.getDescription();
+                                Log.d(TAG, "ID: " + mediaDescription.getMediaId() +
+                                        ", Title: " + mediaDescription.getTitle() +
+                                        ", Description: " + mediaDescription.getDescription() +
+                                        ", Thumbnail: " + mediaDescription.getIconUri() +
+                                        ", Views: " + mediaDescription.getExtras().getLong(VideoCustomMetadata.CUSTOM_METADATA_VIEWS_COUNT) +
+                                        ", Duration: " + mediaDescription.getExtras().getLong(MediaMetadataCompat.METADATA_KEY_DURATION));
+                            }
+                        }
+                    });
                 }
             }
         });
