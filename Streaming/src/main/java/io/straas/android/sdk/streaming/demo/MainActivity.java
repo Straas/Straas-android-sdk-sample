@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.media.MediaBrowserCompat;
+import android.support.v4.media.session.MediaControllerCompat.Callback;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -24,6 +26,7 @@ import com.google.android.gms.tasks.Tasks;
 
 import java.util.ArrayList;
 
+import io.straas.android.sdk.media.StraasMediaCore;
 import io.straas.android.sdk.streaming.CameraController;
 import io.straas.android.sdk.streaming.LiveEventConfig;
 import io.straas.android.sdk.streaming.StreamConfig;
@@ -56,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.RECORD_AUDIO
     };
     private static final int STREAM_PERMISSION_REQUEST = 1;
+    // remove StraasMediaCore if you don't need to receive live event, e.g. CCU
+    private StraasMediaCore mStraasMediaCore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,12 +180,34 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void startStreaming(String liveId) {
+    private void startStreaming(final String liveId) {
         mStreamManager.startStreaming(liveId).addOnCompleteListener(new OnCompleteListener<String>() {
             @Override
             public void onComplete(@NonNull Task<String> task) {
                 if (task.isSuccessful()) {
                     Log.d(TAG, "Start streaming succeeds");
+                    // remove StraasMediaCore if you don't need to receive live event, e.g. CCU
+                    mStraasMediaCore = new StraasMediaCore(MemberIdentity.ME, new MediaBrowserCompat.ConnectionCallback() {
+                        @Override
+                        public void onConnected() {
+                            mStraasMediaCore.getMediaController().getTransportControls()
+                                    .prepareFromMediaId(StraasMediaCore.LIVE_ID_PREFIX + liveId, null);
+                            mStraasMediaCore.getMediaController().registerCallback(new Callback() {
+                                @Override
+                                public void onSessionEvent(String event, Bundle extras) {
+                                    switch (event) {
+                                        case StraasMediaCore.LIVE_EXTRA_STATISTICS_CCU:
+                                            Log.d(TAG, "ccu: " + extras.getInt(event));
+                                            break;
+                                        case StraasMediaCore.LIVE_EXTRA_STATISTICS_HIT_COUNT:
+                                            Log.d(TAG, "hit count: " + extras.getInt(event));
+                                            break;
+                                    }
+                                }
+                            });
+                        }
+                    });
+                    mStraasMediaCore.getMediaBrowser().connect();
                 } else {
                     Log.e(TAG, "Start streaming fails " + task.getException());
                     btn_trigger.setText(getResources().getString(R.string.start));
@@ -190,6 +217,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void stopStreaming() {
+        // remove StraasMediaCore if you don't need to receive live event, e.g. CCU
+        if (mStraasMediaCore != null && mStraasMediaCore.getMediaBrowser().isConnected()) {
+            mStraasMediaCore.getMediaBrowser().disconnect();
+        }
         mStreamManager.stopStreaming().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
