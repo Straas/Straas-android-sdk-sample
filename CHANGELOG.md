@@ -1,5 +1,28 @@
 Change Log
 ==========
+## Version 0.6.1
+_2017-02-20_
+*   Upgrade Google Play Service to 10.2.0
+*   straas-extension-ima
+    *   Upgrade IMA to 3.6.0
+*   straas-streaming
+    *   feat: Add [vodListed(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/LiveEventConfig.Builder.html#vodListed-boolean-) and [vodAvailable(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/LiveEventConfig.Builder.html#vodAvailable-boolean-).
+*   straas-messaging
+    *   Adjust minimum Android API level to 14 (Android 4.0.1, Ice Cream Sandwich).
+    *   deprecated: `sendAggregatedDataTypeMessage` is renamed to [sendAggregatedData(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#sendAggregatedData-java.lang.String-)
+    *   Add data channel history, useful for replaying.
+        *  [getRawData(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#getRawData-io.straas.android.sdk.messaging.message.MessageRequest-)
+        *  [getAggregatedData(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#getAggregatedData-io.straas.android.sdk.messaging.message.MessageRequest-) 
+    *   [getTotalAggregatedData()](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#getTotalAggregatedData--) could be used to query all aggregated data. If you use it in [onAggregatedDataAdded(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/interfaces/EventListener.html#onAggregatedDataAdded-android.support.v4.util.SimpleArrayMap-), you will get all aggregated data in real-time.
+*   straas-messaging-ui
+    *   Adjust minimum Android API level to 14 (Android 4.0.1, Ice Cream Sandwich).
+*   straas-media-core
+    *   Live event could know whether it was ended or not by [checking](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.html#getItem(java.lang.String, android.support.v4.media.MediaBrowserCompat.ItemCallback)) if [isPlayable()](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.MediaItem.html#isPlayable()). An ended event will be [browsable](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.MediaItem.html#isBrowsable()), then you could [query all VODs](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.html#subscribe(java.lang.String, android.support.v4.media.MediaBrowserCompat.SubscriptionCallback)).
+    *   Implement [prepareFromMediaId(...)](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#prepareFromMediaId(java.lang.String, android.os.Bundle)), 
+    once the preparation is done, the session will change its playback state to [STATE_PAUSED](https://developer.android.com/reference/android/support/v4/media/session/PlaybackStateCompat.html#STATE_PAUSED), 
+    which is the same effect as [playFromMediaId(...)](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#playFromMediaId(java.lang.String, android.os.Bundle)) then [pause()](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#pause()) immediately.
+    *   Live event send two statistics value: [LIVE_EXTRA_STATISTICS_CCU](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#LIVE_EXTRA_STATISTICS_CCU) and [LIVE_EXTRA_STATISTICS_HIT_COUNT](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#LIVE_EXTRA_STATISTICS_HIT_COUNT) represent the _concurrent users_ and the _media hit count_ of the live event respectively.
+    
 ## Version 0.6.0
 _2017-02-16_
 *   **Important Change**: [client id](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/SDK-Credential#get-client-id) now declares through `straas_client_id` key-value pair with [manifestPlaceholders](http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.ProductFlavor.html#com.android.build.gradle.internal.dsl.ProductFlavor:manifestPlaceholders) property instead of [resValue](http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.ProductFlavor.html#com.android.build.gradle.internal.dsl.ProductFlavor:resValue(java.lang.String, java.lang.String, java.lang.String)):

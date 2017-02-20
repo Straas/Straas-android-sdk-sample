@@ -167,8 +167,38 @@ public class OperationActivity extends AppCompatActivity {
     public void playLiveStreaming(View view) {
         if (checkId(LIVE_VIDEO_ID) || getMediaControllerCompat() == null) return;
         // play live stream
-        getMediaControllerCompat().getTransportControls()
-                .playFromMediaId(StraasMediaCore.LIVE_ID_PREFIX + LIVE_VIDEO_ID, null);
+        getMediaBrowser().getItem(StraasMediaCore.LIVE_ID_PREFIX + LIVE_VIDEO_ID, new MediaBrowserCompat.ItemCallback() {
+            @Override
+            public void onItemLoaded(MediaItem item) {
+                if (item == null) {
+                    return;
+                }
+                if (item.isPlayable()) {
+                    getMediaControllerCompat().getTransportControls()
+                            .playFromMediaId(StraasMediaCore.LIVE_ID_PREFIX + LIVE_VIDEO_ID, null);
+                } else if (item.isBrowsable()) {
+                    // live event is ended, print VODs
+                    getMediaBrowser().subscribe(StraasMediaCore.LIVE_ID_PREFIX + LIVE_VIDEO_ID, new MediaBrowserCompat.SubscriptionCallback() {
+                        @Override
+                        public void onChildrenLoaded(@NonNull String parentId, List<MediaItem> children) {
+                            if (children == null) {
+                                return;
+                            }
+                            for (MediaItem mediaItem : children) {
+                                MediaDescriptionCompat mediaDescription = mediaItem.getDescription();
+                                Log.d(TAG, "ID: " + mediaDescription.getMediaId() +
+                                        ", Title: " + mediaDescription.getTitle() +
+                                        ", Description: " + mediaDescription.getDescription() +
+                                        ", Thumbnail: " + mediaDescription.getIconUri() +
+                                        ", Views: " + mediaDescription.getExtras().getLong(VideoCustomMetadata.CUSTOM_METADATA_VIEWS_COUNT) +
+                                        ", Duration: " + mediaDescription.getExtras().getLong(MediaMetadataCompat.METADATA_KEY_DURATION));
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
     }
 
     public void queryMediaItemInfo(View view) {
@@ -196,6 +226,9 @@ public class OperationActivity extends AppCompatActivity {
                     getMediaBrowser().subscribe(VIDEO_ID, new MediaBrowserCompat.SubscriptionCallback() {
                         @Override
                         public void onChildrenLoaded(@NonNull String parentId, List<MediaItem> children) {
+                            if (children == null) {
+                                return;
+                            }
                             for (MediaItem mediaItem : children) {
                                 MediaDescriptionCompat mediaDescription = mediaItem.getDescription();
                                 Log.d(TAG, "ID: " + mediaDescription.getMediaId() +
@@ -257,6 +290,14 @@ public class OperationActivity extends AppCompatActivity {
                     String errorReason = extras.getString(StraasMediaCore.KEY_MEDIA_BROWSER_ERROR_REASON);
                     String errorMessage = extras.getString(StraasMediaCore.KEY_MEDIA_BROWSER_ERROR_MESSAGE);
                     Log.e(event, errorReason + ": " + errorMessage);
+                    break;
+                case StraasMediaCore.LIVE_EXTRA_STATISTICS_CCU:
+                    // you could also pull the value from getMediaControllerCompat().getExtras().getInt(LIVE_EXTRA_STATISTICS_CCU);
+                    Log.d(TAG, "ccu: " + extras.getInt(event));
+                    break;
+                case StraasMediaCore.LIVE_EXTRA_STATISTICS_HIT_COUNT:
+                    // you could also pull the value from getMediaControllerCompat().getExtras().getInt(LIVE_EXTRA_STATISTICS_HIT_COUNT);
+                    Log.d(TAG, "hit count: " + extras.getInt(event));
                     break;
             }
         }
