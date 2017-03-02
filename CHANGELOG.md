@@ -1,7 +1,31 @@
 Change Log
 ==========
+## Version 0.6.2
+_2017-03-02_
+
+*   Upgrade support library to v25.2.0.
+*   straas-messaging
+    *   feat: Add [updateUserRole](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#updateUserRole-io.straas.android.sdk.messaging.User-io.straas.android.sdk.messaging.Role-) and [updateUserRoleByMemberId](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#updateUserRoleByMemberId-java.lang.String-io.straas.android.sdk.messaging.Role-) for upgrading a user to moderator.
+    *   feat: Add [UserNotFoundException](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/MessagingException.UserNotFoundException.html) and [NotFoundException](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/MessagingException.NotFoundException.html).
+*   straas-streaming
+    *   fix: Broken texture in some devices.
+    *   fix: Trying to start a owner-undefined live event will crash.
+    *   fix: Prepare will crash if camera is broken. Now, you could catch the error and try another camera.
+    *   change: Throw [UnavailableException](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/error/StreamException.UnavailableException.html) when the "available" flag of the live event is set to false.
+*   straas-media-core
+    *   deprecated: [CUSTOM_METADATA_VIEWS_COUNT](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/VideoCustomMetadata.html#CUSTOM_METADATA_VIEWS_COUNT), use [PLAY_COUNT_SUM](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/VideoCustomMetadata.html#PLAY_COUNT_SUM) instead.
+    *   deprecated: [CUSTOM_METADATA_VIEWERS_COUNT](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/VideoCustomMetadata.html#CUSTOM_METADATA_VIEWERS_COUNT).
+    *   Add [BASE_PLAY_COUNT](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/VideoCustomMetadata.html#BASE_PLAY_COUNT),
+    [PLAY_DURATION_SUM](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/VideoCustomMetadata.html#PLAY_DURATION_SUM),
+    [BASE_PLAY_DURATION](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/VideoCustomMetadata.html#BASE_PLAY_DURATION),
+    [HIT_COUNT_SUM](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/VideoCustomMetadata.html#HIT_COUNT_SUM),
+    [BASE_HIT_COUNT](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/VideoCustomMetadata.html#BASE_HIT_COUNT),
+    [UPDATED_AT](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/VideoCustomMetadata.html#UPDATED_AT).
+
+
 ## Version 0.6.1
 _2017-02-20_
+
 *   Upgrade Google Play Service to 10.2.0
 *   straas-extension-ima
     *   Upgrade IMA to 3.6.0
@@ -22,9 +46,11 @@ _2017-02-20_
     once the preparation is done, the session will change its playback state to [STATE_PAUSED](https://developer.android.com/reference/android/support/v4/media/session/PlaybackStateCompat.html#STATE_PAUSED), 
     which is the same effect as [playFromMediaId(...)](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#playFromMediaId(java.lang.String, android.os.Bundle)) then [pause()](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#pause()) immediately.
     *   Live event send two statistics value: [LIVE_EXTRA_STATISTICS_CCU](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#LIVE_EXTRA_STATISTICS_CCU) and [LIVE_EXTRA_STATISTICS_HIT_COUNT](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#LIVE_EXTRA_STATISTICS_HIT_COUNT) represent the _concurrent users_ and the _media hit count_ of the live event respectively.
-    
+
+
 ## Version 0.6.0
 _2017-02-16_
+
 *   **Important Change**: [client id](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/SDK-Credential#get-client-id) now declares through `straas_client_id` key-value pair with [manifestPlaceholders](http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.ProductFlavor.html#com.android.build.gradle.internal.dsl.ProductFlavor:manifestPlaceholders) property instead of [resValue](http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.ProductFlavor.html#com.android.build.gradle.internal.dsl.ProductFlavor:resValue(java.lang.String, java.lang.String, java.lang.String)):
 ```
 manifestPlaceholders = [straas_client_id: "$your_client_id"]
@@ -40,6 +66,7 @@ manifestPlaceholders = [straas_client_id: "$your_client_id"]
     *   feat: Add [RTMP](https://en.wikipedia.org/wiki/Real-Time_Messaging_Protocol) playback functionality, you could feel the power by filling a RTMP link in [playFromUri(...)](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#playFromUri(android.net.Uri, android.os.Bundle)).
     *   fix: Incorrect metadata value with `CUSTOM_METADATA_VIEWS_COUNT` and `CUSTOM_METADATA_VIEWERS_COUNT`.
 
+
 ## Version 0.5.8
 _2017-02-09_
 
@@ -53,7 +80,8 @@ _2017-02-09_
 	*   deprecated: connect flags within [connect(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#connect-java.lang.String-io.straas.android.sdk.base.identity.Identity-int-) simplify to `boolean isPersonalChat`.
 *   straas-media-core
     *   feat: Upgrade ExoPlayer library to [v2.2.0](https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#r220).
-    
+
+
 ## Version 0.5.7
 _2017-01-13_
 
@@ -69,6 +97,7 @@ _2017-01-13_
     *   fix: be able to re-attach the same [video container](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.UiContainer.html#getVideoContainer--) in the middle of playback
 *   straas-extension-ima:
     *   fix/feat: enhance the stability and functionality
+
 
 ## Version 0.5.5
 _2017-01-05_
