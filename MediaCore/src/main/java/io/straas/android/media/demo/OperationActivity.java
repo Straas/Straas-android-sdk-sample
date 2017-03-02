@@ -190,7 +190,7 @@ public class OperationActivity extends AppCompatActivity {
                                         ", Title: " + mediaDescription.getTitle() +
                                         ", Description: " + mediaDescription.getDescription() +
                                         ", Thumbnail: " + mediaDescription.getIconUri() +
-                                        ", Views: " + mediaDescription.getExtras().getLong(VideoCustomMetadata.CUSTOM_METADATA_VIEWS_COUNT) +
+                                        ", Views: " + mediaDescription.getExtras().getLong(VideoCustomMetadata.PLAY_COUNT_SUM) +
                                         ", Duration: " + mediaDescription.getExtras().getLong(MediaMetadataCompat.METADATA_KEY_DURATION));
                             }
                         }
@@ -220,7 +220,7 @@ public class OperationActivity extends AppCompatActivity {
                     MediaDescriptionCompat mediaDescription = item.getDescription();
                     Log.d(TAG, "ID: " + mediaDescription.getMediaId() + ", Title: " + mediaDescription.getTitle() +
                     ", Description: " + mediaDescription.getDescription() + ", Thumbnail: " + mediaDescription.getIconUri() +
-                    ", Views: " + mediaDescription.getExtras().getLong(VideoCustomMetadata.CUSTOM_METADATA_VIEWS_COUNT) +
+                    ", Views: " + mediaDescription.getExtras().getLong(VideoCustomMetadata.PLAY_COUNT_SUM) +
                     ", Duration: " + mediaDescription.getExtras().getLong(MediaMetadataCompat.METADATA_KEY_DURATION));
                 } else if (item.isBrowsable()) {
                     getMediaBrowser().subscribe(VIDEO_ID, new MediaBrowserCompat.SubscriptionCallback() {
@@ -235,7 +235,7 @@ public class OperationActivity extends AppCompatActivity {
                                         ", Title: " + mediaDescription.getTitle() +
                                         ", Description: " + mediaDescription.getDescription() +
                                         ", Thumbnail: " + mediaDescription.getIconUri() +
-                                        ", Views: " + mediaDescription.getExtras().getLong(VideoCustomMetadata.CUSTOM_METADATA_VIEWS_COUNT) +
+                                        ", Views: " + mediaDescription.getExtras().getLong(VideoCustomMetadata.PLAY_COUNT_SUM) +
                                         ", Duration: " + mediaDescription.getExtras().getLong(MediaMetadataCompat.METADATA_KEY_DURATION));
                             }
                         }
