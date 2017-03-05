@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.messaging.ChatMode;
 import io.straas.android.sdk.messaging.ChatroomManager;
 import io.straas.android.sdk.messaging.Message;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_messaging);
 
         mChatroomOutputView = (ChatroomOutputView) findViewById(R.id.chat_room);
         mChatroomOutputView.setCredentialAuthorizeListener(mCredentialAuthorizeListener);

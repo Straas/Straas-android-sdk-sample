@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">Straas-Media-Core demo</string>
     <string name="quality_auto">Auto</string>
     <string name="quality_high">High</string>
     <string name="quality_low">Low</string>

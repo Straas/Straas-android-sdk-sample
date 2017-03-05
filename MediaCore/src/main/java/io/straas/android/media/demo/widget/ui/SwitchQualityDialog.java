@@ -16,8 +16,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 import io.straas.android.media.demo.Utils;
+import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.media.StraasMediaCore;
-import io.straas.android.sdk.mediacore.demo.R;
 
 import static android.support.v7.appcompat.R.attr.alertDialogStyle;
 import static android.support.v7.appcompat.R.styleable.AlertDialog;

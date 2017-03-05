@@ -18,8 +18,8 @@ import java.lang.ref.WeakReference;
 import java.util.Formatter;
 import java.util.Locale;
 
-import io.straas.android.sdk.mediacore.demo.R;
 import io.straas.android.media.demo.widget.PlayerControl;
+import io.straas.android.sdk.demo.R;
 
 public class ContentSeekBar extends RelativeLayout {
 

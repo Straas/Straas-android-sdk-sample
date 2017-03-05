@@ -26,6 +26,7 @@ import com.google.android.gms.tasks.Tasks;
 
 import java.util.ArrayList;
 
+import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.media.StraasMediaCore;
 import io.straas.android.sdk.streaming.CameraController;
 import io.straas.android.sdk.streaming.LiveEventConfig;
@@ -38,10 +39,10 @@ import io.straas.android.sdk.streaming.interfaces.EventListener;
 import io.straas.sdk.demo.MemberIdentity;
 import jp.co.cyberagent.android.gpuimage.GPUImageColorInvertFilter;
 
-import static io.straas.android.sdk.streaming.demo.R.id.filter;
-import static io.straas.android.sdk.streaming.demo.R.id.flash;
-import static io.straas.android.sdk.streaming.demo.R.id.switch_camera;
-import static io.straas.android.sdk.streaming.demo.R.id.trigger;
+import static io.straas.android.sdk.demo.R.id.filter;
+import static io.straas.android.sdk.demo.R.id.flash;
+import static io.straas.android.sdk.demo.R.id.switch_camera;
+import static io.straas.android.sdk.demo.R.id.trigger;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_streaming);
 
         StreamManager.initialize(MemberIdentity.ME)
                 .continueWithTask(new Continuation<StreamManager, Task<CameraController>>() {

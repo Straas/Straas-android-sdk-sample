@@ -1,4 +1,4 @@
-package io.straas.android.media.demo;
+package io.straas.android.sdk.demo;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -19,8 +19,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.straas.android.sdk.mediacore.demo.R;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 

@@ -22,7 +22,7 @@ import android.support.v7.widget.AppCompatSeekBar;
 import android.util.AttributeSet;
 import android.view.Gravity;
 
-import io.straas.android.sdk.mediacore.demo.R;
+import io.straas.android.sdk.demo.R;
 
 
 /**

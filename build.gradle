@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.3'
+        classpath 'com.android.tools.build:gradle:2.3.0'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -18,27 +18,5 @@ allprojects {
         maven { url "https://jitpack.io" }
         maven { url "https://raw.github.com/laenger/maven-releases/master/releases" }
         maven { url "https://dl.bintray.com/straas-io/maven" }
-    }
-}
-
-
-allprojects { project ->
-    if(project == rootProject) return
-    apply plugin: 'com.android.application'
-    android {
-        signingConfigs {
-            debug {
-                storeFile file("../debug.keystore")
-            }
-        }
-        buildTypes {
-            debug {
-                manifestPlaceholders = [straas_client_id: "$your_debug_client_id"]
-            }
-            release {
-                manifestPlaceholders = [straas_client_id: "$your_release_client_id"]
-            }
-        }
-        sourceSets.main.java.srcDirs = ['src/main/java', '../MemberIdentity']
     }
 }

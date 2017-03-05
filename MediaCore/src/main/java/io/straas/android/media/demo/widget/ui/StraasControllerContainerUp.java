@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import io.straas.android.sdk.mediacore.demo.R;
+import io.straas.android.sdk.demo.R;
 
 
 public class StraasControllerContainerUp extends FrameLayout {
