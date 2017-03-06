@@ -53,10 +53,10 @@ import io.straas.android.media.demo.MediaControllerCompatHelper.VideoQualityInfo
 import io.straas.android.media.demo.Utils;
 import io.straas.android.media.demo.widget.ui.ContentSeekBar;
 import io.straas.android.media.demo.widget.ui.SwitchQualityDialog;
+import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.media.StraasMediaCore;
 import io.straas.android.sdk.media.StraasMediaCore.ErrorReason;
 import io.straas.android.sdk.media.VideoCustomMetadata;
-import io.straas.android.sdk.mediacore.demo.R;
 
 public final class StraasPlayerView extends FrameLayout implements StraasMediaCore.UiContainer {
     private static final String TAG = StraasPlayerView.class.getSimpleName();

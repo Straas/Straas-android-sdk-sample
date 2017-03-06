@@ -7,7 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 
-import io.straas.android.sdk.mediacore.demo.R;
+import io.straas.android.sdk.demo.R;
 
 
 public class DottedSeekBar extends SeekBar {

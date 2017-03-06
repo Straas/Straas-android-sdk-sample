@@ -25,10 +25,10 @@ import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
 import java.util.List;
 
 import io.straas.android.media.demo.widget.StraasPlayerView;
+import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.media.ImaHelper;
 import io.straas.android.sdk.media.StraasMediaCore;
 import io.straas.android.sdk.media.VideoCustomMetadata;
-import io.straas.android.sdk.mediacore.demo.R;
 import io.straas.sdk.demo.MemberIdentity;
 
 /**

@@ -12,7 +12,7 @@ import android.text.TextPaint;
 import android.util.Log;
 import android.view.View;
 
-import io.straas.android.sdk.mediacore.demo.R;
+import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.messaging.ChatMode;
 import io.straas.android.sdk.messaging.Message;
 import io.straas.android.sdk.messaging.User;

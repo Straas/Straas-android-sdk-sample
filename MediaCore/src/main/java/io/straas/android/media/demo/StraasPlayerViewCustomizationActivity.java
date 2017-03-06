@@ -17,10 +17,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import io.straas.android.media.demo.widget.StraasPlayerView;
+import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.media.ImaHelper;
 import io.straas.android.sdk.media.StraasMediaCore;
 import io.straas.android.sdk.media.VideoCustomMetadata;
-import io.straas.android.sdk.mediacore.demo.R;
 import io.straas.sdk.demo.MemberIdentity;
 
 import static io.straas.android.media.demo.widget.StraasPlayerView.CUSTOM_COLUMN_BOTTOM_LEFT;
