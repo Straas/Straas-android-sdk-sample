@@ -13,27 +13,33 @@
         </activity>
 
         <activity android:name="io.straas.android.media.demo.StraasPlayerActivity"
-                  android:label="MediaCore - VideoList"/>
+                  android:label="MediaCore - VideoList"
+                  android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
 
         <activity android:name="io.straas.android.media.demo.OperationActivity"
                   android:label="MediaCore - Operation"
-                  android:screenOrientation="portrait"/>
+                  android:screenOrientation="portrait"
+                  android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
 
         <activity android:name="io.straas.android.media.demo.StraasPlayerViewCustomizationActivity"
                   android:label="MediaCore - Player view customization"
-                  android:configChanges="orientation|keyboardHidden|screenSize"/>
+                  android:configChanges="orientation|keyboardHidden|screenSize"
+                  android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
 
         <activity android:name="io.straas.android.media.demo.LiveDanmakuActivity"
                   android:label="MediaCore - Live stream + Danmaku"
-                  android:configChanges="orientation|keyboardHidden|screenSize"/>
+                  android:configChanges="orientation|keyboardHidden|screenSize"
+                  android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
 
         <activity android:name="io.straas.android.sdk.messaging.demo.MainActivity"
-                  android:label="Messaging SDK demo"/>
+                  android:label="Messaging SDK demo"
+                  android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
 
         <activity android:name="io.straas.android.sdk.streaming.demo.MainActivity"
                   android:theme="@style/Theme.AppCompat.NoActionBar"
                   android:screenOrientation="portrait"
-                  android:label="Streaming SDK demo"/>
+                  android:label="Streaming SDK demo"
+                  android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
 
     </application>
 
