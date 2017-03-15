@@ -1,5 +1,26 @@
 Change Log
 ==========
+## Version 0.7.0
+_2017-03-15_
+
+*   **Important Change**: Starting from this version, you have to bind the `client id` with an application package name, please set the [package name](https://developer.android.com/studio/build/application-id.html) at [CMS](https://cms.straas.io/#/applications).
+*   Upgrade support library to [v25.3.0](https://developer.android.com/topic/libraries/support-library/revisions.html#25-3-0).
+*   straas-extension-ima
+    *   Upgrade IMA to 3.7.0
+*   straas-messaging
+    *   change: [getCurrentUser](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#getCurrentUser--) will return cache if chatroom state is not connected.
+    *   fix: Returns [ChatroomNameNotFoundException](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/MessagingException.ChatroomNameNotFoundException.html) when calling [connect](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#connect-java.lang.String-io.straas.android.sdk.base.identity.Identity-boolean-) to a non-existent chatroom.
+    *   fix: Crash when create User info from Parcel.
+*   straas-messaging-ui
+    *   fix: Crash when send message after disconnection.
+    *   fix: Crash may happen when click sticker button.
+*   straas-streaming
+    *   feat: The bitrate will adjust automatically depends on network and memory condition  on [API 19](https://developer.android.com/reference/android/os/Build.VERSION_CODES.html#KITKAT) and higher.
+*   straas-media-core
+    *   fix: [setIdentity(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#setIdentity-io.straas.android.sdk.base.identity.Identity-) fail.
+
+
+
 ## Version 0.6.2
 _2017-03-02_
 
