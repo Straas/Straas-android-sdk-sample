@@ -3,7 +3,7 @@ Change Log
 ## Version 0.7.0
 _2017-03-15_
 
-*   **Important Change**: Starting from this version, you have to bind the `client id` with an application package name, please set the [package name](https://developer.android.com/studio/build/application-id.html) at [CMS](https://cms.straas.io/#/applications).
+*   **Important Change**: Starting from this version, you have to bind the [`client id`](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/SDK-Credential#get-client-id) with an [application package name](https://developer.android.com/studio/build/application-id.html), please set it with your exsiting [Certificate](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/SDK-Credential#generate-key-hashes) and [`client id`](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/SDK-Credential#get-client-id) in the same page.
 *   Upgrade support library to [v25.3.0](https://developer.android.com/topic/libraries/support-library/revisions.html#25-3-0).
 *   straas-extension-ima
     *   Upgrade IMA to 3.7.0
@@ -15,7 +15,7 @@ _2017-03-15_
     *   fix: Crash when send message after disconnection.
     *   fix: Crash may happen when click sticker button.
 *   straas-streaming
-    *   feat: The bitrate will adjust automatically depends on network and memory condition  on [API 19](https://developer.android.com/reference/android/os/Build.VERSION_CODES.html#KITKAT) and higher.
+    *   feat: Improve adaptive bitrate in bad bandwidth condition on [API 19](https://developer.android.com/reference/android/os/Build.VERSION_CODES.html#KITKAT) and higher.
 *   straas-media-core
     *   fix: [setIdentity(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#setIdentity-io.straas.android.sdk.base.identity.Identity-) fail.
 
