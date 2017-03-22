@@ -68,6 +68,7 @@ public class StraasPlayerViewCustomizationActivity extends AppCompatActivity {
         super.onDestroy();
         if (getMediaControllerCompat() != null) {
             getMediaControllerCompat().getTransportControls().stop();
+            getMediaControllerCompat().unregisterCallback(mMediaControllerCallback);
         }
         mStraasMediaCore.getMediaBrowser().disconnect();
     }

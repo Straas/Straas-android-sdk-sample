@@ -326,6 +326,11 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         }
 
         @Override
+        public void onSessionDestroyed() {
+            getMediaControllerCompat().unregisterCallback(this);
+        }
+
+        @Override
         public void onMetadataChanged(MediaMetadataCompat metadata) {
             if (metadata == null || (mLastMediaMetadata != null &&
                     TextUtils.equals(metadata.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID),
