@@ -1,5 +1,22 @@
 Change Log
 ==========
+## Version 0.7.1
+_2017-03-23_
+
+*   Upgrade Google Play Service to 10.2.1
+*   straas-streaming
+    *   **Important Change**: Start from this version, the video stream of front camera will be flipped horizontally from preview, you could use [Builder.frontCameraFlipHorizontally](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamConfig.Builder.html#frontCameraFlipHorizontally-boolean-) to reverse it.
+    *   feat: Add [StreamOccupiedException](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/error/StreamException.StreamOccupiedException.html).
+    *   feat: Enhance the error message in [ServerException](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/error/StreamException.ServerException.html).
+    *   deprecated: Constructor of [StreamConfig](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamConfig.html#StreamConfig--), use [StreamConfig.Builder](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamConfig.Builder.html) instead.
+*   straas-media-core
+    *   feat: Upgrade ExoPlayer library to [v2.3.0](https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#r230).
+    *   feat: MediaControllerCompat could receive a live event state change ([ready](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#LIVE_EXTRA_EVENT_STATE_READY)/[started](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#LIVE_EXTRA_EVENT_STATE_STARTED)/[ended](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#LIVE_EXTRA_EVENT_STATE_ENDED)) with [LIVE_EXTRA_EVENT_STATE](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#LIVE_EXTRA_EVENT_STATE) key.
+    *   fix: Memory leak issue
+    *   fix: Handle SurfaceTexture transform matrix
+   
+    
+    
 ## Version 0.7.0
 _2017-03-15_
 
