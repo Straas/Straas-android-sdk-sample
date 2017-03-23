@@ -10,7 +10,7 @@
 	<string name="common_cancel">取消</string>
 
 	<string name="broadcast_state_offline">目前無直播</string>
-
+	<string name="broadcast_state_ended">直播已結束</string>
 	<string name="broadcast_state_wait_for_stream">直播意外中斷，請稍等</string>
 	<string name="network_no_connection">無法連線至伺服器</string>
 	<string name="common_error">發生錯誤，請稍候再試</string>

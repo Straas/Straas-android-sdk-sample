@@ -527,8 +527,16 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                     break;
             }
         } else if (shouldShowStateUi){
-            mLiveState = null;
-            mBroadcastStateListener.offline(mBroadcastStateView);
+            String eventState = extras.getString(StraasMediaCore.LIVE_EXTRA_EVENT_STATE, "");
+            mLiveState = eventState;
+            switch (eventState) {
+                case StraasMediaCore.LIVE_EXTRA_EVENT_STATE_ENDED:
+                    mBroadcastStateListener.endEvent(mBroadcastStateView);
+                    break;
+                case StraasMediaCore.LIVE_EXTRA_EVENT_STATE_READY:
+                    mBroadcastStateListener.offline(mBroadcastStateView);
+                    break;
+            }
         }
     }
 
@@ -1124,6 +1132,19 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             setErrorMessageVisibility(GONE);
             setBroadcastStateVisibility(VISIBLE);
             textView.setText(R.string.broadcast_state_offline);
+        }
+
+        void endEvent(View broadcastStateView) {
+            if (broadcastStateView == null) {
+                return;
+            }
+            TextView textView = Utils.getView(broadcastStateView, android.R.id.text1);
+            if (textView == null) {
+                return;
+            }
+            setErrorMessageVisibility(GONE);
+            setBroadcastStateVisibility(VISIBLE);
+            textView.setText(R.string.broadcast_state_ended);
         }
 
         void online() {
