@@ -1,5 +1,17 @@
 Change Log
 ==========
+## Version 0.7.2
+_2017-03-27_
+
+*   straas-extension-ima
+    *   Upgrade IMA to 3.7.1
+*   straas-media-core
+    *   feat: Upgrade ExoPlayer library to [v2.3.1](https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#r231).
+    *   feat: Enhance live streaming playback experience.
+    *   fix: Crash when MediaBrowserCompat disconnected if no UiContainer injected.
+    *   fix: Memory issue when using multiple UiContainers between Fragments.
+
+
 ## Version 0.7.1
 _2017-03-23_
 
