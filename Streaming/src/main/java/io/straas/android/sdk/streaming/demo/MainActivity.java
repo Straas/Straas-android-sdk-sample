@@ -122,9 +122,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private StreamConfig getConfig() {
-        return new StreamConfig()
-                .setCamera(StreamConfig.CAMERA_FRONT)
-                .setFitAllCamera(true);
+        return new StreamConfig.Builder()
+                .camera(StreamConfig.CAMERA_FRONT)
+                .fitAllCamera(true)
+                .build();
     }
 
     private Task<CameraController> preview() {
