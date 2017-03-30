@@ -1,5 +1,17 @@
 Change Log
 ==========
+*   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
+
+## Version 0.7.3
+_2017-03-30_
+
+*   Upgrade support library to [v25.3.1](https://developer.android.com/topic/libraries/support-library/revisions.html#25-3-1).
+*   straas-messaging
+    *   feat: Simplify reconnection flow.
+*   straas-messaging-ui
+    *   feat: Add button for scrolling to new message.
+    *   feat: Moderators highlight.
+
 ## Version 0.7.2
 _2017-03-27_
 
@@ -26,9 +38,8 @@ _2017-03-23_
     *   feat: MediaControllerCompat could receive a live event state change ([ready](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#LIVE_EXTRA_EVENT_STATE_READY)/[started](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#LIVE_EXTRA_EVENT_STATE_STARTED)/[ended](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#LIVE_EXTRA_EVENT_STATE_ENDED)) with [LIVE_EXTRA_EVENT_STATE](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#LIVE_EXTRA_EVENT_STATE) key.
     *   fix: Memory leak issue
     *   fix: Handle SurfaceTexture transform matrix
-   
-    
-    
+
+
 ## Version 0.7.0
 _2017-03-15_
 
