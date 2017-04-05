@@ -71,7 +71,7 @@ public class SwitchQualityDialog extends DialogFragment implements
                         mappingVariantString(format));
             }
         }
-        return "";
+        return getString(R.string.quality_auto);
     }
 
     public static SwitchQualityDialog newInstance(ArrayList<Format> variantList,
