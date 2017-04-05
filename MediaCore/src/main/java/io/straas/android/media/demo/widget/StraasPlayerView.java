@@ -327,7 +327,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
         @Override
         public void onSessionDestroyed() {
-            getMediaControllerCompat().unregisterCallback(this);
         }
 
         @Override
