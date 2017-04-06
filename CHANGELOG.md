@@ -2,6 +2,13 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.7.4
+_2017-04-06_
+
+*   straas-media-core
+    *  fix: Workaround for [Defect-36811209](https://code.google.com/p/android/issues/detail?id=269491), internal MediaControllerCompat.Callback will clear outer class reference when session destroyed.
+    *  fix: Prevent [get video formats](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#COMMAND_GET_VIDEO_FORMATS) NPE.
+
 ## Version 0.7.3
 _2017-03-30_
 
