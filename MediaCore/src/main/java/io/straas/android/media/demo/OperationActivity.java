@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class OperationActivity extends AppCompatActivity {
 
     private static final String TAG = OperationActivity.class.getSimpleName();
     private StraasMediaCore mStraasMediaCore;
+    private Switch mLowLatencyFirst;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,7 @@ public class OperationActivity extends AppCompatActivity {
         playerView.initialize(this);
 
         prepareEditText();
+        mLowLatencyFirst = (Switch) findViewById(R.id.low_latency_first);
 
         mStraasMediaCore = new StraasMediaCore(playerView, MemberIdentity.ME,
                 new ConnectionCallback() {
@@ -175,7 +178,7 @@ public class OperationActivity extends AppCompatActivity {
                 }
                 if (item.isPlayable()) {
                     getMediaControllerCompat().getTransportControls()
-                            .playFromMediaId(StraasMediaCore.LIVE_ID_PREFIX + LIVE_VIDEO_ID, null);
+                            .playFromMediaId(StraasMediaCore.LIVE_ID_PREFIX + LIVE_VIDEO_ID, getLiveStreamingExtras());
                 } else if (item.isBrowsable()) {
                     // live event is ended, print VODs
                     getMediaBrowser().subscribe(StraasMediaCore.LIVE_ID_PREFIX + LIVE_VIDEO_ID, new MediaBrowserCompat.SubscriptionCallback() {
@@ -196,6 +199,16 @@ public class OperationActivity extends AppCompatActivity {
                         }
                     });
                 }
+            }
+
+            private Bundle getLiveStreamingExtras() {
+                if (mLowLatencyFirst != null && mLowLatencyFirst.isChecked()) {
+                    Bundle bundle = new Bundle();
+                    bundle.putBoolean(StraasMediaCore.PLAY_OPTION_LIVE_LOW_LATENCY_FIRST, true);
+                    return bundle;
+                }
+
+                return null;
             }
         });
 
