@@ -76,6 +76,12 @@
                     android:layout_height="wrap_content"
                     android:text="play live streaming"
                     android:onClick="playLiveStreaming"/>
+                <Switch
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/low_latency_first"
+                    android:text="LOW LATENCY FIRST"
+                    android:checked="false" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
