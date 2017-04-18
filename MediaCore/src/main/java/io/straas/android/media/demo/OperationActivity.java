@@ -20,7 +20,6 @@ import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
@@ -82,7 +81,7 @@ public class OperationActivity extends AppCompatActivity {
 
         mIsForeground = getSharedPreferences(SHARE_PREFERENCE_KEY, Context.MODE_PRIVATE)
                 .getBoolean(FOREGROUND_KEY, false);
-        ((ToggleButton) findViewById(R.id.toggle_foreground)).setChecked(mIsForeground);
+        ((Switch) findViewById(R.id.switch_foreground)).setChecked(mIsForeground);
     }
 
     @Override
@@ -295,8 +294,8 @@ public class OperationActivity extends AppCompatActivity {
         mStraasMediaCore.setDisplayMode(StraasMediaCore.DISPLAY_MODE_CARDBOARD);
     }
 
-    public void toggleForeground(View toggleButton) {
-        mIsForeground = ((ToggleButton)toggleButton).isChecked();
+    public void switchForeground(View toggleButton) {
+        mIsForeground = ((Switch)toggleButton).isChecked();
         getSharedPreferences(SHARE_PREFERENCE_KEY, Context.MODE_PRIVATE)
                 .edit().putBoolean(FOREGROUND_KEY, mIsForeground).apply();
         setForeground(mIsForeground);
