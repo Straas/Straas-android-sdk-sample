@@ -71,10 +71,8 @@ public class OperationActivity extends AppCompatActivity {
                     @Override
                     public void onConnected() {
                         getMediaControllerCompat().registerCallback(mMediaControllerCallback);
-                        if (!getMediaControllerCompat().getExtras().containsKey(
-                                StraasMediaCore.EXTRA_SERVICE_FOREGROUND_IS_ENABLED) ||
-                                mIsForeground != getMediaControllerCompat().getExtras().getBoolean(
-                                StraasMediaCore.EXTRA_SERVICE_FOREGROUND_IS_ENABLED)) {
+                        if (mIsForeground != getMediaControllerCompat().getExtras().getBoolean(
+                                StraasMediaCore.EXTRA_SERVICE_FOREGROUND_IS_ENABLED, !mIsForeground)) {
                             setForeground(mIsForeground);
                         }
                     }
