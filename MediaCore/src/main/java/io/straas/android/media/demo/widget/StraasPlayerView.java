@@ -502,7 +502,8 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         public void onSessionEvent(String event, Bundle extras) {
             switch (event) {
                 case StraasMediaCore.EVENT_MEDIA_BROWSER_SERVICE_ERROR:
-                    //mErrorMessageListener.onError(mErrorMessageTextView, state.getErrorMessage());
+                    mErrorMessageListener.onError(mErrorMessageTextView,
+                            extras.getString(StraasMediaCore.KEY_MEDIA_BROWSER_ERROR_REASON));
                     break;
             }
         }

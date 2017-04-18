@@ -90,9 +90,7 @@ public class OperationActivity extends AppCompatActivity {
         StraasPlayerView playerView = (StraasPlayerView) findViewById(R.id.straas);
         playerView.hideControllerViews();
 
-        mStraasMediaCore.setUiContainer(playerView);
         getMediaBrowser().connect();
-
         if (getMediaControllerCompat() != null) {
             getMediaControllerCompat().getTransportControls().play();
         }
@@ -114,11 +112,6 @@ public class OperationActivity extends AppCompatActivity {
                 getMediaControllerCompat().getTransportControls().pause();
             }
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     private MediaBrowserCompat getMediaBrowser() {
