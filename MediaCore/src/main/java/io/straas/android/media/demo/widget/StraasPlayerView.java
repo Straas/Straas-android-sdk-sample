@@ -295,6 +295,15 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         setAutoHideControllerUiWhenTouch(true);
     }
 
+    public void hideControllerViews() {
+        mControllerContainer.setVisibility(GONE);
+        mColumnPlayPause.setVisibility(GONE);
+        mColumnAdPlay.setVisibility(GONE);
+        mColumnLoadingBar.setVisibility(GONE);
+        mColumnBroadcastState.setVisibility(GONE);
+        mColumnErrorMessage.setVisibility(GONE);
+    }
+
     private void initConfiguration(StraasConfiguration configuration) {
         mEnableDefaultWidget = configuration.isEnableDefaultWidget();
         mEnableDefaultSwitchQualityIcon = configuration.isEnableDefaultSwitchQuality();
@@ -466,6 +475,11 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                         }
                         break;
                     case PlaybackStateCompat.STATE_NONE:
+                        mCanToggleControllerUi = false;
+                        hideControllerViews();
+                        if (getKeepScreenOn()) {
+                            setKeepScreenOn(false);
+                        }
                     case PlaybackStateCompat.STATE_STOPPED:
                         if (mIsLive) {
                             Bundle liveBundle = (mLiveBundle != null) ? mLiveBundle :

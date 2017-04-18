@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/root"
-    android:orientation="vertical"
-    android:descendantFocusability="beforeDescendants"
-    android:focusableInTouchMode="true"
-    tools:context="io.straas.android.media.demo.OperationActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:id="@+id/root"
+              android:orientation="vertical"
+              android:descendantFocusability="beforeDescendants"
+              android:focusableInTouchMode="true"
+              tools:context="io.straas.android.media.demo.OperationActivity">
     <SurfaceView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -142,6 +142,14 @@
                 android:layout_height="wrap_content"
                 android:text="cardboard"
                 android:onClick="cardboard"/>
+
+            <ToggleButton
+                android:id="@+id/toggle_foreground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOn="foreground(On)"
+                android:textOff="foreground(Off)"
+                android:onClick="toggleForeground"/>
 
         </LinearLayout>
 
