@@ -33,7 +33,16 @@
             android:paddingStart="?listPreferredItemPaddingLeft"
             android:paddingRight="?listPreferredItemPaddingRight"
             android:paddingEnd="?listPreferredItemPaddingRight"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:orientation="vertical">
+
+            <Switch
+                android:id="@+id/switch_foreground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="foreground"
+                android:onClick="switchForeground"/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -142,14 +151,6 @@
                 android:layout_height="wrap_content"
                 android:text="cardboard"
                 android:onClick="cardboard"/>
-
-            <ToggleButton
-                android:id="@+id/toggle_foreground"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textOn="foreground(On)"
-                android:textOff="foreground(Off)"
-                android:onClick="toggleForeground"/>
 
         </LinearLayout>
 
