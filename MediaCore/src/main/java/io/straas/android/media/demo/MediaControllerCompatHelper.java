@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import io.straas.android.media.demo.widget.ui.SwitchQualityDialog;
 import io.straas.android.sdk.media.StraasMediaCore;
+import io.straas.android.sdk.media.notification.NotificationOptions;
 
 /**
  * This class wrap some {@link MediaControllerCompat} functionality which needs {@link Bundle}
@@ -174,6 +175,17 @@ public class MediaControllerCompatHelper {
             return;
         }
         getVideoQualityInfo(MediaControllerCompat.getMediaController(activity), callback);
+    }
+
+    public static void startForeground(@NonNull MediaControllerCompat controller,
+                                       NotificationOptions options) {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(StraasMediaCore.KEY_NOTIFICATION_OPTIONS, options);
+        controller.getTransportControls().sendCustomAction(StraasMediaCore.COMMAND_FOREGROUND, bundle);
+    }
+
+    public static void stopForeground(@NonNull MediaControllerCompat controller) {
+        controller.getTransportControls().sendCustomAction(StraasMediaCore.COMMAND_STOP_FOREGROUND, null);
     }
 
     public static class VideoQualityInfo {
