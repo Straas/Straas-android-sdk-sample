@@ -2,6 +2,7 @@ io.straas.android.sdk.base.credential
 io.straas.android.sdk.base.identity
 io.straas.android.sdk.base.interfaces
 io.straas.android.sdk.media
+io.straas.android.sdk.media.notification
 io.straas.android.sdk.messaging
 io.straas.android.sdk.messaging.interfaces
 io.straas.android.sdk.messaging.message
