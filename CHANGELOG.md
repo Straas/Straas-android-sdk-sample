@@ -2,12 +2,24 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.7.5
+_2017-04-20_
+
+*   feat: Upgrade okhttp to [v3.7.0](https://github.com/square/okhttp/blob/master/CHANGELOG.md#version-370).
+*   straas-media-core
+    *  feat: Support player runs in foreground, see the [introduction](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/Interact-with-Video#foreground-service).
+    *  feat: (BETA) Significantly reduce the latency between broadcaster by adding the key [PLAY_OPTION_LIVE_LOW_LATENCY_FIRST](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#PLAY_OPTION_LIVE_LOW_LATENCY_FIRST) with `true` value in the Bundle of [playFromMediaId(...)](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#playFromMediaId(java.lang.String%2C%20android.os.Bundle)).
+*   straas-messaging-ui
+    *   change: New message hint wording is changed and appears only when there are new messages now.
+
+
 ## Version 0.7.4
 _2017-04-06_
 
 *   straas-media-core
     *  fix: Workaround for [Defect-36811209](https://code.google.com/p/android/issues/detail?id=269491), internal MediaControllerCompat.Callback will clear outer class reference when session destroyed.
     *  fix: Prevent [get video formats](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#COMMAND_GET_VIDEO_FORMATS) NPE.
+
 
 ## Version 0.7.3
 _2017-03-30_
@@ -18,6 +30,7 @@ _2017-03-30_
 *   straas-messaging-ui
     *   feat: Add button for scrolling to new message.
     *   feat: Moderators highlight.
+
 
 ## Version 0.7.2
 _2017-03-27_

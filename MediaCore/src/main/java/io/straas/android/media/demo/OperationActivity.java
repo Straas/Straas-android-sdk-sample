@@ -295,6 +295,9 @@ public class OperationActivity extends AppCompatActivity {
     }
 
     private void setForeground(boolean foreground) {
+        if (getMediaControllerCompat() == null) {
+            return;
+        }
         if (foreground) {
             MediaControllerCompatHelper.startForeground(getMediaControllerCompat(),
                     new NotificationOptions.Builder()
