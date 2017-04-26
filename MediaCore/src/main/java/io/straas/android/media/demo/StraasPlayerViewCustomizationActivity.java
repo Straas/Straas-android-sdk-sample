@@ -11,7 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+import io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
