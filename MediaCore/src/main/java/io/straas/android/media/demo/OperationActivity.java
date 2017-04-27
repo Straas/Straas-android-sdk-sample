@@ -22,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.C;
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+import io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout;
 
 import java.util.List;
 

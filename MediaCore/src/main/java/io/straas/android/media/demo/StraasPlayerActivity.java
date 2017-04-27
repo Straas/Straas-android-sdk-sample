@@ -26,7 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+import io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
