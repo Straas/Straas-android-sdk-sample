@@ -42,7 +42,7 @@ dependencies {
     //compile "io.straas.android.sdk:straas-media-core:${STRAAS_SDK_VERSION}"
 
     // optional, only for danmaku effect demo
-    compile 'com.github.ctiao:DanmakuFlameMaster:0.5.4'
+    compile 'com.github.ctiao:DanmakuFlameMaster:0.8.0'
 
     compile "io.straas.android.sdk:straas-messaging-ui:${STRAAS_SDK_VERSION}"
 

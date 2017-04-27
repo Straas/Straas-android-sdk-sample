@@ -21,10 +21,12 @@ import master.flame.danmaku.controller.DrawHandler;
 import master.flame.danmaku.controller.IDanmakuView;
 import master.flame.danmaku.danmaku.model.BaseDanmaku;
 import master.flame.danmaku.danmaku.model.DanmakuTimer;
+import master.flame.danmaku.danmaku.model.IDanmakus;
 import master.flame.danmaku.danmaku.model.IDisplayer;
 import master.flame.danmaku.danmaku.model.android.DanmakuContext;
+import master.flame.danmaku.danmaku.model.android.Danmakus;
 import master.flame.danmaku.danmaku.model.android.SpannedCacheStuffer;
-import master.flame.danmaku.danmaku.parser.android.AcFunDanmakuParser;
+import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 
 class DanmakuManager implements Application.ActivityLifecycleCallbacks, EventListener, ComponentCallbacks {
     private final Activity mActivity;
@@ -67,7 +69,12 @@ class DanmakuManager implements Application.ActivityLifecycleCallbacks, EventLis
         ArrayMap<Integer, Boolean> overlappingEnablePair = new ArrayMap<>();
         overlappingEnablePair.put(BaseDanmaku.TYPE_SCROLL_RL, true);
         overlappingEnablePair.put(BaseDanmaku.TYPE_FIX_TOP, true);
-        mIDanmakuView.prepare(new AcFunDanmakuParser(),
+        mIDanmakuView.prepare(new BaseDanmakuParser() {
+                                  @Override
+                                  protected IDanmakus parse() {
+                                      return new Danmakus();
+                                  }
+                              },
                 DanmakuContext.create()
                         .setDanmakuStyle(IDisplayer.DANMAKU_STYLE_SHADOW, shadowRadius)
                         .setScrollSpeedFactor(1.5f)
