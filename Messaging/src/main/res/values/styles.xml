@@ -11,6 +11,8 @@
         <item name="inputHintColor">#808080</item>
         <item name="sendButtonColor">?attr/colorPrimary</item>
         <item name="showAvatar">true</item>
+        <item name="relativeTime">false</item>
+        <item name="inputMaxLines">4</item>
     </style>
 
 </resources>
