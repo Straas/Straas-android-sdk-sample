@@ -9,8 +9,8 @@ _2017-05-04_
     *   feat: Upgrade ExoPlayer library to [v2.4.0](https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#r240).
 We only include `exoplayer-core` & `exoplayer-hls` modules in our SDK, which are all the needs for [playFromMediaId(...)](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#prepareFromMediaId(java.lang.String%2C%20android.os.Bundle)) to play all your contents served by StraaS. To play other media types (e.g. DASH, SmoothStreaming) outside of StraaS via [playFromUri(...)](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#prepareFromUri(android.net.Uri%2C%20android.os.Bundle)), or UI components and resources provided by ExoPlayer, please include `exoplayer-dash`, `exoplayer-smoothstreaming`, `exoplayer-ui` in your dependencies manually.
 *   straas-messaging-ui
-        *   fix: The style of msgAuthorColor doesn't work.
-        *   fix: Join the chatroom that doesn't have any history messages will crash.
+    *   fix: The attribute `msgAuthorColor` works now.
+    *   fix: Join the chatroom that doesn't have any history messages will crash.
 
 
 ## Version 0.7.5
