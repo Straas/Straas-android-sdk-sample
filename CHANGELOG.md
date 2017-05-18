@@ -2,6 +2,18 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+
+## Version 0.7.7
+_2017-05-18_
+
+*   feat: Upgrade okhttp to [v3.8.0](https://github.com/square/okhttp/blob/master/CHANGELOG.md#version-380).
+*   straas-media-core
+    *   fix: Unregister [Callback](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.Callback.html) when [MediaBrowser](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.html) disconnected.
+*   straas-streaming
+    *   feat: Adjust the max bitrate according to streaming resolution.
+    *   fix: Handle SurfaceTexture transform matrix.
+
+
 ## Version 0.7.6
 _2017-05-04_
 
