@@ -3,13 +3,14 @@ Change Log
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
 
-## Version 0.7.8
-_2017-05-23_
+## Version 0.7.9
+_2017-05-24_
 
 Bugfix release only.
 *   fix: Add proguard rules for okhttp v3.8.0 [(#3355)](https://github.com/square/okhttp/issues/3355)
 *   straas-messaging-ui
     *   fix: Vector drawables incorrect setting.
+    *   fix: Incorrect author attributes with icon and the color of name at random.
 
 
 ## Version 0.7.7
