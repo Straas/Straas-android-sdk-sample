@@ -2,6 +2,39 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+
+## Version 0.7.9
+_2017-05-24_
+
+Bugfix release only.
+*   fix: Add proguard rules for okhttp v3.8.0 [(#3355)](https://github.com/square/okhttp/issues/3355)
+*   straas-messaging-ui
+    *   fix: Vector drawables incorrect setting.
+    *   fix: Incorrect author attributes with icon and the color of name at random.
+
+
+## Version 0.7.7
+_2017-05-18_
+
+*   feat: Upgrade okhttp to [v3.8.0](https://github.com/square/okhttp/blob/master/CHANGELOG.md#version-380).
+*   straas-media-core
+    *   fix: Unregister [Callback](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.Callback.html) when [MediaBrowser](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.html) disconnected.
+*   straas-streaming
+    *   feat: Adjust the max bitrate according to streaming resolution.
+    *   fix: Handle SurfaceTexture transform matrix.
+
+
+## Version 0.7.6
+_2017-05-04_
+
+*   straas-media-core
+    *   feat: Upgrade ExoPlayer library to [v2.4.0](https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#r240).
+We only include `exoplayer-core` & `exoplayer-hls` modules in our SDK, which are all the needs for [playFromMediaId(...)](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#prepareFromMediaId(java.lang.String%2C%20android.os.Bundle)) to play all your contents served by StraaS. To play other media types (e.g. DASH, SmoothStreaming) outside of StraaS via [playFromUri(...)](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#prepareFromUri(android.net.Uri%2C%20android.os.Bundle)), or UI components and resources provided by ExoPlayer, please include `exoplayer-dash`, `exoplayer-smoothstreaming`, `exoplayer-ui` in your dependencies manually.
+*   straas-messaging-ui
+    *   fix: The attribute `msgAuthorColor` works now.
+    *   fix: Join the chatroom that doesn't have any history messages will crash.
+
+
 ## Version 0.7.5
 _2017-04-20_
 
@@ -117,22 +150,22 @@ _2017-02-20_
     *   deprecated: `sendAggregatedDataTypeMessage` is renamed to [sendAggregatedData(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#sendAggregatedData-java.lang.String-)
     *   Add data channel history, useful for replaying.
         *  [getRawData(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#getRawData-io.straas.android.sdk.messaging.message.MessageRequest-)
-        *  [getAggregatedData(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#getAggregatedData-io.straas.android.sdk.messaging.message.MessageRequest-) 
+        *  [getAggregatedData(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#getAggregatedData-io.straas.android.sdk.messaging.message.MessageRequest-)
     *   [getTotalAggregatedData()](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#getTotalAggregatedData--) could be used to query all aggregated data. If you use it in [onAggregatedDataAdded(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/interfaces/EventListener.html#onAggregatedDataAdded-android.support.v4.util.SimpleArrayMap-), you will get all aggregated data in real-time.
 *   straas-messaging-ui
     *   Adjust minimum Android API level to 14 (Android 4.0.1, Ice Cream Sandwich).
 *   straas-media-core
-    *   Live event could know whether it was ended or not by [checking](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.html#getItem(java.lang.String, android.support.v4.media.MediaBrowserCompat.ItemCallback)) if [isPlayable()](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.MediaItem.html#isPlayable()). An ended event will be [browsable](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.MediaItem.html#isBrowsable()), then you could [query all VODs](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.html#subscribe(java.lang.String, android.support.v4.media.MediaBrowserCompat.SubscriptionCallback)).
-    *   Implement [prepareFromMediaId(...)](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#prepareFromMediaId(java.lang.String, android.os.Bundle)), 
-    once the preparation is done, the session will change its playback state to [STATE_PAUSED](https://developer.android.com/reference/android/support/v4/media/session/PlaybackStateCompat.html#STATE_PAUSED), 
-    which is the same effect as [playFromMediaId(...)](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#playFromMediaId(java.lang.String, android.os.Bundle)) then [pause()](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#pause()) immediately.
+    *   Live event could know whether it was ended or not by [checking](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.html#getItem(java.lang.String%2C%20android.support.v4.media.MediaBrowserCompat.ItemCallback)) if [isPlayable()](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.MediaItem.html#isPlayable()). An ended event will be [browsable](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.MediaItem.html#isBrowsable()), then you could [query all VODs](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.html#subscribe(java.lang.String%2C%20android.support.v4.media.MediaBrowserCompat.SubscriptionCallback)).
+    *   Implement [prepareFromMediaId(...)](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#prepareFromMediaId(java.lang.String%2C%20android.os.Bundle)),
+    once the preparation is done, the session will change its playback state to [STATE_PAUSED](https://developer.android.com/reference/android/support/v4/media/session/PlaybackStateCompat.html#STATE_PAUSED),
+    which is the same effect as [playFromMediaId(...)](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#playFromMediaId(java.lang.String%2C%20android.os.Bundle)) then [pause()](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#pause()) immediately.
     *   Live event send two statistics value: [LIVE_EXTRA_STATISTICS_CCU](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#LIVE_EXTRA_STATISTICS_CCU) and [LIVE_EXTRA_STATISTICS_HIT_COUNT](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#LIVE_EXTRA_STATISTICS_HIT_COUNT) represent the _concurrent users_ and the _media hit count_ of the live event respectively.
 
 
 ## Version 0.6.0
 _2017-02-16_
 
-*   **Important Change**: [client id](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/SDK-Credential#get-client-id) now declares through `straas_client_id` key-value pair with [manifestPlaceholders](http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.ProductFlavor.html#com.android.build.gradle.internal.dsl.ProductFlavor:manifestPlaceholders) property instead of [resValue](http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.ProductFlavor.html#com.android.build.gradle.internal.dsl.ProductFlavor:resValue(java.lang.String, java.lang.String, java.lang.String)):
+*   **Important Change**: [client id](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/SDK-Credential#get-client-id) now declares through `straas_client_id` key-value pair with [manifestPlaceholders](http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.ProductFlavor.html#com.android.build.gradle.internal.dsl.ProductFlavor:manifestPlaceholders) property instead of [resValue](http://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.ProductFlavor.html#com.android.build.gradle.internal.dsl.ProductFlavor:resValue(java.lang.String%2C%20java.lang.String%2C%20java.lang.String)):
 ```
 manifestPlaceholders = [straas_client_id: "$your_client_id"]
 ```
@@ -144,7 +177,7 @@ manifestPlaceholders = [straas_client_id: "$your_client_id"]
     *   fix: Clear variable reference of preview after [destroy](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#destroy--).
     *   fix: [Prepare](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#prepare-io.straas.android.sdk.streaming.StreamConfig-android.view.TextureView-) fails in some devices.
 * straas-media-core
-    *   feat: Add [RTMP](https://en.wikipedia.org/wiki/Real-Time_Messaging_Protocol) playback functionality, you could feel the power by filling a RTMP link in [playFromUri(...)](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#playFromUri(android.net.Uri, android.os.Bundle)).
+    *   feat: Add [RTMP](https://en.wikipedia.org/wiki/Real-Time_Messaging_Protocol) playback functionality, you could feel the power by filling a RTMP link in [playFromUri(...)](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.TransportControls.html#playFromUri(android.net.Uri%2C%20android.os.Bundle)).
     *   fix: Incorrect metadata value with `CUSTOM_METADATA_VIEWS_COUNT` and `CUSTOM_METADATA_VIEWERS_COUNT`.
 
 
@@ -192,7 +225,7 @@ _2017-01-05_
 ## Version 0.5.4
 _2017-01-03_
 
-Bugfix release only. 
+Bugfix release only.
 *   straas-streaming
     *   fix: back camera preview upside down issue
 
@@ -227,18 +260,18 @@ _2016-12-23_
 *   straas-messaging-ui
     *   `ChatroomInputView` will auto expand the height when text length grows up. Use
      [setInputMaxLines](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ui/ChatroomInputView.html#setInputMaxLines-int-)
-     to change at most many lines tall, default is 4 lines. 
-*   straas-media-core   
+     to change at most many lines tall, default is 4 lines.
+*   straas-media-core
     *   [issue 209385](https://code.google.com/p/android/issues/detail?id=209385) and [issue 210013](https://code.google.com/p/android/issues/detail?id=210013)
-    are fixed, so we don't have to put json string in `onSessionEvent` anymore. 
+    are fixed, so we don't have to put json string in `onSessionEvent` anymore.
         *   Use `playbackState.getExtras().getString(StraasMediaCore.EVENT_PLAYER_ERROR_MESSAGE, "")` when state is error.
     *   Now you could set [crop](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#PLANE_PROJECTION_MODE_CROP)/
     [fit](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#PLANE_PROJECTION_MODE_FIT)/
-    [full](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#PLANE_PROJECTION_MODE_FULL) 
-    using [setPlaneProjectionMode](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#setPlaneProjectionMode-int-). 
+    [full](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#PLANE_PROJECTION_MODE_FULL)
+    using [setPlaneProjectionMode](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#setPlaneProjectionMode-int-).
     If you are using the [cardboard](https://vr.google.com/cardboard/), remember switch to [DISPLAY_MODE_CARDBOARD](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#DISPLAY_MODE_CARDBOARD)
     using [setDisplayMode](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#setDisplayMode-int-) and enjoy the VR world.
-    
+
 
 ## Version 0.5.0
 
@@ -248,15 +281,15 @@ _2016-12-16_
 *   Upgrade Google Play Service to 10.0.1
 *   The age of [Tasks](https://developers.google.com/android/guides/tasks), APIs with OnResultListener injection
 are `deprecated` and return a [Task<T>](https://developers.google.com/android/reference/com/google/android/gms/tasks/Task.html) for you.
-*   Error enums are `deprecated`, using Exception to get more details about the error reason. 
+*   Error enums are `deprecated`, using Exception to get more details about the error reason.
 *   straas-messaging
     *   **feat: data channel and personal chat**
         * enable them via `ChatroomManager.WITH_DATA_CHANNEL` and `ChatroomManager.IS_PERSONAL_CHAT` flags
         * data channel provide aggregated and raw data types of message
-            * `chatroomManager.sendAggregatedDataTypeMessage("love")` will receive one or more love being aggregated in 
+            * `chatroomManager.sendAggregatedDataTypeMessage("love")` will receive one or more love being aggregated in
             `onAggregatedDataAdded(SimpleArrayMap<String, Integer>)`
-            * `chatroomManager.sendRawData(RawData)` will receive a single JSON data in `onRawDataAdded(RawData)`. 
-            We also provide built-in JSON converter let you use own class model to communicate!  
+            * `chatroomManager.sendRawData(RawData)` will receive a single JSON data in `onRawDataAdded(RawData)`.
+            We also provide built-in JSON converter let you use own class model to communicate!
     *   connect API now return a [Task<T>](https://developers.google.com/android/reference/com/google/android/gms/tasks/Task.html), so you could know the chatroom is connected directly within a code block!
     *   feat: add time filter for getMessages
 *   straas-streaming
@@ -267,7 +300,7 @@ are `deprecated` and return a [Task<T>](https://developers.google.com/android/re
     *   startStreaming/stopStreaming/destroy APIs now return a [Task<T>](https://developers.google.com/android/reference/com/google/android/gms/tasks/Task.html).
 *   straas-media-core
     *   feat: upgrade ExoPlayer library to [v2.1.0](https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#r210)
-    
+
 ## Version 0.4.5
 
 _2016-12-02_
@@ -282,7 +315,7 @@ _2016-12-02_
 
 _2016-11-22_
 
-*   **[Please add maven repo for showing sticker panel] (https://github.com/StraaS/StraaS-android-sdk-sample/blob/master/build.gradle#L19)**  
+*   **[Please add maven repo for showing sticker panel] (https://github.com/StraaS/StraaS-android-sdk-sample/blob/master/build.gradle#L19)**
 `maven { url "https://raw.github.com/laenger/maven-releases/master/releases" }`
 *   straas-extension-ima
     *   feat: upgrade IMA & Google Play Services Ads
@@ -298,9 +331,9 @@ _2016-11-22_
 
 _2016-11-04_
 
-*   using cookies to store user information (internally) 
+*   using cookies to store user information (internally)
     *   **[Please add jitpack maven repo](https://github.com/StraaS/StraaS-android-sdk-sample/blob/master/build.gradle#L18)** `maven { url "https://jitpack.io" }`
-*   using TLSv1.2 on Android API levels 16~20 
+*   using TLSv1.2 on Android API levels 16~20
     *   [16~20 not enabled TLSv1.2 by default] (https://developer.android.com/reference/javax/net/ssl/SSLSocket.html)
 *   straas-streaming
     *   feat: add getStreamState() for getting StreamingManager state
@@ -313,7 +346,7 @@ _2016-11-04_
     *   feat: ANCHOR chat mode UI
     *   feat: remove message when receiving onMessageRemoved
     *   fix: TouchListener for ChatroomInputView could receive MotionEvent.ACTION_UP & MotionEvent.ACTION_DOWN
-    
+
 
 ## Version 0.4.2
 
@@ -396,7 +429,7 @@ _2016-09-25_
     *   fix: handle playlist video with post-roll Ad
 *   straas-extension-ima
     *   feat: upgrade Google Play Services Ads
-    
+
 
 ## Version 0.3.4
 
@@ -446,6 +479,6 @@ _2016-09-12_
 *   straas-messaging
     *   fix: retry when connect fail
 *   straas-messaging-ui
-    *   feat: add interface for guest setting nickname 
+    *   feat: add interface for guest setting nickname
     *   feat: distinguish logging user and guest at message list
     *   fix: bugs that happened when sending a message

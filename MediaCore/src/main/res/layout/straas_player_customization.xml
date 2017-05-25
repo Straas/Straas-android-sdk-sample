@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/root"
     android:orientation="vertical">
-    <com.google.android.exoplayer2.ui.AspectRatioFrameLayout
+    <io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/straasPlayer"
@@ -13,7 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/straas"/>
-    </com.google.android.exoplayer2.ui.AspectRatioFrameLayout>
+    </io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout>
 
     <ScrollView
         android:layout_width="match_parent"

@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
 
     defaultConfig {
         applicationId "io.straas.android.sdk.demo"
@@ -42,7 +42,10 @@ dependencies {
     //compile "io.straas.android.sdk:straas-media-core:${STRAAS_SDK_VERSION}"
 
     // optional, only for danmaku effect demo
-    compile 'com.github.ctiao:DanmakuFlameMaster:0.5.4'
+    compile 'com.github.ctiao:DanmakuFlameMaster:0.8.0'
+
+    // optional, only for playing DASH link via playFromUri
+    compile 'com.google.android.exoplayer:exoplayer-dash:r2.4.0'
 
     compile "io.straas.android.sdk:straas-messaging-ui:${STRAAS_SDK_VERSION}"
 
