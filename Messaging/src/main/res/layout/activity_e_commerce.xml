@@ -40,7 +40,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:onClick="showKeyboard"
+            android:onClick="triggerInput"
             app:srcCompat="@drawable/ic_btn_msg"/>
 
         <ImageView

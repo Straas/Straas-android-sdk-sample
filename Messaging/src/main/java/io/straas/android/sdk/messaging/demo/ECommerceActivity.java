@@ -2,20 +2,36 @@ package io.straas.android.sdk.messaging.demo;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.SimpleArrayMap;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatImageView;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.Random;
 
@@ -39,6 +55,7 @@ public class ECommerceActivity extends AppCompatActivity {
     private static final String LIKE = "like";
     private static final String LOVE = "love";
     private static final String XD = "XD";
+    private static final int MAX_NICKNAME_LENGTH = 15;
 
     private ChatroomOutputView mChatroomOutputView;
     private HeartLayout mHeartLayout;
@@ -46,10 +63,17 @@ public class ECommerceActivity extends AppCompatActivity {
     private ViewGroup mControlBar;
     private BackHandleEditText mInput;
 
+    private int mDialogPadding;
+    private boolean mEverSetName;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_e_commerce);
+
+        TypedValue outValue = new TypedValue();
+        getTheme().resolveAttribute(R.attr.dialogPreferredPadding, outValue, true);
+        mDialogPadding = getResources().getDimensionPixelSize(outValue.resourceId);
 
         getWindow().setBackgroundDrawable(ContextCompat.getDrawable(ECommerceActivity.this,
                 R.drawable.e_commerce_background));
@@ -74,7 +98,15 @@ public class ECommerceActivity extends AppCompatActivity {
         mChatroomOutputView.disconnect();
     }
 
-    public void showKeyboard(View view) {
+    public void triggerInput(View view) {
+        if (!mEverSetName) {
+            showSetUserNameDialog();
+        } else {
+            showKeyboard();
+        }
+    }
+
+    public void showKeyboard() {
         mInputBar.setVisibility(View.VISIBLE);
         mInput.requestFocus();
         InputMethodManager inputManager = (InputMethodManager)ECommerceActivity.this.getSystemService(
@@ -124,6 +156,73 @@ public class ECommerceActivity extends AppCompatActivity {
             mHeartLayout.getAnimator().start(imageView, mHeartLayout);
             i++;
         }
+    }
+
+    private void showSetUserNameDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ECommerceActivity.this);
+        builder.setTitle(getResources().getString(R.string.enter_nickname));
+
+        final EditText editText = new AppCompatEditText(ECommerceActivity.this);
+        InputFilter[] filters = new InputFilter[1];
+        filters[0] = new InputFilter.LengthFilter(MAX_NICKNAME_LENGTH);
+        editText.setFilters(filters);
+        editText.setInputType(InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE);
+        editText.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+        builder.setPositiveButton(getResources().getString(R.string.confirm), null);
+        builder.setNegativeButton(getResources().getString(R.string.cancel), null);
+
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        alertDialog.setView(editText, mDialogPadding, mDialogPadding, mDialogPadding, 0);
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+                final Button confirmButton = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                final Button cancelButton = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+                confirmButton.setEnabled(false);
+                editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == v.getImeOptions()) {
+                            updateNickname(editText.getText().toString());
+                            alertDialog.dismiss();
+                        }
+                        return false;
+                    }
+                });
+                editText.addTextChangedListener(new AfterTextChangedWatcher() {
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        confirmButton.setEnabled(s.length() != 0);
+                    }
+                });
+                confirmButton.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        updateNickname(editText.getText().toString());
+                        alertDialog.dismiss();
+                    }
+                });
+                cancelButton.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
+            }
+        });
+        alertDialog.show();
+    }
+
+    private void updateNickname(String nickname) {
+        mChatroomOutputView.getChatroomManager().updateNickname(nickname)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    mEverSetName = true;
+                }
+        });
     }
 
     private OnBackPressListener mOnBackPressListener = new OnBackPressListener() {
@@ -230,5 +329,18 @@ public class ECommerceActivity extends AppCompatActivity {
 
         }
     };
+
+    private static abstract class AfterTextChangedWatcher implements TextWatcher {
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+    }
 }
 
