@@ -53,4 +53,7 @@ dependencies {
 
     // optional, demo for filter usage
     compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
+
+    // optional, demo for Aggregated data effect
+    compile 'tyrant:heartlayout:1.0.1'
 }
