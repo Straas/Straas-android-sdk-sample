@@ -3,6 +3,20 @@ Change Log
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
 
+## Version 0.7.10
+_2017-05-26_
+
+*   straas-messaging
+    *   feat: Add [ArchivedMessagesManager](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ArchivedMessagesManager.html).
+*   straas-messaging-ui
+    *   feat: Add [setMessageItemCustomView](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ui/ChatroomOutputView.html#setMessageItemCustomView-int-), [setMsgDividerColor](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ui/ChatroomOutputView.html#setMsgDividerColor-int-), and [setVerticalScrollBarEnabled](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ui/ChatroomOutputView.html#setVerticalScrollBarEnabled-boolean-) for more more custom situations.
+*   straas-extension-ima
+    *   Upgrade IMA to 3.7.2
+*   straas-media-core
+    *   feat: Upgrade ExoPlayer library to [v2.4.1](https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#r241).
+
+
+
 ## Version 0.7.9
 _2017-05-24_
 
