@@ -14,6 +14,12 @@
         android:layout_marginLeft="10dp"
         android:layout_above="@+id/controlBar"/>
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentTop="true"/>
+
     <tyrantgit.widget.HeartLayout
         android:id="@+id/heart"
         android:layout_width="120dp"
@@ -48,7 +54,7 @@
             android:layout_height="40dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:layout_alignParentRight="true"
-            android:onClick="love"
+            android:onClick="sendAggregatedData"
             app:srcCompat="@drawable/ic_btn_emoji"/>
 
     </RelativeLayout>
