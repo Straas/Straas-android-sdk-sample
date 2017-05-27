@@ -13,6 +13,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -71,6 +72,10 @@ public class ECommerceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_e_commerce);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         TypedValue outValue = new TypedValue();
         getTheme().resolveAttribute(R.attr.dialogPreferredPadding, outValue, true);
         mDialogPadding = getResources().getDimensionPixelSize(outValue.resourceId);
@@ -122,7 +127,7 @@ public class ECommerceActivity extends AppCompatActivity {
         inputManager.hideSoftInputFromWindow(mInput.getWindowToken(), 0);
     }
 
-    public void love(View view) {
+    public void sendAggregatedData(View view) {
         ChatroomManager manager = mChatroomOutputView.getChatroomManager();
         if (manager.getChatroomState() == ChatroomState.CONNECTED) {
             int i = new Random().nextInt(3);

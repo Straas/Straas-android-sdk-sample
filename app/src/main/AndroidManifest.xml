@@ -38,6 +38,8 @@
 
         <activity android:name="io.straas.android.sdk.messaging.demo.ECommerceActivity"
                   android:label="Messaging E-Commerce demo"
+                  android:theme="@style/Theme.AppCompat.NoActionBar"
+                  android:screenOrientation="portrait"
                   android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
 
         <activity android:name="io.straas.android.sdk.streaming.demo.MainActivity"
