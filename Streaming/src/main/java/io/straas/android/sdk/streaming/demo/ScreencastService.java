@@ -94,6 +94,7 @@ public final class ScreencastService extends Service {
 
     @Override
     public void onDestroy() {
+        Log.d(TAG, "ScreencastService onDestroy");
         destroyScreencastSession();
         super.onDestroy();
     }

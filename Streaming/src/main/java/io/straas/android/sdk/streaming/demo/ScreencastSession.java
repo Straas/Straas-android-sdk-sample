@@ -102,7 +102,6 @@ public class ScreencastSession {
                 broadcastClick();
             }
             @Override public void onDestroyClick() {
-                removeOverlay();
                 if (mListener != null) {
                     mListener.onDestroy();
                 }
@@ -257,14 +256,29 @@ public class ScreencastSession {
                 public void onSuccess(Void aVoid) {
                     Log.d(TAG, "End live event succeeds: " + mLiveId);
                     mLiveId = null;
+                    if (mListener != null) {
+                        mListener.onDestroy();
+                    }
                 }
             });
         }
     }
 
     public void destroy() {
+        removeOverlayOnUiThread();
         if (mScreencastStreamManager != null) {
             mScreencastStreamManager.destroy();
         }
+        if (mMediaProjection != null) {
+            mMediaProjection.stop();
+        }
+    }
+
+    public void removeOverlayOnUiThread() {
+        mMainThreadHandler.post(new Runnable() {
+            @Override public void run() {
+                removeOverlay();
+            }
+        });
     }
 }
