@@ -26,12 +26,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.straas.android.media.demo.widget.StraasPlayerView;
+import io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout;
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.media.ImaHelper;
 import io.straas.android.sdk.media.StraasMediaCore;
@@ -169,7 +169,7 @@ public class StraasPlayerActivity extends AppCompatActivity {
                     ", Description: " + metadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION) +
                     ", Thumbnail: " + metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI) +
                     ", Created at: " + metadata.getString(MediaMetadataCompat.METADATA_KEY_DATE) +
-                    ", Views: " + metadata.getBundle().getLong(VideoCustomMetadata.CUSTOM_METADATA_VIEWS_COUNT) +
+                    ", Views: " + metadata.getBundle().getLong(VideoCustomMetadata.PLAY_COUNT_SUM) +
                     ", Duration: " + metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION));
         }
 

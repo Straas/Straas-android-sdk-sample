@@ -533,13 +533,13 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 case StraasMediaCore.LIVE_EXTRA_BROADCAST_STATE_LIVE:
                     mLiveState = liveState;
                     mBroadcastStateListener.online();
-                    break;
+                    return;
                 case StraasMediaCore.LIVE_EXTRA_BROADCAST_STATE_WAIT_STREAM:
                     if (shouldShowStateUi) {
                         mLiveState = liveState;
                         mBroadcastStateListener.waitForStream(mBroadcastStateView);
                     }
-                    break;
+                    return;
             }
         } else if (shouldShowStateUi){
             String eventState = extras.getString(StraasMediaCore.LIVE_EXTRA_EVENT_STATE, "");
@@ -547,12 +547,13 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             switch (eventState) {
                 case StraasMediaCore.LIVE_EXTRA_EVENT_STATE_ENDED:
                     mBroadcastStateListener.endEvent(mBroadcastStateView);
-                    break;
+                    return;
                 case StraasMediaCore.LIVE_EXTRA_EVENT_STATE_READY:
                     mBroadcastStateListener.offline(mBroadcastStateView);
-                    break;
+                    return;
             }
         }
+        mLiveState = null;
     }
 
 
