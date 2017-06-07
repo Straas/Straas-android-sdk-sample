@@ -53,10 +53,4 @@
             android:visibility="gone"
             android:contentDescription="clear" />
     </FrameLayout>
-
-    <TextureView
-        android:id="@+id/screencast_overlay_preview"
-        android:visibility="gone"
-        android:layout_width="20dp"
-        android:layout_height="20dp"/>
 </LinearLayout>

@@ -27,6 +27,8 @@ import java.util.HashMap;
 
 import io.straas.android.sdk.demo.R;
 
+import io.straas.android.sdk.streaming.screencast.ScreencastService;
+
 public class ScreencastSettingsActivity extends AppCompatActivity {
 
     private static final String TAG = ScreencastSettingsActivity.class.getSimpleName();

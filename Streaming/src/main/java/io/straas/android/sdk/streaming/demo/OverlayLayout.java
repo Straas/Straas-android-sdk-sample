@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.text.format.DateUtils;
 import android.view.Gravity;
 import android.view.MotionEvent;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -29,7 +28,6 @@ final class OverlayLayout extends FrameLayout implements View.OnClickListener {
     private View mStartView;
     private View mLoadingView;
     private TextView mStreamingTimeView;
-    private TextureView mTextureView;
     private final Listener mListener;
 
     static OverlayLayout create(Context context, Listener listener) {
@@ -62,7 +60,6 @@ final class OverlayLayout extends FrameLayout implements View.OnClickListener {
         mStartView = findViewById(R.id.screencast_overlay_start);;
         mLoadingView = findViewById(R.id.screencast_overlay_loading);;
         mStreamingTimeView = (TextView) findViewById(R.id.screencast_overlay_elapsed_time);;
-        mTextureView = (TextureView) findViewById(R.id.screencast_overlay_preview);;
 
         mMoveView.setOnTouchListener(new View.OnTouchListener() {
             private int initX, initY;
@@ -132,7 +129,8 @@ final class OverlayLayout extends FrameLayout implements View.OnClickListener {
 
     public void updateStreamingStatusOnUiThread(Handler uiHandler, final boolean selected) {
         uiHandler.post(new Runnable() {
-            @Override public void run() {
+            @Override
+            public void run() {
                 mStartView.setSelected(selected);
                 mStartView.setEnabled(true);
                 updateLoadingView(false);
@@ -148,9 +146,4 @@ final class OverlayLayout extends FrameLayout implements View.OnClickListener {
         mStreamingTimeView.setText(DateUtils.formatElapsedTime(seconds));
         mStreamingTimeView.setVisibility(isStreaming ? View.VISIBLE : View.GONE);
     }
-
-    public TextureView getTextureView() {
-        return mTextureView;
-    }
-
 }

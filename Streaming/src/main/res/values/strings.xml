@@ -15,9 +15,6 @@
     <string name="picture_quality">Picture Quality:</string>
     <string name="start_screen_streaming">Start Screen Streaming</string>
 
-    <string name="screencast_service_title">ScreencastService title</string>
-    <string name="screencast_service_subtitle">ScreencastService subtitle</string>
-
     <string name="picture_quality_240p">240p</string>
     <string name="picture_quality_360p">360p</string>
     <string name="picture_quality_480p">480p</string>

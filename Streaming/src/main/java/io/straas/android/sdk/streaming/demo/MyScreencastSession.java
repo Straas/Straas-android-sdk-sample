@@ -1,23 +1,16 @@
 package io.straas.android.sdk.streaming.demo;
 
 import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.Intent;
-import android.media.projection.MediaProjection;
-import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Size;
-import android.view.Surface;
-import android.view.View;
-import android.view.WindowManager;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,24 +19,18 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 
-import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.streaming.CameraController;
 import io.straas.android.sdk.streaming.LiveEventConfig;
 import io.straas.android.sdk.streaming.ScreencastStreamConfig;
-import io.straas.android.sdk.streaming.ScreencastStreamManager;
+import io.straas.android.sdk.streaming.StreamManager;
+import io.straas.android.sdk.streaming.screencast.ScreencastSession;
 import io.straas.android.sdk.streaming.error.StreamException.LiveCountLimitException;
 import io.straas.sdk.demo.MemberIdentity;
 
-import static android.content.Context.MEDIA_PROJECTION_SERVICE;
-import static android.content.Context.WINDOW_SERVICE;
+@Keep
+public final class MyScreencastSession extends ScreencastSession {
 
-public class ScreencastSession {
-
-    private static final String TAG = ScreencastSession.class.getSimpleName();
-
-    interface Listener {
-        void onDestroy();
-    }
+    private static final String TAG = MyScreencastSession.class.getSimpleName();
 
     private final Handler mMainThreadHandler = new Handler(Looper.getMainLooper());
 
@@ -61,47 +48,27 @@ public class ScreencastSession {
         }
     };
 
-    private final Context mContext;
-    private final Listener mListener;
-
-    private final WindowManager mWindowManager;
-    private final MediaProjectionManager mMediaProjectionManager;
-    private MediaProjection mMediaProjection;
-    private ScreencastStreamManager mScreencastStreamManager;
+    private StreamManager mStreamManager;
 
     private OverlayLayout mOverlayLayout;
 
-    private int mResultCode;
-    private Intent mResultData;
-    private String mTitle;
-    private String mSynopsis;
-    private int mPictureQuality;
     private String mLiveId;
     boolean isStreaming = false;
     long mStreamingStartTimeMillis;
 
-    ScreencastSession(Context context, Listener mListener, int resultCode, Intent data, String title, String synopsis, int pictureQuality) {
-        this.mContext = context;
-        this.mListener = mListener;
-        this.mResultCode = resultCode;
-        this.mResultData = data;
-        this.mPictureQuality = pictureQuality;
-        this.mTitle = title;
-        this.mSynopsis = synopsis;
-
-        mWindowManager = (WindowManager) mContext.getSystemService(WINDOW_SERVICE);
-        mMediaProjectionManager = (MediaProjectionManager) mContext.getSystemService(MEDIA_PROJECTION_SERVICE);
-    }
-
-    void showOverlay() {
+    @Override
+    public void showOverlay() {
         OverlayLayout.Listener overlayListener = new OverlayLayout.Listener() {
-            @Override public void onMove() {
+            @Override
+            public void onMove() {
                 mWindowManager.updateViewLayout(mOverlayLayout, mOverlayLayout.getParams());
             }
-            @Override public void onStartClick() {
+            @Override
+            public void onStartClick() {
                 broadcastClick();
             }
-            @Override public void onDestroyClick() {
+            @Override
+            public void onDestroyClick() {
                 if (mListener != null) {
                     mListener.onDestroy();
                 }
@@ -119,26 +86,27 @@ public class ScreencastSession {
         }
     }
 
+    @Override
     public void prepare() {
-        ScreencastStreamManager.initialize(MemberIdentity.ME).continueWithTask(new Continuation<ScreencastStreamManager, Task<CameraController>>() {
+        StreamManager.initialize(MemberIdentity.ME).continueWithTask(new Continuation<StreamManager, Task<Void>>() {
             @Override
-            public Task<CameraController> then(@NonNull Task<ScreencastStreamManager> task) throws Exception {
+            public Task<Void> then(@NonNull Task<StreamManager> task) throws Exception {
                 if (!task.isSuccessful()) {
                     Log.e(TAG, "init fail " + task.getException());
                     throw task.getException();
                 }
-                mScreencastStreamManager = task.getResult();
+                mStreamManager = task.getResult();
                 return preview();
             }
         });
     }
 
-    private Task<CameraController> preview() {
-        if (mScreencastStreamManager != null && mScreencastStreamManager.getStreamState() == ScreencastStreamManager.STATE_IDLE) {
-              return mScreencastStreamManager.prepare(getConfig(), mOverlayLayout.getTextureView())
-                      .addOnCompleteListener(new OnCompleteListener<CameraController>() {
+    private Task<Void> preview() {
+        if (mStreamManager != null && mStreamManager.getStreamState() == StreamManager.STATE_IDLE) {
+              return mStreamManager.prepare(getConfig())
+                      .addOnCompleteListener(new OnCompleteListener<Void>() {
                           @Override
-                          public void onComplete(@NonNull Task<CameraController> task) {
+                          public void onComplete(@NonNull Task<Void> task) {
                               if (task.isSuccessful()) {
                                   Log.d(TAG, "Prepare succeeds");
                               } else {
@@ -153,8 +121,7 @@ public class ScreencastSession {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private ScreencastStreamConfig getConfig() {
         mMediaProjection = mMediaProjectionManager.getMediaProjection(mResultCode, mResultData);
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        mWindowManager.getDefaultDisplay().getMetrics(displayMetrics);
+        DisplayMetrics displayMetrics = getDisplayMetrics();
         Size size = getScreencastSize(displayMetrics);
         return new ScreencastStreamConfig.Builder()
             .mediaProjection(mMediaProjection)
@@ -163,19 +130,8 @@ public class ScreencastSession {
             .build();
     }
 
-    private Size getScreencastSize(DisplayMetrics displayMetrics) {
-        float ratio;
-        // Portrait mode
-        if (displayMetrics.widthPixels < displayMetrics.heightPixels) {
-            ratio = (float) displayMetrics.widthPixels / mPictureQuality;
-            return new Size(mPictureQuality, (int) (displayMetrics.heightPixels / ratio));
-        }
-        ratio = (float) displayMetrics.heightPixels / mPictureQuality;
-        return new Size((int) (displayMetrics.widthPixels / ratio), mPictureQuality);
-    }
-
     public void broadcastClick() {
-        Log.d(TAG, "broadcastClick state:" + mScreencastStreamManager.getStreamState());
+        Log.d(TAG, "broadcastClick state:" + mStreamManager.getStreamState());
         if (!isStreaming) {
             startStreaming(mTitle, mSynopsis);
             mOverlayLayout.setStartViewEnabled(false);
@@ -189,8 +145,8 @@ public class ScreencastSession {
         }
     }
 
-    private void startStreaming(String title, String synopsis) {
-        mScreencastStreamManager.createLiveEvent(new LiveEventConfig.Builder()
+    public void startStreaming(String title, String synopsis) {
+        mStreamManager.createLiveEvent(new LiveEventConfig.Builder()
                 .title(title)
                 .synopsis(synopsis)
                 .build())
@@ -218,7 +174,7 @@ public class ScreencastSession {
     }
 
     private void startStreaming(final String liveId) {
-        mScreencastStreamManager.startStreaming(liveId).addOnCompleteListener(new OnCompleteListener<String>() {
+        mStreamManager.startStreaming(liveId).addOnCompleteListener(new OnCompleteListener<String>() {
             @Override
             public void onComplete(@NonNull Task<String> task) {
                 if (task.isSuccessful()) {
@@ -234,8 +190,8 @@ public class ScreencastSession {
         });
     }
 
-    private void stopStreaming() {
-        mScreencastStreamManager.stopStreaming().addOnCompleteListener(new OnCompleteListener<Void>() {
+    public void stopStreaming() {
+        mStreamManager.stopStreaming().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
@@ -250,8 +206,8 @@ public class ScreencastSession {
     }
 
     private void endLiveEvent() {
-        if (mScreencastStreamManager != null || !TextUtils.isEmpty(mLiveId)) {
-            mScreencastStreamManager.cleanLiveEvent(mLiveId).addOnSuccessListener(new OnSuccessListener<Void>() {
+        if (mStreamManager != null || !TextUtils.isEmpty(mLiveId)) {
+            mStreamManager.cleanLiveEvent(mLiveId).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
                     Log.d(TAG, "End live event succeeds: " + mLiveId);
@@ -264,14 +220,13 @@ public class ScreencastSession {
         }
     }
 
+    @Override
     public void destroy() {
         removeOverlayOnUiThread();
-        if (mScreencastStreamManager != null) {
-            mScreencastStreamManager.destroy();
+        if (mStreamManager != null) {
+            mStreamManager.destroy();
         }
-        if (mMediaProjection != null) {
-            mMediaProjection.stop();
-        }
+        super.destroy();
     }
 
     public void removeOverlayOnUiThread() {
