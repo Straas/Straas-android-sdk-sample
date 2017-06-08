@@ -11,12 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import io.straas.android.media.demo.widget.StraasPlayerView;
+import io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout;
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.media.ImaHelper;
 import io.straas.android.sdk.media.StraasMediaCore;
@@ -99,7 +95,7 @@ public class StraasPlayerViewCustomizationActivity extends AppCompatActivity {
                     ", Description: " + metadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION) +
                     ", Thumbnail: " + metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI) +
                     ", Created at: " + metadata.getString(MediaMetadataCompat.METADATA_KEY_DATE) +
-                    ", Views: " + metadata.getBundle().getLong(VideoCustomMetadata.CUSTOM_METADATA_VIEWS_COUNT) +
+                    ", Views: " + metadata.getBundle().getLong(VideoCustomMetadata.PLAY_COUNT_SUM) +
                     ", Duration: " + metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION));
         }
 
@@ -114,22 +110,12 @@ public class StraasPlayerViewCustomizationActivity extends AppCompatActivity {
 
         @Override
         public void onSessionEvent(String event, Bundle extras) {
-            try {
-                JSONObject jsonObject = new JSONObject(event);
-                String eventType = jsonObject.getString(StraasMediaCore.EVENT_TYPE);
-                switch (eventType) {
-                    case StraasMediaCore.EVENT_PLAYER_ERROR_MESSAGE:
-                        String error = jsonObject.getString(eventType);
-                        Log.e(eventType, error);
-                        break;
-                    case StraasMediaCore.EVENT_MEDIA_BROWSER_SERVICE_ERROR:
-                        String errorReason = jsonObject.getString(StraasMediaCore.KEY_MEDIA_BROWSER_ERROR_REASON);
-                        String errorMessage = jsonObject.getString(StraasMediaCore.KEY_MEDIA_BROWSER_ERROR_MESSAGE);
-                        Log.e(eventType, errorReason + ": " + errorMessage);
-                        break;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            switch (event) {
+                case StraasMediaCore.EVENT_MEDIA_BROWSER_SERVICE_ERROR:
+                    String errorReason = extras.getString(StraasMediaCore.KEY_MEDIA_BROWSER_ERROR_REASON);
+                    String errorMessage = extras.getString(StraasMediaCore.KEY_MEDIA_BROWSER_ERROR_MESSAGE);
+                    Log.e(event, errorReason + ": " + errorMessage);
+                    break;
             }
         }
     };

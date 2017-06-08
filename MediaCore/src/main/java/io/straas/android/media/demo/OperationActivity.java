@@ -22,11 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.exoplayer2.C;
-import io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout;
 
 import java.util.List;
 
 import io.straas.android.media.demo.widget.StraasPlayerView;
+import io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout;
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.media.ImaHelper;
 import io.straas.android.sdk.media.StraasMediaCore;
@@ -189,10 +189,9 @@ public class OperationActivity extends AppCompatActivity {
                 if (item == null) {
                     return;
                 }
-                if (item.isPlayable()) {
-                    getMediaControllerCompat().getTransportControls()
-                            .playFromMediaId(StraasMediaCore.LIVE_ID_PREFIX + LIVE_VIDEO_ID, getLiveStreamingExtras());
-                } else if (item.isBrowsable()) {
+                getMediaControllerCompat().getTransportControls()
+                        .playFromMediaId(StraasMediaCore.LIVE_ID_PREFIX + LIVE_VIDEO_ID, getLiveStreamingExtras());
+                if (item.isBrowsable()) {
                     // live event is ended, print VODs
                     getMediaBrowser().subscribe(StraasMediaCore.LIVE_ID_PREFIX + LIVE_VIDEO_ID, new MediaBrowserCompat.SubscriptionCallback() {
                         @Override
