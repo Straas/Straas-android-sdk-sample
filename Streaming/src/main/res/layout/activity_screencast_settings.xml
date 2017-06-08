@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/screencast_settings_dialog_width"
+    android:layout_height="match_parent"
+    android:padding="@dimen/screencast_settings_dialog_padding"
+    android:orientation="vertical"
+    tools:context="io.straas.android.sdk.streaming.demo.ScreencastSettingsActivity">
+
+    <LinearLayout
+        android:id="@+id/input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/edit_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/streaming_title_hint"
+            android:text="@string/streaming_default_title"/>
+
+        <EditText
+            android:id="@+id/edit_synopsis"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/streaming_synopsis_hint"
+            android:text="@string/streaming_default_synopsis"/>
+
+        <LinearLayout
+            android:id="@+id/quality_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/picture_quality" />
+            <Spinner
+                android:id="@+id/quality_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/input_layout"
+        android:layout_centerHorizontal="true"
+        android:text="@string/start_screen_streaming"
+        android:enabled="true"
+        android:onClick="startScreenCapture"/>
+</RelativeLayout>

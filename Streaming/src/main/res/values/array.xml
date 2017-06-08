@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="picture_quality_list" translatable="true">
+        <item>@string/picture_quality_240p</item>
+        <item>@string/picture_quality_360p</item>
+        <item>@string/picture_quality_480p</item>
+        <item>@string/picture_quality_720p</item>
+    </string-array>
+
+    <integer-array name="picture_quality_integer_list">
+        <item>240</item>
+        <item>360</item>
+        <item>480</item>
+        <item>720</item>
+    </integer-array>
+</resources>
