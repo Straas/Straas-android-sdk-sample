@@ -57,6 +57,11 @@ public final class MyScreencastSession extends ScreencastSession {
     long mStreamingStartTimeMillis;
 
     @Override
+    public void onStreamInit(StreamManager streamManager) {
+        mStreamManager = streamManager;
+    }
+
+    @Override
     public void showOverlay() {
         OverlayLayout.Listener overlayListener = new OverlayLayout.Listener() {
             @Override
@@ -79,29 +84,21 @@ public final class MyScreencastSession extends ScreencastSession {
         mWindowManager.addView(mOverlayLayout, mOverlayLayout.getParams());
     }
 
-    private void removeOverlay() {
-        if (mOverlayLayout != null) {
-            mWindowManager.removeView(mOverlayLayout);
-            mOverlayLayout = null;
-        }
-    }
-
     @Override
-    public void prepare() {
-        StreamManager.initialize(MemberIdentity.ME).continueWithTask(new Continuation<StreamManager, Task<Void>>() {
+    public void removeOverlay() {
+        mMainThreadHandler.post(new Runnable() {
             @Override
-            public Task<Void> then(@NonNull Task<StreamManager> task) throws Exception {
-                if (!task.isSuccessful()) {
-                    Log.e(TAG, "init fail " + task.getException());
-                    throw task.getException();
+            public void run() {
+                if (mOverlayLayout != null) {
+                    mWindowManager.removeView(mOverlayLayout);
+                    mOverlayLayout = null;
                 }
-                mStreamManager = task.getResult();
-                return preview();
             }
         });
     }
 
-    private Task<Void> preview() {
+    @Override
+    public Task<Void> prepare() {
         if (mStreamManager != null && mStreamManager.getStreamState() == StreamManager.STATE_IDLE) {
               return mStreamManager.prepare(getConfig())
                       .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -222,18 +219,10 @@ public final class MyScreencastSession extends ScreencastSession {
 
     @Override
     public void destroy() {
-        removeOverlayOnUiThread();
         if (mStreamManager != null) {
             mStreamManager.destroy();
         }
         super.destroy();
     }
 
-    public void removeOverlayOnUiThread() {
-        mMainThreadHandler.post(new Runnable() {
-            @Override public void run() {
-                removeOverlay();
-            }
-        });
-    }
 }

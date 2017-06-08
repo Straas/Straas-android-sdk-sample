@@ -27,14 +27,16 @@ import java.util.HashMap;
 
 import io.straas.android.sdk.demo.R;
 
-import io.straas.android.sdk.streaming.screencast.ScreencastService;
+import io.straas.android.sdk.streaming.StreamConfig;
+import io.straas.android.sdk.streaming.StreamManager;
+
+import io.straas.sdk.demo.MemberIdentity;
 
 public class ScreencastSettingsActivity extends AppCompatActivity {
 
     private static final String TAG = ScreencastSettingsActivity.class.getSimpleName();
 
     private static final String[] STREAM_PERMISSIONS = {
-            Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO
     };
 
@@ -127,21 +129,23 @@ public class ScreencastSettingsActivity extends AppCompatActivity {
             mResultData = data;
 
             if (Settings.canDrawOverlays(ScreencastSettingsActivity.this)) {
-                startScreencastService();
+                startScreenStreaming();
             } else {
                 requestOverlayPermission();
             }
         } else if (requestCode == REQUEST_OVERLAY_PERMISSION && resultCode == Activity.RESULT_OK) {
-            startScreencastService();
+            startScreenStreaming();
         }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void startScreencastService() {
-        String title = mEditTitle.getText().toString();
-        String synopsis = mEditSynopsis.getText().toString();
-        int pictureQuality = mPictureQualityMap.get(mPictureQualitySpinner.getSelectedItem().toString());
-        startService(ScreencastService.newIntent(this, mResultCode, mResultData, title, synopsis, pictureQuality));
+    private void startScreenStreaming() {
+        Bundle bundle = new Bundle();
+        bundle.putString(StreamConfig.EXTRA_LIVE_EVENT_TITLE, mEditTitle.getText().toString());
+        bundle.putString(StreamConfig.EXTRA_LIVE_EVENT_SYNOPSIS, mEditSynopsis.getText().toString());
+        bundle.putInt(StreamConfig.EXTRA_LIVE_PICTURE_QUALITY, mPictureQualityMap.get(mPictureQualitySpinner.getSelectedItem().toString()));
+        StreamManager.initialize(this, MemberIdentity.ME, mResultCode, mResultData, bundle);
+
         startActivity(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME));
         finish();
     }
