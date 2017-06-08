@@ -421,6 +421,8 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 if (mControllerContainer.getVisibility() != GONE) {
                     Utils.toggleViewVisibilityWithAnimation(AUTO_HIDE_DELAY_MILLIS, mControllerContainer, mColumnPlayPause);
                 }
+            } else if (state.getState() == PlaybackStateCompat.STATE_CONNECTING) {
+                mLiveState = null;
             }
 
             int loadingProgressBarVisibility = GONE;
