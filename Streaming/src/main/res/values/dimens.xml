@@ -6,4 +6,8 @@
   <dimen name="overlay_layout_width">176dp</dimen>
   <!-- 24dp square + 20dp padding-->
   <dimen name="overlay_button_size">44dp</dimen>
+
+  <!-- for camera preview texture -->
+  <dimen name="camera_preview_width">88dp</dimen>
+  <dimen name="camera_preview_height">120dp</dimen>
 </resources>

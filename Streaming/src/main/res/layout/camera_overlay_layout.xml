@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextureView
+        android:id="@+id/camera_preview"
+        android:layout_width="@dimen/camera_preview_width"
+        android:layout_height="@dimen/camera_preview_height"/>
+</merge>

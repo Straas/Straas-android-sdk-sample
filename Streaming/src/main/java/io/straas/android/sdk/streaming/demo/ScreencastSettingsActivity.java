@@ -37,6 +37,7 @@ public class ScreencastSettingsActivity extends AppCompatActivity {
     private static final String TAG = ScreencastSettingsActivity.class.getSimpleName();
 
     private static final String[] STREAM_PERMISSIONS = {
+            Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO
     };
 
