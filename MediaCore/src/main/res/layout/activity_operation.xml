@@ -44,6 +44,13 @@
                 android:text="foreground"
                 android:onClick="switchForeground"/>
 
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="disableAudio"
+                android:onClick="setAudibility"
+                android:id="@+id/disableAudio"/>
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
