@@ -3,6 +3,17 @@ Change Log
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
 
+## Version 0.7.11
+_2017-06-15_
+
+*   straas-messaging
+    *   feat: Remove the message count limit of [getArchivedMessages](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ArchivedMessagesManager.html#getArchivedMessages-java.lang.String-java.lang.String-long-long-) and both of `startTime` and `endTime` couldn't be 0 now.
+*   straas-media-core
+    *   feat: disable/re-enable audio through [COMMAND_DISABLE_AUDIO](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#COMMAND_DISABLE_AUDIO). Please read the document about how we control `audio focus` with this command.<br>
+If you just need to adjust the volume, please use [setVolumeTo(...)](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.html#setVolumeTo(int%2C%20int)) and [adjustVolume(...)](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat.html#adjustVolume(int%2C%20int)) provided by Android Support Library.
+    *   feat: Improve [low latency](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#PLAY_OPTION_LIVE_LOW_LATENCY_FIRST) experience.
+    *   feat: Upgrade ExoPlayer library to [v2.4.2](https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#r242).
+
 ## Version 0.7.10
 _2017-05-26_
 

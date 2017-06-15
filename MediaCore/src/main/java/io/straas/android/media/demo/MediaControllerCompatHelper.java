@@ -188,6 +188,12 @@ public class MediaControllerCompatHelper {
         controller.getTransportControls().sendCustomAction(StraasMediaCore.COMMAND_STOP_FOREGROUND, null);
     }
 
+    public static void setAudibility(@NonNull MediaControllerCompat controller, boolean disable) {
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(StraasMediaCore.KEY_DISABLE_AUDIO, disable);
+        controller.getTransportControls().sendCustomAction(StraasMediaCore.COMMAND_DISABLE_AUDIO, bundle);
+    }
+
     public static class VideoQualityInfo {
         public ArrayList<Format> mFormats;
         public int mCurrentSelectedIndex;

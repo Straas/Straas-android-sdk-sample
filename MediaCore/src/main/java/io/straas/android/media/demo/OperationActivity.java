@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.Checkable;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,7 +50,7 @@ public class OperationActivity extends AppCompatActivity {
 
     private static final String TAG = OperationActivity.class.getSimpleName();
     private StraasMediaCore mStraasMediaCore;
-    private Switch mLowLatencyFirst;
+    private Checkable mLowLatencyFirst, mDisableAudioSwitch;
     private boolean mIsForeground;
 
     @Override
@@ -63,7 +64,8 @@ public class OperationActivity extends AppCompatActivity {
         playerView.initialize(this);
 
         prepareEditText();
-        mLowLatencyFirst = (Switch) findViewById(R.id.low_latency_first);
+        mLowLatencyFirst = (Checkable) findViewById(R.id.low_latency_first);
+        mDisableAudioSwitch = (Checkable) findViewById(R.id.disableAudio);
 
         mStraasMediaCore = new StraasMediaCore(playerView, MemberIdentity.ME,
                 new ConnectionCallback() {
@@ -81,7 +83,7 @@ public class OperationActivity extends AppCompatActivity {
 
         mIsForeground = getSharedPreferences(SHARE_PREFERENCE_KEY, Context.MODE_PRIVATE)
                 .getBoolean(FOREGROUND_KEY, false);
-        ((Switch) findViewById(R.id.switch_foreground)).setChecked(mIsForeground);
+        ((Checkable) findViewById(R.id.switch_foreground)).setChecked(mIsForeground);
     }
 
     @Override
@@ -307,6 +309,11 @@ public class OperationActivity extends AppCompatActivity {
         }
     }
 
+    public void setAudibility(View toggleButton) {
+        boolean disable = ((Switch)toggleButton).isChecked();
+        MediaControllerCompatHelper.setAudibility(getMediaControllerCompat(), disable);
+    }
+
     private final MediaControllerCompat.Callback mMediaControllerCallback = new MediaControllerCompat.Callback() {
 
         @Override
@@ -346,6 +353,11 @@ public class OperationActivity extends AppCompatActivity {
                     Log.d(TAG, "hit count: " + extras.getInt(event));
                     break;
             }
+        }
+
+        @Override
+        public void onExtrasChanged(Bundle extras) {
+            mDisableAudioSwitch.setChecked(extras.getBoolean(StraasMediaCore.EXTRA_IS_AUDIO_DISABLED));
         }
     };
 

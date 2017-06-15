@@ -384,7 +384,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             }
 
             String title = metadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE);
-            long summaryViewer = metadata.getBundle().getLong(VideoCustomMetadata.CUSTOM_METADATA_VIEWS_COUNT);
+            long summaryViewer = metadata.getBundle().getLong(VideoCustomMetadata.PLAY_COUNT_SUM);
 
             mChannelNameMetadataListener.onMetaChanged(mChannelNameTextView, title);
             mSummaryViewerMetadataListener.onMetaChanged(mSummaryViewerTextView, summaryViewer);

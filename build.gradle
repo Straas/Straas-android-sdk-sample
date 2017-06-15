@@ -18,7 +18,6 @@ allprojects {
         jcenter()
         maven { url 'https://maven.google.com' }
         maven { url "https://jitpack.io" }
-        maven { url "https://raw.github.com/laenger/maven-releases/master/releases" }
         maven { url "https://dl.bintray.com/straas-io/maven" }
     }
 }

@@ -45,7 +45,7 @@ dependencies {
     compile 'com.github.ctiao:DanmakuFlameMaster:0.8.3'
 
     // optional, only for playing DASH link via playFromUri
-    compile 'com.google.android.exoplayer:exoplayer-dash:r2.4.1'
+    compile 'com.google.android.exoplayer:exoplayer-dash:r2.4.2'
 
     compile "io.straas.android.sdk:straas-messaging-ui:${STRAAS_SDK_VERSION}"
 
