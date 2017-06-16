@@ -1,4 +1,4 @@
-package io.straas.android.sdk.streaming.demo;
+package io.straas.android.sdk.streaming.demo.screencast;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -15,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -31,6 +32,12 @@ import io.straas.android.sdk.streaming.StreamConfig;
 import io.straas.android.sdk.streaming.StreamManager;
 
 import io.straas.sdk.demo.MemberIdentity;
+
+import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_SCREEN_CAPTURE_INTENT_RESULT_CODE;
+import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_SCREEN_CAPTURE_INTENT_RESULT_DATA;
+import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_LIVE_EVENT_TITLE;
+import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_LIVE_EVENT_SYNOPSIS;
+import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_LIVE_VIDEO_QUALITY;
 
 public class ScreencastSettingsActivity extends AppCompatActivity {
 
@@ -147,12 +154,21 @@ public class ScreencastSettingsActivity extends AppCompatActivity {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void startScreenStreaming() {
+        if (mResultCode == Activity.RESULT_CANCELED || mResultData == null) {
+            Log.e(TAG, "Result code or data missing.");
+            return;
+        }
+        if (TextUtils.isEmpty(mEditTitle.getText().toString())) {
+            Log.e(TAG, "The title of the live event must not be empty or null");
+            return;
+        }
+
         Bundle bundle = new Bundle();
-        bundle.putInt(StreamConfig.EXTRA_SCREEN_CAPTURE_INTENT_RESULT_CODE, mResultCode);
-        bundle.putParcelable(StreamConfig.EXTRA_SCREEN_CAPTURE_INTENT_RESULT_DATA, mResultData);
-        bundle.putString(StreamConfig.EXTRA_LIVE_EVENT_TITLE, mEditTitle.getText().toString());
-        bundle.putString(StreamConfig.EXTRA_LIVE_EVENT_SYNOPSIS, mEditSynopsis.getText().toString());
-        bundle.putInt(StreamConfig.EXTRA_LIVE_VIDEO_QUALITY, mVideoQualityMap.get(mVideoQualitySpinner.getSelectedItem().toString()));
+        bundle.putInt(EXTRA_SCREEN_CAPTURE_INTENT_RESULT_CODE, mResultCode);
+        bundle.putParcelable(EXTRA_SCREEN_CAPTURE_INTENT_RESULT_DATA, mResultData);
+        bundle.putString(EXTRA_LIVE_EVENT_TITLE, mEditTitle.getText().toString());
+        bundle.putString(EXTRA_LIVE_EVENT_SYNOPSIS, mEditSynopsis.getText().toString());
+        bundle.putInt(EXTRA_LIVE_VIDEO_QUALITY, mVideoQualityMap.get(mVideoQualitySpinner.getSelectedItem().toString()));
         StreamManager.initialize(MemberIdentity.ME, bundle);
 
         startActivity(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME));

@@ -1,4 +1,4 @@
-package io.straas.android.sdk.streaming.demo;
+package io.straas.android.sdk.streaming.demo.screencast;
 
 import android.content.Context;
 import android.content.res.Configuration;

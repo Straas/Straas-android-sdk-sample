@@ -1,4 +1,4 @@
-package io.straas.android.sdk.streaming.demo;
+package io.straas.android.sdk.streaming.demo.screencast;
 
 import android.content.Context;
 import android.text.format.DateUtils;
@@ -14,7 +14,6 @@ final class ControlOverlayLayout extends OverlayLayout implements View.OnClickLi
     private View mMoveView;
     private View mFinishView;
     private View mStartView;
-    private ViewGroup mStatusLayout;
     private View mLoadingView;
     private TextView mStreamingTimeView;
 
@@ -46,7 +45,6 @@ final class ControlOverlayLayout extends OverlayLayout implements View.OnClickLi
 
         mFinishView = findViewById(R.id.screencast_overlay_finish);
         mStartView = findViewById(R.id.screencast_overlay_start);
-        mStatusLayout = (ViewGroup) findViewById(R.id.screencast_overlay_status_layout);
         mLoadingView = findViewById(R.id.screencast_overlay_loading);
         mStreamingTimeView = (TextView) findViewById(R.id.screencast_overlay_elapsed_time);
 
@@ -99,17 +97,10 @@ final class ControlOverlayLayout extends OverlayLayout implements View.OnClickLi
 
     public void updateLoadingView(boolean isLoading) {
         mLoadingView.setVisibility(isLoading ? View.VISIBLE : View.GONE);
-        updateStatusLayoutVisibility();
     }
 
     public void updateStreamingTimeView(long seconds, boolean isStreaming) {
         mStreamingTimeView.setText(DateUtils.formatElapsedTime(seconds));
         mStreamingTimeView.setVisibility(isStreaming ? View.VISIBLE : View.GONE);
-        updateStatusLayoutVisibility();
-    }
-
-    private void updateStatusLayoutVisibility() {
-        boolean visible = (mLoadingView.getVisibility() == View.VISIBLE) || (mStreamingTimeView.getVisibility() == View.VISIBLE);
-        mStatusLayout.setVisibility(visible ? VISIBLE : GONE);
     }
 }

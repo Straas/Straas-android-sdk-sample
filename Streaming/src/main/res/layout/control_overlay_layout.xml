@@ -24,15 +24,16 @@
 
     <FrameLayout
         android:id="@+id/screencast_overlay_status_layout"
-        android:layout_width="@dimen/overlay_button_size"
-        android:layout_height="@dimen/overlay_button_size"
-        android:visibility="gone" >
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" >
 
         <ProgressBar
             android:id="@+id/screencast_overlay_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@android:style/Widget.ProgressBar.Small"
+            android:layout_margin="@dimen/overlay_loadgin_margin"
             android:layout_gravity="center"
             android:visibility="gone" />
 

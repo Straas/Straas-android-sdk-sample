@@ -42,13 +42,13 @@
                   android:screenOrientation="portrait"
                   android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
 
-        <activity android:name="io.straas.android.sdk.streaming.demo.MainActivity"
+        <activity android:name="io.straas.android.sdk.streaming.demo.camera.MainActivity"
                   android:theme="@style/Theme.AppCompat.NoActionBar"
                   android:screenOrientation="portrait"
                   android:label="Streaming SDK demo"
                   android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
 
-        <activity android:name="io.straas.android.sdk.streaming.demo.ScreencastSettingsActivity"
+        <activity android:name="io.straas.android.sdk.streaming.demo.screencast.ScreencastSettingsActivity"
                   android:theme="@style/ScreencastSettingsTheme"
                   android:windowSoftInputMode="adjustResize"
                   android:screenOrientation="portrait"
@@ -57,7 +57,7 @@
 
         <meta-data
                   android:name="io.straas.android.sdk.streaming.SCREENCAST_SESSION_CLASS_NAME"
-                  android:value="io.straas.android.sdk.streaming.demo.MyScreencastSession"/>
+                  android:value="io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession"/>
     </application>
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
 

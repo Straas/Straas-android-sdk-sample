@@ -1,11 +1,12 @@
-package io.straas.android.sdk.streaming.demo;
+package io.straas.android.sdk.streaming.demo.screencast;
 
-import android.app.Notification;
 import android.annotation.TargetApi;
+import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.SensorManager;
 import android.media.projection.MediaProjection;
+import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,11 +14,13 @@ import android.os.Looper;
 import android.os.SystemClock;
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
+import android.support.v4.util.SimpleArrayMap;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Size;
 import android.view.OrientationEventListener;
+import android.view.WindowManager;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,10 +40,28 @@ import io.straas.android.sdk.streaming.screencast.ScreencastSession;
 import io.straas.android.sdk.streaming.error.StreamException.LiveCountLimitException;
 import io.straas.sdk.demo.MemberIdentity;
 
+import static android.content.Context.MEDIA_PROJECTION_SERVICE;
+import static android.content.Context.WINDOW_SERVICE;
+
 @Keep
-public final class MyScreencastSession extends ScreencastSession {
+public final class MyScreencastSession implements ScreencastSession {
 
     private static final String TAG = MyScreencastSession.class.getSimpleName();
+
+    public static final String EXTRA_SCREEN_CAPTURE_INTENT_RESULT_CODE = "EXTRA_SCREEN_CAPTURE_INTENT_RESULT_CODE";
+    public static final String EXTRA_SCREEN_CAPTURE_INTENT_RESULT_DATA = "EXTRA_SCREEN_CAPTURE_INTENT_RESULT_DATA";
+    public static final String EXTRA_LIVE_EVENT_TITLE = "EXTRA_LIVE_EVENT_TITLE";
+    public static final String EXTRA_LIVE_EVENT_SYNOPSIS = "EXTRA_LIVE_EVENT_SYNOPSIS";
+    public static final String EXTRA_LIVE_VIDEO_QUALITY = "EXTRA_LIVE_VIDEO_QUALITY";
+
+    private static final SimpleArrayMap<Integer, Size> sResolutionLookup = new SimpleArrayMap<Integer, Size>();
+
+    static {
+        sResolutionLookup.put(240, new Size(426, 240));
+        sResolutionLookup.put(360, new Size(640, 360));
+        sResolutionLookup.put(480, new Size(854, 480));
+        sResolutionLookup.put(720, new Size(1280, 720));
+    }
 
     private final Handler mMainThreadHandler = new Handler(Looper.getMainLooper());
 
@@ -58,9 +79,14 @@ public final class MyScreencastSession extends ScreencastSession {
         }
     };
 
-    private OrientationEventListener mOrientationEventListener;
-    private StreamManager mStreamManager;
+    private Context mContext;
+    private Listener mListener;
+
+    private WindowManager mWindowManager;
+    private MediaProjectionManager mMediaProjectionManager;
     private MediaProjection mMediaProjection;
+    private StreamManager mStreamManager;
+    private OrientationEventListener mOrientationEventListener;
 
     private int mResultCode;
     private Intent mResultData;
@@ -75,20 +101,25 @@ public final class MyScreencastSession extends ScreencastSession {
     boolean isStreaming = false;
     long mStreamingStartTimeMillis;
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void initContext(Context context, Listener listener) {
-        super.initContext(context, listener);
+        this.mContext = context;
+        this.mListener = listener;
+
+        mWindowManager = (WindowManager) mContext.getSystemService(WINDOW_SERVICE);
+        mMediaProjectionManager = (MediaProjectionManager) mContext.getSystemService(MEDIA_PROJECTION_SERVICE);
         registerOrientationEventListener();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void parseScreencastConfig(Bundle bundle) {
-        this.mResultCode = bundle.getInt(StreamConfig.EXTRA_SCREEN_CAPTURE_INTENT_RESULT_CODE);
-        this.mResultData = bundle.getParcelable(StreamConfig.EXTRA_SCREEN_CAPTURE_INTENT_RESULT_DATA);
-        this.mVideoQuality = bundle.getInt(StreamConfig.EXTRA_LIVE_VIDEO_QUALITY);
-        this.mTitle = bundle.getString(StreamConfig.EXTRA_LIVE_EVENT_TITLE);
-        this.mSynopsis = bundle.getString(StreamConfig.EXTRA_LIVE_EVENT_SYNOPSIS);
+    public void getScreencastExtras(Bundle bundle) {
+        this.mResultCode = bundle.getInt(EXTRA_SCREEN_CAPTURE_INTENT_RESULT_CODE);
+        this.mResultData = bundle.getParcelable(EXTRA_SCREEN_CAPTURE_INTENT_RESULT_DATA);
+        this.mVideoQuality = bundle.getInt(EXTRA_LIVE_VIDEO_QUALITY);
+        this.mTitle = bundle.getString(EXTRA_LIVE_EVENT_TITLE);
+        this.mSynopsis = bundle.getString(EXTRA_LIVE_EVENT_SYNOPSIS);
     }
 
     @Override
@@ -122,15 +153,7 @@ public final class MyScreencastSession extends ScreencastSession {
         mWindowManager.addView(mCameraOverlayLayout, mCameraOverlayLayout.getParams());
     }
 
-    @Override
-    public void stopMediaProjection() {
-        if (mMediaProjection != null) {
-            mMediaProjection.stop();
-        }
-    }
-
-    @Override
-    public void removeOverlay() {
+    public void removeOverlaOnUiThread() {
         mMainThreadHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -287,12 +310,16 @@ public final class MyScreencastSession extends ScreencastSession {
     }
 
     @Override
-    public void destroy() {
+    public void onDestroy() {
         if (mStreamManager != null) {
             mStreamManager.destroy();
         }
         unregisterOrientationEventListener();
-        super.destroy();
+
+        if (mMediaProjection != null) {
+            mMediaProjection.stop();
+        }
+        removeOverlaOnUiThread();
     }
 
     void registerOrientationEventListener() {
@@ -312,4 +339,16 @@ public final class MyScreencastSession extends ScreencastSession {
             mOrientationEventListener.disable();
         }
     }
+
+    public DisplayMetrics getDisplayMetrics() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        mWindowManager.getDefaultDisplay().getMetrics(displayMetrics);
+        return displayMetrics;
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    protected Size getScreencastSize(int videoQuality) {
+        return sResolutionLookup.get(videoQuality);
+    }
+
 }
