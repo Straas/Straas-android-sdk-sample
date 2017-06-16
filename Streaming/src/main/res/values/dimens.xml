@@ -3,7 +3,6 @@
   <dimen name="screencast_settings_dialog_width">360dp</dimen>
   <dimen name="screencast_settings_dialog_padding">40dp</dimen>
 
-  <dimen name="overlay_layout_width">176dp</dimen>
   <!-- 24dp square + 20dp padding-->
   <dimen name="overlay_button_size">44dp</dimen>
 

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
-public abstract class OverlayLayout extends FrameLayout implements View.OnClickListener {
+public abstract class OverlayLayout extends FrameLayout {
 
     interface Listener {
         void onMove(OverlayLayout overlayLayout);
@@ -61,39 +61,32 @@ public abstract class OverlayLayout extends FrameLayout implements View.OnClickL
                 int y = (int) event.getRawY();
 
                 switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    initX = mLayoutParams.x;
-                    initY = mLayoutParams.y;
-                    initTouchX = x;
-                    initTouchY = y;
-                    return true;
+                    case MotionEvent.ACTION_DOWN:
+                        initX = mLayoutParams.x;
+                        initY = mLayoutParams.y;
+                        initTouchX = x;
+                        initTouchY = y;
+                        return true;
 
-                case MotionEvent.ACTION_UP:
-                    return true;
+                    case MotionEvent.ACTION_UP:
+                        return true;
 
-                case MotionEvent.ACTION_MOVE:
-                    int diffY = isGravityTop() ? (y - initTouchY) : (initTouchY - y);
-                    mLayoutParams.x = initX + (x - initTouchX);
-                    mLayoutParams.y = initY + diffY;
-                    if (mListener != null) {
-                        mListener.onMove(OverlayLayout.this);
-                    }
-                    return true;
+                    case MotionEvent.ACTION_MOVE:
+                        int diffY = (mLayoutParams.gravity & Gravity.TOP) == Gravity.TOP  ? (y - initTouchY) : (initTouchY - y);
+                        mLayoutParams.x = initX + (x - initTouchX);
+                        mLayoutParams.y = initY + diffY;
+                        if (mListener != null) {
+                            mListener.onMove(OverlayLayout.this);
+                        }
+                        return true;
                 }
                 return false;
             }
         });
     }
 
-    @Override
-    public void onClick(final View v) {
-    }
-
     public WindowManager.LayoutParams getParams() {
         return mLayoutParams;
     }
 
-    public boolean isGravityTop() {
-        return true;
-    }
 }

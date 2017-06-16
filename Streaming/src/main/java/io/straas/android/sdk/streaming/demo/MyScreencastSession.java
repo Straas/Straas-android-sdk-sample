@@ -1,11 +1,13 @@
 package io.straas.android.sdk.streaming.demo;
 
+import android.app.Notification;
 import android.annotation.TargetApi;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.hardware.SensorManager;
+import android.media.projection.MediaProjection;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
@@ -15,6 +17,7 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Size;
+import android.view.OrientationEventListener;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,9 +26,12 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 
+import io.straas.android.sdk.demo.R;
+
 import io.straas.android.sdk.streaming.CameraController;
 import io.straas.android.sdk.streaming.LiveEventConfig;
 import io.straas.android.sdk.streaming.ScreencastStreamConfig;
+import io.straas.android.sdk.streaming.StreamConfig;
 import io.straas.android.sdk.streaming.StreamManager;
 import io.straas.android.sdk.streaming.screencast.ScreencastSession;
 import io.straas.android.sdk.streaming.error.StreamException.LiveCountLimitException;
@@ -38,7 +44,7 @@ public final class MyScreencastSession extends ScreencastSession {
 
     private final Handler mMainThreadHandler = new Handler(Looper.getMainLooper());
 
-    Runnable mUpdateStreamingTimeRunnable = new Runnable() {
+    private Runnable mUpdateStreamingTimeRunnable = new Runnable() {
         @Override
         public void run() {
             long seconds = (SystemClock.elapsedRealtime() - mStreamingStartTimeMillis) / 1000;
@@ -52,7 +58,15 @@ public final class MyScreencastSession extends ScreencastSession {
         }
     };
 
+    private OrientationEventListener mOrientationEventListener;
     private StreamManager mStreamManager;
+    private MediaProjection mMediaProjection;
+
+    private int mResultCode;
+    private Intent mResultData;
+    private String mTitle;
+    private String mSynopsis;
+    private int mVideoQuality;
 
     private ControlOverlayLayout mControlOverlayLayout;
     private CameraOverlayLayout mCameraOverlayLayout;
@@ -64,12 +78,23 @@ public final class MyScreencastSession extends ScreencastSession {
     @Override
     public void initContext(Context context, Listener listener) {
         super.initContext(context, listener);
-        registerConfigurationChangedReceiver();
+        registerOrientationEventListener();
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    public void parseScreencastConfig(Bundle bundle) {
+        this.mResultCode = bundle.getInt(StreamConfig.EXTRA_SCREEN_CAPTURE_INTENT_RESULT_CODE);
+        this.mResultData = bundle.getParcelable(StreamConfig.EXTRA_SCREEN_CAPTURE_INTENT_RESULT_DATA);
+        this.mVideoQuality = bundle.getInt(StreamConfig.EXTRA_LIVE_VIDEO_QUALITY);
+        this.mTitle = bundle.getString(StreamConfig.EXTRA_LIVE_EVENT_TITLE);
+        this.mSynopsis = bundle.getString(StreamConfig.EXTRA_LIVE_EVENT_SYNOPSIS);
     }
 
     @Override
     public void onStreamInit(StreamManager streamManager) {
         mStreamManager = streamManager;
+        prepare();
     }
 
     @Override
@@ -98,6 +123,13 @@ public final class MyScreencastSession extends ScreencastSession {
     }
 
     @Override
+    public void stopMediaProjection() {
+        if (mMediaProjection != null) {
+            mMediaProjection.stop();
+        }
+    }
+
+    @Override
     public void removeOverlay() {
         mMainThreadHandler.post(new Runnable() {
             @Override
@@ -114,29 +146,27 @@ public final class MyScreencastSession extends ScreencastSession {
         });
     }
 
-    @Override
-    public Task<Void> prepare() {
+    public void prepare() {
         if (mStreamManager != null && mStreamManager.getStreamState() == StreamManager.STATE_IDLE) {
-              return mStreamManager.prepare(getConfig())
-                      .addOnCompleteListener(new OnCompleteListener<Void>() {
-                          @Override
-                          public void onComplete(@NonNull Task<Void> task) {
-                              if (task.isSuccessful()) {
-                                  Log.d(TAG, "Prepare succeeds");
-                              } else {
-                                  Log.e(TAG, "Prepare fails " + task.getException());
-                              }
-                          }
-                      });
+            mStreamManager.prepare(getConfig())
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "Prepare succeeds");
+                            } else {
+                                Log.e(TAG, "Prepare fails " + task.getException());
+                            }
+                        }
+                });
         }
-        return Tasks.forException(new IllegalStateException());
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private ScreencastStreamConfig getConfig() {
         mMediaProjection = mMediaProjectionManager.getMediaProjection(mResultCode, mResultData);
+        Size size = getScreencastSize(mVideoQuality);
         DisplayMetrics displayMetrics = getDisplayMetrics();
-        Size size = getScreencastSize(displayMetrics);
         return new ScreencastStreamConfig.Builder()
             .mediaProjection(mMediaProjection)
             .videoResolution(size.getWidth(), size.getHeight())
@@ -145,6 +175,11 @@ public final class MyScreencastSession extends ScreencastSession {
     }
 
     public void broadcastClick() {
+        if (mStreamManager == null) {
+            Log.e(TAG, "mStreamManager is null.");
+            return;
+        }
+
         Log.d(TAG, "broadcastClick state:" + mStreamManager.getStreamState());
         if (!isStreaming) {
             startStreaming(mTitle, mSynopsis);
@@ -181,7 +216,7 @@ public final class MyScreencastSession extends ScreencastSession {
                     startStreaming(mLiveId);
                 } else {
                     Log.e(TAG, "Create live event fails: " + error);
-                    mControlOverlayLayout.updateStreamingStatusOnUiThread(mMainThreadHandler, false);
+                    mControlOverlayLayout.updateStreamingStatusOnUiThread(false);
                 }
             }
         });
@@ -193,12 +228,12 @@ public final class MyScreencastSession extends ScreencastSession {
             public void onComplete(@NonNull Task<String> task) {
                 if (task.isSuccessful()) {
                     Log.d(TAG, "Start streaming succeeds");
-                    mControlOverlayLayout.updateStreamingStatusOnUiThread(mMainThreadHandler, true);
+                    mControlOverlayLayout.updateStreamingStatusOnUiThread(true);
                     mStreamingStartTimeMillis = SystemClock.elapsedRealtime();
                     mMainThreadHandler.post(mUpdateStreamingTimeRunnable);
                 } else {
                     Log.e(TAG, "Start streaming fails " + task.getException());
-                    mControlOverlayLayout.updateStreamingStatusOnUiThread(mMainThreadHandler, false);
+                    mControlOverlayLayout.updateStreamingStatusOnUiThread(false);
                 }
             }
         });
@@ -210,7 +245,7 @@ public final class MyScreencastSession extends ScreencastSession {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Log.d(TAG, "Stop succeeds");
-                    mControlOverlayLayout.updateStreamingStatusOnUiThread(mMainThreadHandler, false);
+                    mControlOverlayLayout.updateStreamingStatusOnUiThread(false);
                     endLiveEvent();
                 } else {
                     Log.e(TAG, "Stop fails: " + task.getException());
@@ -235,30 +270,46 @@ public final class MyScreencastSession extends ScreencastSession {
     }
 
     @Override
+    public Notification getNotification() {
+        String title = mContext.getString(R.string.screencast_service_title);
+        String subtitle = mContext.getString(R.string.screencast_service_subtitle);
+        Notification notification = new Notification.Builder(mContext)
+            .setContentTitle(title)
+            .setContentText(subtitle)
+            .setAutoCancel(true)
+            .build();
+        return notification;
+    }
+
+    @Override
+    public void onStreamInitError(Exception e) {
+        Log.e(TAG, "onStreamInitError: " + e);
+    }
+
+    @Override
     public void destroy() {
         if (mStreamManager != null) {
             mStreamManager.destroy();
         }
-        unregisterConfigurationChangedReceiver();
+        unregisterOrientationEventListener();
         super.destroy();
     }
 
-    BroadcastReceiver mConfigurationChangedReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (mCameraOverlayLayout != null) {
-                mCameraOverlayLayout.onConfigurationChanged();
+    void registerOrientationEventListener() {
+        mOrientationEventListener = new OrientationEventListener(mContext, SensorManager.SENSOR_DELAY_NORMAL) {
+            @Override
+            public void onOrientationChanged(int orientation) {
+                if (mCameraOverlayLayout != null) {
+                    mCameraOverlayLayout.onOrientationChanged();
+                }
             }
-        }
-    };
-
-    void registerConfigurationChangedReceiver() {
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
-        mContext.registerReceiver(mConfigurationChangedReceiver, filter);
+        };
+        mOrientationEventListener.enable();
     }
 
-    void unregisterConfigurationChangedReceiver() {
-        mContext.unregisterReceiver(mConfigurationChangedReceiver);
+    void unregisterOrientationEventListener() {
+        if (mOrientationEventListener != null) {
+            mOrientationEventListener.disable();
+        }
     }
 }

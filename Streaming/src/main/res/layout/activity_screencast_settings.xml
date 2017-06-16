@@ -39,7 +39,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/picture_quality" />
+                android:text="@string/video_quality" />
             <Spinner
                 android:id="@+id/quality_spinner"
                 android:layout_width="wrap_content"

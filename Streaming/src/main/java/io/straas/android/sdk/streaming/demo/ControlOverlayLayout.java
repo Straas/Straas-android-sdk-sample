@@ -1,19 +1,20 @@
 package io.straas.android.sdk.streaming.demo;
 
 import android.content.Context;
-import android.os.Handler;
 import android.text.format.DateUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import io.straas.android.sdk.demo.R;
 
-final class ControlOverlayLayout extends OverlayLayout {
+final class ControlOverlayLayout extends OverlayLayout implements View.OnClickListener {
 
     private View mMoveView;
     private View mFinishView;
     private View mStartView;
+    private ViewGroup mStatusLayout;
     private View mLoadingView;
     private TextView mStreamingTimeView;
 
@@ -27,12 +28,12 @@ final class ControlOverlayLayout extends OverlayLayout {
 
     @Override
     public int getInflateResource() {
-        return R.layout.overlay_layout;
+        return R.layout.control_overlay_layout;
     }
 
     @Override
     public int getLayoutWidth(Context context) {
-        return context.getResources().getDimensionPixelSize(R.dimen.overlay_layout_width);
+        return ViewGroup.LayoutParams.WRAP_CONTENT;
     }
 
     public int getLayoutGravity() {
@@ -41,12 +42,13 @@ final class ControlOverlayLayout extends OverlayLayout {
 
     @Override
     public void initLayoutViews() {
-        mMoveView = findViewById(R.id.screencast_overlay_move);;
+        mMoveView = findViewById(R.id.screencast_overlay_move);
 
         mFinishView = findViewById(R.id.screencast_overlay_finish);
-        mStartView = findViewById(R.id.screencast_overlay_start);;
-        mLoadingView = findViewById(R.id.screencast_overlay_loading);;
-        mStreamingTimeView = (TextView) findViewById(R.id.screencast_overlay_elapsed_time);;
+        mStartView = findViewById(R.id.screencast_overlay_start);
+        mStatusLayout = (ViewGroup) findViewById(R.id.screencast_overlay_status_layout);
+        mLoadingView = findViewById(R.id.screencast_overlay_loading);
+        mStreamingTimeView = (TextView) findViewById(R.id.screencast_overlay_elapsed_time);
 
         mFinishView.setOnClickListener(this);
         mStartView.setOnClickListener(this);
@@ -84,8 +86,8 @@ final class ControlOverlayLayout extends OverlayLayout {
          mStartView.setSelected(selected);
     }
 
-    public void updateStreamingStatusOnUiThread(Handler uiHandler, final boolean selected) {
-        uiHandler.post(new Runnable() {
+    public void updateStreamingStatusOnUiThread(final boolean selected) {
+        post(new Runnable() {
             @Override
             public void run() {
                 mStartView.setSelected(selected);
@@ -97,10 +99,17 @@ final class ControlOverlayLayout extends OverlayLayout {
 
     public void updateLoadingView(boolean isLoading) {
         mLoadingView.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+        updateStatusLayoutVisibility();
     }
 
     public void updateStreamingTimeView(long seconds, boolean isStreaming) {
         mStreamingTimeView.setText(DateUtils.formatElapsedTime(seconds));
         mStreamingTimeView.setVisibility(isStreaming ? View.VISIBLE : View.GONE);
+        updateStatusLayoutVisibility();
+    }
+
+    private void updateStatusLayoutVisibility() {
+        boolean visible = (mLoadingView.getVisibility() == View.VISIBLE) || (mStreamingTimeView.getVisibility() == View.VISIBLE);
+        mStatusLayout.setVisibility(visible ? VISIBLE : GONE);
     }
 }

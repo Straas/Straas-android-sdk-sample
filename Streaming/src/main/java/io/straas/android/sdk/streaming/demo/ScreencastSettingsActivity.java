@@ -47,12 +47,12 @@ public class ScreencastSettingsActivity extends AppCompatActivity {
 
     private EditText mEditTitle;
     private EditText mEditSynopsis;
-    private Spinner mPictureQualitySpinner;
+    private Spinner mVideoQualitySpinner;
 
     private MediaProjectionManager mMediaProjectionManager;
     private int mResultCode;
     private Intent mResultData;
-    private HashMap<String, Integer> mPictureQualityMap = new HashMap<String, Integer>();
+    private HashMap<String, Integer> mVideoQualityMap = new HashMap<String, Integer>();
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -68,27 +68,29 @@ public class ScreencastSettingsActivity extends AppCompatActivity {
 
         mEditTitle = (EditText) findViewById(R.id.edit_title);
         mEditSynopsis = (EditText) findViewById(R.id.edit_synopsis);
-        mPictureQualitySpinner = (Spinner)findViewById(R.id.quality_spinner);
-        final String[] pictureQualityList = getResources().getStringArray(R.array.picture_quality_list);
+        mVideoQualitySpinner = (Spinner)findViewById(R.id.quality_spinner);
+        final String[] pictureQualityList = getResources().getStringArray(R.array.video_quality_list);
         ArrayAdapter<String> pictureQualityListAdapter = new ArrayAdapter<>(ScreencastSettingsActivity.this,
                 android.R.layout.simple_spinner_dropdown_item, pictureQualityList);
-        mPictureQualitySpinner.setAdapter(pictureQualityListAdapter);
+        mVideoQualitySpinner.setAdapter(pictureQualityListAdapter);
 
-        final int[] pictureQualityIntegerList = getResources().getIntArray(R.array.picture_quality_integer_list);
+        final int[] pictureQualityIntegerList = getResources().getIntArray(R.array.video_quality_integer_list);
         for (int index = 0; index < pictureQualityList.length; index++) {
-            mPictureQualityMap.put(pictureQualityList[index], pictureQualityIntegerList[index]);
+            mVideoQualityMap.put(pictureQualityList[index], pictureQualityIntegerList[index]);
         }
 
         checkPermissions();
         mMediaProjectionManager = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
     }
 
-    private void checkPermissions() {
+    private boolean checkPermissions() {
         String[] requestPermissions = getPermissionsRequestArray(STREAM_PERMISSIONS);
         if (requestPermissions.length != 0) {
             ActivityCompat.requestPermissions(ScreencastSettingsActivity.this, requestPermissions,
                     STREAM_PERMISSION_REQUEST);
+            return false;
         }
+        return true;
     }
 
     private String[] getPermissionsRequestArray(String[] permissions) {
@@ -119,7 +121,9 @@ public class ScreencastSettingsActivity extends AppCompatActivity {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void startScreenCapture(View view) {
-        startActivityForResult(mMediaProjectionManager.createScreenCaptureIntent(), REQUEST_MEDIA_PROJECTION);
+        if (checkPermissions()) {
+            startActivityForResult(mMediaProjectionManager.createScreenCaptureIntent(), REQUEST_MEDIA_PROJECTION);
+        }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -136,16 +140,20 @@ public class ScreencastSettingsActivity extends AppCompatActivity {
             }
         } else if (requestCode == REQUEST_OVERLAY_PERMISSION && resultCode == Activity.RESULT_OK) {
             startScreenStreaming();
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private void startScreenStreaming() {
         Bundle bundle = new Bundle();
+        bundle.putInt(StreamConfig.EXTRA_SCREEN_CAPTURE_INTENT_RESULT_CODE, mResultCode);
+        bundle.putParcelable(StreamConfig.EXTRA_SCREEN_CAPTURE_INTENT_RESULT_DATA, mResultData);
         bundle.putString(StreamConfig.EXTRA_LIVE_EVENT_TITLE, mEditTitle.getText().toString());
         bundle.putString(StreamConfig.EXTRA_LIVE_EVENT_SYNOPSIS, mEditSynopsis.getText().toString());
-        bundle.putInt(StreamConfig.EXTRA_LIVE_PICTURE_QUALITY, mPictureQualityMap.get(mPictureQualitySpinner.getSelectedItem().toString()));
-        StreamManager.initialize(this, MemberIdentity.ME, mResultCode, mResultData, bundle);
+        bundle.putInt(StreamConfig.EXTRA_LIVE_VIDEO_QUALITY, mVideoQualityMap.get(mVideoQualitySpinner.getSelectedItem().toString()));
+        StreamManager.initialize(MemberIdentity.ME, bundle);
 
         startActivity(new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME));
         finish();
