@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
@@ -54,6 +55,9 @@ public final class MyScreencastSession implements ScreencastSession {
     public static final String EXTRA_LIVE_EVENT_SYNOPSIS = "EXTRA_LIVE_EVENT_SYNOPSIS";
     public static final String EXTRA_LIVE_VIDEO_QUALITY = "EXTRA_LIVE_VIDEO_QUALITY";
 
+    static final int EVENT_UPDATE_STREAMING_TIME = 101;
+    static final int EVENT_ORIENTATION_CHANGED = 102;
+
     private static final SimpleArrayMap<Integer, Size> sResolutionLookup = new SimpleArrayMap<Integer, Size>();
 
     static {
@@ -63,18 +67,26 @@ public final class MyScreencastSession implements ScreencastSession {
         sResolutionLookup.put(720, new Size(1280, 720));
     }
 
-    private final Handler mMainThreadHandler = new Handler(Looper.getMainLooper());
+    private final Handler mMainThreadHandler = new Handler(Looper.getMainLooper()) {
+        public void handleMessage(Message msg) {
+            Log.d(TAG, "handleMessage: " + msg.what);
+            switch(msg.what) {
+                case EVENT_UPDATE_STREAMING_TIME:
+                    long seconds = (SystemClock.elapsedRealtime() - mStreamingStartTimeMillis) / 1000;
+                    if (mControlOverlayLayout != null) {
+                        mControlOverlayLayout.updateStreamingTimeView(seconds, isStreaming);
+                    }
 
-    private Runnable mUpdateStreamingTimeRunnable = new Runnable() {
-        @Override
-        public void run() {
-            long seconds = (SystemClock.elapsedRealtime() - mStreamingStartTimeMillis) / 1000;
-            if (mControlOverlayLayout != null) {
-                mControlOverlayLayout.updateStreamingTimeView(seconds, isStreaming);
-            }
-
-            if (isStreaming) {
-                mMainThreadHandler.postDelayed(this, 1000);
+                    if (isStreaming) {
+                        mMainThreadHandler.removeMessages(EVENT_UPDATE_STREAMING_TIME);
+                        mMainThreadHandler.sendEmptyMessageDelayed(EVENT_UPDATE_STREAMING_TIME, 1000);
+                    }
+                    break;
+                case EVENT_ORIENTATION_CHANGED:
+                    if (mCameraOverlayLayout != null) {
+                        mCameraOverlayLayout.onOrientationChanged();
+                    }
+                    break;
             }
         }
     };
@@ -253,7 +265,8 @@ public final class MyScreencastSession implements ScreencastSession {
                     Log.d(TAG, "Start streaming succeeds");
                     mControlOverlayLayout.updateStreamingStatusOnUiThread(true);
                     mStreamingStartTimeMillis = SystemClock.elapsedRealtime();
-                    mMainThreadHandler.post(mUpdateStreamingTimeRunnable);
+                    mMainThreadHandler.removeMessages(EVENT_UPDATE_STREAMING_TIME);
+                    mMainThreadHandler.sendEmptyMessage(EVENT_UPDATE_STREAMING_TIME);
                 } else {
                     Log.e(TAG, "Start streaming fails " + task.getException());
                     mControlOverlayLayout.updateStreamingStatusOnUiThread(false);
@@ -326,9 +339,8 @@ public final class MyScreencastSession implements ScreencastSession {
         mOrientationEventListener = new OrientationEventListener(mContext, SensorManager.SENSOR_DELAY_NORMAL) {
             @Override
             public void onOrientationChanged(int orientation) {
-                if (mCameraOverlayLayout != null) {
-                    mCameraOverlayLayout.onOrientationChanged();
-                }
+                mMainThreadHandler.removeMessages(EVENT_ORIENTATION_CHANGED);
+                mMainThreadHandler.sendEmptyMessage(EVENT_ORIENTATION_CHANGED);
             }
         };
         mOrientationEventListener.enable();
