@@ -119,6 +119,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
+        public void onPinnedMessageUpdated(@Nullable Message pinnedMessage) {
+
+        }
+
+        @Override
         public void onMessageAdded(Message message) {
 
         }
