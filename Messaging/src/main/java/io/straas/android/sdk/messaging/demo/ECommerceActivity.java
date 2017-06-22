@@ -94,6 +94,7 @@ public class ECommerceActivity extends AppCompatActivity {
         mChatroomOutputView.setMessageItemCustomView(R.layout.message_item_e_commerce);
         mChatroomOutputView.setVerticalScrollBarEnabled(false);
         mChatroomOutputView.setMsgDividerColor(ContextCompat.getColor(this, android.R.color.transparent));
+        mChatroomOutputView.setPinnedMessageCustomView(null);
         mChatroomOutputView.connect(CHATROOM_NAME, MemberIdentity.ME, false);
     }
     
@@ -296,6 +297,11 @@ public class ECommerceActivity extends AppCompatActivity {
 
         @Override
         public void onInputIntervalChanged(int interval) {
+
+        }
+
+        @Override
+        public void onPinnedMessageUpdated(@Nullable Message pinnedMessage) {
 
         }
 
