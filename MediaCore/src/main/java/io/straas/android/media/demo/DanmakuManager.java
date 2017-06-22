@@ -6,6 +6,7 @@ import android.content.ComponentCallbacks;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.util.ArrayMap;
 import android.support.v4.util.SimpleArrayMap;
 import android.text.TextPaint;
@@ -216,6 +217,11 @@ class DanmakuManager implements Application.ActivityLifecycleCallbacks, EventLis
     @Override
     public void onInputIntervalChanged(int inputInterval) {
 
+    }
+
+    @Override
+    public void onPinnedMessageUpdated(@Nullable Message pinnedMessage) {
+        
     }
 
     @Override
