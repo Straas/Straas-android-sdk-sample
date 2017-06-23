@@ -13,6 +13,9 @@
         <item name="showAvatar">true</item>
         <item name="relativeTime">false</item>
         <item name="inputMaxLines">4</item>
+        <item name="pinnedMessageBackground">#f4f4f4</item>
+        <item name="pinnedMessageTextColor">#8b000000</item>
+        <item name="pinnedMessagePinIconColor">#80000000</item>
     </style>
 
 </resources>

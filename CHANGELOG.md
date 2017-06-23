@@ -2,6 +2,15 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.7.12
+_2017-06-23_
+
+*   feat: Upgrade okhttp to [v3.8.1](https://github.com/square/okhttp/blob/master/CHANGELOG.md#version-381).
+*   straas-messaging
+    *   feat: You can [pin a message](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#pinMessage-io.straas.android.sdk.messaging.Message-) to the chatroom now.
+*   straas-messaging-ui
+    *   feat: Pinned message ui, see [setPinnedMessageCustomView()](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ui/ChatroomOutputView.html#setPinnedMessageCustomView-android.view.View-) and [attr since v0.7.12](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/Messaging-UI#style) for further usage.
+
 
 ## Version 0.7.11
 _2017-06-15_
@@ -14,6 +23,7 @@ If you just need to adjust the volume, please use [setVolumeTo(...)](https://dev
     *   feat: Improve [low latency](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#PLAY_OPTION_LIVE_LOW_LATENCY_FIRST) experience.
     *   feat: Upgrade ExoPlayer library to [v2.4.2](https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#r242).
 
+
 ## Version 0.7.10
 _2017-05-26_
 
@@ -25,7 +35,6 @@ _2017-05-26_
     *   Upgrade IMA to 3.7.2
 *   straas-media-core
     *   feat: Upgrade ExoPlayer library to [v2.4.1](https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#r241).
-
 
 
 ## Version 0.7.9
