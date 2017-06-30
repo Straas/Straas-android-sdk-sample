@@ -22,6 +22,7 @@ import android.util.Log;
 import android.util.Size;
 import android.view.OrientationEventListener;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -58,7 +59,7 @@ public final class MyScreencastSession implements ScreencastSession {
     static final int EVENT_UPDATE_STREAMING_TIME = 101;
     static final int EVENT_ORIENTATION_CHANGED = 102;
 
-    private static final SimpleArrayMap<Integer, Size> sResolutionLookup = new SimpleArrayMap<Integer, Size>();
+    private static final SimpleArrayMap<Integer, Size> sResolutionLookup = new SimpleArrayMap<>();
 
     static {
         sResolutionLookup.put(240, new Size(426, 240));
@@ -92,7 +93,7 @@ public final class MyScreencastSession implements ScreencastSession {
     };
 
     private Context mContext;
-    private Listener mListener;
+    private SessionListener mListener;
 
     private WindowManager mWindowManager;
     private MediaProjectionManager mMediaProjectionManager;
@@ -110,23 +111,20 @@ public final class MyScreencastSession implements ScreencastSession {
     private CameraOverlayLayout mCameraOverlayLayout;
 
     private String mLiveId;
+    boolean isPrepared = false;
     boolean isStreaming = false;
     long mStreamingStartTimeMillis;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public void initContext(Context context, Listener listener) {
+    public void onSessionCreate(Context context, SessionListener listener, Bundle bundle) {
         this.mContext = context;
         this.mListener = listener;
 
         mWindowManager = (WindowManager) mContext.getSystemService(WINDOW_SERVICE);
         mMediaProjectionManager = (MediaProjectionManager) mContext.getSystemService(MEDIA_PROJECTION_SERVICE);
         registerOrientationEventListener();
-    }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @Override
-    public void getScreencastExtras(Bundle bundle) {
         this.mResultCode = bundle.getInt(EXTRA_SCREEN_CAPTURE_INTENT_RESULT_CODE);
         this.mResultData = bundle.getParcelable(EXTRA_SCREEN_CAPTURE_INTENT_RESULT_DATA);
         this.mVideoQuality = bundle.getInt(EXTRA_LIVE_VIDEO_QUALITY);
@@ -134,13 +132,21 @@ public final class MyScreencastSession implements ScreencastSession {
         this.mSynopsis = bundle.getString(EXTRA_LIVE_EVENT_SYNOPSIS);
     }
 
+
     @Override
-    public void onStreamInit(StreamManager streamManager) {
-        mStreamManager = streamManager;
+    public void onStreamManagerInitComplete(@NonNull Task<StreamManager> task) {
+        if (!task.isSuccessful()) {
+            Log.e(TAG, "StreamInit fail " + task.getException());
+            showErrorToast("StreamInit fail:" + task.getException());
+            destroyService();
+            return;
+        }
+
+        showOverlay();
+        mStreamManager = task.getResult();
         prepare();
     }
 
-    @Override
     public void showOverlay() {
         OverlayLayout.Listener overlayListener = new OverlayLayout.Listener() {
             @Override
@@ -153,9 +159,7 @@ public final class MyScreencastSession implements ScreencastSession {
             }
             @Override
             public void onDestroyClick() {
-                if (mListener != null) {
-                    mListener.onDestroy();
-                }
+                destroyService();
             }
         };
 
@@ -189,6 +193,7 @@ public final class MyScreencastSession implements ScreencastSession {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Log.d(TAG, "Prepare succeeds");
+                                isPrepared = true;
                             } else {
                                 Log.e(TAG, "Prepare fails " + task.getException());
                             }
@@ -216,7 +221,7 @@ public final class MyScreencastSession implements ScreencastSession {
         }
 
         Log.d(TAG, "broadcastClick state:" + mStreamManager.getStreamState());
-        if (!isStreaming) {
+        if (isPrepared && !isStreaming) {
             startStreaming(mTitle, mSynopsis);
             mControlOverlayLayout.setStartViewEnabled(false);
             mControlOverlayLayout.updateLoadingView(true);
@@ -251,7 +256,9 @@ public final class MyScreencastSession implements ScreencastSession {
                     startStreaming(mLiveId);
                 } else {
                     Log.e(TAG, "Create live event fails: " + error);
+                    showErrorToast("Create live event fails: " + error);
                     mControlOverlayLayout.updateStreamingStatusOnUiThread(false);
+                    destroyService();
                 }
             }
         });
@@ -269,7 +276,9 @@ public final class MyScreencastSession implements ScreencastSession {
                     mMainThreadHandler.sendEmptyMessage(EVENT_UPDATE_STREAMING_TIME);
                 } else {
                     Log.e(TAG, "Start streaming fails " + task.getException());
+                    showErrorToast("Start streaming fails " + task.getException());
                     mControlOverlayLayout.updateStreamingStatusOnUiThread(false);
+                    destroyService();
                 }
             }
         });
@@ -297,9 +306,7 @@ public final class MyScreencastSession implements ScreencastSession {
                 public void onSuccess(Void aVoid) {
                     Log.d(TAG, "End live event succeeds: " + mLiveId);
                     mLiveId = null;
-                    if (mListener != null) {
-                        mListener.onDestroy();
-                    }
+                    destroyService();
                 }
             });
         }
@@ -318,12 +325,7 @@ public final class MyScreencastSession implements ScreencastSession {
     }
 
     @Override
-    public void onStreamInitError(Exception e) {
-        Log.e(TAG, "onStreamInitError: " + e);
-    }
-
-    @Override
-    public void onDestroy() {
+    public void onSessionDestroy() {
         if (mStreamManager != null) {
             mStreamManager.destroy();
         }
@@ -335,14 +337,26 @@ public final class MyScreencastSession implements ScreencastSession {
         removeOverlaOnUiThread();
     }
 
+    private void showErrorToast(String errorText) {
+        Toast.makeText(mContext, errorText, Toast.LENGTH_LONG).show();
+    }
+
+    private void destroyService() {
+        if (mListener != null) {
+            mListener.destroyService();
+        }
+    }
+
     void registerOrientationEventListener() {
-        mOrientationEventListener = new OrientationEventListener(mContext, SensorManager.SENSOR_DELAY_NORMAL) {
-            @Override
-            public void onOrientationChanged(int orientation) {
-                mMainThreadHandler.removeMessages(EVENT_ORIENTATION_CHANGED);
-                mMainThreadHandler.sendEmptyMessage(EVENT_ORIENTATION_CHANGED);
-            }
-        };
+        if (mOrientationEventListener == null) {
+            mOrientationEventListener = new OrientationEventListener(mContext, SensorManager.SENSOR_DELAY_NORMAL) {
+                @Override
+                public void onOrientationChanged(int orientation) {
+                    mMainThreadHandler.removeMessages(EVENT_ORIENTATION_CHANGED);
+                    mMainThreadHandler.sendEmptyMessage(EVENT_ORIENTATION_CHANGED);
+                }
+            };
+        }
         mOrientationEventListener.enable();
     }
 

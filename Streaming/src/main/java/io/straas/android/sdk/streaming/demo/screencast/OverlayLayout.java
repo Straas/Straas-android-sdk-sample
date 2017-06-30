@@ -72,8 +72,9 @@ public abstract class OverlayLayout extends FrameLayout {
                         return true;
 
                     case MotionEvent.ACTION_MOVE:
+                        int diffX = (mLayoutParams.gravity & Gravity.LEFT) == Gravity.LEFT ? (x - initTouchX) : (initTouchX - x);
                         int diffY = (mLayoutParams.gravity & Gravity.TOP) == Gravity.TOP  ? (y - initTouchY) : (initTouchY - y);
-                        mLayoutParams.x = initX + (x - initTouchX);
+                        mLayoutParams.x = initX + diffX;
                         mLayoutParams.y = initY + diffY;
                         if (mListener != null) {
                             mListener.onMove(OverlayLayout.this);

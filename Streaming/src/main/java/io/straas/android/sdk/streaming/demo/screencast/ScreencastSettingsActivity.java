@@ -15,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v4.util.SimpleArrayMap;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -24,7 +25,6 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import io.straas.android.sdk.demo.R;
 
@@ -59,7 +59,7 @@ public class ScreencastSettingsActivity extends AppCompatActivity {
     private MediaProjectionManager mMediaProjectionManager;
     private int mResultCode;
     private Intent mResultData;
-    private HashMap<String, Integer> mVideoQualityMap = new HashMap<String, Integer>();
+    private SimpleArrayMap<String, Integer> mVideoQualityMap = new SimpleArrayMap<>();
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
