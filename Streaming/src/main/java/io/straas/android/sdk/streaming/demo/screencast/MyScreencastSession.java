@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
-import android.hardware.SensorManager;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.os.Build;
@@ -20,27 +19,21 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Size;
-import android.view.OrientationEventListener;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 
 import io.straas.android.sdk.demo.R;
 
-import io.straas.android.sdk.streaming.CameraController;
 import io.straas.android.sdk.streaming.LiveEventConfig;
 import io.straas.android.sdk.streaming.ScreencastStreamConfig;
-import io.straas.android.sdk.streaming.StreamConfig;
 import io.straas.android.sdk.streaming.StreamManager;
 import io.straas.android.sdk.streaming.screencast.ScreencastSession;
 import io.straas.android.sdk.streaming.error.StreamException.LiveCountLimitException;
-import io.straas.sdk.demo.MemberIdentity;
 
 import static android.content.Context.MEDIA_PROJECTION_SERVICE;
 import static android.content.Context.WINDOW_SERVICE;
@@ -58,7 +51,6 @@ public final class MyScreencastSession implements ScreencastSession {
     public static final String EXTRA_LIVE_VIDEO_QUALITY = "EXTRA_LIVE_VIDEO_QUALITY";
 
     private static final int EVENT_UPDATE_STREAMING_TIME = 101;
-    private static final int EVENT_ORIENTATION_CHANGED = 102;
 
     private static final SimpleArrayMap<Integer, Size> sResolutionLookup = new SimpleArrayMap<>();
 
@@ -84,11 +76,6 @@ public final class MyScreencastSession implements ScreencastSession {
                         mMainThreadHandler.sendEmptyMessageDelayed(EVENT_UPDATE_STREAMING_TIME, 1000);
                     }
                     break;
-                case EVENT_ORIENTATION_CHANGED:
-                    if (mCameraOverlayLayout != null) {
-                        mCameraOverlayLayout.onOrientationChanged();
-                    }
-                    break;
             }
         }
     };
@@ -100,7 +87,6 @@ public final class MyScreencastSession implements ScreencastSession {
     private MediaProjectionManager mMediaProjectionManager;
     private MediaProjection mMediaProjection;
     private StreamManager mStreamManager;
-    private OrientationEventListener mOrientationEventListener;
 
     private int mResultCode;
     private Intent mResultData;
@@ -124,7 +110,6 @@ public final class MyScreencastSession implements ScreencastSession {
 
         mWindowManager = (WindowManager) mContext.getSystemService(WINDOW_SERVICE);
         mMediaProjectionManager = (MediaProjectionManager) mContext.getSystemService(MEDIA_PROJECTION_SERVICE);
-        registerOrientationEventListener();
 
         this.mResultCode = bundle.getInt(EXTRA_SCREEN_CAPTURE_INTENT_RESULT_CODE);
         this.mResultData = bundle.getParcelable(EXTRA_SCREEN_CAPTURE_INTENT_RESULT_DATA);
@@ -132,7 +117,6 @@ public final class MyScreencastSession implements ScreencastSession {
         this.mTitle = bundle.getString(EXTRA_LIVE_EVENT_TITLE);
         this.mSynopsis = bundle.getString(EXTRA_LIVE_EVENT_SYNOPSIS);
     }
-
 
     @Override
     public void onStreamManagerInitComplete(@NonNull Task<StreamManager> task) {
@@ -330,7 +314,6 @@ public final class MyScreencastSession implements ScreencastSession {
         if (mStreamManager != null) {
             mStreamManager.destroy();
         }
-        unregisterOrientationEventListener();
 
         if (mMediaProjection != null) {
             mMediaProjection.stop();
@@ -345,25 +328,6 @@ public final class MyScreencastSession implements ScreencastSession {
     private void destroyService() {
         if (mListener != null) {
             mListener.destroyService();
-        }
-    }
-
-    private void registerOrientationEventListener() {
-        if (mOrientationEventListener == null) {
-            mOrientationEventListener = new OrientationEventListener(mContext, SensorManager.SENSOR_DELAY_NORMAL) {
-                @Override
-                public void onOrientationChanged(int orientation) {
-                    mMainThreadHandler.removeMessages(EVENT_ORIENTATION_CHANGED);
-                    mMainThreadHandler.sendEmptyMessage(EVENT_ORIENTATION_CHANGED);
-                }
-            };
-        }
-        mOrientationEventListener.enable();
-    }
-
-    private void unregisterOrientationEventListener() {
-        if (mOrientationEventListener != null) {
-            mOrientationEventListener.disable();
         }
     }
 
