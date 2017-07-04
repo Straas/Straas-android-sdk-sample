@@ -45,6 +45,7 @@ import io.straas.sdk.demo.MemberIdentity;
 import static android.content.Context.MEDIA_PROJECTION_SERVICE;
 import static android.content.Context.WINDOW_SERVICE;
 
+@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 @Keep
 public final class MyScreencastSession implements ScreencastSession {
 
@@ -56,8 +57,8 @@ public final class MyScreencastSession implements ScreencastSession {
     public static final String EXTRA_LIVE_EVENT_SYNOPSIS = "EXTRA_LIVE_EVENT_SYNOPSIS";
     public static final String EXTRA_LIVE_VIDEO_QUALITY = "EXTRA_LIVE_VIDEO_QUALITY";
 
-    static final int EVENT_UPDATE_STREAMING_TIME = 101;
-    static final int EVENT_ORIENTATION_CHANGED = 102;
+    private static final int EVENT_UPDATE_STREAMING_TIME = 101;
+    private static final int EVENT_ORIENTATION_CHANGED = 102;
 
     private static final SimpleArrayMap<Integer, Size> sResolutionLookup = new SimpleArrayMap<>();
 
@@ -111,9 +112,9 @@ public final class MyScreencastSession implements ScreencastSession {
     private CameraOverlayLayout mCameraOverlayLayout;
 
     private String mLiveId;
-    boolean isPrepared = false;
-    boolean isStreaming = false;
-    long mStreamingStartTimeMillis;
+    private boolean isPrepared = false;
+    private boolean isStreaming = false;
+    private long mStreamingStartTimeMillis;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -142,12 +143,12 @@ public final class MyScreencastSession implements ScreencastSession {
             return;
         }
 
-        showOverlay();
         mStreamManager = task.getResult();
+        showOverlay();
         prepare();
     }
 
-    public void showOverlay() {
+    private void showOverlay() {
         OverlayLayout.Listener overlayListener = new OverlayLayout.Listener() {
             @Override
             public void onMove(OverlayLayout overlayLayout) {
@@ -169,7 +170,7 @@ public final class MyScreencastSession implements ScreencastSession {
         mWindowManager.addView(mCameraOverlayLayout, mCameraOverlayLayout.getParams());
     }
 
-    public void removeOverlaOnUiThread() {
+    private void removeOverlaOnUiThread() {
         mMainThreadHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -185,7 +186,7 @@ public final class MyScreencastSession implements ScreencastSession {
         });
     }
 
-    public void prepare() {
+    private void prepare() {
         if (mStreamManager != null && mStreamManager.getStreamState() == StreamManager.STATE_IDLE) {
             mStreamManager.prepare(getConfig())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -214,7 +215,7 @@ public final class MyScreencastSession implements ScreencastSession {
             .build();
     }
 
-    public void broadcastClick() {
+    private void broadcastClick() {
         if (mStreamManager == null) {
             Log.e(TAG, "mStreamManager is null.");
             return;
@@ -234,7 +235,7 @@ public final class MyScreencastSession implements ScreencastSession {
         }
     }
 
-    public void startStreaming(String title, String synopsis) {
+    private void startStreaming(String title, String synopsis) {
         mStreamManager.createLiveEvent(new LiveEventConfig.Builder()
                 .title(title)
                 .synopsis(synopsis)
@@ -284,7 +285,7 @@ public final class MyScreencastSession implements ScreencastSession {
         });
     }
 
-    public void stopStreaming() {
+    private void stopStreaming() {
         mStreamManager.stopStreaming().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -347,7 +348,7 @@ public final class MyScreencastSession implements ScreencastSession {
         }
     }
 
-    void registerOrientationEventListener() {
+    private void registerOrientationEventListener() {
         if (mOrientationEventListener == null) {
             mOrientationEventListener = new OrientationEventListener(mContext, SensorManager.SENSOR_DELAY_NORMAL) {
                 @Override
@@ -360,20 +361,19 @@ public final class MyScreencastSession implements ScreencastSession {
         mOrientationEventListener.enable();
     }
 
-    void unregisterOrientationEventListener() {
+    private void unregisterOrientationEventListener() {
         if (mOrientationEventListener != null) {
             mOrientationEventListener.disable();
         }
     }
 
-    public DisplayMetrics getDisplayMetrics() {
+    private DisplayMetrics getDisplayMetrics() {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         mWindowManager.getDefaultDisplay().getMetrics(displayMetrics);
         return displayMetrics;
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    protected Size getScreencastSize(int videoQuality) {
+    private Size getScreencastSize(int videoQuality) {
         return sResolutionLookup.get(videoQuality);
     }
 
