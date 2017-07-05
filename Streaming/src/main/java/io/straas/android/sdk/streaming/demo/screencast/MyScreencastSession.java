@@ -19,6 +19,7 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Size;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -28,12 +29,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import io.straas.android.sdk.demo.R;
-
 import io.straas.android.sdk.streaming.LiveEventConfig;
 import io.straas.android.sdk.streaming.ScreencastStreamConfig;
 import io.straas.android.sdk.streaming.StreamManager;
-import io.straas.android.sdk.streaming.screencast.ScreencastSession;
 import io.straas.android.sdk.streaming.error.StreamException.LiveCountLimitException;
+import io.straas.android.sdk.streaming.screencast.ScreencastSession;
 
 import static android.content.Context.MEDIA_PROJECTION_SERVICE;
 import static android.content.Context.WINDOW_SERVICE;
@@ -133,23 +133,8 @@ public final class MyScreencastSession implements ScreencastSession {
     }
 
     private void showOverlay() {
-        OverlayLayout.Listener overlayListener = new OverlayLayout.Listener() {
-            @Override
-            public void onMove(OverlayLayout overlayLayout) {
-                mWindowManager.updateViewLayout(overlayLayout, overlayLayout.getParams());
-            }
-            @Override
-            public void onStartClick() {
-                broadcastClick();
-            }
-            @Override
-            public void onDestroyClick() {
-                destroyService();
-            }
-        };
-
-        mControlOverlayLayout = ControlOverlayLayout.create(mContext, overlayListener);
-        mCameraOverlayLayout = CameraOverlayLayout.create(mContext, overlayListener);
+        mControlOverlayLayout = ControlOverlayLayout.create(mContext, mOverlayListener);
+        mCameraOverlayLayout = CameraOverlayLayout.create(mContext, mOverlayListener);
         mWindowManager.addView(mControlOverlayLayout, mControlOverlayLayout.getParams());
         mWindowManager.addView(mCameraOverlayLayout, mCameraOverlayLayout.getParams());
     }
@@ -302,6 +287,7 @@ public final class MyScreencastSession implements ScreencastSession {
         String title = mContext.getString(R.string.screencast_service_title);
         String subtitle = mContext.getString(R.string.screencast_service_subtitle);
         Notification notification = new Notification.Builder(mContext)
+            .setSmallIcon(R.drawable.straas_icon_white_24px)
             .setContentTitle(title)
             .setContentText(subtitle)
             .setAutoCancel(true)
@@ -340,5 +326,25 @@ public final class MyScreencastSession implements ScreencastSession {
     private Size getScreencastSize(int videoQuality) {
         return sResolutionLookup.get(videoQuality);
     }
+
+
+    OverlayLayout.Listener mOverlayListener = new OverlayLayout.Listener() {
+        @Override
+        public void onMove(OverlayLayout overlayLayout) {
+            mWindowManager.updateViewLayout(overlayLayout, overlayLayout.getParams());
+        }
+
+        @Override
+        public void onClick(final View v) {
+            switch (v.getId()) {
+                case R.id.screencast_overlay_start:
+                    broadcastClick();
+                    break;
+                case R.id.screencast_overlay_finish:
+                    destroyService();
+                    break;
+            }
+        }
+    };
 
 }

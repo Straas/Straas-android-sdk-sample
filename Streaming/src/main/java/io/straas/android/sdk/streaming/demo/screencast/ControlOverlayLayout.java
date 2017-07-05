@@ -53,20 +53,8 @@ final class ControlOverlayLayout extends OverlayLayout implements View.OnClickLi
 
     @Override
     public void onClick(final View v) {
-        switch (v.getId()) {
-        case R.id.screencast_overlay_finish:
-            if (mListener != null) {
-                mListener.onDestroyClick();
-            }
-            break;
-        case R.id.screencast_overlay_start:
-            if (mListener != null) {
-                mListener.onStartClick();
-            }
-            break;
-
-        default:
-            break;
+        if (mListener != null) {
+            mListener.onClick(v);
         }
     }
 
