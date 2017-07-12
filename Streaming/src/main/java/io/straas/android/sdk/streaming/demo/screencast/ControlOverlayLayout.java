@@ -4,7 +4,6 @@ import android.content.Context;
 import android.text.format.DateUtils;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import io.straas.android.sdk.demo.R;
@@ -28,11 +27,6 @@ final class ControlOverlayLayout extends OverlayLayout implements View.OnClickLi
     @Override
     public int getInflateResource() {
         return R.layout.control_overlay_layout;
-    }
-
-    @Override
-    public int getLayoutWidth(Context context) {
-        return ViewGroup.LayoutParams.WRAP_CONTENT;
     }
 
     public int getLayoutGravity() {
@@ -59,20 +53,8 @@ final class ControlOverlayLayout extends OverlayLayout implements View.OnClickLi
 
     @Override
     public void onClick(final View v) {
-        switch (v.getId()) {
-        case R.id.screencast_overlay_finish:
-            if (mListener != null) {
-                mListener.onDestroyClick();
-            }
-            break;
-        case R.id.screencast_overlay_start:
-            if (mListener != null) {
-                mListener.onStartClick();
-            }
-            break;
-
-        default:
-            break;
+        if (mListener != null) {
+            mListener.onClick(v);
         }
     }
 

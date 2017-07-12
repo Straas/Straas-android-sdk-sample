@@ -5,23 +5,23 @@ import android.graphics.PixelFormat;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public abstract class OverlayLayout extends FrameLayout {
 
     interface Listener {
         void onMove(OverlayLayout overlayLayout);
-        void onStartClick();
-        void onDestroyClick();
+        void onClick(final View v);
     }
 
     private WindowManager.LayoutParams mLayoutParams;
     protected final Listener mListener;
 
-    protected WindowManager.LayoutParams createLayoutParams(Context context) {
-        final WindowManager.LayoutParams params = new WindowManager.LayoutParams(getLayoutWidth(context), ViewGroup.LayoutParams.WRAP_CONTENT,
+    protected WindowManager.LayoutParams createLayoutParams() {
+        final WindowManager.LayoutParams params = new WindowManager.LayoutParams(WRAP_CONTENT, WRAP_CONTENT,
                 WindowManager.LayoutParams.TYPE_SYSTEM_ERROR, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS |
                 WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
@@ -35,12 +35,10 @@ public abstract class OverlayLayout extends FrameLayout {
         this.mListener = listener;
 
         inflate(context, getInflateResource(), this);
-        initViews(context);
+        initViews();
     }
 
     public abstract int getInflateResource();
-
-    public abstract int getLayoutWidth(Context context);
 
     public abstract int getLayoutGravity();
 
@@ -48,8 +46,8 @@ public abstract class OverlayLayout extends FrameLayout {
 
     public abstract View getMoveView();
 
-    private void initViews(Context context) {
-        mLayoutParams = createLayoutParams(context);
+    private void initViews() {
+        mLayoutParams = createLayoutParams();
         initLayoutViews();
         getMoveView().setOnTouchListener(new View.OnTouchListener() {
             private int initX, initY;

@@ -2,6 +2,6 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
     <TextureView
         android:id="@+id/camera_preview"
-        android:layout_width="@dimen/camera_preview_width"
-        android:layout_height="@dimen/camera_preview_height"/>
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
 </merge>
