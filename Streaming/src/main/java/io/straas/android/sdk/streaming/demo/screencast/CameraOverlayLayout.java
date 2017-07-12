@@ -1,5 +1,6 @@
 package io.straas.android.sdk.streaming.demo.screencast;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.SurfaceTexture;
@@ -22,6 +23,7 @@ import java.io.IOException;
 
 import io.straas.android.sdk.demo.R;
 
+@SuppressLint("ViewConstructor")
 final class CameraOverlayLayout extends OverlayLayout implements TextureView.SurfaceTextureListener {
 
     private static final String TAG = CameraOverlayLayout.class.getSimpleName();
@@ -57,6 +59,7 @@ final class CameraOverlayLayout extends OverlayLayout implements TextureView.Sur
         return R.layout.camera_overlay_layout;
     }
 
+    @SuppressLint("RtlHardcoded")
     public int getLayoutGravity() {
         return Gravity.BOTTOM | Gravity.LEFT;
     }

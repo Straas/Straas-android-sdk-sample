@@ -178,10 +178,10 @@ public final class MyScreencastSession implements ScreencastSession {
         Size size = getScreencastSize(mVideoQuality);
         DisplayMetrics displayMetrics = getDisplayMetrics();
         return new ScreencastStreamConfig.Builder()
-            .mediaProjection(mMediaProjection)
-            .videoResolution(size.getWidth(), size.getHeight())
-            .densityDpi(displayMetrics.densityDpi)
-            .build();
+                .mediaProjection(mMediaProjection)
+                .videoResolution(size.getWidth(), size.getHeight())
+                .densityDpi(displayMetrics.densityDpi)
+                .build();
     }
 
     private void broadcastClick() {
@@ -190,7 +190,6 @@ public final class MyScreencastSession implements ScreencastSession {
             return;
         }
 
-        Log.d(TAG, "broadcastClick state:" + mStreamManager.getStreamState());
         if (isPrepared && !isStreaming) {
             startStreaming(mTitle, mSynopsis);
             mControlOverlayLayout.setStartViewEnabled(false);
@@ -286,13 +285,12 @@ public final class MyScreencastSession implements ScreencastSession {
     public Notification getNotification() {
         String title = mContext.getString(R.string.screencast_service_title);
         String subtitle = mContext.getString(R.string.screencast_service_subtitle);
-        Notification notification = new Notification.Builder(mContext)
-            .setSmallIcon(R.drawable.straas_icon_white_24px)
-            .setContentTitle(title)
-            .setContentText(subtitle)
-            .setAutoCancel(true)
-            .build();
-        return notification;
+        return new Notification.Builder(mContext)
+                .setSmallIcon(R.drawable.straas_icon_white_24px)
+                .setContentTitle(title)
+                .setContentText(subtitle)
+                .setAutoCancel(true)
+                .build();
     }
 
     @Override
@@ -328,7 +326,7 @@ public final class MyScreencastSession implements ScreencastSession {
     }
 
 
-    OverlayLayout.Listener mOverlayListener = new OverlayLayout.Listener() {
+    private OverlayLayout.Listener mOverlayListener = new OverlayLayout.Listener() {
         @Override
         public void onMove(OverlayLayout overlayLayout) {
             mWindowManager.updateViewLayout(overlayLayout, overlayLayout.getParams());

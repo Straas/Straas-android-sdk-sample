@@ -12,10 +12,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v4.util.SimpleArrayMap;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -27,17 +26,14 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import io.straas.android.sdk.demo.R;
-
-import io.straas.android.sdk.streaming.StreamConfig;
 import io.straas.android.sdk.streaming.StreamManager;
-
 import io.straas.sdk.demo.MemberIdentity;
 
+import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_LIVE_EVENT_SYNOPSIS;
+import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_LIVE_EVENT_TITLE;
+import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_LIVE_VIDEO_QUALITY;
 import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_SCREEN_CAPTURE_INTENT_RESULT_CODE;
 import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_SCREEN_CAPTURE_INTENT_RESULT_DATA;
-import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_LIVE_EVENT_TITLE;
-import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_LIVE_EVENT_SYNOPSIS;
-import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_LIVE_VIDEO_QUALITY;
 
 public class ScreencastSettingsActivity extends AppCompatActivity {
 
@@ -140,10 +136,14 @@ public class ScreencastSettingsActivity extends AppCompatActivity {
             mResultCode = resultCode;
             mResultData = data;
 
-            if (Settings.canDrawOverlays(ScreencastSettingsActivity.this)) {
-                startScreenStreaming();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (Settings.canDrawOverlays(ScreencastSettingsActivity.this)) {
+                    startScreenStreaming();
+                } else {
+                    requestOverlayPermission();
+                }
             } else {
-                requestOverlayPermission();
+                startScreenStreaming();
             }
         } else if (requestCode == REQUEST_OVERLAY_PERMISSION && resultCode == Activity.RESULT_OK) {
             startScreenStreaming();

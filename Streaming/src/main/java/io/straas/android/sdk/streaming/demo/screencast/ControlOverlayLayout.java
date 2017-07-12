@@ -1,5 +1,6 @@
 package io.straas.android.sdk.streaming.demo.screencast;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.format.DateUtils;
 import android.view.Gravity;
@@ -8,6 +9,7 @@ import android.widget.TextView;
 
 import io.straas.android.sdk.demo.R;
 
+@SuppressLint("ViewConstructor")
 final class ControlOverlayLayout extends OverlayLayout implements View.OnClickListener {
 
     private View mMoveView;
@@ -29,6 +31,7 @@ final class ControlOverlayLayout extends OverlayLayout implements View.OnClickLi
         return R.layout.control_overlay_layout;
     }
 
+    @SuppressLint("RtlHardcoded")
     public int getLayoutGravity() {
         return Gravity.TOP | Gravity.LEFT;
     }
