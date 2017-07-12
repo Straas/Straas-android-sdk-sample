@@ -25,7 +25,7 @@ import io.straas.android.sdk.demo.R;
 final class CameraOverlayLayout extends OverlayLayout implements TextureView.SurfaceTextureListener {
 
     private static final String TAG = CameraOverlayLayout.class.getSimpleName();
-    private static final int CAMERA_VIEW_SIZE_DP_SQUARE = 12000;
+    private static final int CAMERA_VIEW_SIZE_DP_AREA = 12000;
 
     private Camera mCamera;
     private TextureView mTextureView;
@@ -66,7 +66,6 @@ final class CameraOverlayLayout extends OverlayLayout implements TextureView.Sur
             mCamera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
         } catch (Exception e) {
             Log.e(TAG, "Open camera failed: " + e);
-            return;
         }
         mTextureView = (TextureView) findViewById(R.id.camera_preview);
         resetOrientation(true);
@@ -111,6 +110,9 @@ final class CameraOverlayLayout extends OverlayLayout implements TextureView.Sur
     }
 
     private void startPreview(SurfaceTexture surfaceTexture) {
+        if (mCamera == null) {
+            return;
+        }
         try {
             mCamera.setPreviewTexture(surfaceTexture);
         } catch (IOException e) {
@@ -177,7 +179,7 @@ final class CameraOverlayLayout extends OverlayLayout implements TextureView.Sur
         int result;
         if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
             result = (info.orientation + degrees) % 360;
-            result = (360 - result) % 360;  // compensate the mxirror
+            result = (360 - result) % 360;  // compensate the mirror
         } else {  // back-facing
             result = (info.orientation - degrees + 360) % 360;
         }
@@ -192,10 +194,9 @@ final class CameraOverlayLayout extends OverlayLayout implements TextureView.Sur
             return;
         }
         Camera.Size size = mCamera.getParameters().getPreviewSize();
-        double cameraSizePxSquare = CAMERA_VIEW_SIZE_DP_SQUARE *
-                Math.pow(getDensity(getContext()), 2);
+        double cameraViewSize = dpAreaToPxArea(CAMERA_VIEW_SIZE_DP_AREA, getDensity(getContext()));
         double previewSize = size.width * size.height;
-        double shrinkRatio = Math.sqrt(cameraSizePxSquare / previewSize);
+        double shrinkRatio = Math.sqrt(cameraViewSize / previewSize);
         int width, height;
         if (displayOrientation == 0 || displayOrientation == 180) {
             width = (int) Math.round(size.width * shrinkRatio);
@@ -205,6 +206,10 @@ final class CameraOverlayLayout extends OverlayLayout implements TextureView.Sur
             height = (int) Math.round(size.width * shrinkRatio);
         }
         mTextureView.setLayoutParams(new FrameLayout.LayoutParams(width, height));
+    }
+
+    private static double dpAreaToPxArea(int dpArea, float density) {
+        return dpArea * Math.pow(density, 2);
     }
 
     private static float getDensity(Context context){
