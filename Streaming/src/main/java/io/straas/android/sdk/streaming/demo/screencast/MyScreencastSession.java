@@ -83,12 +83,24 @@ public final class MyScreencastSession implements ScreencastSession {
         }
     };
 
+    private class MediaProjectionStopCallback extends MediaProjection.Callback {
+        @Override
+        public void onStop() {
+            mIsMediaProjectionStopped = true;
+            if (mMediaProjection != null) {
+                mMediaProjection.unregisterCallback(MediaProjectionStopCallback.this);
+            }
+        }
+    }
+
     private Context mContext;
     private SessionListener mListener;
 
     private WindowManager mWindowManager;
     private MediaProjectionManager mMediaProjectionManager;
     private MediaProjection mMediaProjection;
+    private boolean mIsMediaProjectionStopped = false;
+
     private StreamManager mStreamManager;
 
     private int mResultCode;
@@ -179,6 +191,8 @@ public final class MyScreencastSession implements ScreencastSession {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     private ScreencastStreamConfig getConfig() {
         mMediaProjection = mMediaProjectionManager.getMediaProjection(mResultCode, mResultData);
+        // register media projection stop callback
+        mMediaProjection.registerCallback(new MediaProjectionStopCallback(), null);
         Size size = getScreencastSize(mVideoQuality);
         DisplayMetrics displayMetrics = getDisplayMetrics();
         return new ScreencastStreamConfig.Builder()
@@ -189,8 +203,8 @@ public final class MyScreencastSession implements ScreencastSession {
     }
 
     private void broadcastClick() {
-        if (mStreamManager == null || !isPrepared) {
-            Log.e(TAG, "mStreamManager is null or not prepared.");
+        if (mStreamManager == null || !isPrepared | mIsMediaProjectionStopped) {
+            Log.e(TAG, "mStreamManager is null or not prepared or stopped MediaProjection.");
             return;
         }
 
@@ -227,9 +241,9 @@ public final class MyScreencastSession implements ScreencastSession {
                     startStreaming(mLiveId);
                 } else {
                     Log.e(TAG, "Create live event fails: " + error);
+                    isStreaming = false;
                     showErrorToast("Create live event fails: " + error);
                     mControlOverlayLayout.updateStreamingStatusOnUiThread(STATE_PREPARED);
-                    destroyService();
                 }
             }
         });
@@ -247,9 +261,9 @@ public final class MyScreencastSession implements ScreencastSession {
                     mMainThreadHandler.sendEmptyMessage(EVENT_UPDATE_STREAMING_TIME);
                 } else {
                     Log.e(TAG, "Start streaming fails " + task.getException());
+                    isStreaming = false;
                     showErrorToast("Start streaming fails " + task.getException());
                     mControlOverlayLayout.updateStreamingStatusOnUiThread(STATE_PREPARED);
-                    destroyService();
                 }
             }
         });
