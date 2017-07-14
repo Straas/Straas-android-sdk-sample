@@ -37,6 +37,9 @@ import io.straas.android.sdk.streaming.screencast.ScreencastSession;
 
 import static android.content.Context.MEDIA_PROJECTION_SERVICE;
 import static android.content.Context.WINDOW_SERVICE;
+import static io.straas.android.sdk.streaming.demo.screencast.ControlOverlayLayout.STATE_CONNECTING;
+import static io.straas.android.sdk.streaming.demo.screencast.ControlOverlayLayout.STATE_PREPARED;
+import static io.straas.android.sdk.streaming.demo.screencast.ControlOverlayLayout.STATE_STREAMING;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 @Keep
@@ -164,6 +167,7 @@ public final class MyScreencastSession implements ScreencastSession {
                             if (task.isSuccessful()) {
                                 Log.d(TAG, "Prepare succeeds");
                                 isPrepared = true;
+                                mControlOverlayLayout.updateStreamingStatusOnUiThread(STATE_PREPARED);
                             } else {
                                 Log.e(TAG, "Prepare fails " + task.getException());
                             }
@@ -185,20 +189,18 @@ public final class MyScreencastSession implements ScreencastSession {
     }
 
     private void broadcastClick() {
-        if (mStreamManager == null) {
-            Log.e(TAG, "mStreamManager is null.");
+        if (mStreamManager == null || !isPrepared) {
+            Log.e(TAG, "mStreamManager is null or not prepared.");
             return;
         }
 
-        if (isPrepared && !isStreaming) {
+        if (!isStreaming) {
             startStreaming(mTitle, mSynopsis);
-            mControlOverlayLayout.setStartViewEnabled(false);
-            mControlOverlayLayout.updateLoadingView(true);
+            mControlOverlayLayout.updateStreamingStatus(STATE_CONNECTING);
             isStreaming = true;
         } else {
             stopStreaming();
-            mControlOverlayLayout.setStartViewSelected(false);
-            mControlOverlayLayout.updateLoadingView(true);
+            mControlOverlayLayout.updateStreamingStatus(STATE_CONNECTING);
             isStreaming = false;
         }
     }
@@ -226,7 +228,7 @@ public final class MyScreencastSession implements ScreencastSession {
                 } else {
                     Log.e(TAG, "Create live event fails: " + error);
                     showErrorToast("Create live event fails: " + error);
-                    mControlOverlayLayout.updateStreamingStatusOnUiThread(false);
+                    mControlOverlayLayout.updateStreamingStatusOnUiThread(STATE_PREPARED);
                     destroyService();
                 }
             }
@@ -239,14 +241,14 @@ public final class MyScreencastSession implements ScreencastSession {
             public void onComplete(@NonNull Task<String> task) {
                 if (task.isSuccessful()) {
                     Log.d(TAG, "Start streaming succeeds");
-                    mControlOverlayLayout.updateStreamingStatusOnUiThread(true);
+                    mControlOverlayLayout.updateStreamingStatusOnUiThread(STATE_STREAMING);
                     mStreamingStartTimeMillis = SystemClock.elapsedRealtime();
                     mMainThreadHandler.removeMessages(EVENT_UPDATE_STREAMING_TIME);
                     mMainThreadHandler.sendEmptyMessage(EVENT_UPDATE_STREAMING_TIME);
                 } else {
                     Log.e(TAG, "Start streaming fails " + task.getException());
                     showErrorToast("Start streaming fails " + task.getException());
-                    mControlOverlayLayout.updateStreamingStatusOnUiThread(false);
+                    mControlOverlayLayout.updateStreamingStatusOnUiThread(STATE_PREPARED);
                     destroyService();
                 }
             }
@@ -259,7 +261,7 @@ public final class MyScreencastSession implements ScreencastSession {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Log.d(TAG, "Stop succeeds");
-                    mControlOverlayLayout.updateStreamingStatusOnUiThread(false);
+                    mControlOverlayLayout.updateStreamingStatusOnUiThread(STATE_PREPARED);
                     endLiveEvent();
                 } else {
                     Log.e(TAG, "Stop fails: " + task.getException());

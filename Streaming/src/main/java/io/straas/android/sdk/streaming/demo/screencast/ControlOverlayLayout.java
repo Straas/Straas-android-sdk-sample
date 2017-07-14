@@ -2,15 +2,29 @@ package io.straas.android.sdk.streaming.demo.screencast;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.annotation.IntDef;
 import android.text.format.DateUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import io.straas.android.sdk.demo.R;
 
 @SuppressLint("ViewConstructor")
 final class ControlOverlayLayout extends OverlayLayout implements View.OnClickListener {
+
+    public static final int STATE_IDLE = 0;
+    public static final int STATE_PREPARED = 1;
+    public static final int STATE_CONNECTING = 2;
+    public static final int STATE_STREAMING = 3;
+
+    @IntDef({STATE_IDLE, STATE_PREPARED, STATE_CONNECTING, STATE_STREAMING})
+    @Retention(RetentionPolicy.SOURCE)
+    @interface ControlOverlayLayoutState {
+    }
 
     private View mMoveView;
     private View mFinishView;
@@ -47,6 +61,7 @@ final class ControlOverlayLayout extends OverlayLayout implements View.OnClickLi
 
         mFinishView.setOnClickListener(this);
         mStartView.setOnClickListener(this);
+        updateStreamingStatus(STATE_IDLE);
     }
 
     @Override
@@ -61,27 +76,44 @@ final class ControlOverlayLayout extends OverlayLayout implements View.OnClickLi
         }
     }
 
-    public void setStartViewEnabled(boolean enabled) {
-         mStartView.setEnabled(enabled);
-    }
-
-    public void setStartViewSelected(boolean selected) {
-         mStartView.setSelected(selected);
-    }
-
-    public void updateStreamingStatusOnUiThread(final boolean selected) {
+    public void updateStreamingStatusOnUiThread(@ControlOverlayLayoutState final int state) {
         post(new Runnable() {
             @Override
             public void run() {
-                mStartView.setSelected(selected);
-                mStartView.setEnabled(true);
-                updateLoadingView(false);
+                updateStreamingStatus(state);
             }
         });
     }
 
-    public void updateLoadingView(boolean isLoading) {
-        mLoadingView.setVisibility(isLoading ? View.VISIBLE : View.GONE);
+    public void updateStreamingStatus(@ControlOverlayLayoutState int state) {
+        switch(state) {
+            case STATE_IDLE:
+                mStartView.setEnabled(false);
+                mStartView.setSelected(false);
+                mLoadingView.setVisibility(View.GONE);
+                mStreamingTimeView.setVisibility(View.GONE);
+                break;
+            case STATE_PREPARED:
+                mStartView.setEnabled(true);
+                mStartView.setSelected(false);
+                mLoadingView.setVisibility(View.GONE);
+                mStreamingTimeView.setVisibility(View.GONE);
+                break;
+            case STATE_CONNECTING:
+                mStartView.setEnabled(false);
+                mStartView.setSelected(false);
+                mLoadingView.setVisibility(View.VISIBLE);
+                mStreamingTimeView.setVisibility(View.GONE);
+                break;
+            case STATE_STREAMING:
+                mStartView.setEnabled(true);
+                mStartView.setSelected(true);
+                mLoadingView.setVisibility(View.GONE);
+                mStreamingTimeView.setVisibility(View.VISIBLE);
+                break;
+            default:
+                break;
+        }
     }
 
     public void updateStreamingTimeView(long seconds, boolean isStreaming) {
