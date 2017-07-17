@@ -2,30 +2,20 @@ package io.straas.android.sdk.streaming.demo.screencast;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.annotation.IntDef;
 import android.text.format.DateUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-
 import io.straas.android.sdk.demo.R;
+
+import static io.straas.android.sdk.streaming.StreamManager.STATE_CONNECTING;
+import static io.straas.android.sdk.streaming.StreamManager.STATE_IDLE;
+import static io.straas.android.sdk.streaming.StreamManager.STATE_PREPARED;
+import static io.straas.android.sdk.streaming.StreamManager.STATE_STREAMING;
 
 @SuppressLint("ViewConstructor")
 final class ControlOverlayLayout extends OverlayLayout implements View.OnClickListener {
-
-    public static final int STATE_IDLE = 0;
-    public static final int STATE_PREPARED = 1;
-    public static final int STATE_CONNECTING = 2;
-    public static final int STATE_STREAMING = 3;
-
-    @IntDef({STATE_IDLE, STATE_PREPARED, STATE_CONNECTING, STATE_STREAMING})
-    @Retention(RetentionPolicy.SOURCE)
-    @interface ControlOverlayLayoutState {
-    }
-
     private View mMoveView;
     private View mFinishView;
     private View mStartView;
@@ -76,7 +66,7 @@ final class ControlOverlayLayout extends OverlayLayout implements View.OnClickLi
         }
     }
 
-    public void updateStreamingStatusOnUiThread(@ControlOverlayLayoutState final int state) {
+    public void updateStreamingStatusOnUiThread(final int state) {
         post(new Runnable() {
             @Override
             public void run() {
@@ -85,7 +75,7 @@ final class ControlOverlayLayout extends OverlayLayout implements View.OnClickLi
         });
     }
 
-    public void updateStreamingStatus(@ControlOverlayLayoutState int state) {
+    public void updateStreamingStatus(int state) {
         switch(state) {
             case STATE_IDLE:
                 mStartView.setEnabled(false);
