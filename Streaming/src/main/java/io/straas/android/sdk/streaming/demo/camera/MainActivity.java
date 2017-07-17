@@ -1,4 +1,4 @@
-package io.straas.android.sdk.streaming.demo;
+package io.straas.android.sdk.streaming.demo.camera;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
