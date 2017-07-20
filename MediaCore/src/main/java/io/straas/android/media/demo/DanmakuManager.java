@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 
 import io.straas.android.sdk.demo.R;
+import io.straas.android.sdk.messaging.ChatMetadata;
 import io.straas.android.sdk.messaging.ChatMode;
 import io.straas.android.sdk.messaging.Message;
 import io.straas.android.sdk.messaging.User;
@@ -222,6 +223,11 @@ class DanmakuManager implements Application.ActivityLifecycleCallbacks, EventLis
     @Override
     public void onPinnedMessageUpdated(@Nullable Message pinnedMessage) {
         
+    }
+
+    @Override
+    public void onMetadataUpdated(SimpleArrayMap<String, ChatMetadata> simpleArrayMap) {
+
     }
 
     @Override

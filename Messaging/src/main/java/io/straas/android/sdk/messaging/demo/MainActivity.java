@@ -10,6 +10,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import io.straas.android.sdk.demo.R;
+import io.straas.android.sdk.messaging.ChatMetadata;
 import io.straas.android.sdk.messaging.ChatMode;
 import io.straas.android.sdk.messaging.ChatroomManager;
 import io.straas.android.sdk.messaging.Message;
@@ -120,6 +121,11 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onPinnedMessageUpdated(@Nullable Message pinnedMessage) {
+
+        }
+
+        @Override
+        public void onMetadataUpdated(SimpleArrayMap<String, ChatMetadata> simpleArrayMap) {
 
         }
 
