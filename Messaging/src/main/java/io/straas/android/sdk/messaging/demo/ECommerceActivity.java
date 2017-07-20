@@ -37,6 +37,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.Random;
 
 import io.straas.android.sdk.demo.R;
+import io.straas.android.sdk.messaging.ChatMetadata;
 import io.straas.android.sdk.messaging.ChatMode;
 import io.straas.android.sdk.messaging.ChatroomManager;
 import io.straas.android.sdk.messaging.ChatroomState;
@@ -302,6 +303,11 @@ public class ECommerceActivity extends AppCompatActivity {
 
         @Override
         public void onPinnedMessageUpdated(@Nullable Message pinnedMessage) {
+
+        }
+
+        @Override
+        public void onMetadataUpdated(SimpleArrayMap<String, ChatMetadata> simpleArrayMap) {
 
         }
 

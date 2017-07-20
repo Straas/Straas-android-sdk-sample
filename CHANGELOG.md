@@ -2,6 +2,15 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.7.14
+_2017-07-20_
+
+*   straas-messaging
+    *   feat: Metadata API. See [setMetadata(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#setMetadata-java.lang.String-java.lang.Object-boolean-),  [getMetadata(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#getMetadata-java.lang.String...-), and [onMetadataUpdated(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/interfaces/EventListener.html#onMetadataUpdated-android.support.v4.util.SimpleArrayMap-).
+*   straas-media-core
+    *   feat: Improve the scalability and deliver efficiency for [low latency](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#PLAY_OPTION_LIVE_LOW_LATENCY_FIRST).
+
+
 ## Version 0.7.12
 _2017-06-23_
 
