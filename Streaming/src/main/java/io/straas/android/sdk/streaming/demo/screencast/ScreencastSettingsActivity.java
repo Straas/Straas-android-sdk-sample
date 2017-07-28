@@ -67,6 +67,7 @@ public class ScreencastSettingsActivity extends AppCompatActivity {
             Toast.makeText(ScreencastSettingsActivity.this,
                     getResources().getString(R.string.hint_screencast_support_api_level), Toast.LENGTH_SHORT).show();
             finish();
+            return;
         }
 
         mEditTitle = (EditText) findViewById(R.id.edit_title);
