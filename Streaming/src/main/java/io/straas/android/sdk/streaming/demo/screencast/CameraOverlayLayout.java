@@ -67,6 +67,8 @@ final class CameraOverlayLayout extends OverlayLayout implements TextureView.Sur
     public void initLayoutViews() {
         try {
             mCamera = Camera.open(Camera.CameraInfo.CAMERA_FACING_FRONT);
+            double cameraViewPxArea = dpAreaToPxArea(CAMERA_VIEW_SIZE_DP_AREA, getDensity(getContext()));
+            CameraHelper.setCameraPreviewSize(mCamera, (int) cameraViewPxArea);
         } catch (Exception e) {
             Log.e(TAG, "Open camera failed: " + e);
         }
