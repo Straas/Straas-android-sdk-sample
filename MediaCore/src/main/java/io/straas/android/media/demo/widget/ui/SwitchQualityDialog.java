@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 
@@ -165,8 +166,10 @@ public class SwitchQualityDialog extends DialogFragment implements
         }
         mSelectIndex = i;
 
-        if (getActivity().getSupportMediaController() != null) {
-            getActivity().getSupportMediaController().getTransportControls().sendCustomAction(
+        MediaControllerCompat controller = MediaControllerCompat.getMediaController(getActivity());
+
+        if (controller != null) {
+            controller.getTransportControls().sendCustomAction(
                     StraasMediaCore.COMMAND_SET_FORMAT_INDEX, Utils.setNewFormatIndex(
                             mFormats.indexOf(mIncreasingBandwidthFormats[i])));
         }

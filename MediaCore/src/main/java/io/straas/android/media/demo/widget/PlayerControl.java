@@ -62,7 +62,7 @@ public class PlayerControl implements MediaController.MediaPlayerControl {
     }
 
     public PlayerControl(@NonNull FragmentActivity fragmentActivity, MediaController mediaController) {
-        this(fragmentActivity.getSupportMediaController(), mediaController);
+        this(MediaControllerCompat.getMediaController(fragmentActivity), mediaController);
     }
 
     public void release() {
