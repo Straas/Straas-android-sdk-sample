@@ -2,6 +2,14 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+
+## Version 0.7.15
+_2017-09-12_
+
+Bugfix release only.
+*   fix: Allow more aggressive switching for HLS
+
+
 ## Version 0.7.14
 _2017-07-20_
 
