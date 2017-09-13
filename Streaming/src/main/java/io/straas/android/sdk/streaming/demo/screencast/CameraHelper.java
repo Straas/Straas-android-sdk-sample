@@ -2,6 +2,8 @@ package io.straas.android.sdk.streaming.demo.screencast;
 
 import android.hardware.Camera;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class CameraHelper {
@@ -12,7 +14,7 @@ public class CameraHelper {
         }
 
         Camera.Parameters parameters = camera.getParameters();
-        Camera.Size size = getClosestPreviewSize(parameters.getSupportedPreviewSizes(), cameraViewPxArea);
+        Camera.Size size = getCameraPreviewSize(parameters.getSupportedPreviewSizes(), cameraViewPxArea);
         if (size != null && size.width > 0 && size.height > 0) {
             parameters.setPreviewSize(size.width, size.height);
             camera.setParameters(parameters);
@@ -22,17 +24,27 @@ public class CameraHelper {
         return false;
     }
 
-    private static Camera.Size getClosestPreviewSize(List<Camera.Size> previewsSizes, int cameraViewPxArea) {
-        Camera.Size closestSize = null;
-        int minDiffArea = Integer.MAX_VALUE;
+    private static Camera.Size getCameraPreviewSize(List<Camera.Size> previewsSizes, int cameraViewPxArea) {
+        if (cameraViewPxArea <= 0) {
+            return null;
+        }
+
+        Collections.sort(previewsSizes, new Comparator<Camera.Size>() {
+            @Override
+            public int compare(Camera.Size lhs, Camera.Size rhs) {
+                if ((lhs.width * lhs.height) > (rhs.width * rhs.height)) {
+                    return 1;
+                } else {
+                    return -1;
+                }
+            }
+        });
+        Camera.Size cameraSize = null;
         for (Camera.Size size : previewsSizes) {
-            int diffArea = Math.abs(cameraViewPxArea - size.width * size.height);
-            if (diffArea < minDiffArea) {
-                minDiffArea = diffArea;
-                closestSize = size;
+            if (cameraViewPxArea >= size.width * size.height) {
+                return size;
             }
         }
-        return closestSize;
+        return cameraSize;
     }
-
 }
