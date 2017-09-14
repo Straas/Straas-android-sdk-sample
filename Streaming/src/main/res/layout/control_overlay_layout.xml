@@ -41,6 +41,7 @@
             android:id="@+id/screencast_overlay_elapsed_time"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
             android:gravity="center_vertical"
             android:textColor="#ffffff"
             android:visibility="gone" />

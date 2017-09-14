@@ -82,24 +82,28 @@ final class ControlOverlayLayout extends OverlayLayout implements View.OnClickLi
                 mStartView.setSelected(false);
                 mLoadingView.setVisibility(View.GONE);
                 mStreamingTimeView.setVisibility(View.GONE);
+                mFinishView.setVisibility(View.VISIBLE);
                 break;
             case STATE_PREPARED:
                 mStartView.setEnabled(true);
                 mStartView.setSelected(false);
                 mLoadingView.setVisibility(View.GONE);
                 mStreamingTimeView.setVisibility(View.GONE);
+                mFinishView.setVisibility(View.VISIBLE);
                 break;
             case STATE_CONNECTING:
                 mStartView.setEnabled(false);
                 mStartView.setSelected(false);
                 mLoadingView.setVisibility(View.VISIBLE);
                 mStreamingTimeView.setVisibility(View.GONE);
+                mFinishView.setVisibility(View.GONE);
                 break;
             case STATE_STREAMING:
                 mStartView.setEnabled(true);
                 mStartView.setSelected(true);
                 mLoadingView.setVisibility(View.GONE);
                 mStreamingTimeView.setVisibility(View.VISIBLE);
+                mFinishView.setVisibility(View.GONE);
                 break;
             default:
                 break;
