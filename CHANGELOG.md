@@ -2,6 +2,21 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.8.0
+_2017-09-15_
+
+*   **Retire deprecated methods and constants**
+*   **Target Android API 26.**
+    *   upgrade support library to [v26.0.2](https://developer.android.com/topic/libraries/support-library/revisions.html#26-0-2).
+*   feat: Upgrade okhttp to [v3.9.0](https://github.com/square/okhttp/blob/master/CHANGELOG.md#version-390).
+*   Upgrade Google Play Service to [11.2.2](https://developers.google.com/android/guides/releases#august_2017_-_version_1120).
+*   Upgrade Glide to [4.1.1](https://github.com/bumptech/glide/releases/tag/v4.1.1).
+*   straas-media-core
+    *   feat: Upgrade ExoPlayer library to [v2.5.2](https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#r252).
+*   straas-streaming
+    *   **feat: Screencast APIs. See [Wiki](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/Screencast-Streaming) for more detail.**
+    *   feat: Decide the original bitrate by resolution.
+
 
 ## Version 0.7.15
 _2017-09-12_

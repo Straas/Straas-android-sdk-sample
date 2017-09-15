@@ -1,4 +1,4 @@
-package io.straas.android.sdk.streaming.demo;
+package io.straas.android.sdk.streaming.demo.camera;
 
 import android.content.Context;
 import android.util.AttributeSet;
