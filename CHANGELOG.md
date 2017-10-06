@@ -2,6 +2,14 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.8.1
+_2017-10-06_
+
+*   straas-media-core
+    *   Add [SUBSCRIBE_CHILDREN_OPTIONS_OWNER_MEMBER_ID](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#SUBSCRIBE_CHILDREN_OPTIONS_OWNER_MEMBER_ID), then you could use it to [query the live VODs](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.html#subscribe(java.lang.String, android.os.Bundle, android.support.v4.media.MediaBrowserCompat.SubscriptionCallback)) belonging to the specific owner only.
+    *   Add [CHATROOM_NAME](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/VideoCustomMetadata.html#CHATROOM_NAME), you could use this bundle key to retrieve the associated chatroom name for [loaded MediaItem](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.ItemCallback.html#onItemLoaded(android.support.v4.media.MediaBrowserCompat.MediaItem)).
+
+
 ## Version 0.8.0
 _2017-09-15_
 
@@ -13,6 +21,7 @@ _2017-09-15_
 *   Upgrade Glide to [4.1.1](https://github.com/bumptech/glide/releases/tag/v4.1.1).
 *   straas-media-core
     *   feat: Upgrade ExoPlayer library to [v2.5.2](https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#r252).
+	*   feat: Support HLS [EXT-X-PROGRAM-DATE-TIME tag](https://tools.ietf.org/html/draft-pantos-http-live-streaming-13#section-3.4.5). See [Wiki](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/Interact-with-Video#get-playback-information) for more detail.
 *   straas-streaming
     *   **feat: Screencast APIs. See [Wiki](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/Screencast-Streaming) for more detail.**
     *   feat: Decide the original bitrate by resolution.
