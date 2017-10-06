@@ -7,7 +7,6 @@ _2017-10-06_
 
 *   straas-media-core
     *   Add [SUBSCRIBE_CHILDREN_OPTIONS_OWNER_MEMBER_ID](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#SUBSCRIBE_CHILDREN_OPTIONS_OWNER_MEMBER_ID), then you could use it to [query the live VODs](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.html#subscribe(java.lang.String%2C%20android.os.Bundle%2C%20android.support.v4.media.MediaBrowserCompat.SubscriptionCallback)) belonging to the specific owner only.
-    *   Add [CHATROOM_NAME](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/VideoCustomMetadata.html#CHATROOM_NAME), you could use this bundle key to retrieve the associated chatroom name for [loaded MediaItem](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.ItemCallback.html#onItemLoaded(android.support.v4.media.MediaBrowserCompat.MediaItem)).
 
 
 ## Version 0.8.0
