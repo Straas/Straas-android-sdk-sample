@@ -2,6 +2,13 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.8.1
+_2017-10-06_
+
+*   straas-media-core
+    *   Add [SUBSCRIBE_CHILDREN_OPTIONS_OWNER_MEMBER_ID](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#SUBSCRIBE_CHILDREN_OPTIONS_OWNER_MEMBER_ID), then you could use it to [query the live VODs](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.html#subscribe(java.lang.String%2C%20android.os.Bundle%2C%20android.support.v4.media.MediaBrowserCompat.SubscriptionCallback)) belonging to the specific owner only.
+
+
 ## Version 0.8.0
 _2017-09-15_
 
