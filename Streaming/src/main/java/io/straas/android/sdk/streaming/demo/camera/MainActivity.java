@@ -32,6 +32,7 @@ import io.straas.android.sdk.streaming.CameraController;
 import io.straas.android.sdk.streaming.LiveEventConfig;
 import io.straas.android.sdk.streaming.StreamConfig;
 import io.straas.android.sdk.streaming.StreamManager;
+import io.straas.android.sdk.streaming.StreamStatsReport;
 import io.straas.android.sdk.streaming.demo.filter.GPUImageSupportFilter;
 import io.straas.android.sdk.streaming.demo.filter.GrayImageFilter;
 import io.straas.android.sdk.streaming.error.StreamException.LiveCountLimitException;
@@ -309,6 +310,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private EventListener mEventListener = new EventListener() {
+        @Override
+        public void onStreamStatsReportUpdate(StreamStatsReport streamStatsReport) {
+        }
         @Override
         public void onError(Exception error, @Nullable String liveId) {
             Log.e(TAG, "onError " + error);
