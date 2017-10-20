@@ -2,6 +2,13 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.8.2
+_2017-10-20_
+
+*   straas-media-core
+    *   Add [COVER_URL](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/VideoCustomMetadata.html#COVER_URL), then you could use it to get the image url shown in the StraaS web player when the live streaming is off air from the description extras of [MediaItem](https://developer.android.com/reference/android/media/browse/MediaBrowser.MediaItem.html). See [Wiki](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/Browse-items#interact-with-live-details-from-mediaitem) for more detail.
+
+
 ## Version 0.8.1
 _2017-10-06_
 
