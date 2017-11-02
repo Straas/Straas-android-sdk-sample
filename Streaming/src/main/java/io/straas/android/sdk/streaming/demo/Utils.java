@@ -8,8 +8,8 @@ import io.straas.android.sdk.streaming.StreamStatsReport;
 public class Utils {
 
     public static String toDisplayText(Context context, StreamStatsReport streamStatsReport) {
-        String bitrate = formatBitrate(context, streamStatsReport.getBitrate());
-        return  String.format("%s\n%.1f fps", bitrate,
+        String bitrateString = formatBitrate(context, streamStatsReport.getBitrate());
+        return context.getResources().getString(R.string.stream_stats_format, bitrateString,
                 streamStatsReport.getFps());
     }
 
@@ -17,15 +17,15 @@ public class Utils {
         float result = number;
         int suffix = R.string.bps;
         if (result > 900) {
-            suffix = R.string.kiloBps;
+            suffix = R.string.kilo_bps;
             result = result / 1024;
         }
         if (result > 900) {
-            suffix = R.string.megaBps;
+            suffix = R.string.mega_bps;
             result = result / 1024;
         }
         if (result > 900) {
-            suffix = R.string.gigaBps;
+            suffix = R.string.giga_bps;
             result = result / 1024;
         }
         String value;
@@ -38,7 +38,7 @@ public class Utils {
         } else {
             value = String.format("%.0f", result);
         }
-        return context.getResources().getString(R.string.bitrateSuffix, value,
+        return context.getResources().getString(R.string.bitrate_suffix, value,
                 context.getString(suffix));
     }
 }

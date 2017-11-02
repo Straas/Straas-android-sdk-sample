@@ -324,7 +324,6 @@ public class MainActivity extends AppCompatActivity {
             if (mStreamManager.getStreamState() == STATE_CONNECTING ||
                     mStreamManager.getStreamState() == STATE_STREAMING) {
                 mStreamStats.setText(Utils.toDisplayText(MainActivity.this, streamStatsReport));
-
             }
         }
         @Override
