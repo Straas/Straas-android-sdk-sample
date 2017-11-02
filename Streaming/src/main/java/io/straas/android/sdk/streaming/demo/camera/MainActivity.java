@@ -15,6 +15,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
@@ -33,6 +34,7 @@ import io.straas.android.sdk.streaming.LiveEventConfig;
 import io.straas.android.sdk.streaming.StreamConfig;
 import io.straas.android.sdk.streaming.StreamManager;
 import io.straas.android.sdk.streaming.StreamStatsReport;
+import io.straas.android.sdk.streaming.demo.Utils;
 import io.straas.android.sdk.streaming.demo.filter.GPUImageSupportFilter;
 import io.straas.android.sdk.streaming.demo.filter.GrayImageFilter;
 import io.straas.android.sdk.streaming.error.StreamException.LiveCountLimitException;
@@ -44,6 +46,8 @@ import static io.straas.android.sdk.demo.R.id.filter;
 import static io.straas.android.sdk.demo.R.id.flash;
 import static io.straas.android.sdk.demo.R.id.switch_camera;
 import static io.straas.android.sdk.demo.R.id.trigger;
+import static io.straas.android.sdk.streaming.StreamManager.STATE_CONNECTING;
+import static io.straas.android.sdk.streaming.StreamManager.STATE_STREAMING;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private TextureView mTextureView;
     private EditText mEditTitle;
     private EditText mEditSynopsis;
+    private TextView mStreamStats;
     private Button btn_trigger, btn_switch, btn_flash, btn_filter;
     private int mFilter = 0;
     private String mLiveId;
@@ -91,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         btn_filter = (Button) findViewById(filter);
         mEditTitle = (EditText) findViewById(R.id.edit_title);
         mEditSynopsis = (EditText) findViewById(R.id.edit_synopsis);
+        mStreamStats = (TextView) findViewById(R.id.stream_stats);
 
         checkPermissions();
     }
@@ -178,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             Log.e(TAG, "Create live event fails: " + error);
                             btn_trigger.setText(getResources().getString(R.string.start));
+                            mStreamStats.setText("");
                         }
                     }
                 });
@@ -214,6 +221,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Log.e(TAG, "Start streaming fails " + task.getException());
                     btn_trigger.setText(getResources().getString(R.string.start));
+                    mStreamStats.setText("");
                 }
             }
         });
@@ -230,6 +238,7 @@ public class MainActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     Log.d(TAG, "Stop succeeds");
                     btn_trigger.setText(getResources().getString(R.string.start));
+                    mStreamStats.setText("");
                     btn_trigger.setEnabled(true);
                     endLiveEvent();
                 } else {
@@ -312,11 +321,16 @@ public class MainActivity extends AppCompatActivity {
     private EventListener mEventListener = new EventListener() {
         @Override
         public void onStreamStatsReportUpdate(StreamStatsReport streamStatsReport) {
+            if (mStreamManager.getStreamState() == STATE_CONNECTING ||
+                    mStreamManager.getStreamState() == STATE_STREAMING) {
+                mStreamStats.setText(Utils.toDisplayText(MainActivity.this, streamStatsReport));
+            }
         }
         @Override
         public void onError(Exception error, @Nullable String liveId) {
             Log.e(TAG, "onError " + error);
             btn_trigger.setText(getResources().getString(R.string.start));
+            mStreamStats.setText("");
         }
     };
 }
