@@ -2,6 +2,16 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.8.3
+_2017-11-10_
+
+*   straas-streaming
+    *   feat: Add [getStreamStatsReport](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#getStreamStatsReport--), you can use it to retrieve the current stream statistics such as bitrate and fps from [StreamStatsReport](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamStatsReport.html
+). See [Wiki](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/Streaming#get-streamstatsreport) for more detail.
+*   straas-media-core
+    *   fix: [Notification](https://developer.android.com/reference/android/app/Notification.html) button of [foreground-service](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/Interact-with-Video#foreground-service) doesn't work.
+
+
 ## Version 0.8.2
 _2017-10-20_
 
@@ -27,6 +37,7 @@ _2017-09-15_
 *   Upgrade Glide to [4.1.1](https://github.com/bumptech/glide/releases/tag/v4.1.1).
 *   straas-media-core
     *   feat: Upgrade ExoPlayer library to [v2.5.2](https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#r252).
+    *   feat: Support HLS [EXT-X-PROGRAM-DATE-TIME tag](https://tools.ietf.org/html/draft-pantos-http-live-streaming-13#section-3.4.5). See [Wiki](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/Interact-with-Video#get-playback-information) for more detail.
 *   straas-streaming
     *   **feat: Screencast APIs. See [Wiki](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/Screencast-Streaming) for more detail.**
     *   feat: Decide the original bitrate by resolution.

@@ -33,6 +33,7 @@ import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.streaming.LiveEventConfig;
 import io.straas.android.sdk.streaming.ScreencastStreamConfig;
 import io.straas.android.sdk.streaming.StreamManager;
+import io.straas.android.sdk.streaming.StreamStatsReport;
 import io.straas.android.sdk.streaming.error.StreamException.LiveCountLimitException;
 import io.straas.android.sdk.streaming.interfaces.EventListener;
 import io.straas.android.sdk.streaming.screencast.ScreencastSession;
@@ -94,6 +95,9 @@ public final class MyScreencastSession implements ScreencastSession {
     }
 
     private EventListener mEventListener = new EventListener() {
+        @Override
+        public void onStreamStatsReportUpdate(StreamStatsReport streamStatsReport) {
+        }
         @Override
         public void onError(Exception error, @Nullable String liveId) {
             Log.e(TAG, "onError " + error);
