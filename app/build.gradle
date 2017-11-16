@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "25.0.3"
+    buildToolsVersion "26.0.3"
 
     defaultConfig {
         applicationId "io.straas.android.sdk.demo"
@@ -37,23 +37,23 @@ android {
 }
 
 dependencies {
-    compile "io.straas.android.sdk:straas-extension-ima:${STRAAS_SDK_VERSION}"
+    implementation "io.straas.android.sdk:straas-extension-ima:${STRAAS_SDK_VERSION}"
     // use this if don't want to include video ads
     //compile "io.straas.android.sdk:straas-media-core:${STRAAS_SDK_VERSION}"
 
     // optional, only for danmaku effect demo
-    compile 'com.github.ctiao:DanmakuFlameMaster:0.8.3'
+    implementation 'com.github.ctiao:DanmakuFlameMaster:0.8.3'
 
     // optional, only for playing DASH link via playFromUri
-    compile 'com.google.android.exoplayer:exoplayer-dash:r2.5.2'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:r2.5.2'
 
-    compile "io.straas.android.sdk:straas-messaging-ui:${STRAAS_SDK_VERSION}"
+    implementation "io.straas.android.sdk:straas-messaging-ui:${STRAAS_SDK_VERSION}"
 
-    compile "io.straas.android.sdk:straas-streaming:${STRAAS_SDK_VERSION}"
+    implementation "io.straas.android.sdk:straas-streaming:${STRAAS_SDK_VERSION}"
 
     // optional, demo for filter usage
-    compile 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
+    implementation 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
 
     // optional, demo for Aggregated data effect
-    compile 'tyrant:heartlayout:1.0.1'
+    implementation 'tyrant:heartlayout:1.0.1'
 }
