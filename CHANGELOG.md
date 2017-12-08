@@ -2,6 +2,14 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.8.4
+_2017-12-08_
+
+*   feat: Upgrade build tool version to 3.0.0.
+*   straas-extension-ima
+    *   feat: Improve [Ad Integration](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/Ad-Integration) experience.
+
+
 ## Version 0.8.3
 _2017-11-10_
 
