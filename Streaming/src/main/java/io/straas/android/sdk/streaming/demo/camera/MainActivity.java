@@ -87,16 +87,16 @@ public class MainActivity extends AppCompatActivity {
                         return preview();
                     }
                 });
-        mTextureView = (TextureView) findViewById(R.id.preview);
+        mTextureView = findViewById(R.id.preview);
         mTextureView.setKeepScreenOn(true);
 
-        btn_trigger = (Button) findViewById(trigger);
-        btn_switch = (Button) findViewById(switch_camera);
-        btn_flash = (Button) findViewById(flash);
-        btn_filter = (Button) findViewById(filter);
-        mEditTitle = (EditText) findViewById(R.id.edit_title);
-        mEditSynopsis = (EditText) findViewById(R.id.edit_synopsis);
-        mStreamStats = (TextView) findViewById(R.id.stream_stats);
+        btn_trigger = findViewById(trigger);
+        btn_switch = findViewById(switch_camera);
+        btn_flash = findViewById(flash);
+        btn_filter = findViewById(filter);
+        mEditTitle = findViewById(R.id.edit_title);
+        mEditSynopsis = findViewById(R.id.edit_synopsis);
+        mStreamStats = findViewById(R.id.stream_stats);
 
         checkPermissions();
     }

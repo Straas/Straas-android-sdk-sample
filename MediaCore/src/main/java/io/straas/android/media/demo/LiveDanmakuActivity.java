@@ -41,9 +41,9 @@ public class LiveDanmakuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_live_danmaku);
-        mAspectRatioFrameLayout = (AspectRatioFrameLayout) findViewById(R.id.aspectRatioFrameLayout);
+        mAspectRatioFrameLayout = findViewById(R.id.aspectRatioFrameLayout);
 
-        StraasPlayerView playerView = (StraasPlayerView) findViewById(R.id.straas);
+        StraasPlayerView playerView = findViewById(R.id.straas);
         playerView.initialize(this);
 
         mStraasMediaCore = new StraasMediaCore(playerView, MemberIdentity.ME,
@@ -56,8 +56,8 @@ public class LiveDanmakuActivity extends AppCompatActivity {
                 });
         getMediaBrowser().connect();
 
-        mChatroomOutputView = (ChatroomOutputView) findViewById(R.id.chat_room);
-        mChatroomInputView = (ChatroomInputView) findViewById(android.R.id.inputArea);
+        mChatroomOutputView = findViewById(R.id.chat_room);
+        mChatroomInputView = findViewById(android.R.id.inputArea);
         handleConfiguration(getResources().getConfiguration());
         mDanmakuManager = new DanmakuManager(new DanmakuSurfaceView(this));
         playerView.addView(mDanmakuManager.getDanmakuView(),

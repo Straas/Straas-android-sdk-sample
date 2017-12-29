@@ -204,18 +204,18 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mImageButtonBackground = Build.VERSION.SDK_INT > 21 ? typedArray.getResourceId(0, 0) : 0;
         typedArray.recycle();
 
-        mControllerContainer = Utils.getView(straasMainContainer, R.id.controllerContainer);
+        mControllerContainer = straasMainContainer.findViewById(R.id.controllerContainer);
 
-        Utils.getView(straasMainContainer, R.id.upContainer).setBackground(
+        straasMainContainer.findViewById(R.id.upContainer).setBackground(
                 new GradientDrawable(GradientDrawable.Orientation.BOTTOM_TOP,
                         new int[]{ContextCompat.getColor(mThemeContext, android.R.color.transparent),
                                 ContextCompat.getColor(mThemeContext, R.color.color_controller_background_dark)}));
-        Utils.getView(straasMainContainer, R.id.bottomContainer).setBackground(
+        straasMainContainer.findViewById(R.id.bottomContainer).setBackground(
                 new GradientDrawable(GradientDrawable.Orientation.TOP_BOTTOM,
                         new int[]{ContextCompat.getColor(mThemeContext, android.R.color.transparent),
                                 ContextCompat.getColor(mThemeContext, R.color.color_controller_background_dark)}));
 
-        mVideoView = Utils.getView(straasMainContainer, R.id.videoSurfaceView);
+        mVideoView = straasMainContainer.findViewById(R.id.videoSurfaceView);
 
         initColumn(straasMainContainer);
 
@@ -289,7 +289,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             }
         }
 
-        mAdView = Utils.getView(straasMainContainer, R.id.adSurfaceView);
+        mAdView = straasMainContainer.findViewById(R.id.adSurfaceView);
         addView(straasMainContainer);
 
         setAutoHideControllerUiWhenTouch(true);
@@ -593,24 +593,24 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     }
 
     private void initColumn(View root) {
-        mColumnSummaryViewer = Utils.getView(root, R.id.summaryViewerColumn);
-        mColumnChannelName = Utils.getView(root, R.id.channelNameColumn);
-        mColumnLoadingBar = Utils.getView(root, R.id.loadingBarProgressColumn);
-        mColumnContentSeekBar = Utils.getView(root, R.id.contentProgressBarColumn);
-        mColumnPlay = Utils.getView(root, R.id.playColumn);
-        mColumnPause = Utils.getView(root, R.id.pauseColumn);
-        mColumnReplay = Utils.getView(root, R.id.replayColumn);
-        mColumnPrevious = Utils.getView(root, R.id.previousColumn);
-        mColumnNext = Utils.getView(root, R.id.nextColumn);
-        mColumnPlayPause = Utils.getView(root, R.id.playPauseColumn);
-        mColumnAdPlay = Utils.getView(root, R.id.adPlayColumn);
-        mColumnErrorMessage = Utils.getView(root, R.id.errorMessageColumn);
-        mColumnBroadcastState = Utils.getView(root, R.id.onLineOfflineColumn);
+        mColumnSummaryViewer = root.findViewById(R.id.summaryViewerColumn);
+        mColumnChannelName = root.findViewById(R.id.channelNameColumn);
+        mColumnLoadingBar = root.findViewById(R.id.loadingBarProgressColumn);
+        mColumnContentSeekBar = root.findViewById(R.id.contentProgressBarColumn);
+        mColumnPlay = root.findViewById(R.id.playColumn);
+        mColumnPause = root.findViewById(R.id.pauseColumn);
+        mColumnReplay = root.findViewById(R.id.replayColumn);
+        mColumnPrevious = root.findViewById(R.id.previousColumn);
+        mColumnNext = root.findViewById(R.id.nextColumn);
+        mColumnPlayPause = root.findViewById(R.id.playPauseColumn);
+        mColumnAdPlay = root.findViewById(R.id.adPlayColumn);
+        mColumnErrorMessage = root.findViewById(R.id.errorMessageColumn);
+        mColumnBroadcastState = root.findViewById(R.id.onLineOfflineColumn);
 
-        mColumnTopRight = Utils.getView(root, R.id.customColumnTopRight);
-        mColumnBottomLeft = Utils.getView(root, R.id.bottomLeftColumn);
-        mColumnBottomRight1 = Utils.getView(root, R.id.bottomRightColumn1);
-        mColumnBottomRight2 = Utils.getView(root, R.id.bottomRightColumn2);
+        mColumnTopRight = root.findViewById(R.id.customColumnTopRight);
+        mColumnBottomLeft = root.findViewById(R.id.bottomLeftColumn);
+        mColumnBottomRight1 = root.findViewById(R.id.bottomRightColumn1);
+        mColumnBottomRight2 = root.findViewById(R.id.bottomRightColumn2);
 
         mCustomColumnList.put(CUSTOM_COLUMN_TOP_RIGHT, mColumnTopRight);
         mCustomColumnList.put(CUSTOM_COLUMN_BOTTOM_LEFT, mColumnBottomLeft);
@@ -1141,7 +1141,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             if (broadcastStateView == null) {
                 return;
             }
-            TextView textView = Utils.getView(broadcastStateView, android.R.id.text1);
+            TextView textView = broadcastStateView.findViewById(android.R.id.text1);
             if (textView == null) {
                 return;
             }
@@ -1154,7 +1154,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             if (broadcastStateView == null) {
                 return;
             }
-            TextView textView = Utils.getView(broadcastStateView, android.R.id.text1);
+            TextView textView = broadcastStateView.findViewById(android.R.id.text1);
             if (textView == null) {
                 return;
             }
@@ -1172,7 +1172,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             if (broadcastStateView == null) {
                 return;
             }
-            TextView textView = Utils.getView(broadcastStateView, android.R.id.text1);
+            TextView textView = broadcastStateView.findViewById(android.R.id.text1);
             if (textView == null) {
                 return;
             }

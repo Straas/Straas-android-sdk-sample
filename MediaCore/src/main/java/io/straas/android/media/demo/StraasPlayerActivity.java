@@ -57,12 +57,12 @@ public class StraasPlayerActivity extends AppCompatActivity {
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
 
-        AspectRatioFrameLayout aspectRatioFrameLayout = (AspectRatioFrameLayout) findViewById(R.id.straasPlayer);
+        AspectRatioFrameLayout aspectRatioFrameLayout = findViewById(R.id.straasPlayer);
         if (aspectRatioFrameLayout != null) {
             aspectRatioFrameLayout.setAspectRatio(1.778f);
         }
 
-        final StraasPlayerView playerView = (StraasPlayerView) findViewById(R.id.straas);
+        final StraasPlayerView playerView = findViewById(R.id.straas);
         playerView.initialize(this);
 
         getSupportLoaderManager().initLoader(0, null, new LoaderManager.LoaderCallbacks<StraasMediaCore>() {
@@ -92,7 +92,7 @@ public class StraasPlayerActivity extends AppCompatActivity {
 
             }
         });
-        RecyclerView recyclerView = (RecyclerView) findViewById(android.R.id.list);
+        RecyclerView recyclerView = findViewById(android.R.id.list);
         if (recyclerView == null) {
             return;
         }

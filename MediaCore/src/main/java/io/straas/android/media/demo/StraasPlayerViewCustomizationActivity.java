@@ -38,10 +38,10 @@ public class StraasPlayerViewCustomizationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.straas_player_customization);
 
-        AspectRatioFrameLayout aspectRatioFrameLayout = (AspectRatioFrameLayout) findViewById(R.id.straasPlayer);
+        AspectRatioFrameLayout aspectRatioFrameLayout = findViewById(R.id.straasPlayer);
         aspectRatioFrameLayout.setAspectRatio(1.778f);
 
-        mStraasPlayerView = (StraasPlayerView) findViewById(R.id.straas);
+        mStraasPlayerView = findViewById(R.id.straas);
         mStraasPlayerView.initialize(this);
 
         mStraasMediaCore = new StraasMediaCore(mStraasPlayerView, MemberIdentity.ME, mCallback)

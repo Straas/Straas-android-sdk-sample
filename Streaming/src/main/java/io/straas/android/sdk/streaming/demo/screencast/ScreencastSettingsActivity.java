@@ -70,9 +70,9 @@ public class ScreencastSettingsActivity extends AppCompatActivity {
             return;
         }
 
-        mEditTitle = (EditText) findViewById(R.id.edit_title);
-        mEditSynopsis = (EditText) findViewById(R.id.edit_synopsis);
-        mVideoQualitySpinner = (Spinner)findViewById(R.id.quality_spinner);
+        mEditTitle = findViewById(R.id.edit_title);
+        mEditSynopsis = findViewById(R.id.edit_synopsis);
+        mVideoQualitySpinner = findViewById(R.id.quality_spinner);
         final String[] pictureQualityList = getResources().getStringArray(R.array.video_quality_list);
         ArrayAdapter<String> pictureQualityListAdapter = new ArrayAdapter<>(ScreencastSettingsActivity.this,
                 android.R.layout.simple_spinner_dropdown_item, pictureQualityList);
