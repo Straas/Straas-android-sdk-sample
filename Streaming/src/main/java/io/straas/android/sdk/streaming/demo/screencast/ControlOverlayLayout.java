@@ -47,7 +47,7 @@ final class ControlOverlayLayout extends OverlayLayout implements View.OnClickLi
         mFinishView = findViewById(R.id.screencast_overlay_finish);
         mStartView = findViewById(R.id.screencast_overlay_start);
         mLoadingView = findViewById(R.id.screencast_overlay_loading);
-        mStreamingTimeView = (TextView) findViewById(R.id.screencast_overlay_elapsed_time);
+        mStreamingTimeView = findViewById(R.id.screencast_overlay_elapsed_time);
 
         mFinishView.setOnClickListener(this);
         mStartView.setOnClickListener(this);

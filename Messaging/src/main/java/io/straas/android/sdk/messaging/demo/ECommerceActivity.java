@@ -73,7 +73,7 @@ public class ECommerceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_e_commerce);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -83,14 +83,14 @@ public class ECommerceActivity extends AppCompatActivity {
 
         getWindow().setBackgroundDrawable(ContextCompat.getDrawable(ECommerceActivity.this,
                 R.drawable.e_commerce_background));
-        mHeartLayout = (HeartLayout) findViewById(R.id.heart);
-        mInputBar = (ViewGroup) findViewById(R.id.inputBar);
-        mControlBar = (ViewGroup) findViewById(R.id.controlBar);
-        mInput = (BackHandleEditText) findViewById(android.R.id.edit);
+        mHeartLayout = findViewById(R.id.heart);
+        mInputBar = findViewById(R.id.inputBar);
+        mControlBar = findViewById(R.id.controlBar);
+        mInput = findViewById(android.R.id.edit);
         mInput.setOnBackPressListener(mOnBackPressListener);
         findViewById(R.id.btnSend).setOnClickListener(mOnSendListener);
 
-        mChatroomOutputView = (ChatroomOutputView) findViewById(R.id.chat_room);
+        mChatroomOutputView = findViewById(R.id.chat_room);
         mChatroomOutputView.setEventListener(mEventListener);
         mChatroomOutputView.setMessageItemCustomView(R.layout.message_item_e_commerce);
         mChatroomOutputView.setVerticalScrollBarEnabled(false);

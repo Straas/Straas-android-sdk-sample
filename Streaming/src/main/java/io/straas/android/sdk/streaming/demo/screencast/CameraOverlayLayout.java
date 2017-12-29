@@ -72,7 +72,7 @@ final class CameraOverlayLayout extends OverlayLayout implements TextureView.Sur
         } catch (Exception e) {
             Log.e(TAG, "Open camera failed: " + e);
         }
-        mTextureView = (TextureView) findViewById(R.id.camera_preview);
+        mTextureView = findViewById(R.id.camera_preview);
         resetOrientation(true);
         mTextureView.setSurfaceTextureListener(this);
         if (mTextureView.getSurfaceTexture() != null) {

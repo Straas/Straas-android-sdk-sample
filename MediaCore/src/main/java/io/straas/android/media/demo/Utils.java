@@ -40,16 +40,6 @@ public class Utils {
                 .getDescription().getExtras().getString(StraasMediaCore.KEY_PAGE_TOKEN);
     }
 
-    @SuppressWarnings("unchecked")
-    public static <E extends View> E getView(Activity activity, int id) {
-        return (E)activity.findViewById(id);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <E extends View> E getView(View view, int id) {
-        return (E) view.findViewById(id);
-    }
-
     public static void toggleViewVisibilityWithAnimation(long autoHideDelayMs, View... views) {
         for (View view: views) {
             if (view.getVisibility() == VISIBLE) {

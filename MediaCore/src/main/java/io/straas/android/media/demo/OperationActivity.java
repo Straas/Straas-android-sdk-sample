@@ -57,15 +57,15 @@ public class OperationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operation);
-        AspectRatioFrameLayout mAspectRatioFrameLayout = (AspectRatioFrameLayout) findViewById(R.id.aspectRatioFrameLayout);
+        AspectRatioFrameLayout mAspectRatioFrameLayout = findViewById(R.id.aspectRatioFrameLayout);
         mAspectRatioFrameLayout.setAspectRatio(1.778f);
 
-        StraasPlayerView playerView = (StraasPlayerView) findViewById(R.id.straas);
+        StraasPlayerView playerView = findViewById(R.id.straas);
         playerView.initialize(this);
 
         prepareEditText();
-        mLowLatencyFirst = (Checkable) findViewById(R.id.low_latency_first);
-        mDisableAudioSwitch = (Checkable) findViewById(R.id.disableAudio);
+        mLowLatencyFirst = findViewById(R.id.low_latency_first);
+        mDisableAudioSwitch = findViewById(R.id.disableAudio);
 
         mStraasMediaCore = new StraasMediaCore(playerView, MemberIdentity.ME,
                 new ConnectionCallback() {
@@ -89,7 +89,7 @@ public class OperationActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        StraasPlayerView playerView = (StraasPlayerView) findViewById(R.id.straas);
+        StraasPlayerView playerView = findViewById(R.id.straas);
         playerView.hideControllerViews();
 
         getMediaBrowser().connect();
@@ -362,9 +362,9 @@ public class OperationActivity extends AppCompatActivity {
     };
 
     private void prepareEditText() {
-        TextView vod = (TextView) findViewById(R.id.vod);
-        TextView live = (TextView) findViewById(R.id.live);
-        TextView playlist = (TextView) findViewById(R.id.playlist);
+        TextView vod = findViewById(R.id.vod);
+        TextView live = findViewById(R.id.live);
+        TextView playlist = findViewById(R.id.playlist);
         if (!TextUtils.isEmpty(VIDEO_ID)) {
             vod.setText(VIDEO_ID);
         }
