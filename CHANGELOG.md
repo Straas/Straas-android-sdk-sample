@@ -2,10 +2,20 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.8.6
+_2018-01-10_
+
+*   straas-media-core
+    *   fix: Player projection mode operates abnormally issue.
+*   straas-streaming
+    *   change: Move proguard classes and interfaces to a specified package.
+
+
 ## Version 0.8.5
 _2017-12-29_
 
-*   feat: Add [start_time](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/VideoCustomMetadata.html#START_TIME) for more scenarios.
+*   straas-media-core
+    *   feat: Add [start_time](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/VideoCustomMetadata.html#START_TIME) for more scenarios.
 
 
 ## Version 0.8.4
