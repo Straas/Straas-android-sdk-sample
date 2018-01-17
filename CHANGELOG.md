@@ -2,6 +2,14 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.9.0
+_2018-01-17_
+
+*   **Target Android API 27.**
+    *   upgrade support library to [v27.0.2](https://developer.android.com/topic/libraries/support-library/revisions.html#27-0-2).
+    *   fix: Click emoticon list button will crash when target Android API is 27.
+
+
 ## Version 0.8.6
 _2018-01-10_
 
