@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     private CameraController mCameraController;
     private TextureView mTextureView;
     private EditText mEditTitle;
-    private EditText mEditSynopsis;
     private TextView mStreamStats;
     private Button btn_trigger, btn_switch, btn_flash, btn_filter;
     private int mFilter = 0;
@@ -95,7 +94,6 @@ public class MainActivity extends AppCompatActivity {
         btn_flash = findViewById(flash);
         btn_filter = findViewById(filter);
         mEditTitle = findViewById(R.id.edit_title);
-        mEditSynopsis = findViewById(R.id.edit_synopsis);
         mStreamStats = findViewById(R.id.stream_stats);
 
         checkPermissions();
@@ -161,17 +159,16 @@ public class MainActivity extends AppCompatActivity {
         btn_filter.setEnabled(true);
     }
 
-    private void startStreaming(String title, String synopsis) {
+    private void createLiveEventAndStartStreaming(String title) {
         mStreamManager.createLiveEvent(new LiveEventConfig.Builder()
                 .title(title)
-                .synopsis(synopsis)
                 .build())
                 .addOnSuccessListener(new OnSuccessListener<String>() {
                     @Override
                     public void onSuccess(String liveId) {
                         Log.d(TAG, "Create live event succeeds: " + liveId);
                         mLiveId = liveId;
-                        startStreaming(mLiveId);
+                        startStreamingWithLiveId(mLiveId);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -180,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                         if (error instanceof LiveCountLimitException){
                             mLiveId = ((LiveCountLimitException)error).getLiveId();
                             Log.d(TAG, "Existing live event: " + mLiveId);
-                            startStreaming(mLiveId);
+                            startStreamingWithLiveId(mLiveId);
                         } else {
                             Log.e(TAG, "Create live event fails: " + error);
                             btn_trigger.setText(getResources().getString(R.string.start));
@@ -190,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void startStreaming(final String liveId) {
+    private void startStreamingWithLiveId(final String liveId) {
         mStreamManager.startStreamingWithLiveId(liveId).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -264,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
         if (btn_trigger.getText().equals(getResources().getString(R.string.start))) {
             if (mStreamManager != null) {
                 btn_trigger.setText(getResources().getString(R.string.stop));
-                startStreaming(mEditTitle.getText().toString(), mEditSynopsis.getText().toString());
+                createLiveEventAndStartStreaming(mEditTitle.getText().toString());
             }
         } else {
             btn_trigger.setEnabled(false);

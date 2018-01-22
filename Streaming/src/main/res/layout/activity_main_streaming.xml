@@ -54,27 +54,11 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <EditText
+        android:id="@+id/edit_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/operation"
-        android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/edit_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="title"
-            android:text="Default title"/>
-
-        <EditText
-            android:id="@+id/edit_synopsis"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="synopsis"
-            android:text="Default synopsis"/>
-
-    </LinearLayout>
+        android:layout_below="@id/operation"/>
 
     <TextView
         android:id="@+id/stream_stats"
