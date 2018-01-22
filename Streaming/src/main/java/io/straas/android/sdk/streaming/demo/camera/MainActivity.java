@@ -191,9 +191,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startStreaming(final String liveId) {
-        mStreamManager.startStreaming(liveId).addOnCompleteListener(new OnCompleteListener<String>() {
+        mStreamManager.startStreamingWithLiveId(liveId).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task<String> task) {
+            public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Log.d(TAG, "Start streaming succeeds");
                     // remove StraasMediaCore if you don't need to receive live event, e.g. CCU
@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void endLiveEvent() {
         if (mStreamManager != null || !TextUtils.isEmpty(mLiveId)) {
-            mStreamManager.cleanLiveEvent(mLiveId).addOnSuccessListener(new OnSuccessListener<Void>() {
+            mStreamManager.endLiveEvent(mLiveId).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
                     Log.d(TAG, "End live event succeeds: " + mLiveId);
