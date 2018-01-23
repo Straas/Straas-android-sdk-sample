@@ -161,9 +161,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        if (mStreamManager != null) {
-            mStreamManager.destroy();
-        }
+        destroy();
     }
 
     private int checkPermissions() {
@@ -313,15 +311,23 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Log.d(TAG, "Stop succeeds");
-                    btn_trigger.setText(getResources().getString(R.string.start));
-                    mStreamStats.setText("");
-                    btn_trigger.setEnabled(true);
-                    endLiveEvent();
+                    resetViews();
                 } else {
                     Log.e(TAG, "Stop fails: " + task.getException());
                 }
             }
         });
+    }
+
+    private void destroy() {
+        if (mStreamManager != null) {
+            mStreamManager.destroy().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    resetViews();
+                }
+            });
+        }
     }
 
     private void endLiveEvent() {
@@ -390,9 +396,7 @@ public class MainActivity extends AppCompatActivity {
         if (checkPermissions() != 0) {
             return;
         }
-        if (mStreamManager != null) {
-            mStreamManager.destroy();
-        }
+        destroy();
         Intent intent = new Intent(this, QrcodeActivity.class);
         startActivityForResult(intent, 1);
     }
@@ -412,6 +416,12 @@ public class MainActivity extends AppCompatActivity {
                 mStreamKeyPanel.setVisibility(View.VISIBLE);
                 break;
         }
+    }
+
+    private void resetViews() {
+        btn_trigger.setText(getResources().getString(R.string.start));
+        btn_trigger.setEnabled(true);
+        mStreamStats.setText("");
     }
 
     @Override
