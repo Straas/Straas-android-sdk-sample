@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView mStreamStats;
     private Button btn_trigger, btn_switch, btn_flash, btn_filter;
     private int mFilter = 0;
-    private String mLiveId;
     private static final String[] STREAM_PERMISSIONS = {
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO
@@ -225,17 +224,16 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(String liveId) {
                         Log.d(TAG, "Create live event succeeds: " + liveId);
-                        mLiveId = liveId;
-                        startStreamingWithLiveId(mLiveId);
+                        startStreamingWithLiveId(liveId);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception error) {
                         if (error instanceof LiveCountLimitException){
-                            mLiveId = ((LiveCountLimitException)error).getLiveId();
-                            Log.d(TAG, "Existing live event: " + mLiveId);
-                            startStreamingWithLiveId(mLiveId);
+                            String liveId = ((LiveCountLimitException)error).getLiveId();
+                            Log.d(TAG, "Existing live event: " + liveId);
+                            startStreamingWithLiveId(liveId);
                         } else {
                             Log.e(TAG, "Create live event fails: " + error);
                             showError(error);
@@ -330,13 +328,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void endLiveEvent() {
-        if (mStreamManager != null || !TextUtils.isEmpty(mLiveId)) {
-            mStreamManager.endLiveEvent(mLiveId).addOnSuccessListener(new OnSuccessListener<Void>() {
+    private void endLiveEvent(final String liveId) {
+        if (mStreamManager != null || !TextUtils.isEmpty(liveId)) {
+            mStreamManager.endLiveEvent(liveId).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    Log.d(TAG, "End live event succeeds: " + mLiveId);
-                    mLiveId = null;
+                    Log.d(TAG, "End live event succeeds: " + liveId);
                 }
             });
         }
