@@ -12,7 +12,6 @@ import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.session.MediaControllerCompat.Callback;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.TextureView;
@@ -44,6 +43,7 @@ import io.straas.android.sdk.streaming.demo.Utils;
 import io.straas.android.sdk.streaming.demo.filter.GPUImageSupportFilter;
 import io.straas.android.sdk.streaming.demo.filter.GrayImageFilter;
 import io.straas.android.sdk.streaming.demo.qrcode.QrcodeActivity;
+import io.straas.android.sdk.streaming.error.StreamException.EventExpiredException;
 import io.straas.android.sdk.streaming.error.StreamException.LiveCountLimitException;
 import io.straas.android.sdk.streaming.interfaces.EventListener;
 import io.straas.sdk.demo.MemberIdentity;
@@ -273,10 +273,24 @@ public class MainActivity extends AppCompatActivity {
                     });
                     mStraasMediaCore.getMediaBrowser().connect();
                 } else {
-                    Log.e(TAG, "Start streaming fails " + task.getException());
-                    showError(task.getException());
-                    btn_trigger.setText(getResources().getString(R.string.start));
-                    mStreamStats.setText("");
+                    Exception error = task.getException();
+                    if (error instanceof EventExpiredException) {
+                        Log.w(TAG, "Live event expires, set this event to ended and create " +
+                                "a new one.");
+                        mStreamManager.endLiveEvent(liveId).addOnSuccessListener(
+                                new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "End live event succeeds: " + liveId);
+                                createLiveEventAndStartStreaming(mEditTitle.getText().toString());
+                            }
+                        });
+                    } else {
+                        Log.e(TAG, "Start streaming fails " + error);
+                        showError(error);
+                        btn_trigger.setText(getResources().getString(R.string.start));
+                        mStreamStats.setText("");
+                    }
                 }
             }
         });
@@ -323,17 +337,6 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     resetViews();
-                }
-            });
-        }
-    }
-
-    private void endLiveEvent(final String liveId) {
-        if (mStreamManager != null || !TextUtils.isEmpty(liveId)) {
-            mStreamManager.endLiveEvent(liveId).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    Log.d(TAG, "End live event succeeds: " + liveId);
                 }
             });
         }
