@@ -56,4 +56,7 @@ dependencies {
 
     // optional, demo for Aggregated data effect
     implementation 'tyrant:heartlayout:1.0.1'
+
+    // optional, demo for startStreamingWithStreamKey
+    implementation "com.google.android.gms:play-services-vision:11.8.0"
 }

@@ -1,6 +1,8 @@
 package io.straas.android.sdk.streaming.demo.camera;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,16 +11,20 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.session.MediaControllerCompat.Callback;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,6 +43,7 @@ import io.straas.android.sdk.streaming.StreamStatsReport;
 import io.straas.android.sdk.streaming.demo.Utils;
 import io.straas.android.sdk.streaming.demo.filter.GPUImageSupportFilter;
 import io.straas.android.sdk.streaming.demo.filter.GrayImageFilter;
+import io.straas.android.sdk.streaming.demo.qrcode.QrcodeActivity;
 import io.straas.android.sdk.streaming.error.StreamException.LiveCountLimitException;
 import io.straas.android.sdk.streaming.interfaces.EventListener;
 import io.straas.sdk.demo.MemberIdentity;
@@ -55,7 +62,10 @@ public class MainActivity extends AppCompatActivity {
     private StreamManager mStreamManager;
     private CameraController mCameraController;
     private TextureView mTextureView;
+    private RadioGroup mStreamWaySwitcher;
     private EditText mEditTitle;
+    private FrameLayout mStreamKeyPanel;
+    private EditText mEditStreamKey;
     private TextView mStreamStats;
     private Button btn_trigger, btn_switch, btn_flash, btn_filter;
     private int mFilter = 0;
@@ -74,16 +84,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main_streaming);
 
         StreamManager.initialize(MemberIdentity.ME)
-                .continueWithTask(new Continuation<StreamManager, Task<CameraController>>() {
+                .addOnCompleteListener(new OnCompleteListener<StreamManager>() {
                     @Override
-                    public Task<CameraController> then(@NonNull Task<StreamManager> task) throws Exception {
+                    public void onComplete(@NonNull Task<StreamManager> task) {
                         if (!task.isSuccessful()) {
                             Log.e(TAG, "init fail " + task.getException());
-                            throw task.getException();
                         }
                         mStreamManager = task.getResult();
                         mStreamManager.addEventListener(mEventListener);
-                        return preview();
+                        preview();
                     }
                 });
         mTextureView = findViewById(R.id.preview);
@@ -95,24 +104,75 @@ public class MainActivity extends AppCompatActivity {
         btn_filter = findViewById(filter);
         mEditTitle = findViewById(R.id.edit_title);
         mStreamStats = findViewById(R.id.stream_stats);
+        mStreamWaySwitcher = findViewById(R.id.stream_way);
+        mEditStreamKey = findViewById(R.id.edit_stream_key);
+        mStreamKeyPanel = findViewById(R.id.stream_key_panel);
+        initEditStreamKey();
+        initStreamWaySwitcher();
 
         checkPermissions();
     }
 
+    private void initEditStreamKey() {
+        final ImageView clearButton = findViewById(R.id.clear);
+        final ImageView scanButton = findViewById(R.id.scan);
+        mEditStreamKey.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.length() == 0) {
+                    clearButton.setVisibility(View.GONE);
+                    scanButton.setVisibility(View.VISIBLE);
+                } else {
+                    scanButton.setVisibility(View.GONE);
+                    clearButton.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
+
+    private void initStreamWaySwitcher() {
+        onCheckedStreamWay(mStreamWaySwitcher.getCheckedRadioButtonId());
+        mStreamWaySwitcher.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                onCheckedStreamWay(checkedId);
+            }
+        });
+    }
+
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    protected void onStart() {
+        super.onStart();
+        if (checkPermissions() == 0) {
+            preview();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
         if (mStreamManager != null) {
             mStreamManager.destroy();
         }
     }
 
-    private void checkPermissions() {
+    private int checkPermissions() {
         String[] requestPermissions = getPermissionsRequestArray(STREAM_PERMISSIONS);
         if (requestPermissions.length != 0) {
             ActivityCompat.requestPermissions(MainActivity.this, requestPermissions,
                     STREAM_PERMISSION_REQUEST);
         }
+        return requestPermissions.length;
     }
 
     private String[] getPermissionsRequestArray(String[] permissions) {
@@ -180,6 +240,7 @@ public class MainActivity extends AppCompatActivity {
                             startStreamingWithLiveId(mLiveId);
                         } else {
                             Log.e(TAG, "Create live event fails: " + error);
+                            showError(error);
                             btn_trigger.setText(getResources().getString(R.string.start));
                             mStreamStats.setText("");
                         }
@@ -217,6 +278,24 @@ public class MainActivity extends AppCompatActivity {
                     mStraasMediaCore.getMediaBrowser().connect();
                 } else {
                     Log.e(TAG, "Start streaming fails " + task.getException());
+                    showError(task.getException());
+                    btn_trigger.setText(getResources().getString(R.string.start));
+                    mStreamStats.setText("");
+                }
+            }
+        });
+    }
+
+    private void startStreamingWithStreamKey(String streamKey) {
+        mStreamManager.startStreamingWithStreamKey(streamKey).addOnCompleteListener(
+                new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "Start streaming succeeds");
+                } else {
+                    Log.e(TAG, "Start streaming fails " + task.getException());
+                    showError(task.getException());
                     btn_trigger.setText(getResources().getString(R.string.start));
                     mStreamStats.setText("");
                 }
@@ -261,7 +340,14 @@ public class MainActivity extends AppCompatActivity {
         if (btn_trigger.getText().equals(getResources().getString(R.string.start))) {
             if (mStreamManager != null) {
                 btn_trigger.setText(getResources().getString(R.string.stop));
-                createLiveEventAndStartStreaming(mEditTitle.getText().toString());
+                switch (mStreamWaySwitcher.getCheckedRadioButtonId()) {
+                    case R.id.stream_way_live_event:
+                        createLiveEventAndStartStreaming(mEditTitle.getText().toString());
+                        break;
+                    case R.id.stream_way_stream_key:
+                        startStreamingWithStreamKey(mEditStreamKey.getText().toString());
+                        break;
+                }
             }
         } else {
             btn_trigger.setEnabled(false);
@@ -298,6 +384,55 @@ public class MainActivity extends AppCompatActivity {
             }
             mFilter %= 3;
         }
+    }
+
+    public void scanQrcode(View view) {
+        if (checkPermissions() != 0) {
+            return;
+        }
+        if (mStreamManager != null) {
+            mStreamManager.destroy();
+        }
+        Intent intent = new Intent(this, QrcodeActivity.class);
+        startActivityForResult(intent, 1);
+    }
+
+    public void clearStreamKey(View view) {
+        mEditStreamKey.getText().clear();
+    }
+
+    private void onCheckedStreamWay(int checkedId) {
+        switch (checkedId) {
+            case R.id.stream_way_live_event:
+                mStreamKeyPanel.setVisibility(View.GONE);
+                mEditTitle.setVisibility(View.VISIBLE);
+                break;
+            case R.id.stream_way_stream_key:
+                mEditTitle.setVisibility(View.GONE);
+                mStreamKeyPanel.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            String streamKey = data.getStringExtra(QrcodeActivity.KEY_QR_CODE_VALUE);
+            if (!isPureText(streamKey)) {
+                Toast.makeText(this, R.string.error_wrong_format, Toast.LENGTH_LONG).show();
+                return;
+            }
+            mEditStreamKey.setText(streamKey);
+        }
+    }
+
+    private static boolean isPureText(String string) {
+        return string.matches("[A-Za-z0-9]+");
+    }
+
+    private void showError(Exception exception) {
+        Toast.makeText(this, exception.toString(), Toast.LENGTH_LONG).show();
     }
 
     @Override
