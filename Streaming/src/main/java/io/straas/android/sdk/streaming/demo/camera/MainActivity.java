@@ -64,11 +64,11 @@ public class MainActivity extends AppCompatActivity {
     private CameraController mCameraController;
     private TextureView mTextureView;
     private RadioGroup mStreamWaySwitcher;
-    private EditText mEditTitle;
+    private EditText mTitleEdit;
     private FrameLayout mStreamKeyPanel;
-    private EditText mEditStreamKey;
+    private EditText mStreamKeyEdit;
     private TextView mStreamStats;
-    private Button btn_trigger, btn_switch, btn_flash, btn_filter;
+    private Button mTriggerButton, mSwitchCameraButton, mFlashButton, mFilterButton;
     private int mFilter = 0;
     private static final String[] STREAM_PERMISSIONS = {
             Manifest.permission.CAMERA,
@@ -98,14 +98,14 @@ public class MainActivity extends AppCompatActivity {
         mTextureView = findViewById(R.id.preview);
         mTextureView.setKeepScreenOn(true);
 
-        btn_trigger = findViewById(trigger);
-        btn_switch = findViewById(switch_camera);
-        btn_flash = findViewById(flash);
-        btn_filter = findViewById(filter);
-        mEditTitle = findViewById(R.id.edit_title);
+        mTriggerButton = findViewById(trigger);
+        mSwitchCameraButton = findViewById(switch_camera);
+        mFlashButton = findViewById(flash);
+        mFilterButton = findViewById(filter);
+        mTitleEdit = findViewById(R.id.edit_title);
         mStreamStats = findViewById(R.id.stream_stats);
         mStreamWaySwitcher = findViewById(R.id.stream_way);
-        mEditStreamKey = findViewById(R.id.edit_stream_key);
+        mStreamKeyEdit = findViewById(R.id.edit_stream_key);
         mStreamKeyPanel = findViewById(R.id.stream_key_panel);
         initEditStreamKey();
         initStreamWaySwitcher();
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
     private void initEditStreamKey() {
         final ImageView clearButton = findViewById(R.id.clear);
         final ImageView scanButton = findViewById(R.id.scan);
-        mEditStreamKey.addTextChangedListener(new TextWatcher() {
+        mStreamKeyEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -207,10 +207,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void enableAllButtons() {
-        btn_trigger.setEnabled(true);
-        btn_switch.setEnabled(true);
-        btn_flash.setEnabled(true);
-        btn_filter.setEnabled(true);
+        mTriggerButton.setEnabled(true);
+        mSwitchCameraButton.setEnabled(true);
+        mFlashButton.setEnabled(true);
+        mFilterButton.setEnabled(true);
     }
 
     private void createLiveEventAndStartStreaming(String title) {
@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             Log.e(TAG, "Create live event fails: " + error);
                             showError(error);
-                            btn_trigger.setText(getResources().getString(R.string.start));
+                            mTriggerButton.setText(getResources().getString(R.string.start));
                             mStreamStats.setText("");
                         }
                     }
@@ -279,13 +279,13 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Log.d(TAG, "End live event succeeds: " + liveId);
-                                createLiveEventAndStartStreaming(mEditTitle.getText().toString());
+                                createLiveEventAndStartStreaming(mTitleEdit.getText().toString());
                             }
                         });
                     } else {
                         Log.e(TAG, "Start streaming fails " + error);
                         showError(error);
-                        btn_trigger.setText(getResources().getString(R.string.start));
+                        mTriggerButton.setText(getResources().getString(R.string.start));
                         mStreamStats.setText("");
                     }
                 }
@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Log.e(TAG, "Start streaming fails " + task.getException());
                     showError(task.getException());
-                    btn_trigger.setText(getResources().getString(R.string.start));
+                    mTriggerButton.setText(getResources().getString(R.string.start));
                     mStreamStats.setText("");
                 }
             }
@@ -343,20 +343,20 @@ public class MainActivity extends AppCompatActivity {
         if (mStreamManager == null) {
             return;
         }
-        if (btn_trigger.getText().equals(getResources().getString(R.string.start))) {
-            btn_trigger.setText(getResources().getString(R.string.stop));
+        if (mTriggerButton.getText().equals(getResources().getString(R.string.start))) {
+            mTriggerButton.setText(getResources().getString(R.string.stop));
             switch (mStreamWaySwitcher.getCheckedRadioButtonId()) {
                 case R.id.stream_way_live_event:
-                    createLiveEventAndStartStreaming(mEditTitle.getText().toString());
+                    createLiveEventAndStartStreaming(mTitleEdit.getText().toString());
                     break;
                 case R.id.stream_way_stream_key:
-                    startStreamingWithStreamKey(mEditStreamKey.getText().toString());
+                    startStreamingWithStreamKey(mStreamKeyEdit.getText().toString());
                     break;
             }
         } else {
             if (mStreamManager.getStreamState() == STATE_CONNECTING ||
                     mStreamManager.getStreamState() == STATE_STREAMING) {
-                btn_trigger.setEnabled(false);
+                mTriggerButton.setEnabled(false);
                 stopStreaming();
             } else {
                 Toast.makeText(this, "Trying to get the live event, please try later.",
@@ -404,25 +404,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clearStreamKey(View view) {
-        mEditStreamKey.getText().clear();
+        mStreamKeyEdit.getText().clear();
     }
 
     private void switchInputView(int checkedId) {
         switch (checkedId) {
             case R.id.stream_way_live_event:
                 mStreamKeyPanel.setVisibility(View.GONE);
-                mEditTitle.setVisibility(View.VISIBLE);
+                mTitleEdit.setVisibility(View.VISIBLE);
                 break;
             case R.id.stream_way_stream_key:
-                mEditTitle.setVisibility(View.GONE);
+                mTitleEdit.setVisibility(View.GONE);
                 mStreamKeyPanel.setVisibility(View.VISIBLE);
                 break;
         }
     }
 
     private void resetViews() {
-        btn_trigger.setText(getResources().getString(R.string.start));
-        btn_trigger.setEnabled(true);
+        mTriggerButton.setText(getResources().getString(R.string.start));
+        mTriggerButton.setEnabled(true);
         mStreamStats.setText("");
     }
 
@@ -435,7 +435,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, R.string.error_wrong_format, Toast.LENGTH_LONG).show();
                 return;
             }
-            mEditStreamKey.setText(streamKey);
+            mStreamKeyEdit.setText(streamKey);
         }
     }
 
@@ -473,7 +473,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onError(Exception error, @Nullable String liveId) {
             Log.e(TAG, "onError " + error);
-            btn_trigger.setText(getResources().getString(R.string.start));
+            mTriggerButton.setText(getResources().getString(R.string.start));
             mStreamStats.setText("");
         }
     };
