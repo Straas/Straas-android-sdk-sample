@@ -12,6 +12,7 @@ import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.session.MediaControllerCompat.Callback;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.TextureView;
@@ -128,23 +129,19 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.length() == 0) {
-                    clearButton.setVisibility(View.GONE);
-                    scanButton.setVisibility(View.VISIBLE);
-                } else {
-                    scanButton.setVisibility(View.GONE);
-                    clearButton.setVisibility(View.VISIBLE);
-                }
+                boolean showScanButton = TextUtils.isEmpty(s);
+                scanButton.setVisibility(showScanButton ? View.VISIBLE : View.GONE);
+                clearButton.setVisibility(showScanButton ? View.GONE : View.VISIBLE);
             }
         });
     }
 
     private void initStreamWaySwitcher() {
-        onCheckedStreamWay(mStreamWaySwitcher.getCheckedRadioButtonId());
+        switchInputView(mStreamWaySwitcher.getCheckedRadioButtonId());
         mStreamWaySwitcher.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                onCheckedStreamWay(checkedId);
+                switchInputView(checkedId);
             }
         });
     }
@@ -360,9 +357,7 @@ public class MainActivity extends AppCompatActivity {
             if (mStreamManager.getStreamState() == STATE_CONNECTING ||
                     mStreamManager.getStreamState() == STATE_STREAMING) {
                 btn_trigger.setEnabled(false);
-                if (mStreamManager != null) {
-                    stopStreaming();
-                }
+                stopStreaming();
             } else {
                 Toast.makeText(this, "Trying to get the live event, please try later.",
                         Toast.LENGTH_SHORT).show();
@@ -412,7 +407,7 @@ public class MainActivity extends AppCompatActivity {
         mEditStreamKey.getText().clear();
     }
 
-    private void onCheckedStreamWay(int checkedId) {
+    private void switchInputView(int checkedId) {
         switch (checkedId) {
             case R.id.stream_way_live_event:
                 mStreamKeyPanel.setVisibility(View.GONE);
