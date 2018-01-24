@@ -343,22 +343,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void trigger(View view) {
+        if (mStreamManager == null) {
+            return;
+        }
         if (btn_trigger.getText().equals(getResources().getString(R.string.start))) {
-            if (mStreamManager != null) {
-                btn_trigger.setText(getResources().getString(R.string.stop));
-                switch (mStreamWaySwitcher.getCheckedRadioButtonId()) {
-                    case R.id.stream_way_live_event:
-                        createLiveEventAndStartStreaming(mEditTitle.getText().toString());
-                        break;
-                    case R.id.stream_way_stream_key:
-                        startStreamingWithStreamKey(mEditStreamKey.getText().toString());
-                        break;
-                }
+            btn_trigger.setText(getResources().getString(R.string.stop));
+            switch (mStreamWaySwitcher.getCheckedRadioButtonId()) {
+                case R.id.stream_way_live_event:
+                    createLiveEventAndStartStreaming(mEditTitle.getText().toString());
+                    break;
+                case R.id.stream_way_stream_key:
+                    startStreamingWithStreamKey(mEditStreamKey.getText().toString());
+                    break;
             }
         } else {
-            btn_trigger.setEnabled(false);
-            if (mStreamManager != null) {
-                stopStreaming();
+            if (mStreamManager.getStreamState() == STATE_CONNECTING ||
+                    mStreamManager.getStreamState() == STATE_STREAMING) {
+                btn_trigger.setEnabled(false);
+                if (mStreamManager != null) {
+                    stopStreaming();
+                }
+            } else {
+                Toast.makeText(this, "Trying to get the live event, please try later.",
+                        Toast.LENGTH_SHORT).show();
             }
         }
     }
