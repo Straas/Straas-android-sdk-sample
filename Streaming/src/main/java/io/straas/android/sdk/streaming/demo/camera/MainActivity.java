@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<StreamManager> task) {
                         if (!task.isSuccessful()) {
                             Log.e(TAG, "init fail " + task.getException());
+                            return;
                         }
                         mStreamManager = task.getResult();
                         mStreamManager.addEventListener(mEventListener);
