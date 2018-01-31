@@ -6,4 +6,8 @@
   <!-- 24dp square + 20dp padding-->
   <dimen name="overlay_button_size">44dp</dimen>
   <dimen name="overlay_loadgin_margin">12dp</dimen>
+
+  <dimen name="scan_qrcode_text_padding">40dp</dimen>
+  <dimen name="scan_qrcode_text_size">18dp</dimen>
+  <dimen name="scan_qrcode_mask_size">210dp</dimen>
 </resources>

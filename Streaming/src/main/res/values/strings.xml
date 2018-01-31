@@ -29,4 +29,13 @@
     <string name="giga_bps">Gbps</string>
     <string name="bitrate_suffix">"<xliff:g id="number" example="123">%1$s</xliff:g> <xliff:g id="unit" example="Kbps">%2$s</xliff:g>"</string>
     <string name="stream_stats_format">%1$s\n%2$.1f fps</string>
+
+    <string name="stream_way_live_event">live event</string>
+    <string name="stream_way_stream_key">stream key</string>
+    <string name="hint_input_title">Input live event title.</string>
+    <string name="hint_input_stream_key">Scan or paste your stream key.</string>
+    <string name="error_empty_stream_key">Stream key shouldn't be empty.</string>
+
+    <string name="hint_scan">Scan QR code of your stream_key.</string>
+    <string name="error_wrong_format">Unsupported format</string>
 </resources>

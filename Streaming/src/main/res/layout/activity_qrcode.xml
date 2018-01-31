@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <SurfaceView
+        android:id="@+id/surfaceview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <io.straas.android.sdk.streaming.demo.qrcode.ViewFinderView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:id="@+id/toolbar"
+        app:navigationIcon="?attr/homeAsUpIndicator"/>
+</RelativeLayout>
