@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="tyrant:heartlayout-1.0.1">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/heartlayout-1.0.1.aar/04b6c28d8635405175c666184315c277/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/heartlayout-1.0.1.aar/04b6c28d8635405175c666184315c277/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/tyrant/heartlayout/1.0.1/5b0afafa545876b7dbf4a8591558589a12c591c6/heartlayout-1.0.1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

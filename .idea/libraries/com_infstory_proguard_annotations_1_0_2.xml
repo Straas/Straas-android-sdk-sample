@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="com.infstory:proguard-annotations-1.0.2">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/proguard-annotations-1.0.2.aar/674bafe98c4596d53c44da60e9f59ede/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/proguard-annotations-1.0.2.aar/674bafe98c4596d53c44da60e9f59ede/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.infstory/proguard-annotations/1.0.2/200c47f281952536639a84e565a0cd37816d26b1/proguard-annotations-1.0.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

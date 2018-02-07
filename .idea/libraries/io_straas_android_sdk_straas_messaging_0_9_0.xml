@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="io.straas.android.sdk:straas-messaging-0.9.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/straas-messaging-0.9.0.aar/0f5ac77952ecaa7afbef91709969e2db/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/straas-messaging-0.9.0.aar/0f5ac77952ecaa7afbef91709969e2db/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.straas.android.sdk/straas-messaging/0.9.0/ef78bca8a4d4b30a46d4ddfd12a47291c7e7c682/straas-messaging-0.9.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

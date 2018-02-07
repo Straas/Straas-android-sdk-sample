@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="io.straas.android.sdk:straas-streaming-0.9.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/straas-streaming-0.9.0.aar/63ef49331ba9cdbe7afac3d0999715a2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/straas-streaming-0.9.0.aar/63ef49331ba9cdbe7afac3d0999715a2/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.straas.android.sdk/straas-streaming/0.9.0/9c5a826c43c28a665040e2b6003260b81220e8d6/straas-streaming-0.9.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
