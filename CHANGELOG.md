@@ -2,6 +2,27 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.9.1
+_2018-02-07_
+
+* straas-media-core
+    * fix: [KEY_PAGE_TOKEN](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#KEY_PAGE_TOKEN) of [PARENT_ID_VODS](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#PARENT_ID_VODS) is ineffective.
+    *   feat: Add keys of options
+        *    [SUBSCRIBE_CHILDREN_OPTIONS_CATEGORY_IDS](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#SUBSCRIBE_CHILDREN_OPTIONS_CATEGORY_IDS)
+        *    [SUBSCRIBE_CHILDREN_OPTIONS_TYPES](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#SUBSCRIBE_CHILDREN_OPTIONS_TYPES)
+        *    [SUBSCRIBE_CHILDREN_OPTIONS_STATUS](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#SUBSCRIBE_CHILDREN_OPTIONS_STATUS)
+    *   feat: Add keys of getter
+        *    [CCU](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/VideoCustomMetadata.html#CCU)
+        *    [TYPE](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/VideoCustomMetadata.html#TYPE)
+        *    [CCU_UPDATED_AT](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/VideoCustomMetadata.html#CCU_UPDATED_AT)
+
+*   straas-streaming
+    *   **feat: You could use [GUEST](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/base/identity/Identity.html#GUEST) to [initialize StreamManager](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#initialize-io.straas.android.sdk.base.identity.Identity-) now.**
+    *   **deprecate: [startStreaming(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#startStreaming-java.lang.String-), please use [startStreamingWithLiveId(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#startStreamingWithLiveId-java.lang.String-) instead.**
+    *   **deprecate: [cleanLiveEvent(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#cleanLiveEvent-java.lang.String-), please use [endLiveEvent(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#endLiveEvent-java.lang.String-) instead.**
+    *   feat: Add [startStreamingWithStreamKey(...)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#startStreamingWithStreamKey-java.lang.String-), you could use this method to start streaming even if current member is a [GUEST](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/base/identity/Identity.html#GUEST).
+
+
 ## Version 0.9.0
 _2018-01-17_
 
