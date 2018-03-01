@@ -10,6 +10,7 @@ import android.widget.MediaController;
 
 import io.straas.android.sdk.media.StraasMediaCore;
 
+import static io.straas.android.sdk.media.StraasMediaCore.LIVE_EXTRA_CURRENT_DATE_TIME;
 
 /**
  * An implementation of {@link MediaController.MediaPlayerControl} for controlling an {@link MediaControllerCompat} instance.
@@ -143,6 +144,21 @@ public class PlayerControl implements MediaController.MediaPlayerControl {
     @Override
     public int getAudioSessionId() {
         throw new UnsupportedOperationException();
+    }
+
+    public long getCurrentLiveDateTime() {
+        if (mLastPlaybackState == null || mLastPlaybackState.getExtras() == null ||
+                !mLastPlaybackState.getExtras().containsKey(LIVE_EXTRA_CURRENT_DATE_TIME)) {
+            return 0L;
+        }
+
+        long currentLiveDateTime = mLastPlaybackState.getExtras().getLong(LIVE_EXTRA_CURRENT_DATE_TIME);
+        if (mLastPlaybackState.getState() == PlaybackStateCompat.STATE_PLAYING) {
+            long timeDelta = SystemClock.elapsedRealtime() -
+                    mLastPlaybackState.getLastPositionUpdateTime();
+            currentLiveDateTime += (long) (timeDelta * mLastPlaybackState.getPlaybackSpeed());
+        }
+        return currentLiveDateTime;
     }
 
 }
