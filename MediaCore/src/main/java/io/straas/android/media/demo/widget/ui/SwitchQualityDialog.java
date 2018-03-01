@@ -15,6 +15,8 @@ import com.google.android.exoplayer2.Format;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import io.straas.android.media.demo.Utils;
 import io.straas.android.sdk.demo.R;
@@ -31,24 +33,25 @@ public class SwitchQualityDialog extends DialogFragment implements
     private static final String KEY_STREAM_QUALITY_LIST = "key_stream_quality_list";
     private static final String KEY_SELECT_STREAM_QUALITY = "key_select_stream_quality";
 
+    private static final Pattern REGEX_VIDEO_DASH = Pattern.compile("^video-(\\d+p)$");
+
     private int mSelectIndex;
     private ArrayList<Format> mFormats;
     private Format[] mIncreasingBandwidthFormats;
 
     private String mappingVariantString(Format format) {
         String mapping;
+        Matcher videoDashMatcher = REGEX_VIDEO_DASH.matcher(format.id);
         if (isFormatAdaptive(format)) {
             mapping = getString(R.string.quality_auto);
-        } else if (format.id.contains("240")) {
-            mapping = getString(R.string.quality_low);
-        } else if (format.id.contains("360")) {
-            mapping = getString(R.string.quality_medium);
-        } else if (format.id.contains("720")) {
-            mapping = getString(R.string.quality_high);
-        } else if (format.id.contains("1080")) {
+        } else if (format.id.equals("video-source") || format.id.equals("video-1080p")) {
             mapping = getString(R.string.quality_source);
+        } else if (format.id.equals("video-1080p-transcoded")) {
+            mapping = "1080p";
+        } else if (videoDashMatcher.find()) {
+            mapping = videoDashMatcher.group(1);
         } else {
-            mapping = format.height + "p";
+            mapping = format.height == Format.NO_VALUE ? "" : format.height + "p";
         }
         return mapping;
     }
@@ -68,8 +71,12 @@ public class SwitchQualityDialog extends DialogFragment implements
             }
             if (format.height == selectedFormat.height &&
                     format.width == selectedFormat.width) {
+                String quality = mappingVariantString(format);
+                if (TextUtils.isEmpty(quality)) {
+                    continue;
+                }
                 return String.format(AUTO_WITH_POSTFIX_FORMAT, getString(R.string.quality_auto),
-                        mappingVariantString(format));
+                        quality);
             }
         }
         return getString(R.string.quality_auto);
@@ -192,7 +199,9 @@ public class SwitchQualityDialog extends DialogFragment implements
             } else {
                 quality = mappingVariantString(format);
             }
-            strings.add(quality);
+            if (!TextUtils.isEmpty(quality)) {
+                strings.add(quality);
+            }
         }
 
         return strings.toArray(new String[0]);

@@ -1,9 +1,6 @@
 <resources>
     <string name="quality_auto">Auto</string>
     <string name="quality_high">High</string>
-    <string name="quality_low">Low</string>
-    <string name="quality_medium">Medium</string>
-    <string name="quality_select">Quality</string>
     <string name="quality_source">Source</string>
 
     <string name="common_cancel">Cancel</string>
