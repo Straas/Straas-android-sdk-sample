@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_switch_camera"
+        android:icon="@drawable/ic_switch_camera_24dp"
+        android:title="Switch Camera"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_toggle_camera"
+        android:icon="@drawable/ic_videocam_off_24dp"
+        android:title="Toggle Camera"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_toggle_mic"
+        android:icon="@drawable/ic_mic_off_24dp"
+        android:title="Toggle Mic"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_publish"
+        android:icon="@drawable/ic_cloud_upload_24dp"
+        android:title="Publish"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_record"
+        android:icon="@drawable/ic_video_call_24dp"
+        android:title="Record"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_screenshot"
+        android:icon="@drawable/ic_crop_original_24dp"
+        android:title="Record"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_close"
+        android:icon="@drawable/abc_ic_clear_material"
+        android:title="Close"
+        app:showAsAction="always"/>
+</menu>
