@@ -4,6 +4,11 @@
     <dimen name="live_size">14sp</dimen>
     <dimen name="error_message_size">16sp</dimen>
 
+    <dimen name="progress_bar_column_left_margin">16dp</dimen>
+    <dimen name="progress_bar_column_right_margin">16dp</dimen>
+    <dimen name="progress_bar_column_live_dvr_left_margin">8dp</dimen>
+    <dimen name="progress_bar_column_live_dvr_right_margin">24dp</dimen>
+
     <dimen name="content_seekbar_time_current_size">14sp</dimen>
     <dimen name="content_seekbar_time_duration_size">14sp</dimen>
 

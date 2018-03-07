@@ -68,6 +68,16 @@ import static io.straas.android.sdk.media.StraasMediaCore.LIVE_EXTRA_BROADCAST_S
 public final class StraasPlayerView extends FrameLayout implements StraasMediaCore.UiContainer {
     private static final String TAG = StraasPlayerView.class.getSimpleName();
 
+    public static final int PLAYBACK_MODE_VOD = 0;
+    public static final int PLAYBACK_MODE_LIVE_EDGE = 1;
+    public static final int PLAYBACK_MODE_LIVE_DVR = 2;
+
+    @IntDef({PLAYBACK_MODE_VOD,
+            PLAYBACK_MODE_LIVE_EDGE,
+            PLAYBACK_MODE_LIVE_DVR})
+    @Retention(RetentionPolicy.CLASS)
+    public @interface PlaybackMode {}
+
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
 
     private boolean mEnableDefaultWidget;
@@ -87,6 +97,8 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
     private boolean mIsBind;
     private boolean mIsLive = false;
+    private boolean mIsLiveSeekable;
+    @PlaybackMode private int mPlaybackMode = PLAYBACK_MODE_VOD;
     private boolean mCanToggleControllerUi = false;
 
     private View mControllerContainer;
@@ -113,6 +125,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private TextView mChannelNameTextView;
     private TextView mSummaryViewerTextView;
     private TextView mErrorMessageTextView;
+    private TextView mLivePositionTimeTextView;
     private View mBroadcastStateView;
     private View mSwitchQualityView;
     private View mLogoView;
@@ -134,6 +147,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private ChannelNameMetadataListener mChannelNameMetadataListener = new ChannelNameMetadataListener();
     private SummaryViewerMetadataListener mSummaryViewerMetadataListener = new SummaryViewerMetadataListener();
     private ErrorMessageListener mErrorMessageListener = new ErrorMessageListener();
+    private LivePositionTimeListener mLivePositionTimeListener = new LivePositionTimeListener();
     private BroadcastStateListener mBroadcastStateListener = new BroadcastStateListener();
 
     private List<ConnectionCallback> mMediaConnectedListenerList = new ArrayList<>();
@@ -352,7 +366,9 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                     TextUtils.equals(metadata.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID),
                             mLastMediaMetadata.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID)) &&
                     TextUtils.equals(metadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE),
-                            mLastMediaMetadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE)))) {
+                            mLastMediaMetadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE)) &&
+                    metadata.getBundle().getBoolean(StraasMediaCore.KEY_IS_LIVE_LOW_LATENCY_FIRST) ==
+                            mLastMediaMetadata.getBundle().getBoolean(StraasMediaCore.KEY_IS_LIVE_LOW_LATENCY_FIRST))) {
                 return;
             }
 
@@ -363,13 +379,15 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             }
 
             if (mediaId.startsWith(StraasMediaCore.LIVE_ID_PREFIX)) {
-                switchMode(true);
+                boolean isLiveSeekable = metadata.getBundle().getBoolean(VideoCustomMetadata.LIVE_DVR_ENABLED) &&
+                        !metadata.getBundle().getBoolean(StraasMediaCore.KEY_IS_LIVE_LOW_LATENCY_FIRST);
+                switchMode(true, isLiveSeekable);
                 Bundle liveBundle = (mLiveBundle != null) ? mLiveBundle :
                         getMediaControllerCompat().getExtras();
 
                 handleMediaSessionExtra(liveBundle, true);
             } else {
-                switchMode(false);
+                switchMode(false, false);
             }
 
             if (mLastQueueList != null) {
@@ -474,6 +492,10 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                         }
                         break;
                     case PlaybackStateCompat.STATE_PAUSED:
+                        if (mPlaybackMode == PLAYBACK_MODE_LIVE_EDGE) {
+                            setLivePlaybackModeAndLiveIcon(false);
+                        }
+
                         mCanToggleControllerUi = false;
 
                         showControllerUi();
@@ -485,6 +507,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                     case PlaybackStateCompat.STATE_NONE:
                         mCanToggleControllerUi = false;
                         hideControllerViews();
+                        setLivePlaybackModeAndLiveIcon(true);
                         if (getKeepScreenOn()) {
                             setKeepScreenOn(false);
                         }
@@ -749,6 +772,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mColumnContentSeekBar.addView(contentSeekBar);
         mContentSeekBar = contentSeekBar;
         mContentSeekBar.setOnTrackingListener(mTrackingListener);
+        mContentSeekBar.setPositionTimeStringListener(mPositionTimeStringListener);
     }
 
     /**
@@ -1135,6 +1159,14 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         }
     }
 
+    private class LivePositionTimeListener {
+        void onLivePositionTimeChanged(TextView livePositionTimeTextView, String timeString) {
+            if (livePositionTimeTextView != null && !TextUtils.isEmpty(timeString)) {
+                livePositionTimeTextView.setText(timeString);
+            }
+        }
+    }
+
     private class BroadcastStateListener {
         void offline(View broadcastStateView) {
             if (broadcastStateView == null) {
@@ -1215,9 +1247,38 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         public void onTrackingTouch(boolean isTracking) {
             if (isTracking) {
                 Utils.stopAnimation(mControllerContainer, mColumnPlayPause);
+                if (mIsLiveSeekable) {
+                    setBottomLeftColumnToLivePositionTime();
+                }
             } else {
                 Utils.toggleViewVisibilityWithAnimation(AUTO_HIDE_DELAY_MILLIS, mControllerContainer, mColumnPlayPause);
+                setLivePlaybackModeAndLiveIcon(false);
             }
+        }
+    };
+
+    private ContentSeekBar.PositionTimeStringListener mPositionTimeStringListener =
+            new ContentSeekBar.PositionTimeStringListener() {
+        @Override
+        public void onPositionTimeStringChanged(String timeString) {
+            mLivePositionTimeListener.onLivePositionTimeChanged(mLivePositionTimeTextView, timeString);
+        }
+    };
+
+    private OnClickListener mGrayLiveIconOnClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (!mIsBind && mStraasMediaCore != null) {
+                mStraasMediaCore.setUiContainer(StraasPlayerView.this);
+            }
+            mCanToggleControllerUi = true;
+
+            MediaControllerCompatHelper.playAtLiveEdge(getMediaControllerCompat());
+
+            resetPlayPauseUiWithControllerVisibility();
+            switchToPause();
+            Utils.toggleViewVisibilityWithAnimation(AUTO_HIDE_DELAY_MILLIS, mControllerContainer, mColumnPlayPause);
+            setLivePlaybackModeAndLiveIcon(true);
         }
     };
 
@@ -1334,25 +1395,71 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mColumnPause.setVisibility(INVISIBLE);
     }
 
-    private void switchMode(boolean isLive) {
-        if (mIsLive == isLive) {
+    private void switchMode(boolean isLive, boolean isLiveSeekable) {
+        if (mIsLive == isLive && mIsLiveSeekable == isLiveSeekable) {
             return;
         }
         mIsLive = isLive;
+        mIsLiveSeekable = isLiveSeekable;
+
+        setPlaybackMode(isLive ? PLAYBACK_MODE_LIVE_EDGE : PLAYBACK_MODE_VOD);
+        setColumnContentSeekBarMargin();
 
         if (isLive) {
-            setContentSeekBarVisibility(GONE);
+            setContentSeekBarVisibility(mIsLiveSeekable ? VISIBLE : GONE);
             setSummaryViewerVisibility(INVISIBLE);
 
-            TextView live = (TextView) View.inflate(mThemeContext, R.layout.live_view, null);
-            Drawable drawable = VectorDrawableCompat.create(getResources(), R.drawable.ic_live_player, null);
-            TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(live, drawable, null, null, null);
-            setCustomViewToColumn(live, CUSTOM_COLUMN_BOTTOM_LEFT);
+            setBottomLeftColumnToLiveIcon(true);
         } else {
             setContentSeekBarVisibility(VISIBLE);
             setSummaryViewerVisibility(VISIBLE);
 
             removeViewFromCustomColumn(CUSTOM_COLUMN_BOTTOM_LEFT);
         }
+    }
+
+    private void setLivePlaybackModeAndLiveIcon(boolean isLiveEdge) {
+        if (mIsLiveSeekable) {
+            setPlaybackMode(isLiveEdge ? PLAYBACK_MODE_LIVE_EDGE : PLAYBACK_MODE_LIVE_DVR);
+            setBottomLeftColumnToLiveIcon(isLiveEdge);
+        }
+    }
+
+    private void setPlaybackMode(@PlaybackMode int playbackMode) {
+        mPlaybackMode = playbackMode;
+        if (mContentSeekBar != null) {
+            mContentSeekBar.setPlaybackMode(mPlaybackMode);
+        }
+    }
+
+    private void setColumnContentSeekBarMargin() {
+        // workaround to place different margins for vod & live-dvr respectively
+        int leftMargin = getResources().getDimensionPixelSize(R.dimen.progress_bar_column_left_margin);
+        int rightMargin = getResources().getDimensionPixelSize(R.dimen.progress_bar_column_left_margin);
+        if (mIsLiveSeekable) {
+            leftMargin = getResources().getDimensionPixelSize(R.dimen.progress_bar_column_live_dvr_left_margin);
+            rightMargin = getResources().getDimensionPixelSize(R.dimen.progress_bar_column_live_dvr_right_margin);
+        }
+        if (mColumnContentSeekBar.getLayoutParams() instanceof MarginLayoutParams) {
+            MarginLayoutParams params = (MarginLayoutParams) mColumnContentSeekBar.getLayoutParams();
+            params.setMargins(leftMargin, 0, rightMargin, 0);
+            mColumnContentSeekBar.setLayoutParams(params);
+        }
+    }
+
+    private void setBottomLeftColumnToLiveIcon(boolean isLiveEdge) {
+        TextView live = (TextView) View.inflate(mThemeContext, R.layout.live_view, null);
+        Drawable drawable = VectorDrawableCompat.create(getResources(), isLiveEdge ?
+                R.drawable.ic_live_player : R.drawable.ic_live_dvr_player, null);
+        TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(live, drawable, null, null, null);
+        live.setTextColor(getResources().getColor(isLiveEdge ? R.color.color_live : R.color.color_live_dvr));
+        live.setOnClickListener(isLiveEdge ? null : mGrayLiveIconOnClickListener);
+        setCustomViewToColumn(live, CUSTOM_COLUMN_BOTTOM_LEFT);
+        mLivePositionTimeTextView = null;
+    }
+
+    private void setBottomLeftColumnToLivePositionTime() {
+        mLivePositionTimeTextView = (TextView) View.inflate(mThemeContext, R.layout.live_view, null);
+        setCustomViewToColumn(mLivePositionTimeTextView, CUSTOM_COLUMN_BOTTOM_LEFT);
     }
 }
