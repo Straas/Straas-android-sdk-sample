@@ -63,10 +63,7 @@ import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_STAR
 import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_STOPPED;
 import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_UNKNOWN;
 import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_WAITING_FOR_STREAM;
-import static io.straas.android.sdk.media.StraasMediaCore.LIVE_EXTRA_BROADCAST_START_TIME;
 import static io.straas.android.sdk.media.StraasMediaCore.LIVE_EXTRA_BROADCAST_STATE_V2;
-import static io.straas.android.sdk.media.StraasMediaCore.LIVE_EXTRA_STATISTICS_CCU;
-import static io.straas.android.sdk.media.StraasMediaCore.LIVE_EXTRA_STATISTICS_HIT_COUNT;
 
 public final class StraasPlayerView extends FrameLayout implements StraasMediaCore.UiContainer {
     private static final String TAG = StraasPlayerView.class.getSimpleName();
@@ -142,7 +139,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private List<ConnectionCallback> mMediaConnectedListenerList = new ArrayList<>();
     private SparseArrayCompat<ViewGroup> mCustomColumnList = new SparseArrayCompat<>();
     private List<QueueItem> mLastQueueList;
-    private int mBroadcastStateV2 = BROADCAST_STATE_UNKNOWN;
+    private int mUIBroadcastState = BROADCAST_STATE_UNKNOWN;
 
     public interface SwitchQualityViewClickListener {
         void onFormatCallback(ArrayList<Format> formats, int currentIndex);
@@ -535,10 +532,13 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
     private void handleMediaSessionExtra(Bundle extras, boolean shouldShowStateUi) {
         int broadcastStateV2 = extras.getInt(LIVE_EXTRA_BROADCAST_STATE_V2, BROADCAST_STATE_UNKNOWN);
-        if (broadcastStateV2 == mBroadcastStateV2) {
+        if (broadcastStateV2 != BROADCAST_STATE_STARTED && !shouldShowStateUi) {
             return;
         }
-        mBroadcastStateV2 = broadcastStateV2;
+        if (broadcastStateV2 == mUIBroadcastState) {
+            return;
+        }
+        mUIBroadcastState = broadcastStateV2;
         switch (broadcastStateV2) {
             case BROADCAST_STATE_STARTED:
                 mBroadcastStateListener.online();
@@ -547,14 +547,10 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 mBroadcastStateListener.waitForStream(mBroadcastStateView);
                 break;
             case BROADCAST_STATE_STOPPED:
-                if (shouldShowStateUi) {
-                    mBroadcastStateListener.offline(mBroadcastStateView);
-                }
+                mBroadcastStateListener.offline(mBroadcastStateView);
                 break;
             case BROADCAST_STATE_ENDED:
-                if (shouldShowStateUi) {
-                    mBroadcastStateListener.endEvent(mBroadcastStateView);
-                }
+                mBroadcastStateListener.endEvent(mBroadcastStateView);
                 break;
         }
     }
