@@ -58,6 +58,13 @@ import io.straas.android.sdk.media.StraasMediaCore;
 import io.straas.android.sdk.media.StraasMediaCore.ErrorReason;
 import io.straas.android.sdk.media.VideoCustomMetadata;
 
+import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_ENDED;
+import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_STARTED;
+import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_STOPPED;
+import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_UNKNOWN;
+import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_WAITING_FOR_STREAM;
+import static io.straas.android.sdk.media.StraasMediaCore.LIVE_EXTRA_BROADCAST_STATE_V2;
+
 public final class StraasPlayerView extends FrameLayout implements StraasMediaCore.UiContainer {
     private static final String TAG = StraasPlayerView.class.getSimpleName();
 
@@ -132,7 +139,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private List<ConnectionCallback> mMediaConnectedListenerList = new ArrayList<>();
     private SparseArrayCompat<ViewGroup> mCustomColumnList = new SparseArrayCompat<>();
     private List<QueueItem> mLastQueueList;
-    private String mLiveState = null;
+    private int mUIBroadcastState = BROADCAST_STATE_UNKNOWN;
 
     public interface SwitchQualityViewClickListener {
         void onFormatCallback(ArrayList<Format> formats, int currentIndex);
@@ -524,36 +531,28 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     };
 
     private void handleMediaSessionExtra(Bundle extras, boolean shouldShowStateUi) {
-        String liveState = extras.getString(StraasMediaCore.LIVE_EXTRA_BROADCAST_STATE, "");
-        if (TextUtils.equals(liveState, mLiveState)) {
+        int broadcastStateV2 = extras.getInt(LIVE_EXTRA_BROADCAST_STATE_V2, BROADCAST_STATE_UNKNOWN);
+        if (broadcastStateV2 != BROADCAST_STATE_STARTED && !shouldShowStateUi) {
             return;
         }
-        if (!TextUtils.isEmpty(liveState)) {
-            switch (liveState) {
-                case StraasMediaCore.LIVE_EXTRA_BROADCAST_STATE_LIVE:
-                    mLiveState = liveState;
-                    mBroadcastStateListener.online();
-                    return;
-                case StraasMediaCore.LIVE_EXTRA_BROADCAST_STATE_WAIT_STREAM:
-                    if (shouldShowStateUi) {
-                        mLiveState = liveState;
-                        mBroadcastStateListener.waitForStream(mBroadcastStateView);
-                    }
-                    return;
-            }
-        } else if (shouldShowStateUi){
-            String eventState = extras.getString(StraasMediaCore.LIVE_EXTRA_EVENT_STATE, "");
-            mLiveState = eventState;
-            switch (eventState) {
-                case StraasMediaCore.LIVE_EXTRA_EVENT_STATE_ENDED:
-                    mBroadcastStateListener.endEvent(mBroadcastStateView);
-                    return;
-                case StraasMediaCore.LIVE_EXTRA_EVENT_STATE_READY:
-                    mBroadcastStateListener.offline(mBroadcastStateView);
-                    return;
-            }
+        if (broadcastStateV2 == mUIBroadcastState) {
+            return;
         }
-        mLiveState = null;
+        mUIBroadcastState = broadcastStateV2;
+        switch (broadcastStateV2) {
+            case BROADCAST_STATE_STARTED:
+                mBroadcastStateListener.online();
+                break;
+            case BROADCAST_STATE_WAITING_FOR_STREAM:
+                mBroadcastStateListener.waitForStream(mBroadcastStateView);
+                break;
+            case BROADCAST_STATE_STOPPED:
+                mBroadcastStateListener.offline(mBroadcastStateView);
+                break;
+            case BROADCAST_STATE_ENDED:
+                mBroadcastStateListener.endEvent(mBroadcastStateView);
+                break;
+        }
     }
 
 
