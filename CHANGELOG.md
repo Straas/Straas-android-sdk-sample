@@ -2,6 +2,16 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.9.3
+_2018-03-20_
+
+*   straas-media-core
+    *   **Important Change: Starts from this version, the [State of PlaybackStateCompat](https://developer.android.com/reference/android/support/v4/media/session/PlaybackStateCompat.html#getState()) would be [STATE_STOPPED](https://developer.android.com/reference/android/support/v4/media/session/PlaybackStateCompat.html#STATE_STOPPED) when current live event is at non-broadcasting state(was [STATE_NONE](https://developer.android.com/reference/android/support/v4/media/session/PlaybackStateCompat.html#STATE_NONE) before).**
+    *   **deprecated: [BROADCAST_STATE](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#LIVE_EXTRA_BROADCAST_STATE) and [LIVE_EVENT_STATE](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#LIVE_EXTRA_EVENT_STATE).**
+    *   feat: Add [LiveEventListener](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/LiveEventListener) for broadcast state and live event statistics observer.
+    *   feat: Add [BROADCAST_STATE_V2](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#LIVE_EXTRA_BROADCAST_STATE_V2).
+
+
 ## Version 0.9.2
 _2018-02-13_
 
@@ -12,8 +22,8 @@ _2018-02-13_
 ## Version 0.9.1
 _2018-02-07_
 
-* straas-media-core
-    * fix: [KEY_PAGE_TOKEN](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#KEY_PAGE_TOKEN) of [PARENT_ID_VODS](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#PARENT_ID_VODS) is ineffective.
+*   straas-media-core
+    *   fix: [KEY_PAGE_TOKEN](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#KEY_PAGE_TOKEN) of [PARENT_ID_VODS](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#PARENT_ID_VODS) is ineffective.
     *   feat: Add keys of options
         *    [SUBSCRIBE_CHILDREN_OPTIONS_CATEGORY_IDS](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#SUBSCRIBE_CHILDREN_OPTIONS_CATEGORY_IDS)
         *    [SUBSCRIBE_CHILDREN_OPTIONS_TYPES](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#SUBSCRIBE_CHILDREN_OPTIONS_TYPES)
