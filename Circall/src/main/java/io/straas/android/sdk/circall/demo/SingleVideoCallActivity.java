@@ -1,11 +1,13 @@
 package io.straas.android.sdk.circall.demo;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -24,11 +26,19 @@ import io.straas.android.sdk.circall.interfaces.EventListener;
 
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.databinding.ActivitySingleVideoCallBinding;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class SingleVideoCallActivity extends AppCompatActivity implements EventListener {
     private static final String TAG = SingleVideoCallActivity.class.getSimpleName();
 
     public static final String TARGET_ROOM_NAME = "android-test";
+
+    public static final String[] STREAM_PERMISSIONS = {
+            Manifest.permission.CAMERA,
+            Manifest.permission.RECORD_AUDIO
+    };
+    public static final int CIRCALL_PERMISSION_REQUEST = 1;
 
     private ActivitySingleVideoCallBinding mBinding;
     private SharedPreferences mSharedPref;
@@ -43,10 +53,11 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Utils.requestFullscreenMode(this);
+        Utils.requestFullscreenMode(this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_single_video_call);
 
         mSharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
         CircallManager.initialize().continueWithTask(task -> {
             if (!task.isSuccessful()) {
                 Log.e(TAG, "init fail: " + task.getException());
@@ -146,6 +157,22 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
                 mCircallManager.unsubscribe(mRemoteStream);
             }
         });
+
+        checkPermissions();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @AfterPermissionGranted(CIRCALL_PERMISSION_REQUEST)
+    private void checkPermissions() {
+        if (!EasyPermissions.hasPermissions(this, STREAM_PERMISSIONS)) {
+            EasyPermissions.requestPermissions(this, getString(R.string.hint_need_permission),
+                    CIRCALL_PERMISSION_REQUEST, STREAM_PERMISSIONS);
+        }
     }
 
     @Override
@@ -172,7 +199,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
     }
 
     private void join() {
-//        Utils.getTokenFromChoosenMethod(mSharedPref, this).addOnCompleteListener(task -> {
+//        Utils.getTokenFromChosenMethod(mSharedPref, this).addOnCompleteListener(task -> {
 //            if (!task.isSuccessful()) {
 //                Log.e(TAG, "failed to fetch licode manager token:" + task.getException());
 //                return;
@@ -267,7 +294,6 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
 
     @Override
     public void onCircallStatsReportUpdate(CircallStatsReport CircallStatsReport) {
-//        Log.d(TAG, "onCircallStatsReportUpdate: " + Utils.toDisplayText(SingleVideoCallActivity.this,CircallStatsReport));
     }
 
     @Override

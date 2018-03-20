@@ -22,4 +22,5 @@
     <string name="pref_token_fetch_method_title">Token fetch method.</string>
     <string name="pref_token_fetch_method_dlg">Select token fetch method.</string>
     <string name="pref_token_fetch_method_default">licode</string>
+    <string name="hint_need_permission">Need permission to continue</string>
 </resources>
