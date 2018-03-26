@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 
+import io.straas.android.sdk.streaming.demo.Utils;
+
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 public abstract class OverlayLayout extends FrameLayout {
@@ -21,13 +23,28 @@ public abstract class OverlayLayout extends FrameLayout {
     protected final Listener mListener;
 
     protected WindowManager.LayoutParams createLayoutParams() {
+        int alertWindowType = Utils.supportAndroidOreo() ?
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY :
+                WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(WRAP_CONTENT, WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_SYSTEM_ERROR, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
+                alertWindowType, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS |
                 WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN,
                 PixelFormat.TRANSLUCENT);
         params.gravity = getLayoutGravity();
+        params.y = getVerticalMargin(params.gravity);
         return params;
+    }
+
+    private int getVerticalMargin(int gravity) {
+        // top gravity then align to status bar height
+        if ((gravity & Gravity.TOP) == Gravity.TOP) {
+            int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+            if (resourceId > 0) {
+                return getResources().getDimensionPixelSize(resourceId);
+            }
+        }
+        return 0;
     }
 
     protected OverlayLayout(Context context, Listener listener) {
@@ -72,6 +89,10 @@ public abstract class OverlayLayout extends FrameLayout {
                     case MotionEvent.ACTION_MOVE:
                         int diffX = (mLayoutParams.gravity & Gravity.LEFT) == Gravity.LEFT ? (x - initTouchX) : (initTouchX - x);
                         int diffY = (mLayoutParams.gravity & Gravity.TOP) == Gravity.TOP  ? (y - initTouchY) : (initTouchY - y);
+                        if (!isValidYRange(initY + diffY)) {
+                            return true;
+                        }
+
                         mLayoutParams.x = initX + diffX;
                         mLayoutParams.y = initY + diffY;
                         if (mListener != null) {
@@ -80,6 +101,10 @@ public abstract class OverlayLayout extends FrameLayout {
                         return true;
                 }
                 return false;
+            }
+
+            private boolean isValidYRange(int newY) {
+                return newY >= 0;
             }
         });
     }

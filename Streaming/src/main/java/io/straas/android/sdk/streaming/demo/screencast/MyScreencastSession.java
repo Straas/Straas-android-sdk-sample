@@ -2,6 +2,7 @@ package io.straas.android.sdk.streaming.demo.screencast;
 
 import android.annotation.TargetApi;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.content.Context;
 import android.content.Intent;
 import android.media.projection.MediaProjection;
@@ -34,10 +35,12 @@ import io.straas.android.sdk.streaming.LiveEventConfig;
 import io.straas.android.sdk.streaming.ScreencastStreamConfig;
 import io.straas.android.sdk.streaming.StreamManager;
 import io.straas.android.sdk.streaming.StreamStatsReport;
+import io.straas.android.sdk.streaming.demo.Utils;
 import io.straas.android.sdk.streaming.error.StreamException.LiveCountLimitException;
 import io.straas.android.sdk.streaming.interfaces.EventListener;
 import io.straas.android.sdk.streaming.screencast.ScreencastSession;
 
+import static android.app.NotificationManager.IMPORTANCE_LOW;
 import static android.content.Context.MEDIA_PROJECTION_SERVICE;
 import static android.content.Context.WINDOW_SERVICE;
 import static io.straas.android.sdk.streaming.StreamManager.STATE_CONNECTING;
@@ -169,7 +172,7 @@ public final class MyScreencastSession implements ScreencastSession {
         mWindowManager.addView(mCameraOverlayLayout, mCameraOverlayLayout.getParams());
     }
 
-    private void removeOverlaOnUiThread() {
+    private void removeOverlayOnUiThread() {
         mMainThreadHandler.post(new Runnable() {
             @Override
             public void run() {
@@ -274,12 +277,15 @@ public final class MyScreencastSession implements ScreencastSession {
                     mStreamingStartTimeMillis = SystemClock.elapsedRealtime();
                     mMainThreadHandler.removeMessages(EVENT_UPDATE_STREAMING_TIME);
                     mMainThreadHandler.sendEmptyMessage(EVENT_UPDATE_STREAMING_TIME);
-                    mListener.updateNotification(new Notification.Builder(mContext)
+                    Notification.Builder builder = new Notification.Builder(mContext)
                             .setSmallIcon(R.drawable.straas_icon_white_24px)
                             .setContentTitle(mContext.getString(R.string.screencast_service_title))
                             .setContentText("Streaming!!!")
-                            .setAutoCancel(true)
-                            .build());
+                            .setAutoCancel(true);
+                    if (Utils.supportAndroidOreo()) {
+                        builder.setChannelId(mContext.getString(R.string.screencast_notification_channel_id));
+                    }
+                    mListener.updateNotification(builder.build());
                 } else {
                     Log.e(TAG, "Start streaming fails " + task.getException());
                     isStreaming = false;
@@ -319,15 +325,32 @@ public final class MyScreencastSession implements ScreencastSession {
     }
 
     @Override
+    public NotificationChannel getNotificationChannel() {
+        if (!Utils.supportAndroidOreo()) {
+            return null;
+        }
+
+        NotificationChannel channel = new NotificationChannel(
+                mContext.getString(R.string.screencast_notification_channel_id),
+                mContext.getString(R.string.screencast_notification_channel_name),
+                IMPORTANCE_LOW);
+        channel.setDescription(mContext.getString(R.string.screencast_notification_channel_description));
+        return channel;
+    }
+
+    @Override
     public Notification getNotification() {
         String title = mContext.getString(R.string.screencast_service_title);
         String subtitle = mContext.getString(R.string.screencast_service_subtitle);
-        return new Notification.Builder(mContext)
+        Notification.Builder builder = new Notification.Builder(mContext)
                 .setSmallIcon(R.drawable.straas_icon_white_24px)
                 .setContentTitle(title)
                 .setContentText(subtitle)
-                .setAutoCancel(true)
-                .build();
+                .setAutoCancel(true);
+        if (Utils.supportAndroidOreo()) {
+            builder.setChannelId(mContext.getString(R.string.screencast_notification_channel_id));
+        }
+        return builder.build();
     }
 
     private void updateStreamingStatusUi() {
@@ -345,7 +368,7 @@ public final class MyScreencastSession implements ScreencastSession {
         if (mMediaProjection != null) {
             mMediaProjection.stop();
         }
-        removeOverlaOnUiThread();
+        removeOverlayOnUiThread();
     }
 
     private void showErrorToast(String errorText) {
