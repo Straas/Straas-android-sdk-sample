@@ -18,6 +18,7 @@ import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.straas.android.media.demo.MediaControllerCompatHelper;
 import io.straas.android.media.demo.Utils;
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.media.StraasMediaCore;
@@ -174,6 +175,8 @@ public class SwitchQualityDialog extends DialogFragment implements
         mSelectIndex = i;
 
         MediaControllerCompat controller = MediaControllerCompat.getMediaController(getActivity());
+
+        MediaControllerCompatHelper.setVideoQualityIndex(getActivity(), mSelectIndex);
 
         if (controller != null) {
             controller.getTransportControls().sendCustomAction(
