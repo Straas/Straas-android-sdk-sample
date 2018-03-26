@@ -1,7 +1,9 @@
 package io.straas.android.media.demo;
 
+import android.app.NotificationChannel;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.media.MediaBrowserCompat;
@@ -34,6 +36,8 @@ import io.straas.android.sdk.media.StraasMediaCore;
 import io.straas.android.sdk.media.VideoCustomMetadata;
 import io.straas.android.sdk.media.notification.NotificationOptions;
 import io.straas.sdk.demo.MemberIdentity;
+
+import static android.app.NotificationManager.IMPORTANCE_LOW;
 
 /**
  * Demo for some of the operations to browse and play medias.
@@ -300,13 +304,30 @@ public class OperationActivity extends AppCompatActivity {
             return;
         }
         if (foreground) {
+            NotificationOptions.Builder builder = new NotificationOptions.Builder()
+                    .setTargetClassName(OperationActivity.class.getName());
+            if (supportNotificationChannel()) {
+                builder.setChannel(createNotificationChannel());
+            }
             MediaControllerCompatHelper.startForeground(getMediaControllerCompat(),
-                    new NotificationOptions.Builder()
-                            .setTargetClassName(OperationActivity.class.getName())
-                            .build());
+                    builder.build());
         } else {
             MediaControllerCompatHelper.stopForeground(getMediaControllerCompat());
         }
+    }
+
+    private boolean supportNotificationChannel() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
+    }
+
+    private NotificationChannel createNotificationChannel() {
+        if (!supportNotificationChannel()) {
+            return null;
+        }
+        NotificationChannel channel = new NotificationChannel(getString(R.string.notification_channel_id),
+                getString(R.string.notification_channel_name), IMPORTANCE_LOW);
+        channel.setDescription(getString(R.string.notification_channel_description));
+        return channel;
     }
 
     public void setAudibility(View toggleButton) {
