@@ -43,7 +43,7 @@ public class ContentSeekBar extends RelativeLayout {
     private Handler mHandler = new MessageHandler(this);
 
     private TrackingListener mTrackingListener;
-    private PositionTimeStringListener mPositionTimeStringListener;
+    private LiveDvrPositionTimeStringListener mLiveDvrPositionTimeStringListener;
 
     @PlaybackMode private int mPlaybackMode = PLAYBACK_MODE_VOD;
 
@@ -51,8 +51,8 @@ public class ContentSeekBar extends RelativeLayout {
         void onTrackingTouch(boolean isTracking);
     }
 
-    public interface PositionTimeStringListener {
-        void onPositionTimeStringChanged(String timeString);
+    public interface LiveDvrPositionTimeStringListener {
+        void onLiveDvrPositionTimeStringChanged(String timeString);
     }
 
     public ContentSeekBar(Context context) {
@@ -240,7 +240,9 @@ public class ContentSeekBar extends RelativeLayout {
             if (mCurrentTime != null)
                 mCurrentTime.setText(stringForTime((int) newPosition));
 
-            sendPositionTimeStringChangedEvent(getLiveDvrPositionTimeString((int) Math.max(duration - newPosition, 0L)));
+            if (mPlaybackMode == PLAYBACK_MODE_LIVE_EDGE || mPlaybackMode == PLAYBACK_MODE_LIVE_DVR) {
+                sendLiveDvrPositionTimeStringChangedEvent(getLiveDvrPositionTimeString((int) Math.max(duration - newPosition, 0L)));
+            }
         }
 
         private String getLiveDvrPositionTimeString(int offset) {
@@ -321,13 +323,13 @@ public class ContentSeekBar extends RelativeLayout {
         }
     }
 
-    public void setPositionTimeStringListener(PositionTimeStringListener listener) {
-        mPositionTimeStringListener = listener;
+    public void setLiveDvrPositionTimeStringListener(LiveDvrPositionTimeStringListener listener) {
+        mLiveDvrPositionTimeStringListener = listener;
     }
 
-    private void sendPositionTimeStringChangedEvent(String timeString) {
-        if (mPositionTimeStringListener != null) {
-            mPositionTimeStringListener.onPositionTimeStringChanged(timeString);
+    private void sendLiveDvrPositionTimeStringChangedEvent(String timeString) {
+        if (mLiveDvrPositionTimeStringListener != null) {
+            mLiveDvrPositionTimeStringListener.onLiveDvrPositionTimeStringChanged(timeString);
         }
     }
 }
