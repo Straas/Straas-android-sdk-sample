@@ -493,7 +493,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                         break;
                     case PlaybackStateCompat.STATE_PAUSED:
                         if (mPlaybackMode == PLAYBACK_MODE_LIVE_EDGE) {
-                            setLivePlaybackModeAndLiveIcon(false);
+                            refreshLiveDvrUiStatus(PLAYBACK_MODE_LIVE_DVR);
                         }
 
                         mCanToggleControllerUi = false;
@@ -507,7 +507,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                     case PlaybackStateCompat.STATE_NONE:
                         mCanToggleControllerUi = false;
                         hideControllerViews();
-                        setLivePlaybackModeAndLiveIcon(true);
+                        refreshLiveDvrUiStatus(PLAYBACK_MODE_LIVE_EDGE);
                         if (getKeepScreenOn()) {
                             setKeepScreenOn(false);
                         }
@@ -772,7 +772,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mColumnContentSeekBar.addView(contentSeekBar);
         mContentSeekBar = contentSeekBar;
         mContentSeekBar.setOnTrackingListener(mTrackingListener);
-        mContentSeekBar.setPositionTimeStringListener(mPositionTimeStringListener);
+        mContentSeekBar.setLiveDvrPositionTimeStringListener(mLiveDvrPositionTimeStringListener);
     }
 
     /**
@@ -1252,15 +1252,15 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 }
             } else {
                 Utils.toggleViewVisibilityWithAnimation(AUTO_HIDE_DELAY_MILLIS, mControllerContainer, mColumnPlayPause);
-                setLivePlaybackModeAndLiveIcon(false);
+                refreshLiveDvrUiStatus(PLAYBACK_MODE_LIVE_DVR);
             }
         }
     };
 
-    private ContentSeekBar.PositionTimeStringListener mPositionTimeStringListener =
-            new ContentSeekBar.PositionTimeStringListener() {
+    private ContentSeekBar.LiveDvrPositionTimeStringListener mLiveDvrPositionTimeStringListener =
+            new ContentSeekBar.LiveDvrPositionTimeStringListener() {
         @Override
-        public void onPositionTimeStringChanged(String timeString) {
+        public void onLiveDvrPositionTimeStringChanged(String timeString) {
             mLivePositionTimeListener.onLivePositionTimeChanged(mLivePositionTimeTextView, timeString);
         }
     };
@@ -1278,7 +1278,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             resetPlayPauseUiWithControllerVisibility();
             switchToPause();
             Utils.toggleViewVisibilityWithAnimation(AUTO_HIDE_DELAY_MILLIS, mControllerContainer, mColumnPlayPause);
-            setLivePlaybackModeAndLiveIcon(true);
+            refreshLiveDvrUiStatus(PLAYBACK_MODE_LIVE_EDGE);
         }
     };
 
@@ -1418,10 +1418,20 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         }
     }
 
-    private void setLivePlaybackModeAndLiveIcon(boolean isLiveEdge) {
-        if (mIsLiveSeekable) {
-            setPlaybackMode(isLiveEdge ? PLAYBACK_MODE_LIVE_EDGE : PLAYBACK_MODE_LIVE_DVR);
-            setBottomLeftColumnToLiveIcon(isLiveEdge);
+    private void refreshLiveDvrUiStatus(@PlaybackMode int playbackMode) {
+        if (!mIsLiveSeekable) {
+            return;
+        }
+
+        switch(playbackMode) {
+            case PLAYBACK_MODE_LIVE_EDGE:
+            case PLAYBACK_MODE_LIVE_DVR:
+                setPlaybackMode(playbackMode);
+                setBottomLeftColumnToLiveIcon(playbackMode == PLAYBACK_MODE_LIVE_EDGE);
+                break;
+            case PLAYBACK_MODE_VOD:
+            default:
+                break;
         }
     }
 
