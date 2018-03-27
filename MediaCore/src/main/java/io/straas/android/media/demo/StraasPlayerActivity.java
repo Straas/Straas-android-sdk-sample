@@ -14,6 +14,7 @@ import android.support.v4.media.MediaBrowserCompat.SubscriptionCallback;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -21,6 +22,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -51,11 +53,7 @@ public class StraasPlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.straas_player_view);
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            getSupportActionBar().hide();
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
+        handleOrientation(getSupportActionBar(), getWindow(), getResources().getConfiguration());
 
         AspectRatioFrameLayout aspectRatioFrameLayout = findViewById(R.id.straasPlayer);
         if (aspectRatioFrameLayout != null) {
@@ -141,6 +139,24 @@ public class StraasPlayerActivity extends AppCompatActivity {
         super.onDestroy();
         if (getMediaControllerCompat() != null) {
             getMediaControllerCompat().unregisterCallback(mMediaControllerCallback);
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        handleOrientation(getSupportActionBar(), getWindow(), newConfig);
+    }
+
+    private void handleOrientation(ActionBar actionBar, Window window, Configuration configuration) {
+        if (actionBar != null && window != null && configuration != null) {
+            if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+                actionBar.hide();
+                window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            } else if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                actionBar.show();
+                window.clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            }
         }
     }
 
