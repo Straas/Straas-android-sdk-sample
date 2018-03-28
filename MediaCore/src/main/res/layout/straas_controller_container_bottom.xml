@@ -24,8 +24,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="@dimen/progress_bar_column_left_margin"
+        android:layout_marginRight="@dimen/progress_bar_column_right_margin"
         android:visibility="gone"
         android:layout_toRightOf="@+id/bottomLeftColumn"
         android:layout_toLeftOf="@+id/bottomRightColumn" />

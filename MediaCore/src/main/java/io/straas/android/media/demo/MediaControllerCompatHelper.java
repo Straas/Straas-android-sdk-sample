@@ -194,6 +194,10 @@ public class MediaControllerCompatHelper {
         controller.getTransportControls().sendCustomAction(StraasMediaCore.COMMAND_DISABLE_AUDIO, bundle);
     }
 
+    public static void playAtLiveEdge(@NonNull MediaControllerCompat controller) {
+        controller.getTransportControls().sendCustomAction(StraasMediaCore.COMMAND_PLAY_AT_LIVE_EDGE, null);
+    }
+
     public static class VideoQualityInfo {
         public ArrayList<Format> mFormats;
         public int mCurrentSelectedIndex;

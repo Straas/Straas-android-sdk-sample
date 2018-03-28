@@ -19,7 +19,12 @@ import java.util.Formatter;
 import java.util.Locale;
 
 import io.straas.android.media.demo.widget.PlayerControl;
+import io.straas.android.media.demo.widget.StraasPlayerView.PlaybackMode;
 import io.straas.android.sdk.demo.R;
+
+import static io.straas.android.media.demo.widget.StraasPlayerView.PLAYBACK_MODE_LIVE_DVR;
+import static io.straas.android.media.demo.widget.StraasPlayerView.PLAYBACK_MODE_LIVE_EDGE;
+import static io.straas.android.media.demo.widget.StraasPlayerView.PLAYBACK_MODE_VOD;
 
 public class ContentSeekBar extends RelativeLayout {
 
@@ -38,9 +43,16 @@ public class ContentSeekBar extends RelativeLayout {
     private Handler mHandler = new MessageHandler(this);
 
     private TrackingListener mTrackingListener;
+    private LiveDvrPositionTimeStringListener mLiveDvrPositionTimeStringListener;
+
+    @PlaybackMode private int mPlaybackMode = PLAYBACK_MODE_VOD;
 
     public interface TrackingListener {
         void onTrackingTouch(boolean isTracking);
+    }
+
+    public interface LiveDvrPositionTimeStringListener {
+        void onLiveDvrPositionTimeStringChanged(String timeString);
     }
 
     public ContentSeekBar(Context context) {
@@ -108,7 +120,9 @@ public class ContentSeekBar extends RelativeLayout {
         int position = mPlayer.getCurrentPosition();
         int duration = mPlayer.getDuration();
         if (mProgress != null) {
-            if (duration > 0) {
+            if (mPlaybackMode == PLAYBACK_MODE_LIVE_EDGE) {
+                mProgress.setProgress(mProgress.getMax());
+            } else if (duration > 0) {
                 // use long to avoid overflow
                 long pos = 1000L * position / duration;
                 mProgress.setProgress((int) pos);
@@ -123,6 +137,33 @@ public class ContentSeekBar extends RelativeLayout {
             mCurrentTime.setText(stringForTime(position));
 
         return position;
+    }
+
+    public void setPlaybackMode(@PlaybackMode int PlaybackMode) {
+        mPlaybackMode = PlaybackMode;
+        switch (mPlaybackMode) {
+            case PLAYBACK_MODE_LIVE_EDGE:
+                if (mProgress != null) {
+                    mProgress.setProgress(mProgress.getMax());
+                }
+            case PLAYBACK_MODE_LIVE_DVR:
+                if (mCurrentTime != null) {
+                    mCurrentTime.setVisibility(View.GONE);
+                }
+                if (mEndTime != null) {
+                    mEndTime.setVisibility(View.GONE);
+                }
+                break;
+            case PLAYBACK_MODE_VOD:
+            default:
+                if (mCurrentTime != null) {
+                    mCurrentTime.setVisibility(View.VISIBLE);
+                }
+                if (mEndTime != null) {
+                    mEndTime.setVisibility(View.VISIBLE);
+                }
+                break;
+        }
     }
 
     @Override
@@ -198,6 +239,19 @@ public class ContentSeekBar extends RelativeLayout {
             long newPosition = (duration * progress) / bar.getMax();
             if (mCurrentTime != null)
                 mCurrentTime.setText(stringForTime((int) newPosition));
+
+            if (mPlaybackMode == PLAYBACK_MODE_LIVE_EDGE || mPlaybackMode == PLAYBACK_MODE_LIVE_DVR) {
+                sendLiveDvrPositionTimeStringChangedEvent(getLiveDvrPositionTimeString((int) Math.max(duration - newPosition, 0L)));
+            }
+        }
+
+        private String getLiveDvrPositionTimeString(int offset) {
+            String offsetTimeString = stringForTime(Math.max(offset, 0));
+            if (offset <= 0) {
+                return offsetTimeString;
+            }
+
+            return String.format("-%s", offsetTimeString);
         }
 
         @Override
@@ -266,6 +320,16 @@ public class ContentSeekBar extends RelativeLayout {
     private void sendTrackingEvent() {
         if (mTrackingListener != null) {
             mTrackingListener.onTrackingTouch(mDragging);
+        }
+    }
+
+    public void setLiveDvrPositionTimeStringListener(LiveDvrPositionTimeStringListener listener) {
+        mLiveDvrPositionTimeStringListener = listener;
+    }
+
+    private void sendLiveDvrPositionTimeStringChangedEvent(String timeString) {
+        if (mLiveDvrPositionTimeStringListener != null) {
+            mLiveDvrPositionTimeStringListener.onLiveDvrPositionTimeStringChanged(timeString);
         }
     }
 }
