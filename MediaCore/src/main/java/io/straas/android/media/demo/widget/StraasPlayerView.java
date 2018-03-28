@@ -367,8 +367,8 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                             mLastMediaMetadata.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID)) &&
                     TextUtils.equals(metadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE),
                             mLastMediaMetadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE)) &&
-                    metadata.getBundle().getBoolean(StraasMediaCore.KEY_IS_LIVE_LOW_LATENCY_FIRST) ==
-                            mLastMediaMetadata.getBundle().getBoolean(StraasMediaCore.KEY_IS_LIVE_LOW_LATENCY_FIRST))) {
+                    metadata.getBundle().getBoolean(VideoCustomMetadata.CUSTOM_METADATA_IS_LIVE_LOW_LATENCY_FIRST) ==
+                            mLastMediaMetadata.getBundle().getBoolean(VideoCustomMetadata.CUSTOM_METADATA_IS_LIVE_LOW_LATENCY_FIRST))) {
                 return;
             }
 
@@ -380,7 +380,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
             if (mediaId.startsWith(StraasMediaCore.LIVE_ID_PREFIX)) {
                 boolean isLiveSeekable = metadata.getBundle().getBoolean(VideoCustomMetadata.LIVE_DVR_ENABLED) &&
-                        !metadata.getBundle().getBoolean(StraasMediaCore.KEY_IS_LIVE_LOW_LATENCY_FIRST);
+                        !metadata.getBundle().getBoolean(VideoCustomMetadata.CUSTOM_METADATA_IS_LIVE_LOW_LATENCY_FIRST);
                 switchMode(true, isLiveSeekable);
                 Bundle liveBundle = (mLiveBundle != null) ? mLiveBundle :
                         getMediaControllerCompat().getExtras();
