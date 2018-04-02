@@ -282,7 +282,7 @@ public final class MyScreencastSession implements ScreencastSession {
                             .setContentTitle(mContext.getString(R.string.screencast_service_title))
                             .setContentText("Streaming!!!")
                             .setAutoCancel(true);
-                    if (Utils.supportAndroidOreo()) {
+                    if (Utils.isAndroidOreoOrAbove()) {
                         builder.setChannelId(mContext.getString(R.string.screencast_notification_channel_id));
                     }
                     mListener.updateNotification(builder.build());
@@ -326,7 +326,7 @@ public final class MyScreencastSession implements ScreencastSession {
 
     @Override
     public NotificationChannel getNotificationChannel() {
-        if (!Utils.supportAndroidOreo()) {
+        if (!Utils.isAndroidOreoOrAbove()) {
             return null;
         }
 
@@ -347,7 +347,7 @@ public final class MyScreencastSession implements ScreencastSession {
                 .setContentTitle(title)
                 .setContentText(subtitle)
                 .setAutoCancel(true);
-        if (Utils.supportAndroidOreo()) {
+        if (Utils.isAndroidOreoOrAbove()) {
             builder.setChannelId(mContext.getString(R.string.screencast_notification_channel_id));
         }
         return builder.build();

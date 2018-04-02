@@ -43,7 +43,7 @@ public class Utils {
                 context.getString(suffix));
     }
 
-    public static boolean supportAndroidOreo() {
+    public static boolean isAndroidOreoOrAbove() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 }

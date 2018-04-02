@@ -23,7 +23,7 @@ public abstract class OverlayLayout extends FrameLayout {
     protected final Listener mListener;
 
     protected WindowManager.LayoutParams createLayoutParams() {
-        int alertWindowType = Utils.supportAndroidOreo() ?
+        int alertWindowType = Utils.isAndroidOreoOrAbove() ?
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY :
                 WindowManager.LayoutParams.TYPE_SYSTEM_ERROR;
         final WindowManager.LayoutParams params = new WindowManager.LayoutParams(WRAP_CONTENT, WRAP_CONTENT,
@@ -37,7 +37,7 @@ public abstract class OverlayLayout extends FrameLayout {
     }
 
     private int getVerticalMargin(int gravity) {
-        // top gravity then align to status bar height
+        // if top gravity then align to the height of status bar
         if ((gravity & Gravity.TOP) == Gravity.TOP) {
             int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
             if (resourceId > 0) {
