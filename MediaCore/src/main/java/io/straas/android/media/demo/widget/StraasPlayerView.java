@@ -58,6 +58,7 @@ import io.straas.android.sdk.media.StraasMediaCore;
 import io.straas.android.sdk.media.StraasMediaCore.ErrorReason;
 import io.straas.android.sdk.media.VideoCustomMetadata;
 
+import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_DVR_PLAYBACK_AVAILABLE;
 import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_ENDED;
 import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_STARTED;
 import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_STOPPED;
@@ -113,6 +114,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private ViewGroup mColumnReplay;
     private ViewGroup mColumnPrevious;
     private ViewGroup mColumnNext;
+    private ViewGroup mColumnDvrPlaybackAvailable;
     private ViewGroup mColumnAdPlay;
     private ViewGroup mColumnErrorMessage;
     private ViewGroup mColumnBroadcastState;
@@ -130,6 +132,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private View mSwitchQualityView;
     private View mLogoView;
     private ContentSeekBar mContentSeekBar;
+    private View mDvrPlaybackAvailableView;
 
     private FrameLayout mVideoView;
     private FrameLayout mAdView;
@@ -384,6 +387,9 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 switchMode(true, isLiveSeekable);
                 Bundle liveBundle = (mLiveBundle != null) ? mLiveBundle :
                         getMediaControllerCompat().getExtras();
+                if (isLiveSeekable) {
+                    setCustomDvrPlaybackAvailable(View.inflate(mThemeContext, R.layout.dvr_playback_available, null));
+                }
 
                 handleMediaSessionExtra(liveBundle, true);
             } else {
@@ -569,6 +575,9 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             case BROADCAST_STATE_WAITING_FOR_STREAM:
                 mBroadcastStateListener.waitForStream(mBroadcastStateView);
                 break;
+            case BROADCAST_STATE_DVR_PLAYBACK_AVAILABLE:
+                mBroadcastStateListener.dvrPlaybackAvailable(mDvrPlaybackAvailableView);
+                break;
             case BROADCAST_STATE_STOPPED:
                 mBroadcastStateListener.offline(mBroadcastStateView);
                 break;
@@ -625,6 +634,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mColumnPrevious = root.findViewById(R.id.previousColumn);
         mColumnNext = root.findViewById(R.id.nextColumn);
         mColumnPlayPause = root.findViewById(R.id.playPauseColumn);
+        mColumnDvrPlaybackAvailable = root.findViewById(R.id.dvrPlaybackAvailableColumn);
         mColumnAdPlay = root.findViewById(R.id.adPlayColumn);
         mColumnErrorMessage = root.findViewById(R.id.errorMessageColumn);
         mColumnBroadcastState = root.findViewById(R.id.onLineOfflineColumn);
@@ -1066,6 +1076,16 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mColumnNext.addView(imageButton);
     }
 
+    public void setCustomDvrPlaybackAvailable(@NonNull View message) {
+        mColumnDvrPlaybackAvailable.removeAllViews();
+        mColumnDvrPlaybackAvailable.addView(message);
+        mDvrPlaybackAvailableView = message;
+    }
+
+    public void setDvrPlaybackAvailableVisibility(int visibility) {
+        mColumnDvrPlaybackAvailable.setVisibility(visibility);
+    }
+
     /**
      * To enable controller ui to show when touch screen.
      *
@@ -1210,6 +1230,20 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             setErrorMessageVisibility(GONE);
             setBroadcastStateVisibility(VISIBLE);
             textView.setText(R.string.broadcast_state_wait_for_stream);
+        }
+
+        void dvrPlaybackAvailable(View dvrPlaybackAvailableView) {
+            if (dvrPlaybackAvailableView == null) {
+                return;
+            }
+            TextView textView = dvrPlaybackAvailableView.findViewById(android.R.id.text1);
+            if (textView == null) {
+                return;
+            }
+            setErrorMessageVisibility(GONE);
+            setBroadcastStateVisibility(GONE);
+            setDvrPlaybackAvailableVisibility(VISIBLE);
+            textView.setText(R.string.broadcast_state_offline);
         }
     }
 
@@ -1387,10 +1421,18 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mColumnPlay.setVisibility(INVISIBLE);
         mColumnReplay.setVisibility(INVISIBLE);
         mColumnPause.setVisibility(VISIBLE);
+        setDvrPlaybackAvailableVisibility(INVISIBLE);
     }
 
     private void switchToReplay() {
-        mColumnReplay.setVisibility(VISIBLE);
+        Bundle liveBundle = (mLiveBundle != null) ? mLiveBundle : getMediaControllerCompat().getExtras();
+        int broadcastStateV2 = liveBundle.getInt(LIVE_EXTRA_BROADCAST_STATE_V2, BROADCAST_STATE_UNKNOWN);
+        if (broadcastStateV2 == BROADCAST_STATE_DVR_PLAYBACK_AVAILABLE && mIsLiveSeekable) {
+            setDvrPlaybackAvailableVisibility(VISIBLE);
+            refreshLiveDvrUiStatus(PLAYBACK_MODE_LIVE_DVR);
+        } else {
+            mColumnReplay.setVisibility(VISIBLE);
+        }
         mColumnPlay.setVisibility(INVISIBLE);
         mColumnPause.setVisibility(INVISIBLE);
     }
