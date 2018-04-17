@@ -2,6 +2,15 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.9.4
+_2018-04-17_
+
+*   straas-media-core
+    *   feat: Add [setChannel](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/notification/NotificationOptions.Builder.html#setChannel-android.app.NotificationChannel-) for supporting Notification in [Android Oreo](https://www.android.com/versions/oreo-8-0/) devices.
+*   straas-streaming
+    *   feat: Add [getNotificationChannel](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/screencast/ScreencastSession.html#getNotificationChannel--) for supporting Notification in [Android Oreo](https://www.android.com/versions/oreo-8-0/) devices.
+
+
 ## Version 0.9.3
 _2018-03-20_
 

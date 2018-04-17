@@ -1,6 +1,7 @@
 package io.straas.android.sdk.streaming.demo;
 
 import android.content.Context;
+import android.os.Build;
 
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.streaming.StreamStatsReport;
@@ -40,5 +41,9 @@ public class Utils {
         }
         return context.getResources().getString(R.string.bitrate_suffix, value,
                 context.getString(suffix));
+    }
+
+    public static boolean isAndroidOreoOrAbove() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;
     }
 }
