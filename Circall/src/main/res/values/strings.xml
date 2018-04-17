@@ -1,26 +1,16 @@
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- Settings strings. -->
-    <string name="pref_miscsettings_key">misc_settings_key</string>
-    <string name="pref_miscsettings_title">Miscellaneous settings.</string>
+<resources>
+    <string name="hint_input_circall_stream_key">請貼上或掃描串流碼</string>
+    <string name="enter_room">進入線上面談室</string>
+    <string name="empty_stream_key">*請貼上串流碼</string>
+    <string name="error_stream_key">*串流碼錯誤</string>
 
-    <string name="pref_circall_token_key">circall_token_preference</string>
-    <string name="pref_circall_token_title">CirCall token.</string>
-    <string name="pref_circall_token_dlg">Enter a CirCall token.</string>
-    <string name="pref_circall_token_default" translatable="false">eyJob3N0IjoiMTkyLjE2OC4wLjE1Mzo4MDgwIiwibWdyVG9rZW4iOiIxMjM0NSIsInNlY3VyZSI6ZmFsc2UsInNpZ25hdHVyZSI6IllqWXdNR1kzTXpSa01ETmxObVV3TkRBek9UZGxObVJsTXpFeFpHRXhZMlV3TW1OaE5tUTVZdz09IiwidG9rZW5JZCI6IjVhMjc2N2I4ZWI4YjhlMDk1ZDczYTEwYyJ9</string>
+    <string name="circall_need_permission">請先允許相機和麥可風，才可進入線上面談室</string>
 
-    <string name="pref_circall_username_key">circall_username_preference</string>
-    <string name="pref_circall_username_title">CirCall username.</string>
-    <string name="pref_circall_username_dlg">Enter a CirCall username.</string>
-    <string name="pref_circall_username_default" translatable="false">kingsman</string>
+    <string name="connecting">連線中...</string>
+    <string name="other_side_not_enter_yet">對方尚未進入面談室</string>
 
-    <string name="pref_room_server_url_key">room_server_url_preference</string>
-    <string name="pref_room_server_url_title">Room server URL.</string>
-    <string name="pref_room_server_url_dlg">Enter a room server URL.</string>
-    <string name="pref_room_server_url_default" translatable="false">http://104.199.208.77:3001/</string>
-
-    <string name="pref_token_fetch_method_key">token_fetch_method_preference</string>
-    <string name="pref_token_fetch_method_title">Token fetch method.</string>
-    <string name="pref_token_fetch_method_dlg">Select token fetch method.</string>
-    <string name="pref_token_fetch_method_default">licode</string>
-    <string name="hint_need_permission">Need permission to continue</string>
+    <string name="recording_failed_title">無法錄影</string>
+    <string name="recording_failed_message">需等候雙方皆進入面談室後，才可開始進行錄影</string>
+    <string name="end_circall_confirmation_title">離開面談室</string>
+    <string name="end_circall_confirmation_message">你確定要離開面談室嗎？</string>
 </resources>

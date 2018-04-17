@@ -1,3 +1,11 @@
-<resources>
-    <dimen name="fab_margin">16dp</dimen>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <dimen name="straas_logo_top_margin">137dp</dimen>
+    <dimen name="stream_key_top_margin">66dp</dimen>
+    <dimen name="enter_room_top_margin">22dp</dimen>
+    <dimen name="stream_key_error_top_margin">22dp</dimen>
+    <dimen name="stream_key_text_size">14sp</dimen>
+    <dimen name="enter_room_text_size">18sp</dimen>
+    <dimen name="stream_key_error_text_size">12sp</dimen>
+
+    <dimen name="pip_margin">10dp</dimen>
 </resources>

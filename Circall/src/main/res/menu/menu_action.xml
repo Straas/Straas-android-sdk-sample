@@ -21,26 +21,8 @@
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/action_publish"
-        android:icon="@drawable/ic_cloud_upload_24dp"
-        android:title="Publish"
-        app:showAsAction="always"/>
-
-    <item
-        android:id="@+id/action_record"
-        android:icon="@drawable/ic_video_call_24dp"
-        android:title="Record"
-        app:showAsAction="always"/>
-
-    <item
         android:id="@+id/action_screenshot"
-        android:icon="@drawable/ic_crop_original_24dp"
+        android:icon="@drawable/ic_screenshot"
         android:title="Record"
-        app:showAsAction="always"/>
-
-    <item
-        android:id="@+id/action_close"
-        android:icon="@drawable/abc_ic_clear_material"
-        android:title="Close"
         app:showAsAction="always"/>
 </menu>
