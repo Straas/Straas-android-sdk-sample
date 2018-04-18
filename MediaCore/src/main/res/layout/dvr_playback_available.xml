@@ -10,7 +10,7 @@
         android:layout_gravity="center"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:id="@android:id/text1"
+        android:id="@+id/text_dvr_playback_end"
         android:textColor="@color/color_offline_message_color"
         android:textSize="@dimen/error_message_size" />
 </FrameLayout>

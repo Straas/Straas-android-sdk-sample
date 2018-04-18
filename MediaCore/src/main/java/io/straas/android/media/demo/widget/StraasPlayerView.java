@@ -1236,7 +1236,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             if (dvrPlaybackAvailableView == null) {
                 return;
             }
-            TextView textView = dvrPlaybackAvailableView.findViewById(android.R.id.text1);
+            TextView textView = dvrPlaybackAvailableView.findViewById(R.id.text_dvr_playback_end);
             if (textView == null) {
                 return;
             }
