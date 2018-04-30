@@ -38,7 +38,4 @@
     <string name="hint_input_title">Input live event title.</string>
     <string name="hint_input_stream_key">Scan or paste your stream key.</string>
     <string name="error_empty_stream_key">Stream key shouldn't be empty.</string>
-
-    <string name="hint_scan">Scan QR code of your stream_key.</string>
-    <string name="error_wrong_format">Unsupported format</string>
 </resources>

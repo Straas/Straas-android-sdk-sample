@@ -1,4 +1,4 @@
-package io.straas.android.sdk.streaming.demo.qrcode;
+package io.straas.android.sdk.demo.qrcode;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
