@@ -1,12 +1,4 @@
 <resources>
-
-    <style name="WelcomeTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">#FFFFFF</item>
-        <item name="colorPrimaryDark">#2D8787</item>
-        <item name="colorAccent">#FF4081</item>
-        <item name="android:windowBackground">@drawable/bg_welcome</item>
-    </style>
-
     <style name="TokenEditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:textColorHint">#FF78C1C4</item>
         <item name="android:textColorPrimary">#FFFFFFFF</item>
@@ -22,8 +14,6 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">@dimen/stream_key_error_text_size</item>
     </style>
-
-    <style name="VideoCallTheme" parent="Theme.AppCompat.NoActionBar"/>
 
     <style name="VideoCallDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">#FF51C0C2</item>

@@ -78,14 +78,14 @@
         <activity android:name="io.straas.android.sdk.circall.demo.MainActivity"
                   android:label="CirCall - 1:1 conferencing"
                   android:launchMode="singleTop"
-                  android:theme="@style/WelcomeTheme"
+                  android:theme="@style/CircallWelcomeTheme"
                   android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
 
         <activity android:name="io.straas.android.sdk.circall.demo.SingleVideoCallActivity"
                   android:screenOrientation="portrait"
                   android:launchMode="singleTop"
                   android:configChanges="orientation|smallestScreenSize|screenSize|screenLayout"
-                  android:theme="@style/VideoCallTheme"
+                  android:theme="@style/Theme.AppCompat.NoActionBar"
                   android:parentActivityName="io.straas.android.sdk.circall.demo.MainActivity"/>
 
     </application>

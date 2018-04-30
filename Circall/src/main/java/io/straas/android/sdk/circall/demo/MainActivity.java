@@ -1,19 +1,19 @@
 package io.straas.android.sdk.circall.demo;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
 
 import io.straas.android.sdk.circall.CircallToken;
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.databinding.ActivityMainBinding;
+import io.straas.android.sdk.demo.qrcode.QrcodeActivity;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
@@ -25,34 +25,44 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO
     };
-    public static final int CIRCALL_PERMISSION_REQUEST = 1;
+
+    private static final int CIRCALL_PERMISSION_REQUEST = 1;
+    private static final int SCAN_QRCODE_REQUEST = 2;
 
     private ActivityMainBinding mBinding;
+    private boolean mIsRequestFromStartVideoCall = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
-       // binding.addTextChangedListener(this);
-       // binding.memberPassword.addTextChangedListener(this);
-       // binding.memberId.addTextChangedListener(this);
-     //   binding.memberPassword.addTextChangedListener(this);
     }
 
-    public void onScan(View view) {
+    public void onScanQrcode(View view) {
+        mIsRequestFromStartVideoCall = false;
+        checkPermissions();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == SCAN_QRCODE_REQUEST && resultCode == Activity.RESULT_OK) {
+            String streamKey = data.getStringExtra(QrcodeActivity.KEY_QR_CODE_VALUE);
+            mBinding.circallStreamKey.setText(streamKey);
+        }
     }
 
     public void onEnterRoom(View view) {
         String token = mBinding.circallStreamKey.getText().toString();
-        android.util.Log.d("jason", "onEnterRoom token:" + token);
-     /*   if (!CircallToken.isValidToken(token)) {
+        if (!CircallToken.isValidToken(token)) {
             // show yellow stream key error
             mBinding.setCircallStreamKeyErrorText(getString(TextUtils.isEmpty(token) ?
                     R.string.empty_stream_key : R.string.error_stream_key));
             return;
         }
-*/
+
         mBinding.setCircallStreamKeyErrorText("");
+        mIsRequestFromStartVideoCall = true;
         checkPermissions();
     }
 
@@ -63,12 +73,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @AfterPermissionGranted(CIRCALL_PERMISSION_REQUEST)
-    private void checkPermissions() {
+    private synchronized void checkPermissions() {
+        android.util.Log.d("jason", "checkPermissions mIsRequestFromStartVideoCall:" + mIsRequestFromStartVideoCall);
         if (EasyPermissions.hasPermissions(this, CIRCALL_PERMISSIONS)) {
-            Intent intent = new Intent(this, SingleVideoCallActivity.class);
-            intent.putExtra(INTENT_CIRCALL_TOKEN, "eyJ0b2tlbklkIjoiZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmhJam9pZEhKcFlXd3VjM1J5WVdGekxtbHZMWFJsYzNRaUxDSnlJam9pTkhBMGMxOWlNMlUzWWpjMFpXSTNNV00wWW1NeE9XWTJaak14WlRnd1pqZzRNbU15TVdJeVpEZ2lMQ0oxSWpvaWRYTmxjakVpTENKd0lqb2lOSEEwY3lJc0ltOGlPaUp0WVc1aFoyVnlJaXdpWlNJNk1UVXlOREV5TXpZME9IMC5JVXFqakZFTGJmUUlUVXEwNG5yZXduaXk0eVhpTXVQX3V0aklTZFgza0EwIiwiaG9zdCI6ImNpcmNhbGwtZWMtcmMuc3RyYWFzLm5ldCIsInNlY3VyZSI6dHJ1ZSwic2lnbmF0dXJlIjoiWkRVeE1qVTJNRE0wTm1Jd05ERTVOelUxWlRRNVlUQXdOakpqTldabVpUSTBZakF5TmpFelpnPT0ifQ");
-            startActivity(intent);
+            if (mIsRequestFromStartVideoCall) {
+                Intent intent = new Intent(this, SingleVideoCallActivity.class);
+                intent.putExtra(INTENT_CIRCALL_TOKEN, mBinding.circallStreamKey.getText().toString());
+                startActivity(intent);
+            } else {
+                Intent intent = new Intent(this, QrcodeActivity.class);
+                startActivityForResult(intent, SCAN_QRCODE_REQUEST);
+            }
         } else {
+            android.util.Log.d("jason", "checkPermissions EasyPermissions.requestPermissions:" + mIsRequestFromStartVideoCall);
+
             EasyPermissions.requestPermissions(this, getString(R.string.circall_need_permission),
                     CIRCALL_PERMISSION_REQUEST, CIRCALL_PERMISSIONS);
         }

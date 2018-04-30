@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="7.3dp"
             app:srcCompat="@drawable/ic_scan"
-            android:onClick="onScan"
+            android:onClick="onScanQrcode"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/circall_stream_key_underline"
             app:layout_constraintTop_toTopOf="parent"

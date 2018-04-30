@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -80,17 +81,16 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
             mCircallManager = task.getResult();
             mCircallManager.addEventListener(SingleVideoCallActivity.this);
             return prepare();
-        }).addOnSuccessListener(new OnSuccessListener<CircallStream>() {
-            @Override
-            public void onSuccess(CircallStream circallStream) {
-                String token = getIntent().getStringExtra(INTENT_CIRCALL_TOKEN);
-                if (!TextUtils.isEmpty(token)) {
-                    join(new CircallToken(token));
-                } else {
-                   // Log.e(TAG, "Start streaming fails " + e);
-                   // Toast.makeText(getApplicationContext(), "Start streaming fails " + e, Toast.LENGTH_SHORT).show();
-                   //   finish();
-                }
+        }).addOnSuccessListener(circallStream -> {
+            String token = getIntent().getStringExtra(INTENT_CIRCALL_TOKEN);
+            android.util.Log.d("jason", "single token:" + token);
+
+            if (!TextUtils.isEmpty(token)) {
+                join(new CircallToken(token));
+            } else {
+                Toast.makeText(getApplicationContext(), "Start circall fails due to empty token",
+                        Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
 
@@ -270,10 +270,6 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
     public void onStreamRemoved(CircallStream stream) {
         mBinding.fullscreenVideoView.setVisibility(View.INVISIBLE);
         mBinding.setState(STATE_CONNECTED);
-    }
-
-    @Override
-    public void onCircallStatsReportUpdate(CircallStatsReport CircallStatsReport) {
     }
 
     @Override
