@@ -47,10 +47,9 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
     private ActivitySingleVideoCallBinding mBinding;
     private CircallManager mCircallManager;
     private CircallStream mLocalCircallStream;
-    private boolean mIsConnected = false;
+    private CircallStream mRemoteCircallStream;
     private long mRecordingStartTimeMillis;
 
-    private CircallStream mRemoteStream;
     private Handler mHandler = new Handler();
 
     private final Handler mMainThreadHandler = new Handler(Looper.getMainLooper()) {
@@ -118,9 +117,9 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
                     }
                     break;
                 case R.id.action_screenshot:
-                    if (mLocalCircallStream != null) {
+                    if (mRemoteCircallStream != null) {
                         item.setIcon(R.drawable.ic_screenshot_focus);
-                        mLocalCircallStream.getVideoFrame().addOnSuccessListener(
+                        mRemoteCircallStream.getVideoFrame().addOnSuccessListener(
                                 SingleVideoCallActivity.this,
                                 bitmap -> {
                                     Log.d(TAG, "onSuccess bitmap:" + bitmap);
@@ -147,20 +146,20 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
     }
 
     public void onActionRecord(View view) {
-        if (mCircallManager == null || mLocalCircallStream == null ||
+        if (mCircallManager == null || mRemoteCircallStream == null ||
                 mCircallManager.getCircallState() != CircallManager.STATE_CONNECTED) {
             return;
         }
 
         if (mBinding.getIsRecording()) {
-            mCircallManager.stopRecording(mLocalCircallStream).addOnCompleteListener(this, task -> {
+            mCircallManager.stopRecording(mRemoteCircallStream).addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
                     mBinding.setIsRecording(false);
                     mBinding.actionRecord.setImageResource(R.drawable.ic_video_call_24dp);
                 }
             });
         } else {
-            mCircallManager.startRecording(mLocalCircallStream).addOnCompleteListener(this, task -> {
+            mCircallManager.startRecording(mRemoteCircallStream).addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
                     mBinding.setIsRecording(true);
                     mBinding.actionRecord.setImageResource(R.drawable.ic_slow_motion_video_24dp);
@@ -211,7 +210,6 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
                 return Tasks.forException(task.getException());
             }
 
-            mIsConnected = true;
             return publish();
         });
     }
@@ -262,7 +260,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
 
         mBinding.fullscreenVideoView.setVisibility(View.VISIBLE);
         stream.setRenderer(mBinding.fullscreenVideoView, CircallPlayConfig.ASPECT_FIT);
-        mRemoteStream = stream;
+        mRemoteCircallStream = stream;
         mBinding.setState(STATE_TWO_WAY_VIDEO);
     }
 
