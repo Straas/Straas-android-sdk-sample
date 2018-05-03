@@ -117,17 +117,20 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
                     }
                     break;
                 case R.id.action_screenshot:
-                    if (mRemoteCircallStream != null) {
-                        item.setIcon(R.drawable.ic_screenshot_focus);
-                        mRemoteCircallStream.getVideoFrame().addOnSuccessListener(
-                                SingleVideoCallActivity.this,
-                                bitmap -> {
-                                    Log.d(TAG, "onSuccess bitmap:" + bitmap);
-                                    item.setIcon(R.drawable.ic_screenshot);
-                                    mBinding.screenshot.setImageBitmap(bitmap);
-                                    mHandler.postDelayed(() -> mBinding.screenshot.setImageBitmap(null), 3000);
-                                });
+                    if (mRemoteCircallStream == null) {
+                        showScreenshotFailedDialog(R.string.screenshot_failed_message_two_way_not_ready);
+                        break;
                     }
+
+                    item.setIcon(R.drawable.ic_screenshot_focus);
+                    mRemoteCircallStream.getVideoFrame().addOnSuccessListener(
+                            SingleVideoCallActivity.this,
+                            bitmap -> {
+                                Log.d(TAG, "onSuccess bitmap:" + bitmap);
+                                item.setIcon(R.drawable.ic_screenshot);
+                                mBinding.screenshot.setImageBitmap(bitmap);
+                                mHandler.postDelayed(() -> mBinding.screenshot.setImageBitmap(null), 3000);
+                            });
                     break;
                 default:
                     break;
@@ -146,8 +149,11 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
     }
 
     public void onActionRecord(View view) {
-        if (mCircallManager == null || mRemoteCircallStream == null ||
-                mCircallManager.getCircallState() != CircallManager.STATE_CONNECTED) {
+        if (mCircallManager == null || mCircallManager.getCircallState() != CircallManager.STATE_CONNECTED) {
+            return;
+        }
+        if (mRemoteCircallStream == null) {
+            showRecordingFailedDialog(R.string.recording_failed_message_two_way_not_ready);
             return;
         }
 
@@ -168,7 +174,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
                     mMainThreadHandler.removeMessages(EVENT_UPDATE_RECORDING_TIME);
                     mMainThreadHandler.sendEmptyMessage(EVENT_UPDATE_RECORDING_TIME);
                 } else {
-                    showRecordingFailedDialog();
+                    showRecordingFailedDialog(R.string.recording_failed_message_not_authorized);
                 }
             });
         }
@@ -259,7 +265,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
         Log.d(TAG, "onStreamSubscribed setRenderer to fullscreenVideoView: ");
 
         mBinding.fullscreenVideoView.setVisibility(View.VISIBLE);
-        stream.setRenderer(mBinding.fullscreenVideoView, CircallPlayConfig.ASPECT_FIT);
+        stream.setRenderer(mBinding.fullscreenVideoView, CircallPlayConfig.ASPECT_FILL);
         mRemoteCircallStream = stream;
         mBinding.setState(STATE_TWO_WAY_VIDEO);
     }
@@ -274,10 +280,18 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
     public void onError(Exception error) {
     }
 
-    private void showRecordingFailedDialog() {
+    private void showScreenshotFailedDialog(int messageResId) {
+        showFailedDialog(R.string.screenshot_failed_title, messageResId);
+    }
+
+    private void showRecordingFailedDialog(int messageResId) {
+        showFailedDialog(R.string.recording_failed_title, messageResId);
+    }
+
+    private void showFailedDialog(int titleResId, int messageResId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.VideoCallDialogTheme);
-        builder.setTitle(R.string.recording_failed_title);
-        builder.setMessage(R.string.recording_failed_message);
+        builder.setTitle(titleResId);
+        builder.setMessage(messageResId);
         builder.setPositiveButton(android.R.string.ok, null);
         final AlertDialog dialog = builder.create();
         dialog.show();

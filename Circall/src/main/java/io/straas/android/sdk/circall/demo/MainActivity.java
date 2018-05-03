@@ -48,8 +48,12 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SCAN_QRCODE_REQUEST && resultCode == Activity.RESULT_OK) {
             String streamKey = data.getStringExtra(QrcodeActivity.KEY_QR_CODE_VALUE);
-            mBinding.circallStreamKey.setText(streamKey);
+            mBinding.circallStreamKey.setText(trim(streamKey));
         }
+    }
+
+    private String trim(String streamKey) {
+        return streamKey.trim().replace("\n", "").replace("\r", "");
     }
 
     public void onEnterRoom(View view) {
