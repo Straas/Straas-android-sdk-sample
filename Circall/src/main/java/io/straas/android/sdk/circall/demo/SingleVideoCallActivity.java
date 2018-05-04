@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 
@@ -24,7 +23,6 @@ import io.straas.android.sdk.circall.CircallConfig;
 import io.straas.android.sdk.circall.CircallManager;
 import io.straas.android.sdk.circall.CircallPlayConfig;
 import io.straas.android.sdk.circall.CircallPublishConfig;
-import io.straas.android.sdk.circall.CircallStatsReport;
 import io.straas.android.sdk.circall.CircallStream;
 import io.straas.android.sdk.circall.CircallToken;
 import io.straas.android.sdk.circall.interfaces.EventListener;
@@ -213,6 +211,9 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
         mCircallManager.connect(token).continueWithTask(task -> {
             if (!task.isSuccessful()) {
                 Log.e(TAG, "join fails: " + task.getException());
+                Toast.makeText(getApplicationContext(), "join fails",
+                        Toast.LENGTH_SHORT).show();
+                finish();
                 return Tasks.forException(task.getException());
             }
 
@@ -278,6 +279,13 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
 
     @Override
     public void onError(Exception error) {
+        Log.d(TAG, "onError error:" + error);
+
+        // For our 1:1 demo, video calling only invoking from outside page,
+        // so just abort for this onError event to avoid showing freeze screen
+        Toast.makeText(getApplicationContext(), "onError",
+                Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     private void showScreenshotFailedDialog(int messageResId) {
