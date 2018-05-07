@@ -71,7 +71,7 @@ public class LiveDanmakuActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             mChatroomManager = task.getResult();
                             mChatroomManager.addEventListener(mDanmakuManager);
-                            return mChatroomManager.connect(CHATROOM_NAME, MemberIdentity.ME, false);
+                            return mChatroomManager.connect(CHATROOM_NAME, MemberIdentity.ME);
                         }
                         throw task.getException();
                     }
