@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -15,7 +14,10 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
+import com.facebook.rebound.SimpleSpringListener;
+import com.facebook.rebound.Spring;
+import com.facebook.rebound.SpringSystem;
+import com.facebook.rebound.SpringUtil;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 
@@ -125,6 +127,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
                             SingleVideoCallActivity.this,
                             bitmap -> {
                                 Log.d(TAG, "onSuccess bitmap:" + bitmap);
+                                applySpringAnimation();
                                 item.setIcon(R.drawable.ic_screenshot);
                                 mBinding.screenshot.setImageBitmap(bitmap);
                                 mHandler.postDelayed(() -> mBinding.screenshot.setImageBitmap(null), 3000);
@@ -138,6 +141,21 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
 
         mBinding.setState(STATE_IDLE);
         mBinding.setShowActionButtons(false);
+    }
+
+    private void applySpringAnimation() {
+        SpringSystem springSystem = SpringSystem.create();
+        Spring spring = springSystem.createSpring();
+        spring.addListener(new SimpleSpringListener() {
+            @Override
+            public void onSpringUpdate(Spring spring) {
+                float scale = (float) SpringUtil.mapValueFromRangeToRange(spring.getCurrentValue(), 0, 1, 1, 0.5);
+                mBinding.screenshot.setScaleX(scale);
+                mBinding.screenshot.setScaleY(scale);
+            }
+        });
+        spring.setEndValue(1);
+        mHandler.postDelayed(() -> spring.setEndValue(0), 1400);
     }
 
     @Override
@@ -223,12 +241,9 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
 
     private Task<String> publish() {
         if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_CONNECTED) {
-            mCircallManager.publish(getPublishConfig()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    mBinding.setState(STATE_CONNECTED);
-                    mBinding.setShowActionButtons(true);
-                }
+            mCircallManager.publish(getPublishConfig()).addOnCompleteListener(task -> {
+                mBinding.setState(STATE_CONNECTED);
+                mBinding.setShowActionButtons(true);
             });
         }
 
