@@ -10,6 +10,7 @@
 
     <color name="color_summary_viewer">@android:color/white</color>
     <color name="color_live">@android:color/white</color>
+    <color name="color_live_dvr">#ffcccccc</color>
     <color name="color_channel_name">@android:color/white</color>
     <color name="color_error_message">#f9f9f9</color>
     <color name="color_error_message_background">@android:color/black</color>
