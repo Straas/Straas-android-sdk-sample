@@ -2,6 +2,13 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.9.5
+_2018-05-09_
+
+*   straas-media-core
+    *   **feat: Support live DVR player. See [Wiki](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/Interact-with-Video#live-dvr) for more detail.**
+
+
 ## Version 0.9.4
 _2018-04-17_
 
