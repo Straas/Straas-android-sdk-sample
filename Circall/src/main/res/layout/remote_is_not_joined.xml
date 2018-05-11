@@ -30,7 +30,7 @@
             android:id="@+id/remote_avatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_person_outline_48dp"
+            app:srcCompat="@drawable/ic_face"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/text_off_reason"
             app:layout_constraintVertical_chainStyle="packed"

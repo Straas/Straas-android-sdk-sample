@@ -39,7 +39,7 @@
             android:id="@+id/icon_recording"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_recording"
+            android:src="@drawable/ic_recording_dot"
             android:layout_marginRight="3dp"
             android:visibility="@{isRecording ? seconds % 2 == 0 ? View.VISIBLE : View.INVISIBLE : View.INVISIBLE, default=invisible}"
             app:layout_constraintBottom_toBottomOf="@+id/text_elapsed_time"
