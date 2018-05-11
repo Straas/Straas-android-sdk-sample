@@ -99,21 +99,21 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
             switch (item.getItemId()) {
                 case R.id.action_switch_camera:
                     if (mLocalCircallStream != null) {
-                        item.setIcon(R.drawable.ic_switch_camera_focus_24dp);
-                        mLocalCircallStream.switchCamera().addOnCompleteListener(success -> item.setIcon(R.drawable.ic_switch_camera_24dp));
+                        item.setIcon(R.drawable.ic_switch_camera_focus);
+                        mLocalCircallStream.switchCamera().addOnCompleteListener(success -> item.setIcon(R.drawable.ic_switch_camera));
                     }
                     break;
                 case R.id.action_toggle_camera:
                     if (mLocalCircallStream != null) {
                         boolean isCameraOn = mLocalCircallStream.toggleCamera();
-                        item.setIcon(isCameraOn ? R.drawable.ic_videocam_off_24dp : R.drawable.ic_videocam_on_24dp);
+                        item.setIcon(isCameraOn ? R.drawable.ic_camera_off : R.drawable.ic_camera_on);
                         mBinding.setIsLocalVideoOff(!isCameraOn);
                     }
                     break;
                 case R.id.action_toggle_mic:
                     if (mLocalCircallStream != null) {
                         boolean isMicOn = mLocalCircallStream.toggleMic();
-                        item.setIcon(isMicOn ? R.drawable.ic_mic_off_24dp : R.drawable.ic_mic_on_24dp);
+                        item.setIcon(isMicOn ? R.drawable.ic_mic_off : R.drawable.ic_mic_on);
                     }
                     break;
                 case R.id.action_screenshot:
@@ -177,14 +177,14 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
             mCircallManager.stopRecording(mRemoteCircallStream).addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
                     mBinding.setIsRecording(false);
-                    mBinding.actionRecord.setImageResource(R.drawable.ic_video_call_24dp);
+                    mBinding.actionRecord.setImageResource(R.drawable.ic_recording_off);
                 }
             });
         } else {
             mCircallManager.startRecording(mRemoteCircallStream).addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
                     mBinding.setIsRecording(true);
-                    mBinding.actionRecord.setImageResource(R.drawable.ic_slow_motion_video_24dp);
+                    mBinding.actionRecord.setImageResource(R.drawable.ic_recording_on);
 
                     mRecordingStartTimeMillis = SystemClock.elapsedRealtime();
                     mMainThreadHandler.removeMessages(EVENT_UPDATE_RECORDING_TIME);

@@ -101,7 +101,7 @@
             android:onClick="onActionRecord"
             android:layout_marginRight="19dp"
             android:layout_marginBottom="15dp"
-            app:srcCompat="@drawable/ic_video_call_24dp"
+            app:srcCompat="@drawable/ic_recording_off"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
