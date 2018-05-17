@@ -1027,7 +1027,10 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             @Override
             public void onClick(View view) {
                 mCanToggleControllerUi = true;
-                getMediaControllerCompat().getTransportControls().seekTo(0);
+
+                String videoID = getMediaControllerCompat().getMetadata().getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID);
+                getMediaControllerCompat().getTransportControls().playFromMediaId(videoID, null);
+
                 switchToPause();
             }
         });
