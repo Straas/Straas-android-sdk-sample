@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
 
     @AfterPermissionGranted(CIRCALL_PERMISSION_REQUEST)
     private synchronized void checkPermissions() {
-        android.util.Log.d("jason", "checkPermissions mIsRequestFromStartVideoCall:" + mIsRequestFromStartVideoCall);
         if (EasyPermissions.hasPermissions(this, CIRCALL_PERMISSIONS)) {
             if (mIsRequestFromStartVideoCall) {
                 Intent intent = new Intent(this, SingleVideoCallActivity.class);
@@ -89,8 +88,6 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, SCAN_QRCODE_REQUEST);
             }
         } else {
-            android.util.Log.d("jason", "checkPermissions EasyPermissions.requestPermissions:" + mIsRequestFromStartVideoCall);
-
             EasyPermissions.requestPermissions(this, getString(R.string.circall_need_permission),
                     CIRCALL_PERMISSION_REQUEST, CIRCALL_PERMISSIONS);
         }

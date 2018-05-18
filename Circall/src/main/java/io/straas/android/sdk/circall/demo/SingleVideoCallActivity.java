@@ -82,8 +82,6 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
             return prepare();
         }).addOnSuccessListener(circallStream -> {
             String token = getIntent().getStringExtra(INTENT_CIRCALL_TOKEN);
-            android.util.Log.d("jason", "single token:" + token);
-
             if (!TextUtils.isEmpty(token)) {
                 join(new CircallToken(token));
             } else {
@@ -126,7 +124,6 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
                     mRemoteCircallStream.getVideoFrame().addOnSuccessListener(
                             SingleVideoCallActivity.this,
                             bitmap -> {
-                                Log.d(TAG, "onSuccess bitmap:" + bitmap);
                                 applySpringAnimation();
                                 item.setIcon(R.drawable.ic_screenshot);
                                 mBinding.screenshot.setImageBitmap(bitmap);
@@ -265,8 +262,6 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
 
     @Override
     public void onStreamAdded(CircallStream stream) {
-        Log.d(TAG, "onStreamAdded: " + stream);
-
         if (mCircallManager != null && stream != null) {
             mCircallManager.subscribe(stream);
         }
@@ -277,8 +272,6 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
         if (stream == null) {
             return;
         }
-
-        Log.d(TAG, "onStreamSubscribed setRenderer to fullscreenVideoView: ");
 
         mBinding.fullscreenVideoView.setVisibility(View.VISIBLE);
         stream.setRenderer(mBinding.fullscreenVideoView, CircallPlayConfig.ASPECT_FILL);
@@ -294,7 +287,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
 
     @Override
     public void onError(Exception error) {
-        Log.d(TAG, "onError error:" + error);
+        Log.e(TAG, "onError error:" + error);
 
         // For our 1:1 demo, video calling only invoking from outside page,
         // so just abort for this onError event to avoid showing freeze screen
