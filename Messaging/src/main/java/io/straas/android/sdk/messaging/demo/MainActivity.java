@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         mChatroomOutputView = findViewById(R.id.chat_room);
         mChatroomOutputView.setCredentialAuthorizeListener(mCredentialAuthorizeListener);
         mChatroomOutputView.setEventListener(mEventListener);
-        mChatroomOutputView.connect(CHATROOM_NAME, MemberIdentity.ME, false);
+        mChatroomOutputView.connect(CHATROOM_NAME, MemberIdentity.ME);
     }
 
     private CredentialAuthorizeListener mCredentialAuthorizeListener =

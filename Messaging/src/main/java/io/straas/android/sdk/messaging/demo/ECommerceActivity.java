@@ -96,7 +96,7 @@ public class ECommerceActivity extends AppCompatActivity {
         mChatroomOutputView.setVerticalScrollBarEnabled(false);
         mChatroomOutputView.setMsgDividerColor(ContextCompat.getColor(this, android.R.color.transparent));
         mChatroomOutputView.setPinnedMessageCustomView(null);
-        mChatroomOutputView.connect(CHATROOM_NAME, MemberIdentity.ME, false);
+        mChatroomOutputView.connect(CHATROOM_NAME, MemberIdentity.ME);
     }
     
     @Override

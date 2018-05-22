@@ -2,6 +2,17 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.9.6
+_2018-05-22_
+
+*   straas-streaming
+    *   feat : Update parameter of live event creating. See [Wiki](https://straas.github.io/StraaS-web-document/#live-create-live) for more detail.
+*   straas-messaging
+    *   refactor : Remove personal chat.
+*   straas-messaging-ui
+    *   fix: Release listener while ChatroomView detach from window automatically.
+
+
 ## Version 0.9.5
 _2018-05-09_
 
