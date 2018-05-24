@@ -19,6 +19,7 @@ import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringSystem;
 import com.facebook.rebound.SpringUtil;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
 
 import io.straas.android.sdk.circall.CircallConfig;
@@ -209,7 +210,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
 
     private Task<CircallStream> prepare() {
         if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_IDLE) {
-            return mCircallManager.prepare(getConfig(), mBinding.pipVideoView, CircallPlayConfig.ASPECT_FILL)
+            return mCircallManager.prepare(getConfig(), mBinding.pipVideoView, getPlayConfig())
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
                             mLocalCircallStream = task.getResult();
@@ -236,12 +237,15 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
         });
     }
 
-    private Task<String> publish() {
+    private Task<Void> publish() {
         if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_CONNECTED) {
+            final TaskCompletionSource<Void> source = new TaskCompletionSource<>();
             mCircallManager.publish(getPublishConfig()).addOnCompleteListener(task -> {
                 mBinding.setState(STATE_CONNECTED);
                 mBinding.setShowActionButtons(true);
+                source.setResult(null);
             });
+            return source.getTask();
         }
 
         return Tasks.forException(new IllegalStateException());
@@ -260,6 +264,12 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
                 .build();
     }
 
+    private CircallPlayConfig getPlayConfig() {
+        return new CircallPlayConfig.Builder()
+                .scalingMode(CircallPlayConfig.ASPECT_FILL)
+                .build();
+    }
+
     @Override
     public void onStreamAdded(CircallStream stream) {
         if (mCircallManager != null && stream != null) {
@@ -274,7 +284,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
         }
 
         mBinding.fullscreenVideoView.setVisibility(View.VISIBLE);
-        stream.setRenderer(mBinding.fullscreenVideoView, CircallPlayConfig.ASPECT_FILL);
+        stream.setRenderer(mBinding.fullscreenVideoView, getPlayConfig());
         mRemoteCircallStream = stream;
         mBinding.setState(STATE_TWO_WAY_VIDEO);
     }
