@@ -476,6 +476,14 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                     case PlaybackStateCompat.STATE_PAUSED:
                         mColumnAdPlay.setVisibility(VISIBLE);
                         break;
+                    case PlaybackStateCompat.STATE_STOPPED:
+                        // After AD playing ends, SDK player will seek the live streaming to
+                        // the real-time coverage of live automatically for all kinds of live:
+                        // normal live, low latency, and live-dvr
+                        if (mIsLive) {
+                            refreshLiveDvrUiStatus(PLAYBACK_MODE_LIVE_EDGE);
+                        }
+                        break;
                 }
             } else {
                 if (mColumnAdPlay.getVisibility() != GONE) {
