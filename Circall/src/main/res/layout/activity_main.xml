@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+        <import type="android.text.TextUtils"/>
+        <variable
+            name="isCircallStreamKeyError"
+            type="boolean"/>
+        <variable
+            name="circallStreamKeyErrorText"
+            type="String"/>
+    </data>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="io.straas.android.sdk.circall.demo.MainActivity" >
+
+        <ImageView
+            android:id="@+id/straas_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/straas_logo_top_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/circall_stream_key"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:srcCompat="@drawable/ic_logo" />
+
+        <EditText
+            android:id="@+id/circall_stream_key"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/stream_key_top_margin"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            android:paddingEnd="36dp"
+            android:hint="@string/hint_input_circall_stream_key"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:theme="@style/TokenEditTextStyle"
+            android:textSize="@dimen/stream_key_text_size"
+            android:gravity="top"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/straas_logo"
+            app:layout_constraintBottom_toTopOf="@+id/enter_room" />
+
+        <ImageView
+            android:id="@+id/circall_stream_key_underline"
+            android:layout_width="0dp"
+            android:layout_height="1.3dp"
+            android:background="@android:color/white"
+            app:layout_constraintStart_toStartOf="@+id/circall_stream_key"
+            app:layout_constraintEnd_toEndOf="@+id/circall_stream_key"
+            app:layout_constraintTop_toBottomOf="@+id/circall_stream_key"
+            app:layout_constraintBottom_toBottomOf="@+id/circall_stream_key" />
+
+        <ImageView
+            android:id="@+id/scan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7.3dp"
+            app:srcCompat="@drawable/ic_scan_qrcode"
+            android:onClick="onScanQrcode"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/circall_stream_key_underline"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/circall_stream_key_underline"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <Button
+            android:id="@+id/enter_room"
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            android:layout_marginTop="@dimen/enter_room_top_margin"
+            android:onClick="onEnterRoom"
+            android:text="@string/enter_room"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textSize="@dimen/enter_room_text_size"
+            android:background="@drawable/bg_button"
+            android:textColor="?attr/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/circall_stream_key" />
+
+        <TextView
+            android:id="@+id/stream_key_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/stream_key_error_top_margin"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            style="@style/StreamKeyError"
+            android:visibility="@{TextUtils.isEmpty(circallStreamKeyErrorText) ? View.GONE : View.VISIBLE, default=gone}"
+            android:text="@{circallStreamKeyErrorText}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/enter_room"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+    </android.support.constraint.ConstraintLayout>
+</layout>
