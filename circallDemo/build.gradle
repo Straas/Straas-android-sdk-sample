@@ -1,39 +1,12 @@
-apply plugin: 'com.android.application'
+apply from: "${buildscript.sourceFile.parentFile}/../app/base_configs.gradle"
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
-
-    defaultConfig {
-        applicationId "io.straas.android.sdk.demo"
-        minSdkVersion 18
-        targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
-
-        vectorDrawables.useSupportLibrary = true
-    }
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
     }
     dataBinding {
         enabled = true
-    }
-    signingConfigs {
-        debug {
-            storeFile file("../debug.keystore")
-        }
-    }
-    buildTypes {
-        debug {
-            manifestPlaceholders = [straas_client_id: "$your_debug_client_id"]
-            signingConfig signingConfigs.debug
-        }
-        release {
-            manifestPlaceholders = [straas_client_id: "$your_release_client_id"]
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
     }
     sourceSets.main {
         java.srcDirs += ['../app/src/main/java', '../Qrcode/src/main/java', '../Circall/src/main/java']
