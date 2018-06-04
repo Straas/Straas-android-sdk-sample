@@ -45,6 +45,7 @@ import com.google.android.exoplayer2.Format;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import io.straas.android.media.demo.MediaControllerCompatHelper;
@@ -53,6 +54,7 @@ import io.straas.android.media.demo.MediaControllerCompatHelper.VideoQualityInfo
 import io.straas.android.media.demo.Utils;
 import io.straas.android.media.demo.widget.ui.ContentSeekBar;
 import io.straas.android.media.demo.widget.ui.SwitchQualityDialog;
+import io.straas.android.media.demo.widget.ui.SwitchSpeedDialog;
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.media.StraasMediaCore;
 import io.straas.android.sdk.media.StraasMediaCore.ErrorReason;
@@ -84,6 +86,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private boolean mEnableDefaultWidget;
     private boolean mEnableDefaultSwitchQualityIcon;
     private boolean mEnableDefaultSwitchQualityDialog;
+    private boolean mEnableDefaultSwitchSpeedIcon;
     private boolean mEnableDefaultChannelName;
     private boolean mEnableDefaultSummaryViewer;
     private boolean mEnableDefaultLoadingProgressBar;
@@ -120,6 +123,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private ViewGroup mColumnBroadcastState;
 
     private ViewGroup mColumnTopRight;
+    private ViewGroup mColumnTopRight2;
     private ViewGroup mColumnBottomLeft;
     private ViewGroup mColumnBottomRight1;
     private ViewGroup mColumnBottomRight2;
@@ -130,6 +134,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private TextView mLivePositionTimeTextView;
     private View mBroadcastStateView;
     private View mSwitchQualityView;
+    private View mSwitchSpeedView;
     private View mLogoView;
     private ContentSeekBar mContentSeekBar;
     private View mDvrPlaybackAvailableView;
@@ -166,9 +171,10 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     public static final int CUSTOM_COLUMN_BOTTOM_LEFT = 1;
     public static final int CUSTOM_COLUMN_BOTTOM_RIGHT1 = 2;
     public static final int CUSTOM_COLUMN_BOTTOM_RIGHT2 = 3;
+    public static final int CUSTOM_COLUMN_TOP_RIGHT2 = 4;
 
     @IntDef({CUSTOM_COLUMN_TOP_RIGHT, CUSTOM_COLUMN_BOTTOM_LEFT, CUSTOM_COLUMN_BOTTOM_RIGHT1,
-            CUSTOM_COLUMN_BOTTOM_RIGHT2})
+            CUSTOM_COLUMN_BOTTOM_RIGHT2, CUSTOM_COLUMN_TOP_RIGHT2})
     @Retention(RetentionPolicy.SOURCE)
     public @interface CustomColumnPosition {
     }
@@ -267,6 +273,10 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 View switchQualityView = View.inflate(mThemeContext, R.layout.switch_quality_layout, null);
                 setSwitchQualityViewPosition(switchQualityView, CUSTOM_COLUMN_TOP_RIGHT);
             }
+            if (mEnableDefaultSwitchSpeedIcon) {
+                View switchQualityView = View.inflate(mThemeContext, R.layout.switch_speed_layout, null);
+                setSwitchSpeedViewPosition(switchQualityView, CUSTOM_COLUMN_TOP_RIGHT2);
+            }
             if (mEnableDefaultChannelName) {
                 TextView channelNameTextView = (TextView) View.inflate(mThemeContext, R.layout.channel_name, null);
                 setCustomChannelName(channelNameTextView);
@@ -331,6 +341,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private void initConfiguration(StraasConfiguration configuration) {
         mEnableDefaultWidget = configuration.isEnableDefaultWidget();
         mEnableDefaultSwitchQualityIcon = configuration.isEnableDefaultSwitchQuality();
+        mEnableDefaultSwitchSpeedIcon = configuration.isEnableDefaultSwitchSpeed();
         mEnableDefaultChannelName = configuration.isEnableDefaultChannelName();
         mEnableDefaultSummaryViewer = configuration.isEnableDefaultSummaryViewer();
         mEnableDefaultLoadingProgressBar = configuration.isEnableDefaultLoadingProgressBar();
@@ -618,6 +629,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mEnableDefaultWidget = typedArray.getBoolean(R.styleable.StraasLayout_defaultWidget, true);
         mEnableDefaultSwitchQualityIcon = typedArray.getBoolean(R.styleable.StraasLayout_defaultSwitchQualityIcon, true);
         mEnableDefaultSwitchQualityDialog = typedArray.getBoolean(R.styleable.StraasLayout_defaultSwitchQualityDialog, true);
+        mEnableDefaultSwitchSpeedIcon = typedArray.getBoolean(R.styleable.StraasLayout_defaultSwitchSpeedIcon, true);
         mEnableDefaultChannelName = typedArray.getBoolean(R.styleable.StraasLayout_defaultChannelName, true);
         mEnableDefaultSummaryViewer = typedArray.getBoolean(R.styleable.StraasLayout_defaultSummaryViewer, true);
         mEnableDefaultLoadingProgressBar = typedArray.getBoolean(R.styleable.StraasLayout_defaultLoadingProgressBar, true);
@@ -648,11 +660,13 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mColumnBroadcastState = root.findViewById(R.id.onLineOfflineColumn);
 
         mColumnTopRight = root.findViewById(R.id.customColumnTopRight);
+        mColumnTopRight2 = root.findViewById(R.id.customColumnTopRight2);
         mColumnBottomLeft = root.findViewById(R.id.bottomLeftColumn);
         mColumnBottomRight1 = root.findViewById(R.id.bottomRightColumn1);
         mColumnBottomRight2 = root.findViewById(R.id.bottomRightColumn2);
 
         mCustomColumnList.put(CUSTOM_COLUMN_TOP_RIGHT, mColumnTopRight);
+        mCustomColumnList.put(CUSTOM_COLUMN_TOP_RIGHT2, mColumnTopRight2);
         mCustomColumnList.put(CUSTOM_COLUMN_BOTTOM_LEFT, mColumnBottomLeft);
         mCustomColumnList.put(CUSTOM_COLUMN_BOTTOM_RIGHT1, mColumnBottomRight1);
         mCustomColumnList.put(CUSTOM_COLUMN_BOTTOM_RIGHT2, mColumnBottomRight2);
@@ -810,6 +824,46 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
      */
     public void setLoadingProgressBarVisible(boolean visible) {
         mColumnLoadingBar.setVisibility(visible ? VISIBLE : GONE);
+    }
+
+    /**
+     * To set switch speed position to other custom column.
+     *
+     * @param switchSpeedIcon the custom view to instead of default icon.
+     * @param position      this position which to set up icon.
+     */
+    public void setSwitchSpeedViewPosition(@NonNull View switchSpeedIcon, @CustomColumnPosition int position) {
+        ViewGroup column = mCustomColumnList.get(position);
+        ViewParent parent = null;
+
+        if (mSwitchSpeedView != null) {
+            parent = mSwitchSpeedView.getParent();
+        }
+
+        if (parent != null && parent instanceof ViewGroup) {
+            ((ViewGroup) (parent)).removeView(mSwitchSpeedView);
+            ((ViewGroup) (parent)).setVisibility(GONE);
+        }
+
+        column.setVisibility(VISIBLE);
+        column.removeAllViews();
+        column.addView(switchSpeedIcon);
+        mSwitchSpeedView = switchSpeedIcon;
+        mSwitchSpeedView.setBackgroundResource(mImageButtonBackground);
+        mSwitchSpeedView.setOnClickListener(mSwitchSpeedClickListener);
+    }
+
+    /**
+     * To set switch speed position to other custom column.
+     *
+     * @param position this position which to set up icon.
+     */
+    public void setSwitchSpeedViewPosition(@CustomColumnPosition int position) {
+        if (mSwitchSpeedView == null) {
+            mSwitchSpeedView = View.inflate(mThemeContext, R.layout.switch_speed_layout, null);
+        }
+
+        setSwitchSpeedViewPosition(mSwitchSpeedView, position);
     }
 
     /**
@@ -1278,6 +1332,24 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                                 mSwitchQualityViewListener.onFormatCallback(info.mFormats,
                                         info.mCurrentSelectedIndex);
                             }
+                        }
+                    });
+        }
+    };
+
+    private OnClickListener mSwitchSpeedClickListener = new OnClickListener() {
+        @Override
+        public void onClick(final View view) {
+            MediaControllerCompatHelper.getPlayerCurrentSpeed(getMediaControllerCompat(),
+                    new MediaControllerCompatHelper.PlayerSpeedCallback() {
+                        @Override
+                        public void onGetPlayerSpeed(float speed) {
+                            SwitchSpeedDialog dialog = new SwitchSpeedDialog()
+                                    .setCurrentSpeed(speed)
+                                    .setSpeedOption(new ArrayList<>(Arrays.asList(0.5f, 1f, 1.5f, 2f)));
+
+                            dialog.show(mFragmentActivity.getSupportFragmentManager(),
+                                    SwitchSpeedDialog.class.getSimpleName());
                         }
                     });
         }
