@@ -1,4 +1,4 @@
-apply from: "${buildscript.sourceFile.parentFile}/base_configs.gradle"
+apply from: "${buildscript.sourceFile.parentFile}/../base_configs.gradle"
 
 android {
     sourceSets.main {
