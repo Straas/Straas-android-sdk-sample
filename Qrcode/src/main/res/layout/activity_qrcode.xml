@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <io.straas.android.sdk.streaming.demo.qrcode.ViewFinderView
+    <io.straas.android.sdk.demo.qrcode.ViewFinderView
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

@@ -49,8 +49,7 @@
                   android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
 
         <activity
-            android:name="io.straas.android.sdk.streaming.demo.qrcode.QrcodeActivity"
-            android:parentActivityName="io.straas.android.sdk.streaming.demo.camera.MainActivity"
+            android:name="io.straas.android.sdk.demo.qrcode.QrcodeActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <activity android:name="io.straas.android.sdk.streaming.demo.screencast.ScreencastSettingsActivity"

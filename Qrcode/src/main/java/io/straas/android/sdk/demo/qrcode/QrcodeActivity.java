@@ -1,4 +1,4 @@
-package io.straas.android.sdk.streaming.demo.qrcode;
+package io.straas.android.sdk.demo.qrcode;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;

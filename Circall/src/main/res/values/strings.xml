@@ -1,0 +1,19 @@
+<resources>
+    <string name="hint_input_circall_stream_key">請貼上或掃描串流碼</string>
+    <string name="enter_room">進入線上面談室</string>
+    <string name="empty_stream_key">*請貼上串流碼</string>
+    <string name="error_stream_key">*串流碼錯誤</string>
+
+    <string name="circall_need_permission">請先允許相機和麥可風，才可進入線上面談室</string>
+
+    <string name="connecting">連線中...</string>
+    <string name="other_side_not_enter_yet">對方尚未進入面談室</string>
+
+    <string name="screenshot_failed_title">無法拍攝螢幕擷圖</string>
+    <string name="screenshot_failed_message_two_way_not_ready">需等候雙方皆進入面談室後，才可開始拍攝螢幕擷圖</string>
+    <string name="recording_failed_title">無法錄影</string>
+    <string name="recording_failed_message_two_way_not_ready">需等候雙方皆進入面談室後，才可開始進行錄影</string>
+    <string name="recording_failed_message_not_authorized">權限不足</string>
+    <string name="end_circall_confirmation_title">離開面談室</string>
+    <string name="end_circall_confirmation_message">你確定要離開面談室嗎？</string>
+</resources>

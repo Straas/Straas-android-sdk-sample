@@ -50,6 +50,11 @@ compile 'io.straas.android.sdk:straas-messaging-ui:X.X.X'
 compile 'io.straas.android.sdk:straas-streaming:X.X.X'
 ```
 
+- Circall (`minSdkVersion` 18):
+```
+compile 'io.straas.android.sdk:straas-circall:X.X.X'
+```
+
 Learn about Android SDK
 ------------------
 - [SDK Explained](https://github.com/StraaS/android-sdk-sample/wiki)
