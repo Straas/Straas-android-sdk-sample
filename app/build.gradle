@@ -1,48 +1,12 @@
-apply plugin: 'com.android.application'
+apply from: "${buildscript.sourceFile.parentFile}/base_configs.gradle"
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
-
-    defaultConfig {
-        applicationId "io.straas.android.sdk.demo"
-        minSdkVersion 18
-        targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
-
-        vectorDrawables.useSupportLibrary = true
-    }
-    compileOptions {
-        sourceCompatibility 1.8
-        targetCompatibility 1.8
-    }
-    dataBinding {
-        enabled = true
-    }
-    signingConfigs {
-        debug {
-            storeFile file("../debug.keystore")
-        }
-    }
-    buildTypes {
-        debug {
-            manifestPlaceholders = [straas_client_id: "$your_debug_client_id"]
-            signingConfig signingConfigs.debug
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-        release {
-            manifestPlaceholders = [straas_client_id: "$your_release_client_id"]
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
     sourceSets.main {
         java.srcDirs += ['../MediaCore/src/main/java', '../MemberIdentity',
                         '../Messaging/src/main/java', '../Streaming/src/main/java',
-                        '../Qrcode/src/main/java', '../Circall/src/main/java']
+                        '../Qrcode/src/main/java']
         res.srcDirs += ['../MediaCore/src/main/res', '../Messaging/src/main/res',
-                        '../Streaming/src/main/res', '../Qrcode/src/main/res', '../Circall/src/main/res']
+                        '../Streaming/src/main/res', '../Qrcode/src/main/res']
     }
 }
 
@@ -60,9 +24,6 @@ dependencies {
     implementation "io.straas.android.sdk:straas-messaging-ui:${STRAAS_SDK_VERSION}"
 
     implementation "io.straas.android.sdk:straas-streaming:${STRAAS_SDK_VERSION}"
-    implementation "io.straas.android.sdk:straas-circall:${STRAAS_SDK_VERSION}"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta1'
-    implementation 'com.facebook.rebound:rebound:0.3.8'
 
     // optional, demo for filter usage
     implementation 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'

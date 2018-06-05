@@ -1,0 +1,22 @@
+apply from: "${buildscript.sourceFile.parentFile}/../app/base_configs.gradle"
+
+android {
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+    dataBinding {
+        enabled = true
+    }
+    sourceSets.main {
+        java.srcDirs += ['../app/src/main/java', '../Qrcode/src/main/java', '../Circall/src/main/java']
+        res.srcDirs += ['../app/src/main/res', '../Qrcode/src/main/res', '../Circall/src/main/res']
+    }
+}
+
+dependencies {
+    implementation "io.straas.android.sdk:straas-circall:${STRAAS_SDK_VERSION}"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta1'
+    implementation 'com.facebook.rebound:rebound:0.3.8'
+    implementation "com.google.android.gms:play-services-vision:11.8.0"
+}
