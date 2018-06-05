@@ -1,0 +1,5 @@
+<resources>
+  <dimen name="scan_qrcode_text_padding">40dp</dimen>
+  <dimen name="scan_qrcode_text_size">18dp</dimen>
+  <dimen name="scan_qrcode_mask_size">210dp</dimen>
+</resources>
