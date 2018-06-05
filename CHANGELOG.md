@@ -2,6 +2,12 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.10.0
+_2018-06-05_
+
+*   **feat: add straas-circall sdk. See [CirCall Wiki](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/CirCall) for more detail.**
+
+
 ## Version 0.9.7
 _2018-05-29_
 
