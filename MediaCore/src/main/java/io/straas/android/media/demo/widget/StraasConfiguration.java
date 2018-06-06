@@ -9,6 +9,7 @@ public class StraasConfiguration {
     private boolean mEnableDefaultSummaryViewer;
     private boolean mEnableDefaultLoadingProgressBar;
     private boolean mEnableDefaultContentProgressBar;
+    private boolean mEnableDefaultTextTrack;
     private boolean mEnableDefaultPlay;
     private boolean mEnableDefaultPause;
     private boolean mEnableDefaultErrorMessage;
@@ -25,6 +26,7 @@ public class StraasConfiguration {
         mEnableDefaultSummaryViewer = !builder.mDisableDefaultSummaryViewer;
         mEnableDefaultLoadingProgressBar = !builder.mDisableDefaultLoadingProgressBar;
         mEnableDefaultContentProgressBar = !builder.mDisableDefaultContentProgressBar;
+        mEnableDefaultTextTrack = !builder.mDisableDefaultTextTrack;
         mEnableDefaultPlay = !builder.mDisableDefaultPlay;
         mEnableDefaultPause = !builder.mDisableDefaultPause;
         mEnableDefaultErrorMessage = !builder.mDisableDefaultErrorMessage;
@@ -60,6 +62,10 @@ public class StraasConfiguration {
 
     public boolean isEnableDefaultContentProgressBar() {
         return mEnableDefaultContentProgressBar;
+    }
+
+    public boolean isEnableDefaultTextTrack() {
+        return mEnableDefaultTextTrack;
     }
 
     public boolean isEnableDefaultPlay() {
@@ -99,6 +105,7 @@ public class StraasConfiguration {
         private boolean mDisableDefaultSummaryViewer;
         private boolean mDisableDefaultLoadingProgressBar;
         private boolean mDisableDefaultContentProgressBar;
+        private boolean mDisableDefaultTextTrack;
         private boolean mDisableDefaultPlay;
         private boolean mDisableDefaultPause;
         private boolean mDisableDefaultErrorMessage;
@@ -144,6 +151,11 @@ public class StraasConfiguration {
 
         public Builder disableDefaultContentProgressBar() {
             mDisableDefaultContentProgressBar = true;
+            return this;
+        }
+
+        public Builder disableDefaultTextTrack() {
+            mDisableDefaultTextTrack = true;
             return this;
         }
 

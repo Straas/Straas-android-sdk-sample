@@ -9,6 +9,7 @@
         <attr name="defaultSummaryViewer" format="boolean"/>
         <attr name="defaultLoadingProgressBar" format="boolean"/>
         <attr name="defaultContentSeekbar" format="boolean"/>
+        <attr name="defaultTextTrack" format="boolean"/>
         <attr name="defaultPlay" format="boolean"/>
         <attr name="defaultPause" format="boolean"/>
         <attr name="defaultReplay" format="boolean"/>

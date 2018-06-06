@@ -24,6 +24,7 @@ import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatImageView;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -66,6 +67,7 @@ import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_STAR
 import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_STOPPED;
 import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_UNKNOWN;
 import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_WAITING_FOR_STREAM;
+import static io.straas.android.sdk.media.StraasMediaCore.KEY_TEXT_TRACKS;
 import static io.straas.android.sdk.media.StraasMediaCore.LIVE_EXTRA_BROADCAST_STATE_V2;
 
 public final class StraasPlayerView extends FrameLayout implements StraasMediaCore.UiContainer {
@@ -93,6 +95,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private boolean mEnableDefaultSummaryViewer;
     private boolean mEnableDefaultLoadingProgressBar;
     private boolean mEnableDefaultContentSeekBar;
+    private boolean mEnableDefaultTextTrack;
     private boolean mEnableDefaultPlay;
     private boolean mEnableDefaultPause;
     private boolean mEnableDefaultReplay;
@@ -139,10 +142,13 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private View mSwitchSpeedView;
     private View mLogoView;
     private ContentSeekBar mContentSeekBar;
+    private TextView mTextTrackView;
     private View mDvrPlaybackAvailableView;
 
     private FrameLayout mVideoView;
     private FrameLayout mAdView;
+
+    private ViewGroup mTextTrack;
 
     private FragmentActivity mFragmentActivity;
 
@@ -248,6 +254,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                                 ContextCompat.getColor(mThemeContext, R.color.color_controller_background_dark)}));
 
         mVideoView = straasMainContainer.findViewById(R.id.videoSurfaceView);
+        mTextTrack = straasMainContainer.findViewById(R.id.textTrack);
 
         initColumn(straasMainContainer);
 
@@ -297,6 +304,10 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             if (mEnableDefaultContentSeekBar) {
                 ContentSeekBar contentSeekBar = new ContentSeekBar(mThemeContext);
                 setCustomContentSeekBar(contentSeekBar);
+            }
+            if (mEnableDefaultTextTrack) {
+                TextView textTrackView = (TextView) View.inflate(mThemeContext, R.layout.text_track, null);
+                setCustomTextTrack(textTrackView);
             }
             if (mEnableDefaultPlay) {
                 setCustomPlayIcon(R.drawable.ic_play_arrow_48dp);
@@ -348,6 +359,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mEnableDefaultSummaryViewer = configuration.isEnableDefaultSummaryViewer();
         mEnableDefaultLoadingProgressBar = configuration.isEnableDefaultLoadingProgressBar();
         mEnableDefaultContentSeekBar = configuration.isEnableDefaultContentProgressBar();
+        mEnableDefaultTextTrack = configuration.isEnableDefaultTextTrack();
         mEnableDefaultPlay = configuration.isEnableDefaultPlay();
         mEnableDefaultPause = configuration.isEnableDefaultPause();
         mEnableDefaultReplay = configuration.isEnableDefaultReplay();
@@ -568,6 +580,25 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
         @Override
         public void onExtrasChanged(Bundle extras) {
+            if (extras.containsKey(KEY_TEXT_TRACKS)) {
+                ArrayList<CharSequence> texts = extras.getCharSequenceArrayList(KEY_TEXT_TRACKS);
+                if (texts == null || texts.isEmpty()) {
+                    mTextTrackView.setVisibility(GONE);
+                } else {
+                    SpannableStringBuilder builder = new SpannableStringBuilder();
+                    for (CharSequence text : texts) {
+                        builder.append(text);
+                        if (texts.indexOf(text) != texts.size() - 1) {
+                            builder.append("\n");
+                        }
+                    }
+                    mTextTrackView.setVisibility(VISIBLE);
+                    mTextTrackView.setText(builder.toString());
+                }
+            } else {
+                mTextTrackView.setVisibility(GONE);
+            }
+
             mLiveBundle = extras;
             if (!mIsLive) {
                 return;
@@ -636,6 +667,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mEnableDefaultSummaryViewer = typedArray.getBoolean(R.styleable.StraasLayout_defaultSummaryViewer, true);
         mEnableDefaultLoadingProgressBar = typedArray.getBoolean(R.styleable.StraasLayout_defaultLoadingProgressBar, true);
         mEnableDefaultContentSeekBar = typedArray.getBoolean(R.styleable.StraasLayout_defaultContentSeekbar, true);
+        mEnableDefaultTextTrack = typedArray.getBoolean(R.styleable.StraasLayout_defaultTextTrack, true);
         mEnableDefaultPlay = typedArray.getBoolean(R.styleable.StraasLayout_defaultPlay, true);
         mEnableDefaultPause = typedArray.getBoolean(R.styleable.StraasLayout_defaultPause, true);
         mEnableDefaultReplay = typedArray.getBoolean(R.styleable.StraasLayout_defaultReplay, true);
@@ -807,6 +839,18 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mContentSeekBar = contentSeekBar;
         mContentSeekBar.setOnTrackingListener(mTrackingListener);
         mContentSeekBar.setLiveDvrPositionTimeStringListener(mLiveDvrPositionTimeStringListener);
+    }
+
+    /**
+     * To set a custom text track view to instead of default widget.
+     *
+     * @param textTrackView custom TextView to show text track.
+     */
+    public void setCustomTextTrack(@NonNull TextView textTrackView) {
+        mTextTrack.removeAllViews();
+        mTextTrack.setVisibility(VISIBLE);
+        mTextTrack.addView(textTrackView);
+        mTextTrackView = textTrackView;
     }
 
     /**
