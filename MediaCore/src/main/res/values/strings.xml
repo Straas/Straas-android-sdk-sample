@@ -3,6 +3,8 @@
     <string name="quality_select">Quality</string>
     <string name="quality_source">Source</string>
 
+    <string name="speed_select">Speed</string>
+
     <string name="common_cancel">Cancel</string>
 
     <string name="live" translatable="false">LIVE</string>

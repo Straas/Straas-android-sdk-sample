@@ -40,7 +40,15 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="top|right"
-        android:orientation="vertical">
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/customColumnTopRight2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp"/>
 
         <FrameLayout
             android:id="@+id/customColumnTopRight"
@@ -49,5 +57,7 @@
             android:visibility="gone"
             android:paddingRight="16dp"
             android:paddingTop="16dp"/>
+
     </LinearLayout>
+
 </LinearLayout>

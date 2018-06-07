@@ -6,7 +6,7 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
-    <style name="SwitchQualityDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="SwitchDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorPrimary">@color/grey_light</item>
         <item name="colorAccent">@color/colorPrimaryDark</item>
     </style>

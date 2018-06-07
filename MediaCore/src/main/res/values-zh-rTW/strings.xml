@@ -4,6 +4,8 @@
 	<string name="quality_select">選擇影片畫質</string>
 	<string name="quality_source">原始畫質</string>
 
+	<string name="speed_select">選擇播放速度</string>
+
 	<string name="common_cancel">取消</string>
 
 	<string name="broadcast_state_offline">目前無直播</string>
