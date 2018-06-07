@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import io.straas.android.media.demo.MediaControllerCompatHelper;
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.media.StraasMediaCore;
 
@@ -19,8 +20,8 @@ import static android.support.v7.appcompat.R.attr.alertDialogStyle;
 
 public class SwitchSpeedDialog extends DialogFragment {
 
-    private ArrayList<Float> speedOption = new ArrayList<>();
-    private float currentSpeed = 1f;
+    private ArrayList<Float> speedOptions = new ArrayList<>();
+    private float currentSpeed = 1.0f;
 
     public SwitchSpeedDialog setCurrentSpeed(float currentSpeed) {
         this.currentSpeed = currentSpeed;
@@ -28,7 +29,7 @@ public class SwitchSpeedDialog extends DialogFragment {
     }
 
     public SwitchSpeedDialog setSpeedOption(ArrayList<Float> speedOption) {
-        this.speedOption = speedOption;
+        this.speedOptions = speedOption;
         return this;
     }
 
@@ -36,19 +37,14 @@ public class SwitchSpeedDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.SwitchDialogTheme);
-
         builder.setTitle(R.string.speed_select);
-
         builder.setNegativeButton(R.string.common_cancel, null);
-
         String[] optionList = initOptionList();
-
         TypedArray a = builder.getContext().obtainStyledAttributes(null, android.support.v7.appcompat.R.styleable.AlertDialog,
                 alertDialogStyle, 0);
-
         a.recycle();
 
-        builder.setSingleChoiceItems(optionList, speedOption.indexOf(currentSpeed), new DialogInterface.OnClickListener() {
+        builder.setSingleChoiceItems(optionList, speedOptions.indexOf(currentSpeed), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 onSelectSpeed(dialog, which);
@@ -59,33 +55,28 @@ public class SwitchSpeedDialog extends DialogFragment {
     }
 
     private void onSelectSpeed(DialogInterface dialog, int which) {
-        if (speedOption.indexOf(currentSpeed) == which) {
+        if (speedOptions.indexOf(currentSpeed) == which || which >= speedOptions.size() || which < 0) {
             dialog.dismiss();
             return;
         }
 
         MediaControllerCompat controller = MediaControllerCompat.getMediaController(getActivity());
-
         if (controller != null) {
-            Bundle bundle = new Bundle();
-            bundle.putFloat(StraasMediaCore.KEY_PLAYBACK_SPEED, speedOption.get(which));
-
-            controller.getTransportControls().sendCustomAction(StraasMediaCore.COMMAND_SET_PLAYBACK_SPEED, bundle);
+            MediaControllerCompatHelper.setPlaybackSpeed(controller, speedOptions.get(which));
         }
-
         dialog.dismiss();
     }
 
     private String[] initOptionList() {
         ArrayList<String> stringOptions = new ArrayList<>();
 
-        if (!speedOption.contains(currentSpeed)) {
-            speedOption.add(currentSpeed);
+        if (!speedOptions.contains(currentSpeed)) {
+            speedOptions.add(currentSpeed);
         }
 
-        Collections.sort(speedOption);
+        Collections.sort(speedOptions);
 
-        for (Float speed : speedOption) {
+        for (Float speed : speedOptions) {
             stringOptions.add(String.valueOf(speed) + "x");
         }
 

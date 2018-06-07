@@ -83,6 +83,8 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
 
+    private final Float[] PLAYBACK_SPEED_OPTIONS = {0.5f, 1.0f, 1.5f, 2.0f};
+
     private boolean mEnableDefaultWidget;
     private boolean mEnableDefaultSwitchQualityIcon;
     private boolean mEnableDefaultSwitchQualityDialog;
@@ -830,7 +832,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
      * To set switch speed position to other custom column.
      *
      * @param switchSpeedIcon the custom view to instead of default icon.
-     * @param position      this position which to set up icon.
+     * @param position this position which to set up icon.
      */
     public void setSwitchSpeedViewPosition(@NonNull View switchSpeedIcon, @CustomColumnPosition int position) {
         ViewGroup column = mCustomColumnList.get(position);
@@ -1346,7 +1348,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                         public void onGetPlayerSpeed(float speed) {
                             SwitchSpeedDialog dialog = new SwitchSpeedDialog()
                                     .setCurrentSpeed(speed)
-                                    .setSpeedOption(new ArrayList<>(Arrays.asList(0.5f, 1f, 1.5f, 2f)));
+                                    .setSpeedOption(new ArrayList<>(Arrays.asList(PLAYBACK_SPEED_OPTIONS)));
 
                             dialog.show(mFragmentActivity.getSupportFragmentManager(),
                                     SwitchSpeedDialog.class.getSimpleName());

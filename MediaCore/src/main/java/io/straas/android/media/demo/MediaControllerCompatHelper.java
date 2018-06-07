@@ -187,9 +187,8 @@ public class MediaControllerCompatHelper {
                 new ResultReceiver(new Handler()) {
                     @Override
                     protected void onReceiveResult(int resultCode, Bundle resultData) {
-                        resultData.setClassLoader(Format.class.getClassLoader());
-                        if (resultData.containsKey(StraasMediaCore.KEY_PLAYBACK_SPEED)) {
-                            callback.onGetPlayerSpeed(resultData.getFloat(StraasMediaCore.KEY_PLAYBACK_SPEED));
+                        if (resultData.containsKey(StraasMediaCore.KEY_CURRENT_PLAYBACK_SPEED)) {
+                            callback.onGetPlayerSpeed(resultData.getFloat(StraasMediaCore.KEY_CURRENT_PLAYBACK_SPEED));
                         }
                     }
                 });
@@ -218,7 +217,7 @@ public class MediaControllerCompatHelper {
 
     public static void setPlaybackSpeed(@NonNull MediaControllerCompat controller, float speed) {
         Bundle bundle = new Bundle();
-        bundle.putFloat(StraasMediaCore.KEY_PLAYBACK_SPEED, speed);
+        bundle.putFloat(StraasMediaCore.KEY_CURRENT_PLAYBACK_SPEED, speed);
         controller.getTransportControls().sendCustomAction(StraasMediaCore.COMMAND_SET_PLAYBACK_SPEED, bundle);
     }
 
