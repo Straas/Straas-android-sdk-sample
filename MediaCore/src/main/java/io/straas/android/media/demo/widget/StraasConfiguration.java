@@ -5,6 +5,7 @@ public class StraasConfiguration {
     private boolean mEnableDefaultWidget;
     private boolean mEnableDefaultSwitchQuality;
     private boolean mEnableDefaultSwitchSpeed;
+    private boolean mEnableDefaultTextTrackToggle;
     private boolean mEnableDefaultChannelName;
     private boolean mEnableDefaultSummaryViewer;
     private boolean mEnableDefaultLoadingProgressBar;
@@ -22,6 +23,7 @@ public class StraasConfiguration {
         mEnableDefaultWidget = !builder.mDisableDefaultWidget;
         mEnableDefaultSwitchQuality = !builder.mDisableDefaultSwitchQuality;
         mEnableDefaultSwitchSpeed = !builder.mDisableDefaultSwitchSpeed;
+        mEnableDefaultTextTrackToggle = !builder.mDisableDefaultTextTrackToggle;
         mEnableDefaultChannelName = !builder.mDisableDefaultChannelName;
         mEnableDefaultSummaryViewer = !builder.mDisableDefaultSummaryViewer;
         mEnableDefaultLoadingProgressBar = !builder.mDisableDefaultLoadingProgressBar;
@@ -46,6 +48,10 @@ public class StraasConfiguration {
 
     public boolean isEnableDefaultSwitchSpeed() {
         return mEnableDefaultSwitchSpeed;
+    }
+
+    public boolean isEnableDefaultTextTrackToggle() {
+        return mEnableDefaultTextTrackToggle;
     }
 
     public boolean isEnableDefaultChannelName() {
@@ -101,6 +107,7 @@ public class StraasConfiguration {
         private boolean mDisableDefaultWidget;
         private boolean mDisableDefaultSwitchQuality;
         private boolean mDisableDefaultSwitchSpeed;
+        private boolean mDisableDefaultTextTrackToggle;
         private boolean mDisableDefaultChannelName;
         private boolean mDisableDefaultSummaryViewer;
         private boolean mDisableDefaultLoadingProgressBar;
@@ -131,6 +138,11 @@ public class StraasConfiguration {
 
         public Builder disableDefaultSwitchSpeed() {
             mDisableDefaultSwitchSpeed = true;
+            return this;
+        }
+
+        public Builder disableDefaultTextTrackToggle() {
+            mDisableDefaultTextTrackToggle = true;
             return this;
         }
 

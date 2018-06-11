@@ -91,6 +91,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private boolean mEnableDefaultSwitchQualityIcon;
     private boolean mEnableDefaultSwitchQualityDialog;
     private boolean mEnableDefaultSwitchSpeedIcon;
+    private boolean mEnableDefaultTextTrackToggle;
     private boolean mEnableDefaultChannelName;
     private boolean mEnableDefaultSummaryViewer;
     private boolean mEnableDefaultLoadingProgressBar;
@@ -140,6 +141,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private View mBroadcastStateView;
     private View mSwitchQualityView;
     private View mSwitchSpeedView;
+    private View mTextTrackToggle;
     private View mLogoView;
     private ContentSeekBar mContentSeekBar;
     private TextView mTextTrackView;
@@ -286,6 +288,10 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 View switchQualityView = View.inflate(mThemeContext, R.layout.switch_speed_layout, null);
                 setSwitchSpeedViewPosition(switchQualityView, CUSTOM_COLUMN_TOP_RIGHT2);
             }
+            if (mEnableDefaultTextTrackToggle) {
+                View textTrackToggleView = View.inflate(mThemeContext, R.layout.text_track_toggle, null);
+                setTextTrackToggleViewPosition(textTrackToggleView, CUSTOM_COLUMN_BOTTOM_RIGHT2);
+            }
             if (mEnableDefaultChannelName) {
                 TextView channelNameTextView = (TextView) View.inflate(mThemeContext, R.layout.channel_name, null);
                 setCustomChannelName(channelNameTextView);
@@ -355,6 +361,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mEnableDefaultWidget = configuration.isEnableDefaultWidget();
         mEnableDefaultSwitchQualityIcon = configuration.isEnableDefaultSwitchQuality();
         mEnableDefaultSwitchSpeedIcon = configuration.isEnableDefaultSwitchSpeed();
+        mEnableDefaultTextTrackToggle = configuration.isEnableDefaultTextTrackToggle();
         mEnableDefaultChannelName = configuration.isEnableDefaultChannelName();
         mEnableDefaultSummaryViewer = configuration.isEnableDefaultSummaryViewer();
         mEnableDefaultLoadingProgressBar = configuration.isEnableDefaultLoadingProgressBar();
@@ -451,6 +458,11 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             if (state == null || (mLastPlaybackStateCompat != null && mLastPlaybackStateCompat.getState() == state.getState() &&
                     mLastPlaybackStateCompat.getActiveQueueItemId() == state.getActiveQueueItemId())) {
                 return;
+            }
+            if ((mLastPlaybackStateCompat == null || mLastPlaybackStateCompat.getState() != PlaybackStateCompat.STATE_PAUSED)
+                    && state.getState() == PlaybackStateCompat.STATE_PLAYING) {
+                MediaControllerCompatHelper.setCaptionEnable(getMediaControllerCompat(), true);
+                mTextTrackToggle.setActivated(true);
             }
             mLastPlaybackStateCompat = state;
             if (!TextUtils.isEmpty(state.getErrorMessage())) {
@@ -663,6 +675,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mEnableDefaultSwitchQualityIcon = typedArray.getBoolean(R.styleable.StraasLayout_defaultSwitchQualityIcon, true);
         mEnableDefaultSwitchQualityDialog = typedArray.getBoolean(R.styleable.StraasLayout_defaultSwitchQualityDialog, true);
         mEnableDefaultSwitchSpeedIcon = typedArray.getBoolean(R.styleable.StraasLayout_defaultSwitchSpeedIcon, true);
+        mEnableDefaultTextTrackToggle = typedArray.getBoolean(R.styleable.StraasLayout_defaultSwitchSpeedIcon, true);
         mEnableDefaultChannelName = typedArray.getBoolean(R.styleable.StraasLayout_defaultChannelName, true);
         mEnableDefaultSummaryViewer = typedArray.getBoolean(R.styleable.StraasLayout_defaultSummaryViewer, true);
         mEnableDefaultLoadingProgressBar = typedArray.getBoolean(R.styleable.StraasLayout_defaultLoadingProgressBar, true);
@@ -853,6 +866,12 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mTextTrackView = textTrackView;
     }
 
+    public void setTextTrackViewVisibility(int visibility) {
+        if (mTextTrackView != null && mEnableDefaultTextTrack) {
+            mTextTrackView.setVisibility(visibility);
+        }
+    }
+
     /**
      * To set a custom loadingProgressBar view to instead of default widget.
      *
@@ -910,6 +929,52 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         }
 
         setSwitchSpeedViewPosition(mSwitchSpeedView, position);
+    }
+
+    /**
+     * To set text track toggling to other custom column.
+     *
+     * @param textTrackToggle the custom view to instead of default toggle.
+     * @param position this position which to set up icon.
+     */
+    public void setTextTrackToggleViewPosition(@NonNull View textTrackToggle, @CustomColumnPosition int position) {
+        ViewGroup column = mCustomColumnList.get(position);
+        ViewParent parent = null;
+
+        if (mTextTrackToggle != null) {
+            parent = mTextTrackToggle.getParent();
+        }
+
+        if (parent != null && parent instanceof ViewGroup) {
+            ((ViewGroup) (parent)).removeView(mTextTrackToggle);
+            ((ViewGroup) (parent)).setVisibility(GONE);
+        }
+
+        column.setVisibility(VISIBLE);
+        column.removeAllViews();
+        column.addView(textTrackToggle);
+        mTextTrackToggle = textTrackToggle;
+        mTextTrackToggle.setBackgroundResource(mImageButtonBackground);
+        mTextTrackToggle.setOnClickListener(mTextTrackToggleClickListener);
+    }
+
+    /**
+     * To set text track toggle position to other custom column.
+     *
+     * @param position this position which to set up icon.
+     */
+    public void setTextTrackToggleViewPosition(@CustomColumnPosition int position) {
+        if (mTextTrackToggle == null) {
+            mTextTrackToggle = View.inflate(mThemeContext, R.layout.text_track_toggle, null);
+        }
+
+        setTextTrackToggleViewPosition(mTextTrackToggle, position);
+    }
+
+    public void setTextTrackToggleViewVisibility(int visibility) {
+        if (mTextTrackToggle != null && mEnableDefaultTextTrackToggle) {
+            mTextTrackToggle.setVisibility(visibility);
+        }
     }
 
     /**
@@ -1401,6 +1466,17 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         }
     };
 
+    private OnClickListener mTextTrackToggleClickListener = new OnClickListener() {
+        @Override
+        public void onClick(final View view) {
+            mTextTrackToggle.setActivated(!mTextTrackToggle.isActivated());
+            MediaControllerCompatHelper.setCaptionEnable(getMediaControllerCompat(),mTextTrackToggle.isActivated());
+            if (!mTextTrackToggle.isActivated()) {
+                mTextTrackView.setVisibility(GONE);
+            }
+        }
+    };
+
     private ContentSeekBar.TrackingListener mTrackingListener = new ContentSeekBar.TrackingListener() {
 
         @Override
@@ -1576,11 +1652,15 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         if (isLive) {
             setContentSeekBarVisibility(mIsLiveSeekable ? VISIBLE : GONE);
             setSummaryViewerVisibility(INVISIBLE);
+            setTextTrackToggleViewVisibility(GONE);
+            setTextTrackViewVisibility(GONE);
 
             setBottomLeftColumnToLiveIcon(true);
         } else {
             setContentSeekBarVisibility(VISIBLE);
             setSummaryViewerVisibility(VISIBLE);
+            setTextTrackToggleViewVisibility(VISIBLE);
+            setTextTrackViewVisibility(VISIBLE);
 
             removeViewFromCustomColumn(CUSTOM_COLUMN_BOTTOM_LEFT);
         }
