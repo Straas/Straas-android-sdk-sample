@@ -868,6 +868,12 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         setSwitchSpeedViewPosition(mSwitchSpeedView, position);
     }
 
+    public void setSwitchSpeedViewVisibility(int viewVisibility) {
+        if (mSwitchSpeedView != null && mEnableDefaultSwitchSpeedIcon) {
+            mSwitchSpeedView.setVisibility(viewVisibility);
+        }
+    }
+
     /**
      * To set switch quality position to other custom column.
      *
@@ -1532,11 +1538,13 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         if (isLive) {
             setContentSeekBarVisibility(mIsLiveSeekable ? VISIBLE : GONE);
             setSummaryViewerVisibility(INVISIBLE);
+            setSwitchSpeedViewVisibility(GONE);
 
             setBottomLeftColumnToLiveIcon(true);
         } else {
             setContentSeekBarVisibility(VISIBLE);
             setSummaryViewerVisibility(VISIBLE);
+            setSwitchSpeedViewVisibility(VISIBLE);
 
             removeViewFromCustomColumn(CUSTOM_COLUMN_BOTTOM_LEFT);
         }
