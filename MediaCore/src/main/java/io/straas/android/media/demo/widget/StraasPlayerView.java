@@ -472,6 +472,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                         break;
                     case PlaybackStateCompat.STATE_PLAYING:
                         mColumnAdPlay.setVisibility(GONE);
+                        mCanToggleControllerUi = false;
                         break;
                     case PlaybackStateCompat.STATE_PAUSED:
                         mColumnAdPlay.setVisibility(VISIBLE);
@@ -526,6 +527,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                             setKeepScreenOn(false);
                         }
                     case PlaybackStateCompat.STATE_STOPPED:
+                        mCanToggleControllerUi = true;
                         if (mIsLive) {
                             Bundle liveBundle = (mLiveBundle != null) ? mLiveBundle :
                                     getMediaControllerCompat().getExtras();
