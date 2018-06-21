@@ -1484,7 +1484,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         @Override
         public void onClick(final View view) {
             mTextTrackToggle.setActivated(!mTextTrackToggle.isActivated());
-            MediaControllerCompatHelper.setCaptionEnable(getMediaControllerCompat(),mTextTrackToggle.isActivated());
+            MediaControllerCompatHelper.setCaptionEnable(getMediaControllerCompat(), mTextTrackToggle.isActivated());
             if (!mTextTrackToggle.isActivated()) {
                 mTextTrackView.setVisibility(GONE);
             }
