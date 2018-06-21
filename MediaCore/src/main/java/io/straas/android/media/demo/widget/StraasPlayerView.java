@@ -869,6 +869,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     }
 
     public void setTextTrackViewVisibility(int visibility) {
+        visibility = isVideoHasTextTracks() ? visibility : GONE;
         if (mTextTrackView != null && mEnableDefaultTextTrack) {
             mTextTrackView.setVisibility(visibility);
         }
@@ -974,8 +975,19 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     }
 
     public void setTextTrackToggleViewVisibility(int visibility) {
+        visibility = isVideoHasTextTracks() ? visibility : GONE;
         if (mTextTrackToggle != null && mEnableDefaultTextTrackToggle) {
             mTextTrackToggle.setVisibility(visibility);
+        }
+    }
+
+    private boolean isVideoHasTextTracks() {
+        MediaMetadataCompat metadata = getMediaControllerCompat().getMetadata();
+        if (metadata.containsKey(VideoCustomMetadata.TEXT_TRACK_ID_ARRAY)) {
+            String[] ids = metadata.getBundle().getStringArray(VideoCustomMetadata.TEXT_TRACK_ID_ARRAY);
+            return ids != null && ids.length > 0;
+        } else {
+            return false;
         }
     }
 
@@ -1642,9 +1654,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     }
 
     private void switchMode(boolean isLive, boolean isLiveSeekable) {
-        if (mIsLive == isLive && mIsLiveSeekable == isLiveSeekable) {
-            return;
-        }
         mIsLive = isLive;
         mIsLiveSeekable = isLiveSeekable;
 
