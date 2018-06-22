@@ -67,7 +67,7 @@ import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_STAR
 import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_STOPPED;
 import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_UNKNOWN;
 import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_WAITING_FOR_STREAM;
-import static io.straas.android.sdk.media.StraasMediaCore.KEY_TEXT_TRACKS;
+import static io.straas.android.sdk.media.StraasMediaCore.KEY_EXTRA_TEXT_TRACKS;
 import static io.straas.android.sdk.media.StraasMediaCore.LIVE_EXTRA_BROADCAST_STATE_V2;
 
 public final class StraasPlayerView extends FrameLayout implements StraasMediaCore.UiContainer {
@@ -594,8 +594,8 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
         @Override
         public void onExtrasChanged(Bundle extras) {
-            if (extras.containsKey(KEY_TEXT_TRACKS)) {
-                ArrayList<CharSequence> texts = extras.getCharSequenceArrayList(KEY_TEXT_TRACKS);
+            if (extras.containsKey(KEY_EXTRA_TEXT_TRACKS)) {
+                ArrayList<CharSequence> texts = extras.getCharSequenceArrayList(KEY_EXTRA_TEXT_TRACKS);
                 if (texts == null || texts.isEmpty()) {
                     mTextTrackView.setVisibility(GONE);
                 } else {
