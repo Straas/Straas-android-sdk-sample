@@ -4,6 +4,7 @@
         <attr name="defaultWidget" format="boolean"/>
         <attr name="defaultSwitchQualityIcon" format="boolean"/>
         <attr name="defaultSwitchQualityDialog" format="boolean"/>
+        <attr name="defaultSwitchSpeedIcon" format="boolean"/>
         <attr name="defaultChannelName" format="boolean"/>
         <attr name="defaultSummaryViewer" format="boolean"/>
         <attr name="defaultLoadingProgressBar" format="boolean"/>
