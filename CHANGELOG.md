@@ -2,6 +2,16 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.10.1
+_2018-06-26_
+
+*   straas-extension-ima
+    *   feat: Support post-roll Ad.
+
+*   straas-media-core
+    *   feat: Support playback speed adjusting.
+
+
 ## Version 0.10.0
 _2018-06-05_
 

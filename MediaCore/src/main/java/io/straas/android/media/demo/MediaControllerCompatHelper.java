@@ -177,6 +177,23 @@ public class MediaControllerCompatHelper {
         getVideoQualityInfo(MediaControllerCompat.getMediaController(activity), callback);
     }
 
+    /**
+     * Retrieve current speed.
+     *
+     */
+    public static void getPlayerCurrentSpeed(@NonNull MediaControllerCompat controller,
+                                           @NonNull final PlayerSpeedCallback callback) {
+        controller.sendCommand(StraasMediaCore.COMMAND_GET_PLAYBACK_SPEED, null,
+                new ResultReceiver(new Handler()) {
+                    @Override
+                    protected void onReceiveResult(int resultCode, Bundle resultData) {
+                        if (resultData.containsKey(StraasMediaCore.KEY_CURRENT_PLAYBACK_SPEED)) {
+                            callback.onGetPlayerSpeed(resultData.getFloat(StraasMediaCore.KEY_CURRENT_PLAYBACK_SPEED));
+                        }
+                    }
+                });
+    }
+
     public static void startForeground(@NonNull MediaControllerCompat controller,
                                        NotificationOptions options) {
         Bundle bundle = new Bundle();
@@ -198,6 +215,12 @@ public class MediaControllerCompatHelper {
         controller.getTransportControls().sendCustomAction(StraasMediaCore.COMMAND_PLAY_AT_LIVE_EDGE, null);
     }
 
+    public static void setPlaybackSpeed(@NonNull MediaControllerCompat controller, float speed) {
+        Bundle bundle = new Bundle();
+        bundle.putFloat(StraasMediaCore.KEY_CURRENT_PLAYBACK_SPEED, speed);
+        controller.getTransportControls().sendCustomAction(StraasMediaCore.COMMAND_SET_PLAYBACK_SPEED, bundle);
+    }
+
     public static class VideoQualityInfo {
         public ArrayList<Format> mFormats;
         public int mCurrentSelectedIndex;
@@ -210,6 +233,10 @@ public class MediaControllerCompatHelper {
 
     public interface VideoQualityInfoCallback {
         void onGetVideoQualityInfo(VideoQualityInfo info);
+    }
+
+    public interface PlayerSpeedCallback {
+        void onGetPlayerSpeed(float speed);
     }
 
 }
