@@ -594,25 +594,25 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
         @Override
         public void onExtrasChanged(Bundle extras) {
-            if (extras.containsKey(KEY_EXTRA_TEXT_TRACKS)) {
-                ArrayList<CharSequence> texts = extras.getCharSequenceArrayList(KEY_EXTRA_TEXT_TRACKS);
-                if (texts == null || texts.isEmpty()) {
-                    mTextTrack.setVisibility(GONE);
-                } else {
-                    SpannableStringBuilder builder = new SpannableStringBuilder();
-                    for (CharSequence text : texts) {
-                        builder.append(text);
-                        if (texts.indexOf(text) != texts.size() - 1) {
-                            builder.append("\n");
+            if (mTextTrackView != null) {
+                if (extras.containsKey(KEY_EXTRA_TEXT_TRACKS)) {
+                    ArrayList<CharSequence> texts = extras.getCharSequenceArrayList(KEY_EXTRA_TEXT_TRACKS);
+                    if (texts == null || texts.isEmpty()) {
+                        mTextTrackView.setVisibility(GONE);
+                    } else {
+                        SpannableStringBuilder builder = new SpannableStringBuilder();
+                        for (CharSequence text : texts) {
+                            builder.append(text);
+                            if (texts.indexOf(text) != texts.size() - 1) {
+                                builder.append("\n");
+                            }
                         }
-                    }
-                    mTextTrack.setVisibility(VISIBLE);
-                    if (mTextTrackView != null) {
+                        mTextTrackView.setVisibility(VISIBLE);
                         mTextTrackView.setText(builder.toString());
                     }
+                } else {
+                    mTextTrackView.setVisibility(GONE);
                 }
-            } else {
-                mTextTrack.setVisibility(GONE);
             }
 
             mLiveBundle = extras;
