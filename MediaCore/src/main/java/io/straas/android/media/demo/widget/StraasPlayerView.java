@@ -597,7 +597,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             if (extras.containsKey(KEY_EXTRA_TEXT_TRACKS)) {
                 ArrayList<CharSequence> texts = extras.getCharSequenceArrayList(KEY_EXTRA_TEXT_TRACKS);
                 if (texts == null || texts.isEmpty()) {
-                    mTextTrackView.setVisibility(GONE);
+                    mTextTrack.setVisibility(GONE);
                 } else {
                     SpannableStringBuilder builder = new SpannableStringBuilder();
                     for (CharSequence text : texts) {
@@ -606,11 +606,13 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                             builder.append("\n");
                         }
                     }
-                    mTextTrackView.setVisibility(VISIBLE);
-                    mTextTrackView.setText(builder.toString());
+                    mTextTrack.setVisibility(VISIBLE);
+                    if (mTextTrackView != null) {
+                        mTextTrackView.setText(builder.toString());
+                    }
                 }
             } else {
-                mTextTrackView.setVisibility(GONE);
+                mTextTrack.setVisibility(GONE);
             }
 
             mLiveBundle = extras;
