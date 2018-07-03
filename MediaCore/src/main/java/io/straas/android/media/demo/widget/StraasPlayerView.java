@@ -454,15 +454,21 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         }
 
         @Override
+        public void onCaptioningEnabledChanged(boolean enabled) {
+            super.onCaptioningEnabledChanged(enabled);
+            if (mTextTrackToggle != null) {
+                mTextTrackToggle.setActivated(getMediaControllerCompat().isCaptioningEnabled());
+            }
+        }
+
+        @Override
         public void onPlaybackStateChanged(PlaybackStateCompat state) {
             if (state == null || (mLastPlaybackStateCompat != null && mLastPlaybackStateCompat.getState() == state.getState() &&
                     mLastPlaybackStateCompat.getActiveQueueItemId() == state.getActiveQueueItemId())) {
                 return;
             }
-            if ((mLastPlaybackStateCompat == null || mLastPlaybackStateCompat.getState() != PlaybackStateCompat.STATE_PAUSED)
-                    && state.getState() == PlaybackStateCompat.STATE_PLAYING) {
+            if (mLastPlaybackStateCompat == null && mTextTrackView != null) {
                 MediaControllerCompatHelper.setCaptionEnable(getMediaControllerCompat(), true);
-                mTextTrackToggle.setActivated(true);
             }
             mLastPlaybackStateCompat = state;
             if (!TextUtils.isEmpty(state.getErrorMessage())) {
@@ -612,7 +618,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         if (mTextTrackView == null) {
             return;
         }
-        if (extras.containsKey(KEY_EXTRA_TEXT_TRACKS)) {
+        if (extras.containsKey(KEY_EXTRA_TEXT_TRACKS) && getMediaControllerCompat().isCaptioningEnabled()) {
             ArrayList<CharSequence> texts = extras.getCharSequenceArrayList(KEY_EXTRA_TEXT_TRACKS);
             if (texts == null || texts.isEmpty()) {
                 mTextTrackView.setVisibility(GONE);
