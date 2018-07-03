@@ -457,7 +457,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         public void onCaptioningEnabledChanged(boolean enabled) {
             super.onCaptioningEnabledChanged(enabled);
             if (mTextTrackToggle != null) {
-                mTextTrackToggle.setActivated(getMediaControllerCompat().isCaptioningEnabled());
+                mTextTrackToggle.setActivated(enabled);
             }
         }
 
@@ -1502,9 +1502,9 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private OnClickListener mTextTrackToggleClickListener = new OnClickListener() {
         @Override
         public void onClick(final View view) {
-            mTextTrackToggle.setActivated(!mTextTrackToggle.isActivated());
-            MediaControllerCompatHelper.setCaptionEnable(getMediaControllerCompat(), mTextTrackToggle.isActivated());
-            if (!mTextTrackToggle.isActivated()) {
+            boolean enableTextTrack = !mTextTrackToggle.isActivated();
+            MediaControllerCompatHelper.setCaptionEnable(getMediaControllerCompat(), enableTextTrack);
+            if (!enableTextTrack) {
                 mTextTrackView.setVisibility(GONE);
             }
         }
