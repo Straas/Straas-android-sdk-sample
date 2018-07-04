@@ -2,6 +2,13 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.10.2
+_2018-07-04_
+
+*   straas-media-core
+    *   feat: Support text track
+
+
 ## Version 0.10.1
 _2018-06-26_
 
