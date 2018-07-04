@@ -84,10 +84,17 @@ public class OperationActivity extends AppCompatActivity {
                 })
                 // remove setImaHelper if you don't want to include ad system (IMA)
                 .setImaHelper(ImaHelper.newInstance());
+        getMediaBrowser().connect();
 
         mIsForeground = getSharedPreferences(SHARE_PREFERENCE_KEY, Context.MODE_PRIVATE)
                 .getBoolean(FOREGROUND_KEY, false);
         ((Checkable) findViewById(R.id.switch_foreground)).setChecked(mIsForeground);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        getMediaBrowser().disconnect();
     }
 
     @Override
@@ -96,7 +103,6 @@ public class OperationActivity extends AppCompatActivity {
         StraasPlayerView playerView = findViewById(R.id.straas);
         playerView.hideControllerViews();
 
-        getMediaBrowser().connect();
         if (getMediaControllerCompat() != null) {
             getMediaControllerCompat().getTransportControls().play();
         }
@@ -109,7 +115,6 @@ public class OperationActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        getMediaBrowser().disconnect();
         if (getMediaControllerCompat() != null && !mIsForeground) {
             if (isFinishing()) {
                 getMediaControllerCompat().unregisterCallback(mMediaControllerCallback);

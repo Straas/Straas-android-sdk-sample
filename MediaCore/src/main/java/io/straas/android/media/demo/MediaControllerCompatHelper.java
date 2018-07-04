@@ -221,6 +221,10 @@ public class MediaControllerCompatHelper {
         controller.getTransportControls().sendCustomAction(StraasMediaCore.COMMAND_SET_PLAYBACK_SPEED, bundle);
     }
 
+    public static void setCaptionEnable(@NonNull MediaControllerCompat controller, boolean enable) {
+        controller.getTransportControls().setCaptioningEnabled(enable);
+    }
+
     public static class VideoQualityInfo {
         public ArrayList<Format> mFormats;
         public int mCurrentSelectedIndex;
