@@ -5,10 +5,12 @@ public class StraasConfiguration {
     private boolean mEnableDefaultWidget;
     private boolean mEnableDefaultSwitchQuality;
     private boolean mEnableDefaultSwitchSpeed;
+    private boolean mEnableDefaultTextTrackToggle;
     private boolean mEnableDefaultChannelName;
     private boolean mEnableDefaultSummaryViewer;
     private boolean mEnableDefaultLoadingProgressBar;
     private boolean mEnableDefaultContentProgressBar;
+    private boolean mEnableDefaultTextTrack;
     private boolean mEnableDefaultPlay;
     private boolean mEnableDefaultPause;
     private boolean mEnableDefaultErrorMessage;
@@ -21,10 +23,12 @@ public class StraasConfiguration {
         mEnableDefaultWidget = !builder.mDisableDefaultWidget;
         mEnableDefaultSwitchQuality = !builder.mDisableDefaultSwitchQuality;
         mEnableDefaultSwitchSpeed = !builder.mDisableDefaultSwitchSpeed;
+        mEnableDefaultTextTrackToggle = !builder.mDisableDefaultTextTrackToggle;
         mEnableDefaultChannelName = !builder.mDisableDefaultChannelName;
         mEnableDefaultSummaryViewer = !builder.mDisableDefaultSummaryViewer;
         mEnableDefaultLoadingProgressBar = !builder.mDisableDefaultLoadingProgressBar;
         mEnableDefaultContentProgressBar = !builder.mDisableDefaultContentProgressBar;
+        mEnableDefaultTextTrack = !builder.mDisableDefaultTextTrack;
         mEnableDefaultPlay = !builder.mDisableDefaultPlay;
         mEnableDefaultPause = !builder.mDisableDefaultPause;
         mEnableDefaultErrorMessage = !builder.mDisableDefaultErrorMessage;
@@ -46,6 +50,10 @@ public class StraasConfiguration {
         return mEnableDefaultSwitchSpeed;
     }
 
+    public boolean isEnableDefaultTextTrackToggle() {
+        return mEnableDefaultTextTrackToggle;
+    }
+
     public boolean isEnableDefaultChannelName() {
         return mEnableDefaultChannelName;
     }
@@ -60,6 +68,10 @@ public class StraasConfiguration {
 
     public boolean isEnableDefaultContentProgressBar() {
         return mEnableDefaultContentProgressBar;
+    }
+
+    public boolean isEnableDefaultTextTrack() {
+        return mEnableDefaultTextTrack;
     }
 
     public boolean isEnableDefaultPlay() {
@@ -95,10 +107,12 @@ public class StraasConfiguration {
         private boolean mDisableDefaultWidget;
         private boolean mDisableDefaultSwitchQuality;
         private boolean mDisableDefaultSwitchSpeed;
+        private boolean mDisableDefaultTextTrackToggle;
         private boolean mDisableDefaultChannelName;
         private boolean mDisableDefaultSummaryViewer;
         private boolean mDisableDefaultLoadingProgressBar;
         private boolean mDisableDefaultContentProgressBar;
+        private boolean mDisableDefaultTextTrack;
         private boolean mDisableDefaultPlay;
         private boolean mDisableDefaultPause;
         private boolean mDisableDefaultErrorMessage;
@@ -127,6 +141,11 @@ public class StraasConfiguration {
             return this;
         }
 
+        public Builder disableDefaultTextTrackToggle() {
+            mDisableDefaultTextTrackToggle = true;
+            return this;
+        }
+
         public Builder disableDefaultChannelName() {
             mDisableDefaultChannelName = true;
             return this;
@@ -144,6 +163,11 @@ public class StraasConfiguration {
 
         public Builder disableDefaultContentProgressBar() {
             mDisableDefaultContentProgressBar = true;
+            return this;
+        }
+
+        public Builder disableDefaultTextTrack() {
+            mDisableDefaultTextTrack = true;
             return this;
         }
 

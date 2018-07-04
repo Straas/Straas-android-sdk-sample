@@ -21,4 +21,6 @@
     <color name="color_offline_background">#333333</color>
     <color name="color_offline_message_color">#999999</color>
 
+    <color name="color_background_text_track">#e7000000</color>
+
 </resources>
