@@ -26,6 +26,7 @@ import io.straas.android.sdk.circall.CircallConfig;
 import io.straas.android.sdk.circall.CircallManager;
 import io.straas.android.sdk.circall.CircallPlayConfig;
 import io.straas.android.sdk.circall.CircallPublishConfig;
+import io.straas.android.sdk.circall.CircallRecordingStreamMetadata;
 import io.straas.android.sdk.circall.CircallStream;
 import io.straas.android.sdk.circall.CircallToken;
 import io.straas.android.sdk.circall.interfaces.EventListener;
@@ -49,6 +50,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
     private CircallManager mCircallManager;
     private CircallStream mLocalCircallStream;
     private CircallStream mRemoteCircallStream;
+    private String mRecordingId = "";
     private long mRecordingStartTimeMillis;
 
     private Handler mHandler = new Handler();
@@ -171,22 +173,19 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
             return;
         }
 
-        if (mBinding.getIsRecording()) {
-            mCircallManager.stopRecording(mRemoteCircallStream).addOnCompleteListener(this, task -> {
+        if (!TextUtils.isEmpty(mRecordingId)) {
+            mCircallManager.stopRecording(mRemoteCircallStream, mRecordingId).addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
                     mBinding.setIsRecording(false);
                     mBinding.actionRecord.setImageResource(R.drawable.ic_recording_off);
+                    mRecordingId = "";
                 }
             });
         } else {
             mCircallManager.startRecording(mRemoteCircallStream).addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
-                    mBinding.setIsRecording(true);
-                    mBinding.actionRecord.setImageResource(R.drawable.ic_recording_on);
-
-                    mRecordingStartTimeMillis = SystemClock.elapsedRealtime();
-                    mMainThreadHandler.removeMessages(EVENT_UPDATE_RECORDING_TIME);
-                    mMainThreadHandler.sendEmptyMessage(EVENT_UPDATE_RECORDING_TIME);
+                    mRecordingId = task.getResult();
+                    showRecordingStartedFlashingUi();
                 } else {
                     showRecordingFailedDialog(R.string.recording_failed_message_not_authorized);
                 }
@@ -201,9 +200,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
 
     @Override
     public void onDestroy() {
-        if (mCircallManager != null) {
-            mCircallManager.destroy();
-        }
+        destroyCircallManager();
 
         super.onDestroy();
     }
@@ -287,6 +284,19 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
         stream.setRenderer(mBinding.fullscreenVideoView, getPlayConfig());
         mRemoteCircallStream = stream;
         mBinding.setState(STATE_TWO_WAY_VIDEO);
+
+        mCircallManager.getRecordingStreamMetadata().addOnCompleteListener(this, task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                for (CircallRecordingStreamMetadata recordingStream : task.getResult()) {
+                    if (TextUtils.equals(recordingStream.getStreamId(), stream.getStreamId())) {
+                        mRecordingId = recordingStream.getRecordingId();
+                        showRecordingStartedFlashingUi();
+                        break;
+                    }
+                }
+            }
+        });
+
     }
 
     @Override
@@ -323,6 +333,15 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
         dialog.show();
     }
 
+    private void showRecordingStartedFlashingUi() {
+        mBinding.setIsRecording(true);
+        mBinding.actionRecord.setImageResource(R.drawable.ic_recording_on);
+
+        mRecordingStartTimeMillis =SystemClock.elapsedRealtime();
+        mMainThreadHandler.removeMessages(EVENT_UPDATE_RECORDING_TIME);
+        mMainThreadHandler.sendEmptyMessage(EVENT_UPDATE_RECORDING_TIME);
+    }
+
     @Override
     public void onBackPressed() {
         if (mBinding.getState() == STATE_CONNECTED || mBinding.getState() == STATE_TWO_WAY_VIDEO) {
@@ -337,15 +356,30 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
         builder.setTitle(R.string.end_circall_confirmation_title);
         builder.setMessage(R.string.end_circall_confirmation_message);
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-            if (mCircallManager != null) {
-                mCircallManager.destroy();
-                mCircallManager = null;
-            }
+            destroyCircallManager();
 
             finish();
         });
         builder.setNegativeButton(android.R.string.cancel, null);
         final AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void destroyCircallManager() {
+        if (mCircallManager == null) {
+            return;
+        }
+
+        if (!TextUtils.isEmpty(mRecordingId)) {
+            mCircallManager.stopRecording(mRemoteCircallStream, mRecordingId).addOnCompleteListener(this, task -> {
+                mRecordingId = "";
+
+                mCircallManager.destroy();
+                mCircallManager = null;
+            });
+        } else {
+            mCircallManager.destroy();
+            mCircallManager = null;
+        }
     }
 }
