@@ -2,6 +2,15 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.10.3
+_2018-07-31_
+
+*   straas-circall
+    *   feat: Add [getRecordingStreamMetadata](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/circall/CircallManager.html#getRecordingStreamMetadata--
+) api
+*   straas-streaming
+    *   feat: Revise A/V not sync while broadcast
+
 ## Version 0.10.2
 _2018-07-04_
 
