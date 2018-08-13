@@ -21,6 +21,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private StreamManager mStreamManager;
     private CameraController mCameraController;
     private TextureView mTextureView;
+    private RelativeLayout layoutStreamInput;
     private RadioGroup mStreamWaySwitcher;
     private EditText mTitleEdit;
     private FrameLayout mStreamKeyPanel;
@@ -108,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         mStreamWaySwitcher = findViewById(R.id.stream_way);
         mStreamKeyEdit = findViewById(R.id.edit_stream_key);
         mStreamKeyPanel = findViewById(R.id.stream_key_panel);
+        layoutStreamInput = findViewById(R.id.layout_stream_input);
         initEditStreamKey();
         initStreamWaySwitcher();
 
@@ -145,6 +148,12 @@ public class MainActivity extends AppCompatActivity {
                 switchInputView(checkedId);
             }
         });
+    }
+
+    private void setStreamWidigetVisibility(int visibility) {
+        if (layoutStreamInput != null) {
+            layoutStreamInput.setVisibility(visibility);
+        }
     }
 
     @Override
@@ -478,6 +487,9 @@ public class MainActivity extends AppCompatActivity {
             if (mStreamManager.getStreamState() == STATE_CONNECTING ||
                     mStreamManager.getStreamState() == STATE_STREAMING) {
                 mStreamStats.setText(Utils.toDisplayText(MainActivity.this, streamStatsReport));
+                setStreamWidigetVisibility(View.GONE);
+            } else {
+                setStreamWidigetVisibility(View.VISIBLE);
             }
         }
         @Override
