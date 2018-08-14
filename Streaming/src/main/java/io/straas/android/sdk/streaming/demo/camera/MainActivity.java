@@ -151,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setStreamWidigetVisibility(int visibility) {
-        if (layoutStreamInput != null) {
+        if (layoutStreamInput != null && visibility != layoutStreamInput.getVisibility()) {
             layoutStreamInput.setVisibility(visibility);
         }
     }
@@ -497,6 +497,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e(TAG, "onError " + error);
             mTriggerButton.setText(getResources().getString(R.string.start));
             mStreamStats.setText("");
+            setStreamWidigetVisibility(View.VISIBLE);
         }
     };
 }
