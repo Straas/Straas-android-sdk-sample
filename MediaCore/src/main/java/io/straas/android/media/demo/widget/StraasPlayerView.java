@@ -150,7 +150,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
     private FrameLayout mVideoView;
     private FrameLayout mAdView;
-    private ImageView mimagePoster;
+    private ImageView mImagePoster;
     private ViewGroup mTextTrack;
 
     private FragmentActivity mFragmentActivity;
@@ -258,7 +258,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
         mVideoView = straasMainContainer.findViewById(R.id.videoSurfaceView);
         mTextTrack = straasMainContainer.findViewById(R.id.textTrack);
-        imagePoster = new ImageView(getThemeContext());
+        mImagePoster = new ImageView(getThemeContext());
 
         initColumn(straasMainContainer);
 
@@ -455,16 +455,16 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             mSummaryViewerMetadataListener.onMetaChanged(mSummaryViewerTextView, summaryViewer);
 
             if (!isPosterAddedIntoVideoContainer()) {
-                getVideoContainer().addView(imagePoster, getVideoContainer().getChildCount());
+                getVideoContainer().addView(mImagePoster, getVideoContainer().getChildCount());
             }
             if (metadata.getBundle().containsKey(StraasMediaCore.KEY_VIDEO_RENDER_TYPE)
                     && metadata.getBundle().getInt(StraasMediaCore.KEY_VIDEO_RENDER_TYPE) == StraasMediaCore.VIDEO_RENDER_TYPE_NONE) {
-                imagePoster.setVisibility(VISIBLE);
+                mImagePoster.setVisibility(VISIBLE);
                 Glide.with(getThemeContext())
                         .load(metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI))
-                        .into(imagePoster);
+                        .into(mImagePoster);
             } else {
-                imagePoster.setVisibility(GONE);
+                mImagePoster.setVisibility(GONE);
             }
         }
 
@@ -629,7 +629,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         }
 
         private boolean isPosterAddedIntoVideoContainer() {
-            return getVideoContainer().getChildAt(getVideoContainer().getChildCount() - 1) == imagePoster;
+            return getVideoContainer().getChildAt(getVideoContainer().getChildCount() - 1) == mImagePoster;
         }
     };
 
