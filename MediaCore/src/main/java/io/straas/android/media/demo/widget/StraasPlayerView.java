@@ -150,7 +150,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
     private FrameLayout mVideoView;
     private FrameLayout mAdView;
-    private ImageView imagePoster;
+    private ImageView mimagePoster;
     private ViewGroup mTextTrack;
 
     private FragmentActivity mFragmentActivity;
@@ -454,14 +454,13 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             mChannelNameMetadataListener.onMetaChanged(mChannelNameTextView, title);
             mSummaryViewerMetadataListener.onMetaChanged(mSummaryViewerTextView, summaryViewer);
 
-            if (!isVideoContainerHasPoster()) {
+            if (!isPosterAddedIntoVideoContainer()) {
                 getVideoContainer().addView(imagePoster, getVideoContainer().getChildCount());
             }
             if (metadata.getBundle().containsKey(StraasMediaCore.KEY_VIDEO_RENDER_TYPE)
                     && metadata.getBundle().getInt(StraasMediaCore.KEY_VIDEO_RENDER_TYPE) == StraasMediaCore.VIDEO_RENDER_TYPE_NONE) {
                 imagePoster.setVisibility(VISIBLE);
                 Glide.with(getThemeContext())
-                        .asBitmap()
                         .load(metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI))
                         .into(imagePoster);
             } else {
@@ -629,7 +628,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             handleMediaSessionExtra(extras, isStopPlay);
         }
 
-        private boolean isVideoContainerHasPoster() {
+        private boolean isPosterAddedIntoVideoContainer() {
             return getVideoContainer().getChildAt(getVideoContainer().getChildCount() - 1) == imagePoster;
         }
     };
