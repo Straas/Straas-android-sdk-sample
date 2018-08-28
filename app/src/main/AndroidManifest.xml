@@ -55,7 +55,6 @@
         <activity android:name="io.straas.android.sdk.streaming.demo.screencast.ScreencastSettingsActivity"
                   android:theme="@style/ScreencastSettingsTheme"
                   android:windowSoftInputMode="adjustResize"
-                  android:screenOrientation="portrait"
                   android:label="Streaming SDK demo - Screencast"
                   android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
 
