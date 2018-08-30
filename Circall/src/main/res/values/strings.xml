@@ -8,6 +8,7 @@
 
     <string name="connecting">連線中...</string>
     <string name="other_side_not_enter_yet">對方尚未進入面談室</string>
+    <string name="other_side_camera_is_closed">對方鏡頭關閉中</string>
 
     <string name="screenshot_failed_title">無法拍攝螢幕擷圖</string>
     <string name="screenshot_failed_message_two_way_not_ready">需等候雙方皆進入面談室後，才可開始拍攝螢幕擷圖</string>
