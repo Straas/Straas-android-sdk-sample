@@ -8,6 +8,9 @@
         <variable
             name="isRemoteNotJoined"
             type="boolean"/>
+        <variable
+            name="isRemoteVideoOff"
+            type="boolean"/>
     </data>
 
     <merge
@@ -16,7 +19,7 @@
         tools:parentTag="android.support.constraint.ConstraintLayout">
 
      <ImageView
-            android:id="@+id/not_joined_background"
+            android:id="@+id/unavailable_background"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@android:color/black"
@@ -27,18 +30,18 @@
             app:layout_constraintEnd_toEndOf="parent"/>
 
         <ImageView
-            android:id="@+id/remote_avatar"
+            android:id="@+id/unavailable_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_face"
+            app:srcCompat="@{isRemoteNotJoined ? @drawable/ic_face : @drawable/ic_remote_camera_closed}"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/text_off_reason"
+            app:layout_constraintBottom_toTopOf="@+id/unavailable_reason"
             app:layout_constraintVertical_chainStyle="packed"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
-        
+
         <TextView
-            android:id="@+id/text_off_reason"
+            android:id="@+id/unavailable_reason"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="19dp"
@@ -46,19 +49,18 @@
             android:fontFamily="sans-serif"
             android:textStyle="normal"
             android:textColor="#FF6D6A6A"
-            android:text="@string/other_side_not_enter_yet"
+            android:text="@{isRemoteNotJoined ? @string/other_side_not_enter_yet : @string/other_side_camera_is_closed}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/remote_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/unavailable_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
 
         <android.support.constraint.Group
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{isRemoteNotJoined ? View.VISIBLE : View.GONE, default=gone}"
-            android:id="@+id/remote_is_off_group"
-            app:constraint_referenced_ids="not_joined_background,remote_avatar,text_off_reason"
+            android:visibility="@{(isRemoteNotJoined || isRemoteVideoOff) ? View.VISIBLE : View.GONE, default=gone}"
+            app:constraint_referenced_ids="unavailable_background,unavailable_icon,unavailable_reason"
             tools:visibility="visible"
-            tools:constraint_referenced_ids="not_joined_background,remote_avatar,text_off_reason"/>
+            tools:constraint_referenced_ids="unavailable_background,unavailable_icon,unavailable_reason"/>
     </merge>
 </layout>
