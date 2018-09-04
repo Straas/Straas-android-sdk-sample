@@ -2,6 +2,13 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.10.4
+_2018-09-04_
+
+*   straas-media-core
+    *   feat: Support continue watch
+    *   feat: Add parameter for audio only
+
 ## Version 0.10.3
 _2018-07-31_
 

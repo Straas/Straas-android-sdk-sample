@@ -41,6 +41,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.exoplayer2.Format;
 
 import java.lang.annotation.Retention;
@@ -149,7 +150,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
     private FrameLayout mVideoView;
     private FrameLayout mAdView;
-
+    private ImageView mImagePoster;
     private ViewGroup mTextTrack;
 
     private FragmentActivity mFragmentActivity;
@@ -257,6 +258,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
         mVideoView = straasMainContainer.findViewById(R.id.videoSurfaceView);
         mTextTrack = straasMainContainer.findViewById(R.id.textTrack);
+        mImagePoster = new ImageView(getThemeContext());
 
         initColumn(straasMainContainer);
 
@@ -451,6 +453,19 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
             mChannelNameMetadataListener.onMetaChanged(mChannelNameTextView, title);
             mSummaryViewerMetadataListener.onMetaChanged(mSummaryViewerTextView, summaryViewer);
+
+            if (!isPosterAddedIntoVideoContainer()) {
+                getVideoContainer().addView(mImagePoster, getVideoContainer().getChildCount());
+            }
+            if (metadata.getBundle().containsKey(StraasMediaCore.KEY_VIDEO_RENDER_TYPE)
+                    && metadata.getBundle().getInt(StraasMediaCore.KEY_VIDEO_RENDER_TYPE) == StraasMediaCore.VIDEO_RENDER_TYPE_NONE) {
+                mImagePoster.setVisibility(VISIBLE);
+                Glide.with(getThemeContext())
+                        .load(metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI))
+                        .into(mImagePoster);
+            } else {
+                mImagePoster.setVisibility(GONE);
+            }
         }
 
         @Override
@@ -611,6 +626,10 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                             mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_NONE ||
                             mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_ERROR);
             handleMediaSessionExtra(extras, isStopPlay);
+        }
+
+        private boolean isPosterAddedIntoVideoContainer() {
+            return getVideoContainer().getChildAt(getVideoContainer().getChildCount() - 1) == mImagePoster;
         }
     };
 
