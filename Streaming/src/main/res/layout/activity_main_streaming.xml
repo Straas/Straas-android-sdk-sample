@@ -55,70 +55,82 @@
 
     </LinearLayout>
 
-    <RadioGroup
-        android:id="@+id/stream_way"
-        android:layout_below="@id/operation"
+    <RelativeLayout
+        android:id="@+id/layout_stream_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:checkedButton="@+id/stream_way_live_event">
-        <RadioButton
-            android:id="@+id/stream_way_live_event"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/stream_way_live_event"/>
-        <RadioButton
-            android:id="@+id/stream_way_stream_key"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/stream_way_stream_key"/>
-    </RadioGroup>
+        android:layout_below="@id/operation">
 
-    <EditText
-        android:id="@+id/edit_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/hint_input_title"
-        android:text="Default title"
-        android:layout_below="@id/stream_way"/>
-
-    <FrameLayout
-        android:id="@+id/stream_key_panel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/stream_way"
-        android:layout_gravity="center_horizontal">
-        <EditText
-            android:id="@+id/edit_stream_key"
+        <RadioGroup
+            android:id="@+id/stream_way"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/hint_input_stream_key"
-            android:paddingRight="30dp"
-            android:paddingEnd="30dp"/>
-        <ImageButton
-            android:layout_width="wrap_content"
+            android:checkedButton="@+id/stream_way_live_event"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/stream_way_live_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stream_way_live_event" />
+
+            <RadioButton
+                android:id="@+id/stream_way_stream_key"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stream_way_stream_key" />
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/edit_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/abc_control_padding_material"
-            android:layout_marginBottom="8dp"
-            app:srcCompat="@drawable/ic_remove_textfield"
-            android:onClick="clearStreamKey"
-            android:id="@+id/clear"
-            android:visibility="gone"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_gravity="end|bottom"
-            tools:visibility="invisible"/>
-        <ImageButton
-            android:id="@+id/scan"
-            android:layout_width="wrap_content"
+            android:layout_below="@id/stream_way"
+            android:hint="@string/hint_input_title"
+            android:text="Default title" />
+
+        <FrameLayout
+            android:id="@+id/stream_key_panel"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/abc_control_padding_material"
-            android:layout_marginBottom="8dp"
-            app:srcCompat="@drawable/ic_scan"
-            android:onClick="scanQrcode"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_gravity="end|bottom"
-            tools:visibility="visible"/>
-    </FrameLayout>
+            android:layout_below="@id/stream_way"
+            android:layout_gravity="center_horizontal">
+
+            <EditText
+                android:id="@+id/edit_stream_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_input_stream_key"
+                android:paddingEnd="30dp"
+                android:paddingRight="30dp" />
+
+            <ImageButton
+                android:id="@+id/clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_marginBottom="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:onClick="clearStreamKey"
+                android:padding="@dimen/abc_control_padding_material"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_remove_textfield"
+                tools:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/scan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_marginBottom="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:onClick="scanQrcode"
+                android:padding="@dimen/abc_control_padding_material"
+                app:srcCompat="@drawable/ic_scan"
+                tools:visibility="visible" />
+        </FrameLayout>
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/stream_stats"
