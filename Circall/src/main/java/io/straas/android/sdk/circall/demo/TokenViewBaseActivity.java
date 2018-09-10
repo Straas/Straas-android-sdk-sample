@@ -23,7 +23,8 @@ public abstract class TokenViewBaseActivity extends AppCompatActivity {
             Manifest.permission.CAMERA
     };
 
-    private static final int QRCODE_PERMISSIONS_REQUEST = 1;
+    private static final int QRCODE_STREAM_KEY_REQUEST = 1;
+    private static final int QRCODE_RTSP_URL_REQUEST = 2;
 
     protected ActivityTokenViewBinding mBinding;
 
@@ -35,16 +36,23 @@ public abstract class TokenViewBaseActivity extends AppCompatActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_token_view);
     }
 
-    public void onScanQrcode(View view) {
-        checkQrCodePermissions();
+    public void scanStreamKey(View view) {
+        scanStreamKey();
+    }
+
+    public void scanRtspUrl(View view) {
+        scanRtspUrl();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == QRCODE_PERMISSIONS_REQUEST && resultCode == Activity.RESULT_OK) {
+        if (requestCode == QRCODE_STREAM_KEY_REQUEST && resultCode == Activity.RESULT_OK) {
             String streamKey = data.getStringExtra(QrcodeActivity.KEY_QR_CODE_VALUE);
             mBinding.circallStreamKey.setText(trim(streamKey));
+        } else if (requestCode == QRCODE_RTSP_URL_REQUEST && resultCode == Activity.RESULT_OK) {
+            String rtspUrl = data.getStringExtra(QrcodeActivity.KEY_QR_CODE_VALUE);
+            mBinding.circallPublishUrl.setText(trim(rtspUrl));
         }
     }
 
@@ -71,14 +79,25 @@ public abstract class TokenViewBaseActivity extends AppCompatActivity {
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
-    @AfterPermissionGranted(QRCODE_PERMISSIONS_REQUEST)
-    private synchronized void checkQrCodePermissions() {
+    @AfterPermissionGranted(QRCODE_STREAM_KEY_REQUEST)
+    private synchronized void scanStreamKey() {
         if (EasyPermissions.hasPermissions(this, QR_CODE_PERMISSIONS)) {
             Intent intent = new Intent(this, QrcodeActivity.class);
-            startActivityForResult(intent, QRCODE_PERMISSIONS_REQUEST);
+            startActivityForResult(intent, QRCODE_STREAM_KEY_REQUEST);
         } else {
             EasyPermissions.requestPermissions(this, getString(R.string.qr_code_need_permission),
-                    QRCODE_PERMISSIONS_REQUEST, QR_CODE_PERMISSIONS);
+                    QRCODE_STREAM_KEY_REQUEST, QR_CODE_PERMISSIONS);
+        }
+    }
+
+    @AfterPermissionGranted(QRCODE_RTSP_URL_REQUEST)
+    private synchronized void scanRtspUrl() {
+        if (EasyPermissions.hasPermissions(this, QR_CODE_PERMISSIONS)) {
+            Intent intent = new Intent(this, QrcodeActivity.class);
+            startActivityForResult(intent, QRCODE_RTSP_URL_REQUEST);
+        } else {
+            EasyPermissions.requestPermissions(this, getString(R.string.qr_code_need_permission),
+                    QRCODE_RTSP_URL_REQUEST, QR_CODE_PERMISSIONS);
         }
     }
 }

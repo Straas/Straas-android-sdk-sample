@@ -11,6 +11,9 @@
         <variable
             name="circallStreamKeyErrorText"
             type="String"/>
+        <variable
+            name="needPublishUrl"
+            type="boolean"/>
     </data>
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -47,21 +50,62 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/straas_logo"
-            app:layout_constraintBottom_toTopOf="@+id/enter_room" />
+            app:layout_constraintBottom_toTopOf="@id/circall_publish_url" />
 
         <ImageView
-            android:id="@+id/scan"
+            android:id="@+id/scan_stream_key"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/scan_margin_bottom"
             app:srcCompat="@drawable/ic_scan_qrcode"
-            android:onClick="onScanQrcode"
+            android:onClick="scanStreamKey"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/circall_stream_key"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="@+id/circall_stream_key"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintVertical_bias="1.0" />
+
+        <EditText
+            android:id="@+id/circall_publish_url"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            android:paddingEnd="36dp"
+            android:hint="@string/hint_input_circall_publish_url"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:theme="@style/TokenEditTextStyle"
+            android:textSize="@dimen/stream_key_text_size"
+            android:gravity="top"
+            android:backgroundTint="@android:color/white"
+            android:visibility="@{needPublishUrl ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toTopOf="@+id/enter_room"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/circall_stream_key"/>
+
+        <ImageView
+            android:id="@+id/scan_publish_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/scan_margin_bottom"
+            app:srcCompat="@drawable/ic_scan_qrcode"
+            android:onClick="scanRtspUrl"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/circall_publish_url"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/circall_publish_url"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <android.support.constraint.Group
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{needPublishUrl ? View.VISIBLE : View.GONE}"
+            app:constraint_referenced_ids="circall_publish_url, scan_publish_url"
+            tools:constraint_referenced_ids="circall_publish_url, scan_publish_url"/>
 
         <Button
             android:id="@+id/enter_room"

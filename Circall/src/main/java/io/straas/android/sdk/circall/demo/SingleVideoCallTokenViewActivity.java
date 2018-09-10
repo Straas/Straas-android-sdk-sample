@@ -16,8 +16,8 @@ public class SingleVideoCallTokenViewActivity extends TokenViewBaseActivity {
             Manifest.permission.RECORD_AUDIO
     };
 
-    // 1 is for QRCODE_PERMISSIONS_REQUEST in TokenViewBaseActivity
-    private static final int SINGLE_VIDEO_CALL_PERMISSIONS_REQUEST = 2;
+    // 1 and 2 are used in TokenViewBaseActivity
+    private static final int SINGLE_VIDEO_CALL_PERMISSIONS_REQUEST = 3;
 
     @Override
     protected void enterRoom() {

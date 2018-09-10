@@ -1,5 +1,6 @@
 <resources>
     <string name="hint_input_circall_stream_key">請貼上或掃描串流碼</string>
+    <string name="hint_input_circall_publish_url">請貼上或掃描 RTSP URL</string>
     <string name="enter_room">進入線上面談室</string>
     <string name="empty_stream_key">*請貼上串流碼</string>
     <string name="error_stream_key">*串流碼錯誤</string>
