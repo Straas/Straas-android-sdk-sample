@@ -283,6 +283,10 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
     }
 
     @Override
+    public void onPublished(CircallStream stream) {
+    }
+
+    @Override
     public void onStreamSubscribed(CircallStream stream) {
         if (stream == null) {
             return;
