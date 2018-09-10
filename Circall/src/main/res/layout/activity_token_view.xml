@@ -15,7 +15,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="io.straas.android.sdk.circall.demo.MainActivity" >
+        tools:context="io.straas.android.sdk.circall.demo.TokenViewBaseActivity" >
 
         <ImageView
             android:id="@+id/straas_logo"

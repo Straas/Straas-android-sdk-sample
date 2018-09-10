@@ -12,12 +12,12 @@ import android.view.View;
 
 import io.straas.android.sdk.circall.CircallToken;
 import io.straas.android.sdk.demo.R;
-import io.straas.android.sdk.demo.databinding.ActivityMainBinding;
+import io.straas.android.sdk.demo.databinding.ActivityTokenViewBinding;
 import io.straas.android.sdk.demo.qrcode.QrcodeActivity;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public abstract class MainActivity extends AppCompatActivity {
+public abstract class TokenViewBaseActivity extends AppCompatActivity {
 
     public static final String[] QR_CODE_PERMISSIONS = {
             Manifest.permission.CAMERA
@@ -25,14 +25,14 @@ public abstract class MainActivity extends AppCompatActivity {
 
     private static final int QRCODE_PERMISSIONS_REQUEST = 1;
 
-    protected ActivityMainBinding mBinding;
+    protected ActivityTokenViewBinding mBinding;
 
     abstract protected void enterRoom();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_token_view);
     }
 
     public void onScanQrcode(View view) {

@@ -9,14 +9,14 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 import static io.straas.android.sdk.circall.demo.SingleVideoCallActivity.INTENT_CIRCALL_TOKEN;
 
-public class SingleVideoCallTokenViewActivity extends MainActivity {
+public class SingleVideoCallTokenViewActivity extends TokenViewBaseActivity {
 
     public static final String[] SINGLE_VIDEO_CALL_PERMISSIONS = {
             Manifest.permission.CAMERA,
             Manifest.permission.RECORD_AUDIO
     };
 
-    // 1 is for QRCODE_PERMISSIONS_REQUEST in MainActivity
+    // 1 is for QRCODE_PERMISSIONS_REQUEST in TokenViewBaseActivity
     private static final int SINGLE_VIDEO_CALL_PERMISSIONS_REQUEST = 2;
 
     @Override
