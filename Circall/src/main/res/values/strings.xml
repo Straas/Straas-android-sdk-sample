@@ -4,6 +4,7 @@
     <string name="empty_stream_key">*請貼上串流碼</string>
     <string name="error_stream_key">*串流碼錯誤</string>
 
+    <string name="qr_code_need_permission">請先允許相機，才可掃描QR Code</string>
     <string name="circall_need_permission">請先允許相機和麥可風，才可進入線上面談室</string>
 
     <string name="connecting">連線中...</string>

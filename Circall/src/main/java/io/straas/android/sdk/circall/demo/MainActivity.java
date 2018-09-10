@@ -17,20 +17,17 @@ import io.straas.android.sdk.demo.qrcode.QrcodeActivity;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-import static io.straas.android.sdk.circall.demo.SingleVideoCallActivity.INTENT_CIRCALL_TOKEN;
+public abstract class MainActivity extends AppCompatActivity {
 
-public class MainActivity extends AppCompatActivity {
-
-    public static final String[] CIRCALL_PERMISSIONS = {
-            Manifest.permission.CAMERA,
-            Manifest.permission.RECORD_AUDIO
+    public static final String[] QR_CODE_PERMISSIONS = {
+            Manifest.permission.CAMERA
     };
 
-    private static final int CIRCALL_PERMISSION_REQUEST = 1;
-    private static final int SCAN_QRCODE_REQUEST = 2;
+    private static final int QRCODE_PERMISSIONS_REQUEST = 1;
 
-    private ActivityMainBinding mBinding;
-    private boolean mIsRequestFromStartVideoCall = true;
+    protected ActivityMainBinding mBinding;
+
+    abstract protected void enterRoom();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +36,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onScanQrcode(View view) {
-        mIsRequestFromStartVideoCall = false;
-        checkPermissions();
+        checkQrCodePermissions();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SCAN_QRCODE_REQUEST && resultCode == Activity.RESULT_OK) {
+        if (requestCode == QRCODE_PERMISSIONS_REQUEST && resultCode == Activity.RESULT_OK) {
             String streamKey = data.getStringExtra(QrcodeActivity.KEY_QR_CODE_VALUE);
             mBinding.circallStreamKey.setText(trim(streamKey));
         }
@@ -66,8 +62,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mBinding.setCircallStreamKeyErrorText("");
-        mIsRequestFromStartVideoCall = true;
-        checkPermissions();
+        enterRoom();
     }
 
     @Override
@@ -76,20 +71,14 @@ public class MainActivity extends AppCompatActivity {
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
-    @AfterPermissionGranted(CIRCALL_PERMISSION_REQUEST)
-    private synchronized void checkPermissions() {
-        if (EasyPermissions.hasPermissions(this, CIRCALL_PERMISSIONS)) {
-            if (mIsRequestFromStartVideoCall) {
-                Intent intent = new Intent(this, SingleVideoCallActivity.class);
-                intent.putExtra(INTENT_CIRCALL_TOKEN, mBinding.circallStreamKey.getText().toString());
-                startActivity(intent);
-            } else {
-                Intent intent = new Intent(this, QrcodeActivity.class);
-                startActivityForResult(intent, SCAN_QRCODE_REQUEST);
-            }
+    @AfterPermissionGranted(QRCODE_PERMISSIONS_REQUEST)
+    private synchronized void checkQrCodePermissions() {
+        if (EasyPermissions.hasPermissions(this, QR_CODE_PERMISSIONS)) {
+            Intent intent = new Intent(this, QrcodeActivity.class);
+            startActivityForResult(intent, QRCODE_PERMISSIONS_REQUEST);
         } else {
-            EasyPermissions.requestPermissions(this, getString(R.string.circall_need_permission),
-                    CIRCALL_PERMISSION_REQUEST, CIRCALL_PERMISSIONS);
+            EasyPermissions.requestPermissions(this, getString(R.string.qr_code_need_permission),
+                    QRCODE_PERMISSIONS_REQUEST, QR_CODE_PERMISSIONS);
         }
     }
 }

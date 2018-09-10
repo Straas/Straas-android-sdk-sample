@@ -27,7 +27,7 @@
             android:name="io.straas.android.sdk.demo.qrcode.QrcodeActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
-        <activity android:name="io.straas.android.sdk.circall.demo.MainActivity"
+        <activity android:name="io.straas.android.sdk.circall.demo.SingleVideoCallTokenViewActivity"
                   android:label="CirCall - 1:1 conferencing"
                   android:launchMode="singleTop"
                   android:theme="@style/CircallWelcomeTheme"
@@ -38,6 +38,6 @@
                   android:launchMode="singleTop"
                   android:configChanges="orientation|smallestScreenSize|screenSize|screenLayout"
                   android:theme="@style/Theme.AppCompat.NoActionBar"
-                  android:parentActivityName="io.straas.android.sdk.circall.demo.MainActivity"/>
+                  android:parentActivityName="io.straas.android.sdk.circall.demo.SingleVideoCallTokenViewActivity"/>
     </application>
 </manifest>
