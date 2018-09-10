@@ -343,7 +343,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
     }
 
     private void showFailedDialog(int titleResId, int messageResId) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.VideoCallDialogTheme);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CircallDialogTheme);
         builder.setTitle(titleResId);
         builder.setMessage(messageResId);
         builder.setPositiveButton(android.R.string.ok, null);
@@ -370,9 +370,9 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
     }
 
     private void showEndCircallConfirmationDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.VideoCallDialogTheme);
-        builder.setTitle(R.string.end_circall_confirmation_title);
-        builder.setMessage(R.string.end_circall_confirmation_message);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CircallDialogTheme);
+        builder.setTitle(R.string.end_single_call_confirmation_title);
+        builder.setMessage(R.string.end_single_call_confirmation_message);
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
             destroyCircallManager();
 
