@@ -43,33 +43,23 @@
             android:theme="@style/TokenEditTextStyle"
             android:textSize="@dimen/stream_key_text_size"
             android:gravity="top"
-            android:background="@android:color/transparent"
+            android:backgroundTint="@android:color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/straas_logo"
             app:layout_constraintBottom_toTopOf="@+id/enter_room" />
 
         <ImageView
-            android:id="@+id/circall_stream_key_underline"
-            android:layout_width="0dp"
-            android:layout_height="1.3dp"
-            android:background="@android:color/white"
-            app:layout_constraintStart_toStartOf="@+id/circall_stream_key"
-            app:layout_constraintEnd_toEndOf="@+id/circall_stream_key"
-            app:layout_constraintTop_toBottomOf="@+id/circall_stream_key"
-            app:layout_constraintBottom_toBottomOf="@+id/circall_stream_key" />
-
-        <ImageView
             android:id="@+id/scan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="7.3dp"
+            android:layout_marginBottom="@dimen/scan_margin_bottom"
             app:srcCompat="@drawable/ic_scan_qrcode"
             android:onClick="onScanQrcode"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/circall_stream_key_underline"
+            app:layout_constraintEnd_toEndOf="@+id/circall_stream_key"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/circall_stream_key_underline"
+            app:layout_constraintBottom_toBottomOf="@+id/circall_stream_key"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintVertical_bias="1.0" />
 

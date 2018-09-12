@@ -2,7 +2,7 @@
     <style name="TokenEditTextStyle" parent="Widget.AppCompat.EditText">
         <item name="android:textColorHint">#FF78C1C4</item>
         <item name="android:textColorPrimary">#FFFFFFFF</item>
-        <item name="colorControlActivated">?attr/colorPrimary</item>
+        <item name="colorControlActivated">@android:color/white</item>
         <item name="android:maxLines">1</item>
         <item name="android:inputType">text</item>
         <item name="android:imeOptions">actionSend</item>
