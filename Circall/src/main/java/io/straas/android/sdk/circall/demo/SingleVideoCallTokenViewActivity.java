@@ -2,6 +2,7 @@ package io.straas.android.sdk.circall.demo;
 
 import android.Manifest;
 import android.content.Intent;
+import android.os.Bundle;
 
 import io.straas.android.sdk.demo.R;
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -18,6 +19,12 @@ public class SingleVideoCallTokenViewActivity extends TokenViewBaseActivity {
 
     // 1 and 2 are used in TokenViewBaseActivity
     private static final int SINGLE_VIDEO_CALL_PERMISSIONS_REQUEST = 3;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mBinding.enter.setText(getResources().getString(R.string.enter_room));
+    }
 
     @Override
     protected void enterRoom() {

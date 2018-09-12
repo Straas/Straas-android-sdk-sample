@@ -81,7 +81,7 @@
             android:gravity="top"
             android:backgroundTint="@android:color/white"
             android:visibility="@{needPublishUrl ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toTopOf="@+id/enter_room"
+            app:layout_constraintBottom_toTopOf="@+id/enter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/circall_stream_key"/>
@@ -108,14 +108,14 @@
             tools:constraint_referenced_ids="circall_publish_url, scan_publish_url"/>
 
         <Button
-            android:id="@+id/enter_room"
+            android:id="@+id/enter"
             android:layout_width="match_parent"
             android:layout_height="51dp"
             android:layout_marginStart="36dp"
             android:layout_marginEnd="36dp"
             android:layout_marginTop="@dimen/enter_room_top_margin"
             android:onClick="onEnterRoom"
-            android:text="@string/enter_room"
+            android:text="@string/enter"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textSize="@dimen/enter_room_text_size"
             android:background="@drawable/bg_button"
@@ -137,7 +137,7 @@
             android:text="@{circallStreamKeyErrorText}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/enter_room"
+            app:layout_constraintTop_toBottomOf="@+id/enter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintVertical_bias="0.0" />
     </android.support.constraint.ConstraintLayout>
