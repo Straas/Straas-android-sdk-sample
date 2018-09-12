@@ -87,7 +87,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
 
     private final Float[] PLAYBACK_SPEED_OPTIONS = {0.5f, 1.0f, 1.5f, 2.0f};
-    private float currentSpeed = 1.0f;
+    private float mCurrentSpeed = 1.0f;
 
     private boolean mEnableDefaultWidget;
     private boolean mEnableDefaultSwitchQualityIcon;
@@ -430,7 +430,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             } else {
                 MediaControllerCompat controller = MediaControllerCompat.getMediaController(mFragmentActivity);
                 if (controller != null) {
-                    MediaControllerCompatHelper.setPlaybackSpeed(controller, currentSpeed);
+                    MediaControllerCompatHelper.setPlaybackSpeed(controller, mCurrentSpeed);
                 }
                 switchMode(false, false);
 
@@ -1518,7 +1518,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                                     .setCallback(new SwitchSpeedDialog.Callback() {
                                         @Override
                                         public void onSpeedSelected(float speed) {
-                                            currentSpeed = speed;
+                                            mCurrentSpeed = speed;
                                         }
                                     })
                                     .setSpeedOption(new ArrayList<>(Arrays.asList(PLAYBACK_SPEED_OPTIONS)));
