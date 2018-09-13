@@ -42,6 +42,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.exoplayer2.Format;
 
 import java.lang.annotation.Retention;
@@ -467,6 +468,8 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                     && metadata.getBundle().getInt(StraasMediaCore.KEY_VIDEO_RENDER_TYPE) == StraasMediaCore.VIDEO_RENDER_TYPE_NONE) {
                 mImagePoster.setVisibility(VISIBLE);
                 Glide.with(getThemeContext())
+                        .setDefaultRequestOptions(new RequestOptions()
+                                .placeholder(android.R.color.black))
                         .load(metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI))
                         .into(mImagePoster);
             } else {
