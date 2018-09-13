@@ -50,7 +50,8 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
     public static final int STATE_IDLE = 0;
     public static final int STATE_CONNECTING = 1;
     public static final int STATE_CONNECTED = 2;
-    public static final int STATE_TWO_WAY_VIDEO = 3;
+    public static final int STATE_PUBLISHED = 3;
+    public static final int STATE_SUBSCRIBED = 4;
 
     private static final int EVENT_UPDATE_RECORDING_TIME = 101;
 
@@ -284,6 +285,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
 
     @Override
     public void onPublished(CircallStream stream) {
+        mBinding.setSeconds(STATE_PUBLISHED);
     }
 
     @Override
@@ -295,7 +297,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
         mBinding.fullscreenVideoView.setVisibility(View.VISIBLE);
         stream.setRenderer(mBinding.fullscreenVideoView, getPlayConfig());
         mRemoteCircallStream = stream;
-        mBinding.setState(STATE_TWO_WAY_VIDEO);
+        mBinding.setState(STATE_SUBSCRIBED);
         mBinding.setIsRemoteVideoOff(!stream.isVideoEnabled());
 
         mCircallManager.getRecordingStreamMetadata().addOnCompleteListener(this, task -> {
@@ -366,7 +368,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
 
     @Override
     public void onBackPressed() {
-        if (mBinding.getState() == STATE_CONNECTED || mBinding.getState() == STATE_TWO_WAY_VIDEO) {
+        if (mBinding.getState() >= STATE_CONNECTED) {
             showEndCircallConfirmationDialog();
         } else {
             super.onBackPressed();
