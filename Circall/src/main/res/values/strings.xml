@@ -25,4 +25,7 @@
     <string name="screenshot_failed_message">需等候開始接收串流，才可開始拍攝螢幕擷圖</string>
     <string name="end_circall_confirmation_title">離開</string>
     <string name="end_circall_confirmation_message">你確定要離開嗎？</string>
+
+    <string name="empty_rtsp_url">*請貼上RTSP URL</string>
+    <string name="error_rtsp_url">*RTSP URL錯誤</string>
 </resources>

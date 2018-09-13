@@ -26,6 +26,8 @@ public abstract class TokenViewBaseActivity extends AppCompatActivity {
     private static final int QRCODE_STREAM_KEY_REQUEST = 1;
     private static final int QRCODE_RTSP_URL_REQUEST = 2;
 
+    private static final String RTSP_PREFIX = "rtsp://";
+
     protected ActivityTokenViewBinding mBinding;
 
     abstract protected void enterRoom();
@@ -64,12 +66,21 @@ public abstract class TokenViewBaseActivity extends AppCompatActivity {
         String token = mBinding.circallStreamKey.getText().toString();
         if (!CircallToken.isValidToken(token)) {
             // show yellow stream key error
-            mBinding.setCircallStreamKeyErrorText(getString(TextUtils.isEmpty(token) ?
+            mBinding.setInformationErrorText(getString(TextUtils.isEmpty(token) ?
                     R.string.empty_stream_key : R.string.error_stream_key));
             return;
         }
+        if (mBinding.circallPublishUrl.getVisibility() == View.VISIBLE) {
+            if (TextUtils.isEmpty(mBinding.circallPublishUrl.getText())) {
+                mBinding.setInformationErrorText(getString(R.string.empty_rtsp_url));
+                return;
+            } else if (!mBinding.circallPublishUrl.getText().toString().startsWith(RTSP_PREFIX)) {
+                mBinding.setInformationErrorText(getString(R.string.error_rtsp_url));
+                return;
+            }
+        }
 
-        mBinding.setCircallStreamKeyErrorText("");
+        mBinding.setInformationErrorText("");
         enterRoom();
     }
 

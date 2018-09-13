@@ -9,7 +9,7 @@
             name="isCircallStreamKeyError"
             type="boolean"/>
         <variable
-            name="circallStreamKeyErrorText"
+            name="informationErrorText"
             type="String"/>
         <variable
             name="needPublishUrl"
@@ -133,8 +133,8 @@
             android:layout_marginTop="@dimen/stream_key_error_top_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             style="@style/StreamKeyError"
-            android:visibility="@{TextUtils.isEmpty(circallStreamKeyErrorText) ? View.GONE : View.VISIBLE, default=gone}"
-            android:text="@{circallStreamKeyErrorText}"
+            android:visibility="@{TextUtils.isEmpty(informationErrorText) ? View.GONE : View.VISIBLE, default=gone}"
+            android:text="@{informationErrorText}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/enter"
