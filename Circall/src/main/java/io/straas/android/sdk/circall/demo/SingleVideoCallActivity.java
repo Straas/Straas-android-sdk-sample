@@ -139,6 +139,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
                                 applySpringAnimation();
                                 item.setIcon(R.drawable.ic_screenshot);
                                 mBinding.screenshot.setImageBitmap(bitmap);
+                                // TODO: 2018/9/14 Handle memory leak
                                 mHandler.postDelayed(() -> mBinding.screenshot.setImageBitmap(null), 3000);
                             });
                     break;
@@ -164,6 +165,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
             }
         });
         spring.setEndValue(1);
+        // TODO: 2018/9/14 Handle memory leak
         mHandler.postDelayed(() -> spring.setEndValue(0), 1400);
     }
 
@@ -295,6 +297,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
         }
 
         mBinding.fullscreenVideoView.setVisibility(View.VISIBLE);
+        // TODO: 2018/9/14
         stream.setRenderer(mBinding.fullscreenVideoView, getPlayConfig());
         mRemoteCircallStream = stream;
         mBinding.setState(STATE_SUBSCRIBED);

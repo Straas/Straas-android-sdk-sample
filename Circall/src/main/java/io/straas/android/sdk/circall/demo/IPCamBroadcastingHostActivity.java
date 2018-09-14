@@ -91,6 +91,7 @@ public class IPCamBroadcastingHostActivity extends AppCompatActivity implements 
                                 applySpringAnimation();
                                 item.setIcon(R.drawable.ic_screenshot);
                                 mBinding.screenshot.setImageBitmap(bitmap);
+                                // TODO: 2018/9/14 Handle memory leak
                                 mHandler.postDelayed(() -> mBinding.screenshot.setImageBitmap(null), 3000);
                             });
                     break;
@@ -116,6 +117,7 @@ public class IPCamBroadcastingHostActivity extends AppCompatActivity implements 
             }
         });
         spring.setEndValue(1);
+        // TODO: 2018/9/14 Handle memory leak
         mHandler.postDelayed(() -> spring.setEndValue(0), 1400);
     }
 
