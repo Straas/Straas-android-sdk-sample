@@ -158,7 +158,7 @@ public class IPCamBroadcastingViewerActivity extends AppCompatActivity implement
     }
 
     @Override
-    public void onPublished(CircallStream stream) {
+    public void onStreamPublished(CircallStream stream) {
     }
 
     @Override

@@ -184,7 +184,7 @@ public class IPCamBroadcastingHostActivity extends AppCompatActivity implements 
     }
 
     @Override
-    public void onPublished(CircallStream stream) {
+    public void onStreamPublished(CircallStream stream) {
         if (mCircallManager != null && stream != null) {
             mCircallManager.subscribe(stream);
         }

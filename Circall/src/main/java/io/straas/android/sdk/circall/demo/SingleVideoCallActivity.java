@@ -284,7 +284,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
     }
 
     @Override
-    public void onPublished(CircallStream stream) {
+    public void onStreamPublished(CircallStream stream) {
         mBinding.setSeconds(STATE_PUBLISHED);
     }
 
