@@ -25,23 +25,23 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/circall_stream_key"
+            app:layout_constraintBottom_toTopOf="@id/circall_token"
             app:layout_constraintVertical_bias="0.0"
             app:layout_constraintVertical_chainStyle="packed"
             app:srcCompat="@drawable/ic_logo" />
 
         <EditText
-            android:id="@+id/circall_stream_key"
+            android:id="@+id/circall_token"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/stream_key_top_margin"
+            android:layout_marginTop="@dimen/circall_token_top_margin"
             android:layout_marginStart="36dp"
             android:layout_marginEnd="36dp"
             android:paddingEnd="36dp"
-            android:hint="@string/hint_input_circall_stream_key"
+            android:hint="@string/hint_input_circall_token"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:theme="@style/TokenEditTextStyle"
-            android:textSize="@dimen/stream_key_text_size"
+            android:textSize="@dimen/circall_token_text_size"
             android:gravity="top"
             android:backgroundTint="@android:color/white"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,16 +50,16 @@
             app:layout_constraintBottom_toTopOf="@id/circall_publish_url" />
 
         <ImageView
-            android:id="@+id/scan_stream_key"
+            android:id="@+id/scan_token"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/scan_margin_bottom"
             app:srcCompat="@drawable/ic_scan_qrcode"
-            android:onClick="scanStreamKey"
+            android:onClick="scanCircallToken"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/circall_stream_key"
+            app:layout_constraintEnd_toEndOf="@+id/circall_token"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="@+id/circall_stream_key"
+            app:layout_constraintBottom_toBottomOf="@+id/circall_token"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintVertical_bias="1.0" />
 
@@ -74,14 +74,14 @@
             android:hint="@string/hint_input_circall_publish_url"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:theme="@style/TokenEditTextStyle"
-            android:textSize="@dimen/stream_key_text_size"
+            android:textSize="@dimen/circall_token_text_size"
             android:gravity="top"
             android:backgroundTint="@android:color/white"
             android:visibility="@{needPublishUrl ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toTopOf="@+id/enter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/circall_stream_key"/>
+            app:layout_constraintTop_toBottomOf="@+id/circall_token"/>
 
         <ImageView
             android:id="@+id/scan_publish_url"
@@ -121,15 +121,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/circall_stream_key" />
+            app:layout_constraintTop_toBottomOf="@+id/circall_token" />
 
         <TextView
-            android:id="@+id/stream_key_error"
+            android:id="@+id/circall_token_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/stream_key_error_top_margin"
+            android:layout_marginTop="@dimen/information_error_top_margin"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            style="@style/StreamKeyError"
+            style="@style/InformationError"
             android:visibility="@{TextUtils.isEmpty(informationErrorText) ? View.GONE : View.VISIBLE, default=gone}"
             android:text="@{informationErrorText}"
             app:layout_constraintStart_toStartOf="parent"

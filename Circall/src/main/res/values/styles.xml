@@ -9,10 +9,10 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="StreamKeyError">
+    <style name="InformationError">
         <item name="android:textColor">#FFF3EC2B</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">@dimen/stream_key_error_text_size</item>
+        <item name="android:textSize">@dimen/circall_token_error_text_size</item>
     </style>
 
     <style name="CircallDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">

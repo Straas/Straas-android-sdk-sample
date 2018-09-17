@@ -23,7 +23,7 @@ public abstract class TokenViewBaseActivity extends AppCompatActivity {
             Manifest.permission.CAMERA
     };
 
-    private static final int QRCODE_STREAM_KEY_REQUEST = 1;
+    private static final int QRCODE_CIRCALL_TOKEN_REQUEST = 1;
     private static final int QRCODE_RTSP_URL_REQUEST = 2;
 
     private static final String RTSP_PREFIX = "rtsp://";
@@ -38,8 +38,8 @@ public abstract class TokenViewBaseActivity extends AppCompatActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_token_view);
     }
 
-    public void scanStreamKey(View view) {
-        scanStreamKey();
+    public void scanCircallToken(View view) {
+        scanCircallToken();
     }
 
     public void scanRtspUrl(View view) {
@@ -49,25 +49,25 @@ public abstract class TokenViewBaseActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == QRCODE_STREAM_KEY_REQUEST && resultCode == Activity.RESULT_OK) {
-            String streamKey = data.getStringExtra(QrcodeActivity.KEY_QR_CODE_VALUE);
-            mBinding.circallStreamKey.setText(trim(streamKey));
+        if (requestCode == QRCODE_CIRCALL_TOKEN_REQUEST && resultCode == Activity.RESULT_OK) {
+            String token = data.getStringExtra(QrcodeActivity.KEY_QR_CODE_VALUE);
+            mBinding.circallToken.setText(trim(token));
         } else if (requestCode == QRCODE_RTSP_URL_REQUEST && resultCode == Activity.RESULT_OK) {
             String rtspUrl = data.getStringExtra(QrcodeActivity.KEY_QR_CODE_VALUE);
             mBinding.circallPublishUrl.setText(trim(rtspUrl));
         }
     }
 
-    private String trim(String streamKey) {
-        return streamKey.trim().replace("\n", "").replace("\r", "");
+    private String trim(String str) {
+        return str.trim().replace("\n", "").replace("\r", "");
     }
 
     public void onEnterRoom(View view) {
-        String token = mBinding.circallStreamKey.getText().toString();
+        String token = mBinding.circallToken.getText().toString();
         if (!CircallToken.isValidToken(token)) {
-            // show yellow stream key error
+            // show yellow circall token error
             mBinding.setInformationErrorText(getString(TextUtils.isEmpty(token) ?
-                    R.string.empty_stream_key : R.string.error_stream_key));
+                    R.string.empty_circall_token : R.string.error_circall_token));
             return;
         }
         if (mBinding.circallPublishUrl.getVisibility() == View.VISIBLE) {
@@ -90,14 +90,14 @@ public abstract class TokenViewBaseActivity extends AppCompatActivity {
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
-    @AfterPermissionGranted(QRCODE_STREAM_KEY_REQUEST)
-    private synchronized void scanStreamKey() {
+    @AfterPermissionGranted(QRCODE_CIRCALL_TOKEN_REQUEST)
+    private synchronized void scanCircallToken() {
         if (EasyPermissions.hasPermissions(this, QR_CODE_PERMISSIONS)) {
             Intent intent = new Intent(this, QrcodeActivity.class);
-            startActivityForResult(intent, QRCODE_STREAM_KEY_REQUEST);
+            startActivityForResult(intent, QRCODE_CIRCALL_TOKEN_REQUEST);
         } else {
             EasyPermissions.requestPermissions(this, getString(R.string.qr_code_need_permission),
-                    QRCODE_STREAM_KEY_REQUEST, QR_CODE_PERMISSIONS);
+                    QRCODE_CIRCALL_TOKEN_REQUEST, QR_CODE_PERMISSIONS);
         }
     }
 

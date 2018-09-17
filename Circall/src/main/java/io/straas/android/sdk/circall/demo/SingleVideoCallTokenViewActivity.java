@@ -35,7 +35,7 @@ public class SingleVideoCallTokenViewActivity extends TokenViewBaseActivity {
     private synchronized void checkSingleVideoCallPermissions() {
         if (EasyPermissions.hasPermissions(this, SINGLE_VIDEO_CALL_PERMISSIONS)) {
             Intent intent = new Intent(this, SingleVideoCallActivity.class);
-            intent.putExtra(INTENT_CIRCALL_TOKEN, mBinding.circallStreamKey.getText().toString());
+            intent.putExtra(INTENT_CIRCALL_TOKEN, mBinding.circallToken.getText().toString());
             startActivity(intent);
         } else {
             EasyPermissions.requestPermissions(this, getString(R.string.circall_need_permission),

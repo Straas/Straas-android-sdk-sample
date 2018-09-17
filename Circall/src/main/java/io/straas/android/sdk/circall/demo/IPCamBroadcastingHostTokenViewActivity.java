@@ -17,7 +17,7 @@ public class IPCamBroadcastingHostTokenViewActivity extends TokenViewBaseActivit
     @Override
     protected void enterRoom() {
         Intent intent = new Intent(this, IPCamBroadcastingHostActivity.class);
-        intent.putExtra(INTENT_CIRCALL_TOKEN, mBinding.circallStreamKey.getText().toString());
+        intent.putExtra(INTENT_CIRCALL_TOKEN, mBinding.circallToken.getText().toString());
         intent.putExtra(INTENT_PUBLISH_URL, mBinding.circallPublishUrl.getText().toString());
         startActivity(intent);
     }
