@@ -250,7 +250,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
     private Task<Void> publish() {
         if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_CONNECTED) {
             final TaskCompletionSource<Void> source = new TaskCompletionSource<>();
-            mCircallManager.publish(getPublishConfig()).addOnCompleteListener(task -> {
+            mCircallManager.publishWithCameraCapture(getPublishConfig()).addOnCompleteListener(task -> {
                 mBinding.setState(STATE_CONNECTED);
                 mBinding.setShowActionButtons(true);
                 source.setResult(null);
