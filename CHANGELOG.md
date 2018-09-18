@@ -2,6 +2,18 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.10.5
+_2018-09-18_
+
+*   feat: Update glide & support library version.
+
+*   straas-media-core
+    *   fix: Fix text track can not show.
+
+*   straas-circall
+    *   feat: Improve CirCall experience.
+
+
 ## Version 0.10.4
 _2018-09-04_
 
