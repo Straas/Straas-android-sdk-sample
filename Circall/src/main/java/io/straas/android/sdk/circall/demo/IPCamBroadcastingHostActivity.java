@@ -60,10 +60,15 @@ public class IPCamBroadcastingHostActivity extends AppCompatActivity implements 
         Utils.requestFullscreenMode(this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_ipcam_broadcasting);
 
-        CircallManager.initialize().addOnSuccessListener(circallManager -> {
-            mCircallManager = circallManager;
-            mCircallManager.addEventListener(IPCamBroadcastingHostActivity.this);
+        CircallManager.initialize().continueWithTask(task -> {
+            if (!task.isSuccessful()) {
+                Log.e(TAG, "init fail: " + task.getException());
+            }
 
+            mCircallManager = task.getResult();
+            mCircallManager.addEventListener(this);
+            return prepare();
+        }).addOnSuccessListener(circallStream -> {
             String token = getIntent().getStringExtra(INTENT_CIRCALL_TOKEN);
             if (!TextUtils.isEmpty(token)) {
                 join(new CircallToken(token));
@@ -105,6 +110,14 @@ public class IPCamBroadcastingHostActivity extends AppCompatActivity implements 
         mBinding.setShowActionButtons(false);
     }
 
+    private Task<Void> prepare() {
+        if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_IDLE) {
+            return mCircallManager.prepare(getApplicationContext())
+                    .addOnFailureListener(this, e -> Log.e(TAG, "Prepare fails " + e));
+        }
+        return Tasks.forException(new IllegalStateException());
+    }
+
     private void applySpringAnimation() {
         SpringSystem springSystem = SpringSystem.create();
         Spring spring = springSystem.createSpring();
@@ -141,7 +154,7 @@ public class IPCamBroadcastingHostActivity extends AppCompatActivity implements 
 
     private void join(CircallToken token) {
         mBinding.setState(STATE_CONNECTING);
-        mCircallManager.connect(this, token).continueWithTask(task -> {
+        mCircallManager.connect(token).continueWithTask(task -> {
             if (!task.isSuccessful()) {
                 Log.e(TAG, "join fails: " + task.getException());
                 Toast.makeText(getApplicationContext(), "join fails",

@@ -17,6 +17,8 @@ import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringSystem;
 import com.facebook.rebound.SpringUtil;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 
 import io.straas.android.sdk.circall.CircallManager;
 import io.straas.android.sdk.circall.CircallPlayConfig;
@@ -55,10 +57,15 @@ public class IPCamBroadcastingViewerActivity extends AppCompatActivity implement
         Utils.requestFullscreenMode(this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_ipcam_broadcasting);
 
-        CircallManager.initialize().addOnSuccessListener(circallManager -> {
-            mCircallManager = circallManager;
-            mCircallManager.addEventListener(IPCamBroadcastingViewerActivity.this);
+        CircallManager.initialize().continueWithTask(task -> {
+            if (!task.isSuccessful()) {
+                Log.e(TAG, "init fail: " + task.getException());
+            }
 
+            mCircallManager = task.getResult();
+            mCircallManager.addEventListener(this);
+            return prepare();
+        }).addOnSuccessListener(circallStream -> {
             String token = getIntent().getStringExtra(INTENT_CIRCALL_TOKEN);
             if (!TextUtils.isEmpty(token)) {
                 join(new CircallToken(token));
@@ -100,6 +107,14 @@ public class IPCamBroadcastingViewerActivity extends AppCompatActivity implement
         mBinding.setShowActionButtons(false);
     }
 
+    private Task<Void> prepare() {
+        if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_IDLE) {
+            return mCircallManager.prepare(getApplicationContext())
+                    .addOnFailureListener(this, e -> Log.e(TAG, "Prepare fails " + e));
+        }
+        return Tasks.forException(new IllegalStateException());
+    }
+
     private void applySpringAnimation() {
         SpringSystem springSystem = SpringSystem.create();
         Spring spring = springSystem.createSpring();
@@ -136,7 +151,7 @@ public class IPCamBroadcastingViewerActivity extends AppCompatActivity implement
 
     private void join(CircallToken token) {
         mBinding.setState(STATE_CONNECTING);
-        mCircallManager.connect(this, token).addOnSuccessListener(aVoid -> {
+        mCircallManager.connect(token).addOnSuccessListener(aVoid -> {
             mBinding.setState(STATE_CONNECTED);
         }).addOnFailureListener(e -> {
             Log.e(TAG, "join fails: " + e);
