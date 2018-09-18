@@ -87,6 +87,8 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
         CircallManager.initialize().continueWithTask(task -> {
             if (!task.isSuccessful()) {
                 Log.e(TAG, "init fail: " + task.getException());
+                finish();
+                return Tasks.forException(new RuntimeException());
             }
 
             mCircallManager = task.getResult();
