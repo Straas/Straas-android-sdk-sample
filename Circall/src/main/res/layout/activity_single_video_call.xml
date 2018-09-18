@@ -15,6 +15,9 @@
             name="isLocalVideoOff"
             type="boolean"/>
         <variable
+            name="isRemoteVideoOff"
+            type="boolean"/>
+        <variable
             name="isRecording"
             type="boolean"/>
         <variable
@@ -41,8 +44,9 @@
             app:isRecording="@{isRecording}"
             app:seconds="@{seconds}"/>
 
-        <include layout="@layout/remote_is_not_joined"
-            app:isRemoteNotJoined="@{state == SingleVideoCallActivity.STATE_CONNECTED}"/>
+        <include layout="@layout/remote_video_is_unavailable"
+            app:isRemoteNotJoined="@{state == SingleVideoCallActivity.STATE_CONNECTED}"
+            app:isRemoteVideoOff="@{isRemoteVideoOff}"/>
 
         <io.straas.android.sdk.circall.CircallPlayerView
             android:id="@+id/pip_video_view"

@@ -1,5 +1,7 @@
 package io.straas.android.sdk.circall.demo;
 
+import android.databinding.BindingMethod;
+import android.databinding.BindingMethods;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Handler;
@@ -32,6 +34,12 @@ import io.straas.android.sdk.circall.CircallToken;
 import io.straas.android.sdk.circall.interfaces.EventListener;
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.databinding.ActivitySingleVideoCallBinding;
+
+@BindingMethods({
+    @BindingMethod(type = android.widget.ImageView.class,
+        attribute = "app:srcCompat",
+        method = "setImageDrawable")
+})
 
 public class SingleVideoCallActivity extends AppCompatActivity implements EventListener {
 
@@ -284,6 +292,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
         stream.setRenderer(mBinding.fullscreenVideoView, getPlayConfig());
         mRemoteCircallStream = stream;
         mBinding.setState(STATE_TWO_WAY_VIDEO);
+        mBinding.setIsRemoteVideoOff(!stream.isVideoEnabled());
 
         mCircallManager.getRecordingStreamMetadata().addOnCompleteListener(this, task -> {
             if (task.isSuccessful() && task.getResult() != null) {
@@ -303,6 +312,15 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
     public void onStreamRemoved(CircallStream stream) {
         mBinding.fullscreenVideoView.setVisibility(View.INVISIBLE);
         mBinding.setState(STATE_CONNECTED);
+    }
+
+    @Override
+    public void onStreamUpdated(CircallStream stream) {
+        if (stream == null) {
+            return;
+        }
+
+        mBinding.setIsRemoteVideoOff(!stream.isVideoEnabled());
     }
 
     @Override
