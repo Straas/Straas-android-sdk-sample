@@ -109,7 +109,7 @@ public class IPCamBroadcastingViewerActivity extends AppCompatActivity implement
 
     private Task<Void> prepare() {
         if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_IDLE) {
-            return mCircallManager.prepare(getApplicationContext())
+            return mCircallManager.prepareForUrl(getApplicationContext())
                     .addOnFailureListener(this, e -> Log.e(TAG, "Prepare fails " + e));
         }
         return Tasks.forException(new IllegalStateException());

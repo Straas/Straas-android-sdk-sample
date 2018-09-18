@@ -218,7 +218,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
 
     private Task<CircallStream> prepare() {
         if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_IDLE) {
-            return mCircallManager.prepare(getConfig(), mBinding.pipVideoView, getPlayConfig())
+            return mCircallManager.prepareForCameraCapture(getConfig(), mBinding.pipVideoView, getPlayConfig())
                     .addOnCompleteListener(this, task -> {
                         if (task.isSuccessful()) {
                             mLocalCircallStream = task.getResult();
