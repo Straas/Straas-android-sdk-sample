@@ -268,8 +268,6 @@ public class IPCamBroadcastingHostActivity extends AppCompatActivity implements 
         builder.setTitle(R.string.end_circall_confirmation_title);
         builder.setMessage(R.string.end_circall_confirmation_message);
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-            destroyCircallManager();
-
             finish();
         });
         builder.setNegativeButton(android.R.string.cancel, null);
@@ -282,7 +280,21 @@ public class IPCamBroadcastingHostActivity extends AppCompatActivity implements 
             return;
         }
 
-        mCircallManager.destroy();
-        mCircallManager = null;
+        Tasks.whenAll(unsubscribe(), unpublish()).addOnCompleteListener(task -> {
+            mCircallManager.destroy();
+            mCircallManager = null;
+        });
+    }
+
+    private Task<Void> unsubscribe() {
+        return (mBinding.getState() == STATE_SUBSCRIBED && mRemoteCircallStream != null)
+                ? mCircallManager.unsubscribe(mRemoteCircallStream)
+                : Tasks.forException(new IllegalStateException());
+    }
+
+    private Task<Void> unpublish() {
+        return (mBinding.getState() >= STATE_PUBLISHED)
+                ? mCircallManager.unpublish()
+                : Tasks.forException(new IllegalStateException());
     }
 }

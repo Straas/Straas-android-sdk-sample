@@ -241,8 +241,6 @@ public class IPCamBroadcastingViewerActivity extends AppCompatActivity implement
         builder.setTitle(R.string.end_circall_confirmation_title);
         builder.setMessage(R.string.end_circall_confirmation_message);
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-            destroyCircallManager();
-
             finish();
         });
         builder.setNegativeButton(android.R.string.cancel, null);
@@ -255,7 +253,15 @@ public class IPCamBroadcastingViewerActivity extends AppCompatActivity implement
             return;
         }
 
-        mCircallManager.destroy();
-        mCircallManager = null;
+        unsubscribe().addOnCompleteListener(task -> {
+            mCircallManager.destroy();
+            mCircallManager = null;
+        });
+    }
+
+    private Task<Void> unsubscribe() {
+        return (mBinding.getState() == STATE_SUBSCRIBED && mRemoteCircallStream != null)
+                ? mCircallManager.unsubscribe(mRemoteCircallStream)
+                : Tasks.forException(new IllegalStateException());
     }
 }
