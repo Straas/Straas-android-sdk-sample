@@ -22,6 +22,7 @@ public class SwitchSpeedDialog extends DialogFragment {
 
     private ArrayList<Float> speedOptions = new ArrayList<>();
     private float currentSpeed = 1.0f;
+    private Callback callback = null;
 
     public SwitchSpeedDialog setCurrentSpeed(float currentSpeed) {
         this.currentSpeed = currentSpeed;
@@ -30,6 +31,11 @@ public class SwitchSpeedDialog extends DialogFragment {
 
     public SwitchSpeedDialog setSpeedOption(ArrayList<Float> speedOption) {
         this.speedOptions = speedOption;
+        return this;
+    }
+
+    public SwitchSpeedDialog setCallback(Callback callback) {
+        this.callback = callback;
         return this;
     }
 
@@ -64,6 +70,9 @@ public class SwitchSpeedDialog extends DialogFragment {
         if (controller != null) {
             MediaControllerCompatHelper.setPlaybackSpeed(controller, speedOptions.get(which));
         }
+        if (callback != null) {
+            callback.onSpeedSelected(speedOptions.get(which));
+        }
         dialog.dismiss();
     }
 
@@ -81,5 +90,9 @@ public class SwitchSpeedDialog extends DialogFragment {
         }
 
         return stringOptions.toArray(new String[0]);
+    }
+
+    public interface Callback {
+        void onSpeedSelected(float speed);
     }
 }

@@ -42,6 +42,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.exoplayer2.Format;
 
 import java.lang.annotation.Retention;
@@ -87,6 +88,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private static final int AUTO_HIDE_DELAY_MILLIS = 3000;
 
     private final Float[] PLAYBACK_SPEED_OPTIONS = {0.5f, 1.0f, 1.5f, 2.0f};
+    private float mCurrentSpeed = 1.0f;
 
     private boolean mEnableDefaultWidget;
     private boolean mEnableDefaultSwitchQualityIcon;
@@ -427,7 +429,12 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
                 handleMediaSessionExtra(liveBundle, true);
             } else {
+                MediaControllerCompat controller = MediaControllerCompat.getMediaController(mFragmentActivity);
+                if (controller != null) {
+                    MediaControllerCompatHelper.setPlaybackSpeed(controller, mCurrentSpeed);
+                }
                 switchMode(false, false);
+
             }
 
             if (mLastQueueList != null) {
@@ -461,6 +468,8 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                     && metadata.getBundle().getInt(StraasMediaCore.KEY_VIDEO_RENDER_TYPE) == StraasMediaCore.VIDEO_RENDER_TYPE_NONE) {
                 mImagePoster.setVisibility(VISIBLE);
                 Glide.with(getThemeContext())
+                        .setDefaultRequestOptions(new RequestOptions()
+                                .placeholder(android.R.color.black))
                         .load(metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI))
                         .into(mImagePoster);
             } else {
@@ -1509,6 +1518,12 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                         public void onGetPlayerSpeed(float speed) {
                             SwitchSpeedDialog dialog = new SwitchSpeedDialog()
                                     .setCurrentSpeed(speed)
+                                    .setCallback(new SwitchSpeedDialog.Callback() {
+                                        @Override
+                                        public void onSpeedSelected(float speed) {
+                                            mCurrentSpeed = speed;
+                                        }
+                                    })
                                     .setSpeedOption(new ArrayList<>(Arrays.asList(PLAYBACK_SPEED_OPTIONS)));
 
                             dialog.show(mFragmentActivity.getSupportFragmentManager(),

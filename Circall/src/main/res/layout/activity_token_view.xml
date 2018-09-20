@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+        <import type="android.text.TextUtils"/>
+        <variable
+            name="informationErrorText"
+            type="String"/>
+        <variable
+            name="needPublishUrl"
+            type="boolean"/>
+    </data>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="io.straas.android.sdk.circall.demo.TokenViewBaseActivity" >
+
+        <ImageView
+            android:id="@+id/straas_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/straas_logo_top_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/circall_token"
+            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:srcCompat="@drawable/ic_logo" />
+
+        <EditText
+            android:id="@+id/circall_token"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/circall_token_top_margin"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            android:paddingEnd="36dp"
+            android:hint="@string/hint_input_circall_token"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:theme="@style/TokenEditTextStyle"
+            android:textSize="@dimen/circall_token_text_size"
+            android:gravity="top"
+            android:backgroundTint="@android:color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/straas_logo"
+            app:layout_constraintBottom_toTopOf="@id/circall_publish_url" />
+
+        <ImageView
+            android:id="@+id/scan_token"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/scan_margin_bottom"
+            app:srcCompat="@drawable/ic_scan_qrcode"
+            android:onClick="scanCircallToken"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/circall_token"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/circall_token"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <EditText
+            android:id="@+id/circall_publish_url"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            android:paddingEnd="36dp"
+            android:hint="@string/hint_input_circall_publish_url"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:theme="@style/TokenEditTextStyle"
+            android:textSize="@dimen/circall_token_text_size"
+            android:gravity="top"
+            android:backgroundTint="@android:color/white"
+            android:visibility="@{needPublishUrl ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toTopOf="@+id/enter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/circall_token"/>
+
+        <ImageView
+            android:id="@+id/scan_publish_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/scan_margin_bottom"
+            app:srcCompat="@drawable/ic_scan_qrcode"
+            android:onClick="scanRtspUrl"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/circall_publish_url"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/circall_publish_url"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <android.support.constraint.Group
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{needPublishUrl ? View.VISIBLE : View.GONE}"
+            app:constraint_referenced_ids="circall_publish_url, scan_publish_url"
+            tools:constraint_referenced_ids="circall_publish_url, scan_publish_url"/>
+
+        <Button
+            android:id="@+id/enter"
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:layout_marginStart="36dp"
+            android:layout_marginEnd="36dp"
+            android:layout_marginTop="@dimen/enter_room_top_margin"
+            android:onClick="onEnterRoom"
+            android:text="@string/enter"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textSize="@dimen/enter_room_text_size"
+            android:background="@drawable/bg_button"
+            android:textColor="?attr/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/circall_token" />
+
+        <TextView
+            android:id="@+id/circall_token_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/information_error_top_margin"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            style="@style/InformationError"
+            android:visibility="@{TextUtils.isEmpty(informationErrorText) ? View.GONE : View.VISIBLE, default=gone}"
+            android:text="@{informationErrorText}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/enter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+    </android.support.constraint.ConstraintLayout>
+</layout>
