@@ -2,6 +2,15 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+
+## Version 0.10.6
+_2018-09-20_
+
+*   straas-circall
+    *   **Important Change**: Change some method names.
+    *   feat: Support RTSP publish.
+
+
 ## Version 0.10.5
 _2018-09-18_
 
