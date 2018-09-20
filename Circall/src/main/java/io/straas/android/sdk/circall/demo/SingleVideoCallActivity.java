@@ -385,8 +385,6 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
         builder.setTitle(R.string.end_single_call_confirmation_title);
         builder.setMessage(R.string.end_single_call_confirmation_message);
         builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-            destroyCircallManager();
-
             finish();
         });
         builder.setNegativeButton(android.R.string.cancel, null);
@@ -399,16 +397,29 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
             return;
         }
 
-        if (!TextUtils.isEmpty(mRecordingId)) {
-            mCircallManager.stopRecording(mRemoteCircallStream, mRecordingId).addOnCompleteListener(this, task -> {
-                mRecordingId = "";
-
-                mCircallManager.destroy();
-                mCircallManager = null;
-            });
-        } else {
+        Tasks.whenAll(stopRecording(), unsubscribe(), unpublish()).addOnCompleteListener(task -> {
             mCircallManager.destroy();
             mCircallManager = null;
+        });
+    }
+
+    private Task<Void> stopRecording() {
+        if (TextUtils.isEmpty(mRecordingId)) {
+            return Tasks.forException(new IllegalStateException());
         }
+        return mCircallManager.stopRecording(mRemoteCircallStream, mRecordingId)
+                .addOnCompleteListener(this, task -> mRecordingId = "");
+    }
+
+    private Task<Void> unsubscribe() {
+        return (mBinding.getState() == STATE_SUBSCRIBED && mRemoteCircallStream != null)
+                ? mCircallManager.unsubscribe(mRemoteCircallStream)
+                : Tasks.forException(new IllegalStateException());
+    }
+
+    private Task<Void> unpublish() {
+        return (mBinding.getState() >= STATE_PUBLISHED)
+                ? mCircallManager.unpublish()
+                : Tasks.forException(new IllegalStateException());
     }
 }
