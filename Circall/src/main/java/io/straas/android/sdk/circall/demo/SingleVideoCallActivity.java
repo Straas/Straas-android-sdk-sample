@@ -3,6 +3,7 @@ package io.straas.android.sdk.circall.demo;
 import android.databinding.BindingMethod;
 import android.databinding.BindingMethods;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -138,11 +139,8 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
                     mRemoteCircallStream.getVideoFrame().addOnSuccessListener(
                             SingleVideoCallActivity.this,
                             bitmap -> {
-                                applySpringAnimation();
+                                applySpringAnimation(bitmap);
                                 item.setIcon(R.drawable.ic_screenshot);
-                                mBinding.screenshot.setImageBitmap(bitmap);
-                                // TODO: 2018/9/14 Handle memory leak
-                                mHandler.postDelayed(() -> mBinding.screenshot.setImageBitmap(null), 3000);
                             });
                     break;
                 default:
@@ -155,7 +153,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
         mBinding.setShowActionButtons(false);
     }
 
-    private void applySpringAnimation() {
+    private void applySpringAnimation(Bitmap bitmap) {
         SpringSystem springSystem = SpringSystem.create();
         Spring spring = springSystem.createSpring();
         spring.addListener(new SimpleSpringListener() {
@@ -169,6 +167,9 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
         spring.setEndValue(1);
         // TODO: 2018/9/14 Handle memory leak
         mHandler.postDelayed(() -> spring.setEndValue(0), 1400);
+        mBinding.screenshot.setImageBitmap(bitmap);
+        // TODO: 2018/9/14 Handle memory leak
+        mHandler.postDelayed(() -> mBinding.screenshot.setImageBitmap(null), 3000);
     }
 
     @Override
