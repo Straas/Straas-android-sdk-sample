@@ -34,7 +34,7 @@
             android:id="@+id/circall_token"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/circall_token_top_margin"
+            android:layout_marginBottom="10dp"
             android:layout_marginStart="36dp"
             android:layout_marginEnd="36dp"
             android:paddingEnd="36dp"
@@ -46,8 +46,9 @@
             android:backgroundTint="@android:color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/straas_logo"
-            app:layout_constraintBottom_toTopOf="@id/circall_publish_url" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/circall_publish_url"
+            app:layout_constraintVertical_bias="1.0" />
 
         <ImageView
             android:id="@+id/scan_token"
@@ -67,7 +68,7 @@
             android:id="@+id/circall_publish_url"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginBottom="16dp"
             android:layout_marginStart="36dp"
             android:layout_marginEnd="36dp"
             android:paddingEnd="36dp"
@@ -81,7 +82,8 @@
             app:layout_constraintBottom_toTopOf="@+id/enter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/circall_token"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
         <ImageView
             android:id="@+id/scan_publish_url"
@@ -110,7 +112,7 @@
             android:layout_height="51dp"
             android:layout_marginStart="36dp"
             android:layout_marginEnd="36dp"
-            android:layout_marginTop="@dimen/enter_room_top_margin"
+            android:layout_marginBottom="36dp"
             android:onClick="onEnterRoom"
             android:text="@string/enter"
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
@@ -119,9 +121,9 @@
             android:textColor="?attr/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/circall_token" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"/>
 
         <TextView
             android:id="@+id/circall_token_error"
