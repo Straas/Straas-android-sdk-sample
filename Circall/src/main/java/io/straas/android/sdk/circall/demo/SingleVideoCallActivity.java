@@ -47,7 +47,6 @@ import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.databinding.ActivitySingleVideoCallBinding;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
-import retrofit2.http.HEAD;
 
 @BindingMethods({
     @BindingMethod(type = android.widget.ImageView.class,
