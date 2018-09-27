@@ -213,6 +213,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
         try {
             dir = getPicturesFolder();
         } catch (IOException e) {
+            Log.w(TAG, "Getting folder for storing pictures failed.");
             return false;
         }
         String prefix = new SimpleDateFormat("yyyyMMdd-", Locale.US).format(new Date());
@@ -233,6 +234,7 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
             Toast.makeText(this, R.string.screenshot_success_message, Toast.LENGTH_SHORT).show();
             return true;
         } catch (IOException ignored) {
+            Log.w(TAG, "Writing the picture to file failed.");
             return false;
         }
     }
