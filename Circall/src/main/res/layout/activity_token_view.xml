@@ -119,14 +119,14 @@
             android:textSize="@dimen/enter_room_text_size"
             android:background="@drawable/bg_button"
             android:textColor="?attr/colorPrimary"
-            app:layout_constraintBottom_toTopOf="@id/circall_token_error"
+            app:layout_constraintBottom_toTopOf="@id/text_error"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0"/>
 
         <TextView
-            android:id="@+id/circall_token_error"
+            android:id="@+id/text_error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
