@@ -1,10 +1,14 @@
 package io.straas.android.sdk.circall.demo;
 
+import android.Manifest;
 import android.databinding.BindingMethod;
 import android.databinding.BindingMethods;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -20,6 +24,13 @@ import com.facebook.rebound.SpringUtil;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import io.straas.android.sdk.circall.CircallManager;
 import io.straas.android.sdk.circall.CircallPlayConfig;
 import io.straas.android.sdk.circall.CircallStream;
@@ -27,6 +38,8 @@ import io.straas.android.sdk.circall.CircallToken;
 import io.straas.android.sdk.circall.interfaces.EventListener;
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.databinding.ActivityIpcamBroadcastingBinding;
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.EasyPermissions;
 
 @BindingMethods({
     @BindingMethod(type = android.widget.ImageView.class,
@@ -40,6 +53,14 @@ public class IPCamBroadcastingViewerActivity extends AppCompatActivity implement
 
     private static final String TAG = IPCamBroadcastingViewerActivity.class.getSimpleName();
 
+    private static final String ALBUM_FOLDER = "StraaS";
+
+    public static final String[] STORAGE_PERMISSION = {
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+    private static final int STORAGE_REQUEST = 1;
+
     public static final int STATE_IDLE = 0;
     public static final int STATE_CONNECTING = 1;
     public static final int STATE_CONNECTED = 2;
@@ -49,6 +70,7 @@ public class IPCamBroadcastingViewerActivity extends AppCompatActivity implement
     private ActivityIpcamBroadcastingBinding mBinding;
     private CircallManager mCircallManager;
     private CircallStream mRemoteCircallStream;
+    private Bitmap mCapturedPicture;
     private Handler mHandler = new Handler();
 
     @Override
@@ -92,11 +114,9 @@ public class IPCamBroadcastingViewerActivity extends AppCompatActivity implement
                     mRemoteCircallStream.getVideoFrame().addOnSuccessListener(
                             IPCamBroadcastingViewerActivity.this,
                             bitmap -> {
-                                applySpringAnimation();
+                                mCapturedPicture = bitmap;
+                                storePicture();
                                 item.setIcon(R.drawable.ic_screenshot);
-                                mBinding.screenshot.setImageBitmap(bitmap);
-                                // TODO: 2018/9/14 Handle memory leak
-                                mHandler.postDelayed(() -> mBinding.screenshot.setImageBitmap(null), 3000);
                             });
                     break;
                 default:
@@ -117,7 +137,72 @@ public class IPCamBroadcastingViewerActivity extends AppCompatActivity implement
         return Tasks.forException(new IllegalStateException());
     }
 
-    private void applySpringAnimation() {
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @AfterPermissionGranted(STORAGE_REQUEST)
+    private void storePicture() {
+        if (EasyPermissions.hasPermissions(this, STORAGE_PERMISSION)) {
+            if (mCapturedPicture != null) {
+                if (storePicture(mCapturedPicture)) {
+                    applySpringAnimation(mCapturedPicture);
+                }
+                mCapturedPicture = null;
+            }
+        } else {
+            EasyPermissions.requestPermissions(this,
+                    getResources().getString(R.string.picture_store_need_permission),
+                    STORAGE_REQUEST, STORAGE_PERMISSION);
+        }
+    }
+
+    private File getPicturesFolder() throws IOException {
+        File picturesFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        if(picturesFolder.exists() || picturesFolder.mkdir()) {
+            File albumFolder = new File(picturesFolder, ALBUM_FOLDER);
+            if (albumFolder.exists() || albumFolder.mkdir()) {
+                return albumFolder;
+            }
+            return picturesFolder;
+        }
+        throw new IOException();
+    }
+
+    private boolean storePicture(Bitmap bitmap) {
+        File dir;
+        try {
+            dir = getPicturesFolder();
+        } catch (IOException e) {
+            Log.w(TAG, "Getting folder for storing pictures failed.");
+            return false;
+        }
+        String prefix = new SimpleDateFormat("yyyyMMdd-", Locale.US).format(new Date());
+        int index = 1;
+        for (File file : dir.listFiles()) {
+            String fileName = file.getName();
+            if (!fileName.startsWith(prefix)) {
+                continue;
+            }
+            index = Math.max(Integer.parseInt(
+                    fileName.substring(fileName.indexOf("-") + 1, fileName.lastIndexOf("."))) + 1,
+                    index);
+        }
+        File file = new File(dir, prefix + Integer.toString(index) + ".png");
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            Toast.makeText(this, R.string.screenshot_success_message, Toast.LENGTH_SHORT).show();
+            return true;
+        } catch (IOException ignored) {
+            Log.w(TAG, "Writing the picture to file failed.");
+            return false;
+        }
+    }
+
+    private void applySpringAnimation(Bitmap bitmap) {
         SpringSystem springSystem = SpringSystem.create();
         Spring spring = springSystem.createSpring();
         spring.addListener(new SimpleSpringListener() {
@@ -131,6 +216,9 @@ public class IPCamBroadcastingViewerActivity extends AppCompatActivity implement
         spring.setEndValue(1);
         // TODO: 2018/9/14 Handle memory leak
         mHandler.postDelayed(() -> spring.setEndValue(0), 1400);
+        mBinding.screenshot.setImageBitmap(bitmap);
+        // TODO: 2018/9/14 Handle memory leak
+        mHandler.postDelayed(() -> mBinding.screenshot.setImageBitmap(null), 3000);
     }
 
     @Override
