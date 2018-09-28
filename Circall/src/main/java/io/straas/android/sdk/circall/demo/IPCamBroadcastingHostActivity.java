@@ -1,8 +1,6 @@
 package io.straas.android.sdk.circall.demo;
 
 import android.Manifest;
-import android.databinding.BindingMethod;
-import android.databinding.BindingMethods;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -41,12 +39,6 @@ import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.databinding.ActivityIpcamBroadcastingBinding;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
-
-@BindingMethods({
-        @BindingMethod(type = android.widget.ImageView.class,
-                attribute = "app:srcCompat",
-                method = "setImageDrawable")
-})
 
 public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity implements EventListener {
 

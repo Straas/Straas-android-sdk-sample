@@ -1,8 +1,6 @@
 package io.straas.android.sdk.circall.demo;
 
 import android.Manifest;
-import android.databinding.BindingMethod;
-import android.databinding.BindingMethods;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -10,7 +8,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -40,12 +37,6 @@ import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.databinding.ActivityIpcamBroadcastingBinding;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
-
-@BindingMethods({
-    @BindingMethod(type = android.widget.ImageView.class,
-        attribute = "app:srcCompat",
-        method = "setImageDrawable")
-})
 
 public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity implements EventListener {
 

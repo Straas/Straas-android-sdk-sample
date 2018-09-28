@@ -47,12 +47,6 @@ import io.straas.android.sdk.demo.databinding.ActivitySingleVideoCallBinding;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-@BindingMethods({
-    @BindingMethod(type = android.widget.ImageView.class,
-        attribute = "app:srcCompat",
-        method = "setImageDrawable")
-})
-
 public class SingleVideoCallActivity extends CircallDemoBaseActivity implements EventListener {
 
     public static final String INTENT_CIRCALL_TOKEN = "circall_token";
