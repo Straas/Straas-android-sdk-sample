@@ -339,21 +339,8 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
         finish();
     }
 
-    private void showScreenshotFailedDialog(int messageResId) {
-        showFailedDialog(R.string.screenshot_failed_title, messageResId);
-    }
-
     private void showRecordingFailedDialog(int messageResId) {
         showFailedDialog(R.string.recording_failed_title, messageResId);
-    }
-
-    private void showFailedDialog(int titleResId, int messageResId) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CircallDialogTheme);
-        builder.setTitle(titleResId);
-        builder.setMessage(messageResId);
-        builder.setPositiveButton(android.R.string.ok, null);
-        final AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     private void showRecordingStartedFlashingUi() {

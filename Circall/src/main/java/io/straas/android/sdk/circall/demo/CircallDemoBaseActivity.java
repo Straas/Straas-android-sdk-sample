@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -107,6 +108,19 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity {
 
     protected void setState(int state) {
         mState = state;
+    }
+
+    protected void showScreenshotFailedDialog(int messageResId) {
+        showFailedDialog(R.string.screenshot_failed_title, messageResId);
+    }
+
+    protected void showFailedDialog(int titleResId, int messageResId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CircallDialogTheme);
+        builder.setTitle(titleResId);
+        builder.setMessage(messageResId);
+        builder.setPositiveButton(android.R.string.ok, null);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     //=====================================================================

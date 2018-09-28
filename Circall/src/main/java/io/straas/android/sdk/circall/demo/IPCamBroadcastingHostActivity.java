@@ -237,19 +237,6 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity imple
         finish();
     }
 
-    private void showScreenshotFailedDialog(int messageResId) {
-        showFailedDialog(R.string.screenshot_failed_title, messageResId);
-    }
-
-    private void showFailedDialog(int titleResId, int messageResId) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CircallDialogTheme);
-        builder.setTitle(titleResId);
-        builder.setMessage(messageResId);
-        builder.setPositiveButton(android.R.string.ok, null);
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
     @Override
     public void onBackPressed() {
         if (mBinding.getState() >= STATE_CONNECTED) {
