@@ -8,9 +8,11 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.ActionMenuView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -79,50 +81,6 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
             }
         });
 
-        setSupportActionBar(mBinding.toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        mBinding.actionMenuView.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.action_switch_camera:
-                    if (mLocalCircallStream != null) {
-                        item.setIcon(R.drawable.ic_switch_camera_focus);
-                        mLocalCircallStream.switchCamera().addOnCompleteListener(success -> item.setIcon(R.drawable.ic_switch_camera));
-                    }
-                    break;
-                case R.id.action_toggle_camera:
-                    if (mLocalCircallStream != null) {
-                        boolean isCameraOn = mLocalCircallStream.toggleCamera();
-                        item.setIcon(isCameraOn ? R.drawable.ic_camera_off : R.drawable.ic_camera_on);
-                        mBinding.setIsLocalVideoOff(!isCameraOn);
-                    }
-                    break;
-                case R.id.action_toggle_mic:
-                    if (mLocalCircallStream != null) {
-                        boolean isMicOn = mLocalCircallStream.toggleMic();
-                        item.setIcon(isMicOn ? R.drawable.ic_mic_off : R.drawable.ic_mic_on);
-                    }
-                    break;
-                case R.id.action_screenshot:
-                    if (mRemoteCircallStream == null) {
-                        showScreenshotFailedDialog(R.string.screenshot_failed_message_two_way_not_ready);
-                        break;
-                    }
-
-                    item.setIcon(R.drawable.ic_screenshot_focus);
-                    mRemoteCircallStream.getVideoFrame().addOnSuccessListener(
-                            SingleVideoCallActivity.this,
-                            bitmap -> {
-                                mCapturedPicture = bitmap;
-                                storePicture();
-                                item.setIcon(R.drawable.ic_screenshot);
-                            });
-                    break;
-                default:
-                    break;
-            }
-            return true;
-        });
-
         setState(STATE_IDLE);
         mBinding.setShowActionButtons(false);
     }
@@ -156,6 +114,16 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
         mBinding.screenshot.setImageBitmap(bitmap);
     }
 
+    @Override
+    protected ActionMenuView getActionMenuView() {
+        return mBinding.actionMenuView;
+    }
+
+    @Override
+    protected Toolbar getToolbar() {
+        return mBinding.toolbar;
+    }
+
     //=====================================================================
     // Optional implementation
     //=====================================================================
@@ -166,9 +134,39 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_action , mBinding.actionMenuView.getMenu());
-        return super.onCreateOptionsMenu(menu);
+    protected int getMenuRes() {
+        return R.menu.single_video_call_menu_action;
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        if (super.onMenuItemClick(item)) {
+            return true;
+        }
+        switch (item.getItemId()) {
+            case R.id.action_switch_camera:
+                if (mLocalCircallStream != null) {
+                    item.setIcon(R.drawable.ic_switch_camera_focus);
+                    mLocalCircallStream.switchCamera().addOnCompleteListener(success -> item.setIcon(R.drawable.ic_switch_camera));
+                }
+                return true;
+            case R.id.action_toggle_camera:
+                if (mLocalCircallStream != null) {
+                    boolean isCameraOn = mLocalCircallStream.toggleCamera();
+                    item.setIcon(isCameraOn ? R.drawable.ic_camera_off : R.drawable.ic_camera_on);
+                    mBinding.setIsLocalVideoOff(!isCameraOn);
+                }
+                return true;
+            case R.id.action_toggle_mic:
+                if (mLocalCircallStream != null) {
+                    boolean isMicOn = mLocalCircallStream.toggleMic();
+                    item.setIcon(isMicOn ? R.drawable.ic_mic_off : R.drawable.ic_mic_on);
+                }
+                return true;
+            default:
+                break;
+        }
+        return false;
     }
 
     public void onActionRecord(View view) {

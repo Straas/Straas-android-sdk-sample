@@ -10,11 +10,16 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.MenuRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ActionMenuView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.facebook.rebound.SimpleSpringListener;
@@ -40,7 +45,7 @@ import pub.devrel.easypermissions.EasyPermissions;
                 attribute = "app:srcCompat",
                 method = "setImageDrawable")
 })
-public abstract class CircallDemoBaseActivity extends AppCompatActivity {
+public abstract class CircallDemoBaseActivity extends AppCompatActivity implements ActionMenuView.OnMenuItemClickListener {
 
     public static final String INTENT_CIRCALL_TOKEN = "circall_token";
 
@@ -71,6 +76,10 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity {
         Utils.requestFullscreenMode(this);
         ViewDataBinding binding = DataBindingUtil.setContentView(this, getContentViewLayoutId());
         setBinding(binding);
+
+        setSupportActionBar(getToolbar());
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getActionMenuView().setOnMenuItemClickListener(this);
     }
 
     //=====================================================================
@@ -87,11 +96,77 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity {
 
     protected abstract void setScreenShotView(Bitmap bitmap);
 
+    protected abstract ActionMenuView getActionMenuView();
+
+    protected abstract Toolbar getToolbar();
+
     //=====================================================================
     // Optional implementation
     //=====================================================================
+    @MenuRes
+    protected int getMenuRes() {
+        return R.menu.ipcam_broadcasting_menu_action;
+    }
+
+    protected void setState(int state) {
+        mState = state;
+    }
+
+    protected void showFailedDialog(int titleResId, int messageResId) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CircallDialogTheme);
+        builder.setTitle(titleResId);
+        builder.setMessage(messageResId);
+        builder.setPositiveButton(android.R.string.ok, null);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_screenshot:
+                if (mRemoteCircallStream == null) {
+                    showScreenshotFailedDialog(R.string.screenshot_failed_message_two_way_not_ready);
+                    break;
+                }
+
+                item.setIcon(R.drawable.ic_screenshot_focus);
+                mRemoteCircallStream.getVideoFrame().addOnSuccessListener(
+                        CircallDemoBaseActivity.this,
+                        bitmap -> {
+                            mCapturedPicture = bitmap;
+                            storePicture();
+                            item.setIcon(R.drawable.ic_screenshot);
+                        });
+                return true;
+            default:
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(getMenuRes() , getActionMenuView().getMenu());
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    //=====================================================================
+    // Internal methods
+    //=====================================================================
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    private void showScreenshotFailedDialog(int messageResId) {
+        showFailedDialog(R.string.screenshot_failed_title, messageResId);
+    }
+
     @AfterPermissionGranted(STORAGE_REQUEST)
-    protected void storePicture() {
+    private void storePicture() {
         if (EasyPermissions.hasPermissions(this, STORAGE_PERMISSION)) {
             if (mCapturedPicture != null) {
                 if (storePicture(mCapturedPicture)) {
@@ -104,32 +179,6 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity {
                     getResources().getString(R.string.picture_store_need_permission),
                     STORAGE_REQUEST, STORAGE_PERMISSION);
         }
-    }
-
-    protected void setState(int state) {
-        mState = state;
-    }
-
-    protected void showScreenshotFailedDialog(int messageResId) {
-        showFailedDialog(R.string.screenshot_failed_title, messageResId);
-    }
-
-    protected void showFailedDialog(int titleResId, int messageResId) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CircallDialogTheme);
-        builder.setTitle(titleResId);
-        builder.setMessage(messageResId);
-        builder.setPositiveButton(android.R.string.ok, null);
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    //=====================================================================
-    // Internal methods
-    //=====================================================================
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
 
     private File getPicturesFolder() throws IOException {

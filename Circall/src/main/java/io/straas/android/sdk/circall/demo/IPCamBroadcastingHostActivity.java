@@ -4,9 +4,10 @@ import android.databinding.ViewDataBinding;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.ActionMenuView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
@@ -56,31 +57,6 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity imple
             }
         });
 
-        setSupportActionBar(mBinding.toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        mBinding.actionMenuView.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.action_screenshot:
-                    if (mRemoteCircallStream == null) {
-                        showScreenshotFailedDialog(R.string.screenshot_failed_message);
-                        break;
-                    }
-
-                    item.setIcon(R.drawable.ic_screenshot_focus);
-                    mRemoteCircallStream.getVideoFrame().addOnSuccessListener(
-                            IPCamBroadcastingHostActivity.this,
-                            bitmap -> {
-                                mCapturedPicture = bitmap;
-                                storePicture();
-                                item.setIcon(R.drawable.ic_screenshot);
-                            });
-                    break;
-                default:
-                    break;
-            }
-            return true;
-        });
-
         setState(STATE_IDLE);
         mBinding.setShowActionButtons(false);
     }
@@ -114,6 +90,16 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity imple
         mBinding.screenshot.setImageBitmap(bitmap);
     }
 
+    @Override
+    protected ActionMenuView getActionMenuView() {
+        return mBinding.actionMenuView;
+    }
+
+    @Override
+    protected Toolbar getToolbar() {
+        return mBinding.toolbar;
+    }
+
     //=====================================================================
     // Optional implementation
     //=====================================================================
@@ -129,13 +115,6 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity imple
                     .addOnFailureListener(this, e -> Log.e(getTag(), "Prepare fails " + e));
         }
         return Tasks.forException(new IllegalStateException());
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.ipcam_broadcasting_menu_action, mBinding.actionMenuView.getMenu());
-        return super.onCreateOptionsMenu(menu);
     }
 
     public void onShowActionButtonsToggled(View view) {
