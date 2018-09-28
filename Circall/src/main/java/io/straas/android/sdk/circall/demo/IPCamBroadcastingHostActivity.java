@@ -10,7 +10,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -49,7 +48,7 @@ import pub.devrel.easypermissions.EasyPermissions;
                 method = "setImageDrawable")
 })
 
-public class IPCamBroadcastingHostActivity extends AppCompatActivity implements EventListener {
+public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity implements EventListener {
 
     public static final String INTENT_CIRCALL_TOKEN = "circall_token";
     public static final String INTENT_PUBLISH_URL = "publish_url";

@@ -13,7 +13,6 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -54,7 +53,7 @@ import pub.devrel.easypermissions.EasyPermissions;
         method = "setImageDrawable")
 })
 
-public class SingleVideoCallActivity extends AppCompatActivity implements EventListener {
+public class SingleVideoCallActivity extends CircallDemoBaseActivity implements EventListener {
 
     public static final String INTENT_CIRCALL_TOKEN = "circall_token";
 

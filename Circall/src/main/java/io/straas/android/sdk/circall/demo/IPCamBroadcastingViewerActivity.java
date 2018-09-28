@@ -47,7 +47,7 @@ import pub.devrel.easypermissions.EasyPermissions;
         method = "setImageDrawable")
 })
 
-public class IPCamBroadcastingViewerActivity extends AppCompatActivity implements EventListener {
+public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity implements EventListener {
 
     public static final String INTENT_CIRCALL_TOKEN = "circall_token";
 
