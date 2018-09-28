@@ -2,21 +2,16 @@ package io.straas.android.sdk.circall.demo;
 
 import android.databinding.ViewDataBinding;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 
 import io.straas.android.sdk.circall.CircallManager;
 import io.straas.android.sdk.circall.CircallPlayerView;
-import io.straas.android.sdk.circall.CircallToken;
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.databinding.ActivityIpcamBroadcastingBinding;
 
@@ -25,32 +20,6 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity {
     private static final String TAG = IPCamBroadcastingViewerActivity.class.getSimpleName();
 
     private ActivityIpcamBroadcastingBinding mBinding;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        CircallManager.initialize().continueWithTask(task -> {
-            if (!task.isSuccessful()) {
-                Log.e(getTag(), "init fail: " + task.getException());
-                finish();
-                return Tasks.forException(new RuntimeException());
-            }
-
-            mCircallManager = task.getResult();
-            mCircallManager.addEventListener(this);
-            return prepare();
-        }).addOnSuccessListener(circallStream -> {
-            String token = getIntent().getStringExtra(INTENT_CIRCALL_TOKEN);
-            if (!TextUtils.isEmpty(token)) {
-                join(new CircallToken(token));
-            } else {
-                Toast.makeText(getApplicationContext(), "Start circall fails due to empty token",
-                        Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        });
-    }
 
     //=====================================================================
     // Abstract methods
@@ -106,6 +75,14 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity {
         mBinding.setShowActionButtons(!mBinding.getShowActionButtons());
     }
 
+    @Override
+    protected Task<?> prepare() {
+        if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_IDLE) {
+            return mCircallManager.prepareForUrl(getApplicationContext());
+        }
+        return Tasks.forException(new IllegalStateException());
+    }
+
     //=====================================================================
     // Optional implementation
     //=====================================================================
@@ -115,31 +92,11 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity {
         mBinding.setState(state);
     }
 
-    private Task<Void> prepare() {
-        if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_IDLE) {
-            return mCircallManager.prepareForUrl(getApplicationContext())
-                    .addOnFailureListener(this, e -> Log.e(getTag(), "Prepare fails " + e));
-        }
-        return Tasks.forException(new IllegalStateException());
-    }
-
     @Override
     public void onDestroy() {
         destroyCircallManager();
 
         super.onDestroy();
-    }
-
-    private void join(CircallToken token) {
-        setState(STATE_CONNECTING);
-        mCircallManager.connect(token).addOnSuccessListener(aVoid -> {
-            setState(STATE_CONNECTED);
-        }).addOnFailureListener(e -> {
-            Log.e(getTag(), "join fails: " + e);
-            Toast.makeText(getApplicationContext(), "join fails",
-                    Toast.LENGTH_SHORT).show();
-            finish();
-        });
     }
 
     @Override

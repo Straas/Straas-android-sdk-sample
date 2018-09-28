@@ -2,7 +2,6 @@ package io.straas.android.sdk.circall.demo;
 
 import android.databinding.ViewDataBinding;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -11,10 +10,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
@@ -26,7 +23,6 @@ import io.straas.android.sdk.circall.CircallPlayerView;
 import io.straas.android.sdk.circall.CircallPublishConfig;
 import io.straas.android.sdk.circall.CircallRecordingStreamMetadata;
 import io.straas.android.sdk.circall.CircallStream;
-import io.straas.android.sdk.circall.CircallToken;
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.databinding.ActivitySingleVideoCallBinding;
 
@@ -54,32 +50,6 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
             }
         }
     };
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        CircallManager.initialize().continueWithTask(task -> {
-            if (!task.isSuccessful()) {
-                Log.e(getTag(), "init fail: " + task.getException());
-                finish();
-                return Tasks.forException(new RuntimeException());
-            }
-
-            mCircallManager = task.getResult();
-            mCircallManager.addEventListener(SingleVideoCallActivity.this);
-            return prepare();
-        }).addOnSuccessListener(circallStream -> {
-            String token = getIntent().getStringExtra(INTENT_CIRCALL_TOKEN);
-            if (!TextUtils.isEmpty(token)) {
-                join(new CircallToken(token));
-            } else {
-                Toast.makeText(getApplicationContext(), "Start circall fails due to empty token",
-                        Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        });
-    }
 
     //=====================================================================
     // Abstract methods
@@ -135,9 +105,23 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
         mBinding.setShowActionButtons(!mBinding.getShowActionButtons());
     }
 
+    @Override
+    protected Task<CircallStream> prepare() {
+        if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_IDLE) {
+            return mCircallManager.prepareForCameraCapture(getConfig(), mBinding.pipVideoView, getPlayConfig())
+                    .addOnSuccessListener(circallStream -> mLocalCircallStream = circallStream);
+        }
+        return Tasks.forException(new IllegalStateException());
+    }
+
     //=====================================================================
     // Optional implementation
     //=====================================================================
+    @Override
+    protected void onConnected() {
+        publish();
+    }
+
     @Override
     protected void setState(int state) {
         super.setState(state);
@@ -213,6 +197,9 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
         mBinding.setIsRemoteVideoOff(!stream.isVideoEnabled());
     }
 
+    //================================================================
+    // Internal methods
+    //================================================================
     public void onActionRecord(View view) {
         if (mCircallManager == null || mCircallManager.getCircallState() != CircallManager.STATE_CONNECTED) {
             return;
@@ -247,35 +234,6 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
         destroyCircallManager();
 
         super.onDestroy();
-    }
-
-    private Task<CircallStream> prepare() {
-        if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_IDLE) {
-            return mCircallManager.prepareForCameraCapture(getConfig(), mBinding.pipVideoView, getPlayConfig())
-                    .addOnCompleteListener(this, task -> {
-                        if (task.isSuccessful()) {
-                            mLocalCircallStream = task.getResult();
-                        } else {
-                            Log.e(getTag(), "Prepare fails " + task.getException());
-                        }
-                    });
-        }
-        return Tasks.forException(new IllegalStateException());
-    }
-
-    private void join(CircallToken token) {
-        setState(STATE_CONNECTING);
-        mCircallManager.connect(token).continueWithTask(task -> {
-            if (!task.isSuccessful()) {
-                Log.e(getTag(), "join fails: " + task.getException());
-                Toast.makeText(getApplicationContext(), "join fails",
-                        Toast.LENGTH_SHORT).show();
-                finish();
-                return Tasks.forException(task.getException());
-            }
-
-            return publish();
-        });
     }
 
     private Task<Void> publish() {

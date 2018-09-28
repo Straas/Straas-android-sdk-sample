@@ -17,6 +17,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +28,8 @@ import com.facebook.rebound.SimpleSpringListener;
 import com.facebook.rebound.Spring;
 import com.facebook.rebound.SpringSystem;
 import com.facebook.rebound.SpringUtil;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -39,6 +42,7 @@ import io.straas.android.sdk.circall.CircallManager;
 import io.straas.android.sdk.circall.CircallPlayConfig;
 import io.straas.android.sdk.circall.CircallPlayerView;
 import io.straas.android.sdk.circall.CircallStream;
+import io.straas.android.sdk.circall.CircallToken;
 import io.straas.android.sdk.circall.interfaces.EventListener;
 import io.straas.android.sdk.demo.R;
 import pub.devrel.easypermissions.AfterPermissionGranted;
@@ -81,6 +85,30 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         ViewDataBinding binding = DataBindingUtil.setContentView(this, getContentViewLayoutId());
         setBinding(binding);
 
+        CircallManager.initialize().continueWithTask(task -> {
+            if (!task.isSuccessful()) {
+                Log.e(getTag(), "init fail: " + task.getException());
+                finish();
+                return Tasks.forException(new RuntimeException());
+            }
+
+            mCircallManager = task.getResult();
+            mCircallManager.addEventListener(CircallDemoBaseActivity.this);
+            return prepare();
+        }).addOnSuccessListener(object -> {
+            String token = getIntent().getStringExtra(INTENT_CIRCALL_TOKEN);
+            if (!TextUtils.isEmpty(token)) {
+                connect(new CircallToken(token));
+            } else {
+                Toast.makeText(getApplicationContext(), "Start CirCall fails due to empty token",
+                        Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }).addOnFailureListener(e -> {
+            Log.e(getTag(), "Prepare fails " + e);
+            finish();
+        });
+
         setSupportActionBar(getToolbar());
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getActionMenuView().setOnMenuItemClickListener(this);
@@ -113,9 +141,15 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
 
     public abstract void onShowActionButtonsToggled(View view);
 
+    protected abstract Task<?> prepare();
+
     //=====================================================================
     // Optional implementation
     //=====================================================================
+    protected void onConnected() {
+
+    }
+
     @MenuRes
     protected int getMenuRes() {
         return R.menu.ipcam_broadcasting_menu_action;
@@ -307,5 +341,19 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         setScreenShotView(bitmap);
         // TODO: 2018/9/14 Handle memory leak
         mHandler.postDelayed(() -> setScreenShotView(null), 3000);
+    }
+
+    private void connect(CircallToken token) {
+        setState(STATE_CONNECTING);
+        mCircallManager.connect(token).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                onConnected();
+            } else {
+                Log.e(getTag(), "connect fails: " + task.getException());
+                Toast.makeText(getApplicationContext(), "connect fails",
+                        Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
     }
 }
