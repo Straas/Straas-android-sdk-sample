@@ -35,7 +35,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import io.straas.android.sdk.circall.CircallManager;
@@ -202,6 +204,39 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         return new CircallPlayConfig.Builder()
                 .scalingMode(CircallPlayConfig.ASPECT_FILL)
                 .build();
+    }
+
+    protected List<Task<Void>> tasksBeforeDestroy() {
+        return new ArrayList<>();
+    }
+
+    @Override
+    public void onDestroy() {
+        destroyCircallManager();
+        super.onDestroy();
+    }
+
+    protected void destroyCircallManager() {
+        if (mCircallManager == null) {
+            return;
+        }
+
+        Tasks.whenAll(tasksBeforeDestroy()).addOnCompleteListener(task -> {
+            mCircallManager.destroy();
+            mCircallManager = null;
+        });
+    }
+
+    protected Task<Void> unsubscribe() {
+        return (mState == STATE_SUBSCRIBED && mRemoteCircallStream != null)
+                ? mCircallManager.unsubscribe(mRemoteCircallStream)
+                : Tasks.forException(new IllegalStateException());
+    }
+
+    protected Task<Void> unpublish() {
+        return (mState >= STATE_PUBLISHED)
+                ? mCircallManager.unpublish()
+                : Tasks.forException(new IllegalStateException());
     }
 
     //=====================================================================

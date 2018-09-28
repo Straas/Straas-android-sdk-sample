@@ -10,6 +10,8 @@ import android.view.View;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 
+import java.util.List;
+
 import io.straas.android.sdk.circall.CircallManager;
 import io.straas.android.sdk.circall.CircallPlayerView;
 import io.straas.android.sdk.demo.R;
@@ -93,10 +95,10 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity {
     }
 
     @Override
-    public void onDestroy() {
-        destroyCircallManager();
-
-        super.onDestroy();
+    protected List<Task<Void>> tasksBeforeDestroy() {
+        List<Task<Void>> list = super.tasksBeforeDestroy();
+        list.add(unsubscribe());
+        return list;
     }
 
     @Override
@@ -118,22 +120,5 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity {
         builder.setNegativeButton(android.R.string.cancel, null);
         final AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    private void destroyCircallManager() {
-        if (mCircallManager == null) {
-            return;
-        }
-
-        unsubscribe().addOnCompleteListener(task -> {
-            mCircallManager.destroy();
-            mCircallManager = null;
-        });
-    }
-
-    private Task<Void> unsubscribe() {
-        return (mBinding.getState() == STATE_SUBSCRIBED && mRemoteCircallStream != null)
-                ? mCircallManager.unsubscribe(mRemoteCircallStream)
-                : Tasks.forException(new IllegalStateException());
     }
 }

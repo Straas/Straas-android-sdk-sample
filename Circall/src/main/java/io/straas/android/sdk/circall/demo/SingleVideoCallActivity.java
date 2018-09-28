@@ -17,6 +17,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
 
+import java.util.List;
+
 import io.straas.android.sdk.circall.CircallConfig;
 import io.straas.android.sdk.circall.CircallManager;
 import io.straas.android.sdk.circall.CircallPlayerView;
@@ -164,6 +166,15 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
         return false;
     }
 
+    @Override
+    protected List<Task<Void>> tasksBeforeDestroy() {
+        List<Task<Void>> list = super.tasksBeforeDestroy();
+        list.add(stopRecording());
+        list.add(unsubscribe());
+        list.add(unpublish());
+        return list;
+    }
+
     //================================================================
     // EventListener
     //================================================================
@@ -229,13 +240,6 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
         }
     }
 
-    @Override
-    public void onDestroy() {
-        destroyCircallManager();
-
-        super.onDestroy();
-    }
-
     private Task<Void> publish() {
         if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_CONNECTED) {
             final TaskCompletionSource<Void> source = new TaskCompletionSource<>();
@@ -297,34 +301,11 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
         dialog.show();
     }
 
-    private void destroyCircallManager() {
-        if (mCircallManager == null) {
-            return;
-        }
-
-        Tasks.whenAll(stopRecording(), unsubscribe(), unpublish()).addOnCompleteListener(task -> {
-            mCircallManager.destroy();
-            mCircallManager = null;
-        });
-    }
-
     private Task<Void> stopRecording() {
         if (TextUtils.isEmpty(mRecordingId)) {
             return Tasks.forException(new IllegalStateException());
         }
         return mCircallManager.stopRecording(mRemoteCircallStream, mRecordingId)
                 .addOnCompleteListener(this, task -> mRecordingId = "");
-    }
-
-    private Task<Void> unsubscribe() {
-        return (mBinding.getState() == STATE_SUBSCRIBED && mRemoteCircallStream != null)
-                ? mCircallManager.unsubscribe(mRemoteCircallStream)
-                : Tasks.forException(new IllegalStateException());
-    }
-
-    private Task<Void> unpublish() {
-        return (mBinding.getState() >= STATE_PUBLISHED)
-                ? mCircallManager.unpublish()
-                : Tasks.forException(new IllegalStateException());
     }
 }
