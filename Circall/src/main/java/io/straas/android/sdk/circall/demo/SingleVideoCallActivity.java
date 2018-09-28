@@ -9,11 +9,11 @@ import android.os.SystemClock;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
 
 import java.util.List;
@@ -249,18 +249,18 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
         }
     }
 
-    private Task<Void> publish() {
+    private void publish() {
         if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_CONNECTED) {
-            final TaskCompletionSource<Void> source = new TaskCompletionSource<>();
             mCircallManager.publishWithCameraCapture(getPublishConfig()).addOnCompleteListener(task -> {
-                setState(STATE_CONNECTED);
-                mBinding.setShowActionButtons(true);
-                source.setResult(null);
+                if (task.isSuccessful()) {
+                    setState(STATE_PUBLISHED);
+                    setShowActionButtons(true);
+                } else {
+                    Log.w(getTag(), "Publish fails: " + task.getException());
+                    finish();
+                }
             });
-            return source.getTask();
         }
-
-        return Tasks.forException(new IllegalStateException());
     }
 
     private CircallConfig getConfig() {
