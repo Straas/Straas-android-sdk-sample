@@ -3,9 +3,6 @@ package io.straas.android.sdk.circall.demo;
 import android.databinding.ViewDataBinding;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
@@ -13,19 +10,8 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
-import com.facebook.rebound.SimpleSpringListener;
-import com.facebook.rebound.Spring;
-import com.facebook.rebound.SpringSystem;
-import com.facebook.rebound.SpringUtil;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import io.straas.android.sdk.circall.CircallManager;
 import io.straas.android.sdk.circall.CircallPlayConfig;
@@ -34,8 +20,6 @@ import io.straas.android.sdk.circall.CircallToken;
 import io.straas.android.sdk.circall.interfaces.EventListener;
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.databinding.ActivityIpcamBroadcastingBinding;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
 
 public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity implements EventListener {
 
@@ -115,96 +99,23 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity imp
         mBinding = (ActivityIpcamBroadcastingBinding) binding;
     }
 
+    @Override
+    protected void scaleScreenShotView(float scale) {
+        mBinding.screenshot.setScaleX(scale);
+        mBinding.screenshot.setScaleY(scale);
+    }
+
+    @Override
+    protected void setScreenShotView(Bitmap bitmap) {
+        mBinding.screenshot.setImageBitmap(bitmap);
+    }
+
     private Task<Void> prepare() {
         if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_IDLE) {
             return mCircallManager.prepareForUrl(getApplicationContext())
                     .addOnFailureListener(this, e -> Log.e(getTag(), "Prepare fails " + e));
         }
         return Tasks.forException(new IllegalStateException());
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    @AfterPermissionGranted(STORAGE_REQUEST)
-    private void storePicture() {
-        if (EasyPermissions.hasPermissions(this, STORAGE_PERMISSION)) {
-            if (mCapturedPicture != null) {
-                if (storePicture(mCapturedPicture)) {
-                    applySpringAnimation(mCapturedPicture);
-                }
-                mCapturedPicture = null;
-            }
-        } else {
-            EasyPermissions.requestPermissions(this,
-                    getResources().getString(R.string.picture_store_need_permission),
-                    STORAGE_REQUEST, STORAGE_PERMISSION);
-        }
-    }
-
-    private File getPicturesFolder() throws IOException {
-        File picturesFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        if(picturesFolder.exists() || picturesFolder.mkdir()) {
-            File albumFolder = new File(picturesFolder, ALBUM_FOLDER);
-            if (albumFolder.exists() || albumFolder.mkdir()) {
-                return albumFolder;
-            }
-            return picturesFolder;
-        }
-        throw new IOException();
-    }
-
-    private boolean storePicture(Bitmap bitmap) {
-        File dir;
-        try {
-            dir = getPicturesFolder();
-        } catch (IOException e) {
-            Log.w(getTag(), "Getting folder for storing pictures failed.");
-            return false;
-        }
-        String prefix = new SimpleDateFormat("yyyyMMdd-", Locale.US).format(new Date());
-        int index = 1;
-        for (File file : dir.listFiles()) {
-            String fileName = file.getName();
-            if (!fileName.startsWith(prefix)) {
-                continue;
-            }
-            index = Math.max(Integer.parseInt(
-                    fileName.substring(fileName.indexOf("-") + 1, fileName.lastIndexOf("."))) + 1,
-                    index);
-        }
-        File file = new File(dir, prefix + Integer.toString(index) + ".png");
-        try {
-            FileOutputStream out = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-            Toast.makeText(this, R.string.screenshot_success_message, Toast.LENGTH_SHORT).show();
-            return true;
-        } catch (IOException ignored) {
-            Log.w(getTag(), "Writing the picture to file failed.");
-            return false;
-        }
-    }
-
-    private void applySpringAnimation(Bitmap bitmap) {
-        SpringSystem springSystem = SpringSystem.create();
-        Spring spring = springSystem.createSpring();
-        spring.addListener(new SimpleSpringListener() {
-            @Override
-            public void onSpringUpdate(Spring spring) {
-                float scale = (float) SpringUtil.mapValueFromRangeToRange(spring.getCurrentValue(), 0, 1, 1, 0.5);
-                mBinding.screenshot.setScaleX(scale);
-                mBinding.screenshot.setScaleY(scale);
-            }
-        });
-        spring.setEndValue(1);
-        // TODO: 2018/9/14 Handle memory leak
-        mHandler.postDelayed(() -> spring.setEndValue(0), 1400);
-        mBinding.screenshot.setImageBitmap(bitmap);
-        // TODO: 2018/9/14 Handle memory leak
-        mHandler.postDelayed(() -> mBinding.screenshot.setImageBitmap(null), 3000);
     }
 
     @Override
