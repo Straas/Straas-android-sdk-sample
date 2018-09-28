@@ -20,6 +20,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.rebound.SimpleSpringListener;
@@ -35,7 +36,10 @@ import java.util.Date;
 import java.util.Locale;
 
 import io.straas.android.sdk.circall.CircallManager;
+import io.straas.android.sdk.circall.CircallPlayConfig;
+import io.straas.android.sdk.circall.CircallPlayerView;
 import io.straas.android.sdk.circall.CircallStream;
+import io.straas.android.sdk.circall.interfaces.EventListener;
 import io.straas.android.sdk.demo.R;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -45,7 +49,7 @@ import pub.devrel.easypermissions.EasyPermissions;
                 attribute = "app:srcCompat",
                 method = "setImageDrawable")
 })
-public abstract class CircallDemoBaseActivity extends AppCompatActivity implements ActionMenuView.OnMenuItemClickListener {
+public abstract class CircallDemoBaseActivity extends AppCompatActivity implements ActionMenuView.OnMenuItemClickListener, EventListener {
 
     public static final String INTENT_CIRCALL_TOKEN = "circall_token";
 
@@ -100,6 +104,8 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
 
     protected abstract Toolbar getToolbar();
 
+    protected abstract CircallPlayerView getRemoteStreamView();
+
     //=====================================================================
     // Optional implementation
     //=====================================================================
@@ -151,10 +157,64 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         return super.onCreateOptionsMenu(menu);
     }
 
+    protected CircallPlayConfig getPlayConfig() {
+        return new CircallPlayConfig.Builder()
+                .scalingMode(CircallPlayConfig.ASPECT_FILL)
+                .build();
+    }
+
+    //=====================================================================
+    // EventListener
+    //=====================================================================
+    @Override
+    public void onStreamAdded(CircallStream stream) {
+        if (mCircallManager != null && stream != null) {
+            mCircallManager.subscribe(stream);
+        }
+    }
+
+    @Override
+    public void onStreamPublished(CircallStream stream) {
+        setState(STATE_PUBLISHED);
+    }
+
+    @Override
+    public void onStreamSubscribed(CircallStream stream) {
+        if (stream == null) {
+            return;
+        }
+
+        getRemoteStreamView().setVisibility(View.VISIBLE);
+        // TODO: 2018/9/14
+        stream.setRenderer(getRemoteStreamView(), getPlayConfig());
+        mRemoteCircallStream = stream;
+        setState(STATE_SUBSCRIBED);
+    }
+
+    @Override
+    public void onStreamRemoved(CircallStream stream) {
+        getRemoteStreamView().setVisibility(View.INVISIBLE);
+        setState(STATE_CONNECTED);
+    }
+
+    @Override
+    public void onStreamUpdated(CircallStream stream) {
+    }
+
+    @Override
+    public void onError(Exception error) {
+        Log.e(getTag(), "onError error:" + error);
+
+        // In our demo, this page is only invoked from another activity,
+        // so just abort for this onError event to avoid showing freeze screen
+        Toast.makeText(getApplicationContext(), "onError",
+                Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
     //=====================================================================
     // Internal methods
     //=====================================================================
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);

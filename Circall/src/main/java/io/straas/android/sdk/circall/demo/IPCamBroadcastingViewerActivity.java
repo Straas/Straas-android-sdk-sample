@@ -15,14 +15,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 
 import io.straas.android.sdk.circall.CircallManager;
-import io.straas.android.sdk.circall.CircallPlayConfig;
-import io.straas.android.sdk.circall.CircallStream;
+import io.straas.android.sdk.circall.CircallPlayerView;
 import io.straas.android.sdk.circall.CircallToken;
-import io.straas.android.sdk.circall.interfaces.EventListener;
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.databinding.ActivityIpcamBroadcastingBinding;
 
-public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity implements EventListener {
+public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity {
 
     private static final String TAG = IPCamBroadcastingViewerActivity.class.getSimpleName();
 
@@ -96,6 +94,11 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity imp
         return mBinding.toolbar;
     }
 
+    @Override
+    protected CircallPlayerView getRemoteStreamView() {
+        return mBinding.fullscreenVideoView;
+    }
+
     //=====================================================================
     // Optional implementation
     //=====================================================================
@@ -135,57 +138,6 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity imp
                     Toast.LENGTH_SHORT).show();
             finish();
         });
-    }
-
-    private CircallPlayConfig getPlayConfig() {
-        return new CircallPlayConfig.Builder()
-                .scalingMode(CircallPlayConfig.ASPECT_FILL)
-                .build();
-    }
-
-    @Override
-    public void onStreamAdded(CircallStream stream) {
-        if (mCircallManager != null && stream != null) {
-            mCircallManager.subscribe(stream);
-        }
-    }
-
-    @Override
-    public void onStreamPublished(CircallStream stream) {
-    }
-
-    @Override
-    public void onStreamSubscribed(CircallStream stream) {
-        if (stream == null) {
-            return;
-        }
-
-        mBinding.fullscreenVideoView.setVisibility(View.VISIBLE);
-        stream.setRenderer(mBinding.fullscreenVideoView, getPlayConfig());
-        mRemoteCircallStream = stream;
-        setState(STATE_SUBSCRIBED);
-    }
-
-    @Override
-    public void onStreamRemoved(CircallStream stream) {
-        mBinding.fullscreenVideoView.setVisibility(View.INVISIBLE);
-        setState(STATE_CONNECTED);
-    }
-
-    @Override
-    public void onStreamUpdated(CircallStream stream) {
-        if (stream == null) {
-            return;
-        }
-    }
-
-    @Override
-    public void onError(Exception error) {
-        Log.e(getTag(), "onError error:" + error);
-
-        Toast.makeText(getApplicationContext(), "onError",
-                Toast.LENGTH_SHORT).show();
-        finish();
     }
 
     @Override

@@ -16,15 +16,14 @@ import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
 
 import io.straas.android.sdk.circall.CircallManager;
-import io.straas.android.sdk.circall.CircallPlayConfig;
+import io.straas.android.sdk.circall.CircallPlayerView;
 import io.straas.android.sdk.circall.CircallPublishWithUrlConfig;
 import io.straas.android.sdk.circall.CircallStream;
 import io.straas.android.sdk.circall.CircallToken;
-import io.straas.android.sdk.circall.interfaces.EventListener;
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.databinding.ActivityIpcamBroadcastingBinding;
 
-public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity implements EventListener {
+public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity {
 
     public static final String INTENT_PUBLISH_URL = "publish_url";
 
@@ -100,6 +99,11 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity imple
         return mBinding.toolbar;
     }
 
+    @Override
+    protected CircallPlayerView getRemoteStreamView() {
+        return mBinding.fullscreenVideoView;
+    }
+
     //=====================================================================
     // Optional implementation
     //=====================================================================
@@ -107,6 +111,16 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity imple
     protected void setState(int state) {
         super.setState(state);
         mBinding.setState(state);
+    }
+
+    //=====================================================================
+    // EventListener
+    //=====================================================================
+    @Override
+    public void onStreamPublished(CircallStream stream) {
+        if (mCircallManager != null && stream != null) {
+            mCircallManager.subscribe(stream);
+        }
     }
 
     private Task<Void> prepare() {
@@ -163,57 +177,6 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity imple
     private CircallPublishWithUrlConfig getPublishConfig() {
         return new CircallPublishWithUrlConfig.Builder()
                 .url(getIntent().getStringExtra(INTENT_PUBLISH_URL)).build();
-    }
-
-    private CircallPlayConfig getPlayConfig() {
-        return new CircallPlayConfig.Builder()
-                .scalingMode(CircallPlayConfig.ASPECT_FILL)
-                .build();
-    }
-
-    @Override
-    public void onStreamAdded(CircallStream stream) {
-    }
-
-    @Override
-    public void onStreamPublished(CircallStream stream) {
-        if (mCircallManager != null && stream != null) {
-            mCircallManager.subscribe(stream);
-        }
-    }
-
-    @Override
-    public void onStreamSubscribed(CircallStream stream) {
-        if (stream == null) {
-            return;
-        }
-
-        mBinding.fullscreenVideoView.setVisibility(View.VISIBLE);
-        stream.setRenderer(mBinding.fullscreenVideoView, getPlayConfig());
-        mRemoteCircallStream = stream;
-        setState(STATE_SUBSCRIBED);
-    }
-
-    @Override
-    public void onStreamRemoved(CircallStream stream) {
-        mBinding.fullscreenVideoView.setVisibility(View.INVISIBLE);
-        setState(STATE_CONNECTED);
-    }
-
-    @Override
-    public void onStreamUpdated(CircallStream stream) {
-        if (stream == null) {
-            return;
-        }
-    }
-
-    @Override
-    public void onError(Exception error) {
-        Log.e(getTag(), "onError error:" + error);
-
-        Toast.makeText(getApplicationContext(), "onError",
-                Toast.LENGTH_SHORT).show();
-        finish();
     }
 
     @Override

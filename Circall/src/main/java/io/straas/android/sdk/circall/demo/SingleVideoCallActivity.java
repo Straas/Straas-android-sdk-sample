@@ -22,16 +22,15 @@ import com.google.android.gms.tasks.Tasks;
 
 import io.straas.android.sdk.circall.CircallConfig;
 import io.straas.android.sdk.circall.CircallManager;
-import io.straas.android.sdk.circall.CircallPlayConfig;
+import io.straas.android.sdk.circall.CircallPlayerView;
 import io.straas.android.sdk.circall.CircallPublishConfig;
 import io.straas.android.sdk.circall.CircallRecordingStreamMetadata;
 import io.straas.android.sdk.circall.CircallStream;
 import io.straas.android.sdk.circall.CircallToken;
-import io.straas.android.sdk.circall.interfaces.EventListener;
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.databinding.ActivitySingleVideoCallBinding;
 
-public class SingleVideoCallActivity extends CircallDemoBaseActivity implements EventListener {
+public class SingleVideoCallActivity extends CircallDemoBaseActivity {
 
     private static final String TAG = SingleVideoCallActivity.class.getSimpleName();
 
@@ -124,6 +123,11 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
         return mBinding.toolbar;
     }
 
+    @Override
+    protected CircallPlayerView getRemoteStreamView() {
+        return mBinding.fullscreenVideoView;
+    }
+
     //=====================================================================
     // Optional implementation
     //=====================================================================
@@ -167,6 +171,39 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
                 break;
         }
         return false;
+    }
+
+    //================================================================
+    // EventListener
+    //================================================================
+    @Override
+    public void onStreamSubscribed(CircallStream stream) {
+        if (stream == null) {
+            return;
+        }
+
+        super.onStreamSubscribed(stream);
+        mBinding.setIsRemoteVideoOff(!stream.isVideoEnabled());
+        mCircallManager.getRecordingStreamMetadata().addOnCompleteListener(this, task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                for (CircallRecordingStreamMetadata recordingStream : task.getResult()) {
+                    if (TextUtils.equals(recordingStream.getStreamId(), stream.getStreamId())) {
+                        mRecordingId = recordingStream.getRecordingId();
+                        showRecordingStartedFlashingUi();
+                        break;
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onStreamUpdated(CircallStream stream) {
+        if (stream == null) {
+            return;
+        }
+
+        mBinding.setIsRemoteVideoOff(!stream.isVideoEnabled());
     }
 
     public void onActionRecord(View view) {
@@ -264,77 +301,6 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
                 .videoMaxBitrate(780 * 1024)
                 .audioMaxBitrate(100 * 1024)
                 .build();
-    }
-
-    private CircallPlayConfig getPlayConfig() {
-        return new CircallPlayConfig.Builder()
-                .scalingMode(CircallPlayConfig.ASPECT_FILL)
-                .build();
-    }
-
-    @Override
-    public void onStreamAdded(CircallStream stream) {
-        if (mCircallManager != null && stream != null) {
-            mCircallManager.subscribe(stream);
-        }
-    }
-
-    @Override
-    public void onStreamPublished(CircallStream stream) {
-        mBinding.setSeconds(STATE_PUBLISHED);
-    }
-
-    @Override
-    public void onStreamSubscribed(CircallStream stream) {
-        if (stream == null) {
-            return;
-        }
-
-        mBinding.fullscreenVideoView.setVisibility(View.VISIBLE);
-        // TODO: 2018/9/14
-        stream.setRenderer(mBinding.fullscreenVideoView, getPlayConfig());
-        mRemoteCircallStream = stream;
-        setState(STATE_SUBSCRIBED);
-        mBinding.setIsRemoteVideoOff(!stream.isVideoEnabled());
-
-        mCircallManager.getRecordingStreamMetadata().addOnCompleteListener(this, task -> {
-            if (task.isSuccessful() && task.getResult() != null) {
-                for (CircallRecordingStreamMetadata recordingStream : task.getResult()) {
-                    if (TextUtils.equals(recordingStream.getStreamId(), stream.getStreamId())) {
-                        mRecordingId = recordingStream.getRecordingId();
-                        showRecordingStartedFlashingUi();
-                        break;
-                    }
-                }
-            }
-        });
-
-    }
-
-    @Override
-    public void onStreamRemoved(CircallStream stream) {
-        mBinding.fullscreenVideoView.setVisibility(View.INVISIBLE);
-        setState(STATE_CONNECTED);
-    }
-
-    @Override
-    public void onStreamUpdated(CircallStream stream) {
-        if (stream == null) {
-            return;
-        }
-
-        mBinding.setIsRemoteVideoOff(!stream.isVideoEnabled());
-    }
-
-    @Override
-    public void onError(Exception error) {
-        Log.e(getTag(), "onError error:" + error);
-
-        // For our 1:1 demo, video calling only invoking from outside page,
-        // so just abort for this onError event to avoid showing freeze screen
-        Toast.makeText(getApplicationContext(), "onError",
-                Toast.LENGTH_SHORT).show();
-        finish();
     }
 
     private void showRecordingFailedDialog(int messageResId) {
