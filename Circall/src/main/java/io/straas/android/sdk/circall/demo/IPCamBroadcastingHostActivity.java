@@ -55,8 +55,6 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity {
                 finish();
             }
         });
-
-        setState(STATE_IDLE);
     }
 
     //=====================================================================

@@ -50,8 +50,6 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity {
                 finish();
             }
         });
-
-        setState(STATE_IDLE);
     }
 
     //=====================================================================

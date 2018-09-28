@@ -79,8 +79,6 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
                 finish();
             }
         });
-
-        setState(STATE_IDLE);
     }
 
     //=====================================================================

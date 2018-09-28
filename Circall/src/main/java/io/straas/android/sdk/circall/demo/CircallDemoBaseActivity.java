@@ -85,6 +85,7 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getActionMenuView().setOnMenuItemClickListener(this);
 
+        setState(STATE_IDLE);
         setShowActionButtons(false);
     }
 
