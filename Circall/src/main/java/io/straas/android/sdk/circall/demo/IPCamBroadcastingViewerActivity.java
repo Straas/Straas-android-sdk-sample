@@ -1,11 +1,9 @@
 package io.straas.android.sdk.circall.demo;
 
-import android.Manifest;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -40,29 +38,9 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity implements EventListener {
 
-    public static final String INTENT_CIRCALL_TOKEN = "circall_token";
-
     private static final String TAG = IPCamBroadcastingViewerActivity.class.getSimpleName();
 
-    private static final String ALBUM_FOLDER = "StraaS";
-
-    public static final String[] STORAGE_PERMISSION = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-
-    private static final int STORAGE_REQUEST = 1;
-
-    public static final int STATE_IDLE = 0;
-    public static final int STATE_CONNECTING = 1;
-    public static final int STATE_CONNECTED = 2;
-    public static final int STATE_PUBLISHED = 3;
-    public static final int STATE_SUBSCRIBED = 4;
-
     private ActivityIpcamBroadcastingBinding mBinding;
-    private CircallManager mCircallManager;
-    private CircallStream mRemoteCircallStream;
-    private Bitmap mCapturedPicture;
-    private Handler mHandler = new Handler();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

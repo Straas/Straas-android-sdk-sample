@@ -1,8 +1,5 @@
 package io.straas.android.sdk.circall.demo;
 
-import android.Manifest;
-import android.databinding.BindingMethod;
-import android.databinding.BindingMethods;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -49,34 +46,14 @@ import pub.devrel.easypermissions.EasyPermissions;
 
 public class SingleVideoCallActivity extends CircallDemoBaseActivity implements EventListener {
 
-    public static final String INTENT_CIRCALL_TOKEN = "circall_token";
-
     private static final String TAG = SingleVideoCallActivity.class.getSimpleName();
-
-    private static final String ALBUM_FOLDER = "StraaS";
-
-    public static final String[] STORAGE_PERMISSION = {
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-
-    private static final int STORAGE_REQUEST = 1;
-
-    public static final int STATE_IDLE = 0;
-    public static final int STATE_CONNECTING = 1;
-    public static final int STATE_CONNECTED = 2;
-    public static final int STATE_PUBLISHED = 3;
-    public static final int STATE_SUBSCRIBED = 4;
 
     private static final int EVENT_UPDATE_RECORDING_TIME = 101;
 
     private ActivitySingleVideoCallBinding mBinding;
-    private CircallManager mCircallManager;
     private CircallStream mLocalCircallStream;
-    private CircallStream mRemoteCircallStream;
     private String mRecordingId = "";
     private long mRecordingStartTimeMillis;
-    private Bitmap mCapturedPicture;
-    private Handler mHandler = new Handler();
 
     private final Handler mMainThreadHandler = new Handler(Looper.getMainLooper()) {
         public void handleMessage(Message msg) {
