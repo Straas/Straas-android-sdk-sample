@@ -62,6 +62,7 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity {
 
     protected CircallManager mCircallManager;
     protected CircallStream mRemoteCircallStream;
+    protected int mState;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -102,6 +103,10 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity {
                     getResources().getString(R.string.picture_store_need_permission),
                     STORAGE_REQUEST, STORAGE_PERMISSION);
         }
+    }
+
+    protected void setState(int state) {
+        mState = state;
     }
 
     //=====================================================================

@@ -123,7 +123,7 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
             return true;
         });
 
-        mBinding.setState(STATE_IDLE);
+        setState(STATE_IDLE);
         mBinding.setShowActionButtons(false);
     }
 
@@ -154,6 +154,15 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
     @Override
     protected void setScreenShotView(Bitmap bitmap) {
         mBinding.screenshot.setImageBitmap(bitmap);
+    }
+
+    //=====================================================================
+    // Optional implementation
+    //=====================================================================
+    @Override
+    protected void setState(int state) {
+        super.setState(state);
+        mBinding.setState(state);
     }
 
     @Override
@@ -218,7 +227,7 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
     }
 
     private void join(CircallToken token) {
-        mBinding.setState(STATE_CONNECTING);
+        setState(STATE_CONNECTING);
         mCircallManager.connect(token).continueWithTask(task -> {
             if (!task.isSuccessful()) {
                 Log.e(getTag(), "join fails: " + task.getException());
@@ -236,7 +245,7 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
         if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_CONNECTED) {
             final TaskCompletionSource<Void> source = new TaskCompletionSource<>();
             mCircallManager.publishWithCameraCapture(getPublishConfig()).addOnCompleteListener(task -> {
-                mBinding.setState(STATE_CONNECTED);
+                setState(STATE_CONNECTED);
                 mBinding.setShowActionButtons(true);
                 source.setResult(null);
             });
@@ -287,7 +296,7 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
         // TODO: 2018/9/14
         stream.setRenderer(mBinding.fullscreenVideoView, getPlayConfig());
         mRemoteCircallStream = stream;
-        mBinding.setState(STATE_SUBSCRIBED);
+        setState(STATE_SUBSCRIBED);
         mBinding.setIsRemoteVideoOff(!stream.isVideoEnabled());
 
         mCircallManager.getRecordingStreamMetadata().addOnCompleteListener(this, task -> {
@@ -307,7 +316,7 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
     @Override
     public void onStreamRemoved(CircallStream stream) {
         mBinding.fullscreenVideoView.setVisibility(View.INVISIBLE);
-        mBinding.setState(STATE_CONNECTED);
+        setState(STATE_CONNECTED);
     }
 
     @Override
@@ -358,7 +367,7 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
 
     @Override
     public void onBackPressed() {
-        if (mBinding.getState() >= STATE_CONNECTED) {
+        if (mState >= STATE_CONNECTED) {
             showEndCircallConfirmationDialog();
         } else {
             super.onBackPressed();

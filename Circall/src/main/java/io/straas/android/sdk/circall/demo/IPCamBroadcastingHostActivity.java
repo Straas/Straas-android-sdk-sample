@@ -81,7 +81,7 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity imple
             return true;
         });
 
-        mBinding.setState(STATE_IDLE);
+        setState(STATE_IDLE);
         mBinding.setShowActionButtons(false);
     }
 
@@ -114,6 +114,15 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity imple
         mBinding.screenshot.setImageBitmap(bitmap);
     }
 
+    //=====================================================================
+    // Optional implementation
+    //=====================================================================
+    @Override
+    protected void setState(int state) {
+        super.setState(state);
+        mBinding.setState(state);
+    }
+
     private Task<Void> prepare() {
         if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_IDLE) {
             return mCircallManager.prepareForUrl(getApplicationContext())
@@ -142,7 +151,7 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity imple
     }
 
     private void join(CircallToken token) {
-        mBinding.setState(STATE_CONNECTING);
+        setState(STATE_CONNECTING);
         mCircallManager.connect(token).continueWithTask(task -> {
             if (!task.isSuccessful()) {
                 Log.e(getTag(), "join fails: " + task.getException());
@@ -151,7 +160,7 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity imple
                 finish();
                 return Tasks.forException(task.getException());
             }
-            mBinding.setState(STATE_CONNECTED);
+            setState(STATE_CONNECTED);
             Log.d(getTag(), "connect success");
             return publish();
         });
@@ -161,7 +170,7 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity imple
         if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_CONNECTED) {
             final TaskCompletionSource<Void> source = new TaskCompletionSource<>();
             mCircallManager.publishWithUrl(getPublishConfig()).addOnSuccessListener(aVoid -> {
-                mBinding.setState(STATE_PUBLISHED);
+                setState(STATE_PUBLISHED);
             }).addOnCompleteListener(task -> {
                 mBinding.setShowActionButtons(true);
                 source.setResult(null);
@@ -203,13 +212,13 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity imple
         mBinding.fullscreenVideoView.setVisibility(View.VISIBLE);
         stream.setRenderer(mBinding.fullscreenVideoView, getPlayConfig());
         mRemoteCircallStream = stream;
-        mBinding.setState(STATE_SUBSCRIBED);
+        setState(STATE_SUBSCRIBED);
     }
 
     @Override
     public void onStreamRemoved(CircallStream stream) {
         mBinding.fullscreenVideoView.setVisibility(View.INVISIBLE);
-        mBinding.setState(STATE_CONNECTED);
+        setState(STATE_CONNECTED);
     }
 
     @Override
