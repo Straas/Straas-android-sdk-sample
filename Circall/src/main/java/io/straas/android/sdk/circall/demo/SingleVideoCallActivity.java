@@ -81,7 +81,6 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
         });
 
         setState(STATE_IDLE);
-        mBinding.setShowActionButtons(false);
     }
 
     //=====================================================================
@@ -126,6 +125,16 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
     @Override
     protected CircallPlayerView getRemoteStreamView() {
         return mBinding.fullscreenVideoView;
+    }
+
+    @Override
+    protected void setShowActionButtons(boolean show) {
+        mBinding.setShowActionButtons(show);
+    }
+
+    @Override
+    public void onShowActionButtonsToggled(View view) {
+        mBinding.setShowActionButtons(!mBinding.getShowActionButtons());
     }
 
     //=====================================================================
@@ -233,11 +242,6 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
                 }
             });
         }
-    }
-
-    public void onShowActionButtonsToggled(View view) {
-        boolean isShowing = mBinding.getShowActionButtons();
-        mBinding.setShowActionButtons(!isShowing);
     }
 
     @Override

@@ -52,7 +52,6 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity {
         });
 
         setState(STATE_IDLE);
-        mBinding.setShowActionButtons(false);
     }
 
     //=====================================================================
@@ -99,6 +98,16 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity {
         return mBinding.fullscreenVideoView;
     }
 
+    @Override
+    protected void setShowActionButtons(boolean show) {
+        mBinding.setShowActionButtons(show);
+    }
+
+    @Override
+    public void onShowActionButtonsToggled(View view) {
+        mBinding.setShowActionButtons(!mBinding.getShowActionButtons());
+    }
+
     //=====================================================================
     // Optional implementation
     //=====================================================================
@@ -114,11 +123,6 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity {
                     .addOnFailureListener(this, e -> Log.e(getTag(), "Prepare fails " + e));
         }
         return Tasks.forException(new IllegalStateException());
-    }
-
-    public void onShowActionButtonsToggled(View view) {
-        boolean isShowing = mBinding.getShowActionButtons();
-        mBinding.setShowActionButtons(!isShowing);
     }
 
     @Override

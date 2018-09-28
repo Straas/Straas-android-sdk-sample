@@ -84,6 +84,8 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         setSupportActionBar(getToolbar());
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getActionMenuView().setOnMenuItemClickListener(this);
+
+        setShowActionButtons(false);
     }
 
     //=====================================================================
@@ -105,6 +107,10 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
     protected abstract Toolbar getToolbar();
 
     protected abstract CircallPlayerView getRemoteStreamView();
+
+    protected abstract void setShowActionButtons(boolean show);
+
+    public abstract void onShowActionButtonsToggled(View view);
 
     //=====================================================================
     // Optional implementation
