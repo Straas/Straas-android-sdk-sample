@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -175,6 +174,16 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
         return list;
     }
 
+    @Override
+    protected String getEndTitle() {
+        return getResources().getString(R.string.end_single_call_confirmation_title);
+    }
+
+    @Override
+    protected String getEndMessage() {
+        return getResources().getString(R.string.end_single_call_confirmation_message);
+    }
+
     //================================================================
     // EventListener
     //================================================================
@@ -278,27 +287,6 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
         mRecordingStartTimeMillis =SystemClock.elapsedRealtime();
         mMainThreadHandler.removeMessages(EVENT_UPDATE_RECORDING_TIME);
         mMainThreadHandler.sendEmptyMessage(EVENT_UPDATE_RECORDING_TIME);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mState >= STATE_CONNECTED) {
-            showEndCircallConfirmationDialog();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    private void showEndCircallConfirmationDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CircallDialogTheme);
-        builder.setTitle(R.string.end_single_call_confirmation_title);
-        builder.setMessage(R.string.end_single_call_confirmation_message);
-        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-            finish();
-        });
-        builder.setNegativeButton(android.R.string.cancel, null);
-        final AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     private Task<Void> stopRecording() {

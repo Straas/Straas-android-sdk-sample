@@ -2,7 +2,6 @@ package io.straas.android.sdk.circall.demo;
 
 import android.databinding.ViewDataBinding;
 import android.graphics.Bitmap;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -99,26 +98,5 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity {
         List<Task<Void>> list = super.tasksBeforeDestroy();
         list.add(unsubscribe());
         return list;
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mBinding.getState() == STATE_CONNECTED || mBinding.getState() == STATE_SUBSCRIBED) {
-            showEndCircallConfirmationDialog();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    private void showEndCircallConfirmationDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CircallDialogTheme);
-        builder.setTitle(R.string.end_circall_confirmation_title);
-        builder.setMessage(R.string.end_circall_confirmation_message);
-        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-            finish();
-        });
-        builder.setNegativeButton(android.R.string.cancel, null);
-        final AlertDialog dialog = builder.create();
-        dialog.show();
     }
 }

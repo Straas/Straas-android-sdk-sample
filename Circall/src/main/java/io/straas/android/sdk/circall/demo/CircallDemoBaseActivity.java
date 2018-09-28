@@ -239,6 +239,23 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
                 : Tasks.forException(new IllegalStateException());
     }
 
+    @Override
+    public void onBackPressed() {
+        if (mState >= STATE_CONNECTED) {
+            showEndCircallConfirmationDialog();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    protected String getEndTitle() {
+        return getResources().getString(R.string.end_circall_confirmation_title);
+    }
+
+    protected String getEndMessage() {
+        return getResources().getString(R.string.end_circall_confirmation_message);
+    }
+
     //=====================================================================
     // EventListener
     //=====================================================================
@@ -390,5 +407,15 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
                 finish();
             }
         });
+    }
+
+    private void showEndCircallConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CircallDialogTheme);
+        builder.setTitle(getEndTitle());
+        builder.setMessage(getEndMessage());
+        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> finish());
+        builder.setNegativeButton(android.R.string.cancel, null);
+        final AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
