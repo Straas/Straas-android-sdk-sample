@@ -4,7 +4,9 @@ import android.Manifest;
 import android.databinding.BindingMethod;
 import android.databinding.BindingMethods;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import io.straas.android.sdk.circall.CircallManager;
@@ -38,6 +40,12 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity {
 
     protected CircallManager mCircallManager;
     protected CircallStream mRemoteCircallStream;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Utils.requestFullscreenMode(this);
+    }
 
     //=====================================================================
     // Abstract methods

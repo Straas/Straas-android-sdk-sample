@@ -49,7 +49,6 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity imple
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Utils.requestFullscreenMode(this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_ipcam_broadcasting);
 
         CircallManager.initialize().continueWithTask(task -> {

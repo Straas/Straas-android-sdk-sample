@@ -72,7 +72,6 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Utils.requestFullscreenMode(this);
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_single_video_call);
 
         CircallManager.initialize().continueWithTask(task -> {
