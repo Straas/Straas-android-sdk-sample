@@ -39,4 +39,8 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity {
     protected CircallManager mCircallManager;
     protected CircallStream mRemoteCircallStream;
 
+    //=====================================================================
+    // Abstract methods
+    //=====================================================================
+    protected abstract String getTag();
 }

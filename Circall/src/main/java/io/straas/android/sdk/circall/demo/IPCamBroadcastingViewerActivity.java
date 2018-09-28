@@ -50,7 +50,7 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity imp
 
         CircallManager.initialize().continueWithTask(task -> {
             if (!task.isSuccessful()) {
-                Log.e(TAG, "init fail: " + task.getException());
+                Log.e(getTag(), "init fail: " + task.getException());
                 finish();
                 return Tasks.forException(new RuntimeException());
             }
@@ -98,10 +98,18 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity imp
         mBinding.setShowActionButtons(false);
     }
 
+    //=====================================================================
+    // Abstract methods
+    //=====================================================================
+    @Override
+    protected String getTag() {
+        return TAG;
+    }
+
     private Task<Void> prepare() {
         if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_IDLE) {
             return mCircallManager.prepareForUrl(getApplicationContext())
-                    .addOnFailureListener(this, e -> Log.e(TAG, "Prepare fails " + e));
+                    .addOnFailureListener(this, e -> Log.e(getTag(), "Prepare fails " + e));
         }
         return Tasks.forException(new IllegalStateException());
     }
@@ -145,7 +153,7 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity imp
         try {
             dir = getPicturesFolder();
         } catch (IOException e) {
-            Log.w(TAG, "Getting folder for storing pictures failed.");
+            Log.w(getTag(), "Getting folder for storing pictures failed.");
             return false;
         }
         String prefix = new SimpleDateFormat("yyyyMMdd-", Locale.US).format(new Date());
@@ -166,7 +174,7 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity imp
             Toast.makeText(this, R.string.screenshot_success_message, Toast.LENGTH_SHORT).show();
             return true;
         } catch (IOException ignored) {
-            Log.w(TAG, "Writing the picture to file failed.");
+            Log.w(getTag(), "Writing the picture to file failed.");
             return false;
         }
     }
@@ -213,7 +221,7 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity imp
         mCircallManager.connect(token).addOnSuccessListener(aVoid -> {
             mBinding.setState(STATE_CONNECTED);
         }).addOnFailureListener(e -> {
-            Log.e(TAG, "join fails: " + e);
+            Log.e(getTag(), "join fails: " + e);
             Toast.makeText(getApplicationContext(), "join fails",
                     Toast.LENGTH_SHORT).show();
             finish();
@@ -264,7 +272,7 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity imp
 
     @Override
     public void onError(Exception error) {
-        Log.e(TAG, "onError error:" + error);
+        Log.e(getTag(), "onError error:" + error);
 
         Toast.makeText(getApplicationContext(), "onError",
                 Toast.LENGTH_SHORT).show();

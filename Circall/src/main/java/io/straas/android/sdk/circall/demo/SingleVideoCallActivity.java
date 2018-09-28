@@ -77,7 +77,7 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
 
         CircallManager.initialize().continueWithTask(task -> {
             if (!task.isSuccessful()) {
-                Log.e(TAG, "init fail: " + task.getException());
+                Log.e(getTag(), "init fail: " + task.getException());
                 finish();
                 return Tasks.forException(new RuntimeException());
             }
@@ -144,6 +144,14 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
         mBinding.setShowActionButtons(false);
     }
 
+    //=====================================================================
+    // Abstract methods
+    //=====================================================================
+    @Override
+    protected String getTag() {
+        return TAG;
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -183,7 +191,7 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
         try {
             dir = getPicturesFolder();
         } catch (IOException e) {
-            Log.w(TAG, "Getting folder for storing pictures failed.");
+            Log.w(getTag(), "Getting folder for storing pictures failed.");
             return false;
         }
         String prefix = new SimpleDateFormat("yyyyMMdd-", Locale.US).format(new Date());
@@ -204,7 +212,7 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
             Toast.makeText(this, R.string.screenshot_success_message, Toast.LENGTH_SHORT).show();
             return true;
         } catch (IOException ignored) {
-            Log.w(TAG, "Writing the picture to file failed.");
+            Log.w(getTag(), "Writing the picture to file failed.");
             return false;
         }
     }
@@ -282,7 +290,7 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
                         if (task.isSuccessful()) {
                             mLocalCircallStream = task.getResult();
                         } else {
-                            Log.e(TAG, "Prepare fails " + task.getException());
+                            Log.e(getTag(), "Prepare fails " + task.getException());
                         }
                     });
         }
@@ -293,7 +301,7 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
         mBinding.setState(STATE_CONNECTING);
         mCircallManager.connect(token).continueWithTask(task -> {
             if (!task.isSuccessful()) {
-                Log.e(TAG, "join fails: " + task.getException());
+                Log.e(getTag(), "join fails: " + task.getException());
                 Toast.makeText(getApplicationContext(), "join fails",
                         Toast.LENGTH_SHORT).show();
                 finish();
@@ -393,7 +401,7 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity implements 
 
     @Override
     public void onError(Exception error) {
-        Log.e(TAG, "onError error:" + error);
+        Log.e(getTag(), "onError error:" + error);
 
         // For our 1:1 demo, video calling only invoking from outside page,
         // so just abort for this onError event to avoid showing freeze screen
