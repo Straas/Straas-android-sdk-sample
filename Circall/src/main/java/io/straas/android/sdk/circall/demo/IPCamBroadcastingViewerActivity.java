@@ -1,9 +1,10 @@
 package io.straas.android.sdk.circall.demo;
 
-import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -45,7 +46,6 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity imp
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_ipcam_broadcasting);
 
         CircallManager.initialize().continueWithTask(task -> {
             if (!task.isSuccessful()) {
@@ -103,6 +103,16 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity imp
     @Override
     protected String getTag() {
         return TAG;
+    }
+
+    @Override
+    protected int getContentViewLayoutId() {
+        return R.layout.activity_ipcam_broadcasting;
+    }
+
+    @Override
+    protected void setBinding(ViewDataBinding binding) {
+        mBinding = (ActivityIpcamBroadcastingBinding) binding;
     }
 
     private Task<Void> prepare() {

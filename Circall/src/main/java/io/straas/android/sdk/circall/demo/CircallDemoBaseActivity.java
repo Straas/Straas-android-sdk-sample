@@ -3,9 +3,12 @@ package io.straas.android.sdk.circall.demo;
 import android.Manifest;
 import android.databinding.BindingMethod;
 import android.databinding.BindingMethods;
+import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
@@ -45,10 +48,17 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Utils.requestFullscreenMode(this);
+        ViewDataBinding binding = DataBindingUtil.setContentView(this, getContentViewLayoutId());
+        setBinding(binding);
     }
 
     //=====================================================================
     // Abstract methods
     //=====================================================================
     protected abstract String getTag();
+
+    @LayoutRes
+    protected abstract int getContentViewLayoutId();
+
+    protected abstract void setBinding(ViewDataBinding binding);
 }
