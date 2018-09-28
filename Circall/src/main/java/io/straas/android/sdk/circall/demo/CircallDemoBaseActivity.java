@@ -278,7 +278,7 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         }
 
         getRemoteStreamView().setVisibility(View.VISIBLE);
-        // TODO: 2018/9/14
+        // TODO: 2018/9/14 Handle activity is in background case
         stream.setRenderer(getRemoteStreamView(), getPlayConfig());
         mRemoteCircallStream = stream;
         setState(STATE_SUBSCRIBED);
