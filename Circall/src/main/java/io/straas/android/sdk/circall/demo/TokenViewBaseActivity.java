@@ -3,6 +3,7 @@ package io.straas.android.sdk.circall.demo;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +29,10 @@ public abstract class TokenViewBaseActivity extends AppCompatActivity {
 
     private static final String RTSP_PREFIX = "rtsp://";
 
+    private static final String NAME_SHARED_PREFERENCES = "TOKEN_VIEW";
+    private static final String KEY_CIRCALL_TOKEN = "KEY_CIRCALL_TOKEN";
+    private static final String KEY_PUBLISH_URL = "KEY_PUBLISH_URL";
+
     protected ActivityTokenViewBinding mBinding;
 
     abstract protected void enterRoom();
@@ -38,12 +43,21 @@ public abstract class TokenViewBaseActivity extends AppCompatActivity {
         mBinding = DataBindingUtil.setContentView(this, R.layout.activity_token_view);
     }
 
-    public void scanCircallToken(View view) {
-        scanCircallToken();
+    @Override
+    protected void onStart() {
+        super.onStart();
+        SharedPreferences sharedPreferences = getSharedPreferences(NAME_SHARED_PREFERENCES, MODE_PRIVATE);
+        mBinding.circallToken.setText(sharedPreferences.getString(KEY_CIRCALL_TOKEN, ""));
+        mBinding.circallPublishUrl.setText(sharedPreferences.getString(KEY_PUBLISH_URL, ""));
     }
 
-    public void scanRtspUrl(View view) {
-        scanRtspUrl();
+    @Override
+    protected void onStop() {
+        super.onStop();
+        getSharedPreferences(NAME_SHARED_PREFERENCES, MODE_PRIVATE).edit()
+                .putString(KEY_CIRCALL_TOKEN, mBinding.circallToken.getText().toString())
+                .putString(KEY_PUBLISH_URL, mBinding.circallPublishUrl.getText().toString())
+                .apply();
     }
 
     @Override
