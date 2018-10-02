@@ -405,6 +405,7 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         setState(STATE_CONNECTING);
         mCircallManager.connect(token).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
+                setState(STATE_CONNECTED);
                 onConnected();
             } else {
                 Log.e(getTag(), "connect fails: " + task.getException());
