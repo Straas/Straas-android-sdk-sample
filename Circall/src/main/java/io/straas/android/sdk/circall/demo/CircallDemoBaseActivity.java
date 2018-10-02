@@ -70,8 +70,6 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
     public static final int STATE_IDLE = 0;
     public static final int STATE_CONNECTING = 1;
     public static final int STATE_CONNECTED = 2;
-    public static final int STATE_PUBLISHED = 3;
-    public static final int STATE_SUBSCRIBED = 4;
 
     protected Bitmap mCapturedPicture;
     protected Handler mHandler = new Handler();
@@ -79,6 +77,7 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
     protected CircallManager mCircallManager;
     protected CircallStream mRemoteCircallStream;
     protected int mState;
+    protected boolean mIsSubscribing;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -228,15 +227,13 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
     }
 
     protected Task<Void> unsubscribe() {
-        return (mState == STATE_SUBSCRIBED && mRemoteCircallStream != null)
+        return (mRemoteCircallStream != null)
                 ? mCircallManager.unsubscribe(mRemoteCircallStream)
                 : Tasks.forException(new IllegalStateException());
     }
 
     protected Task<Void> unpublish() {
-        return (mState >= STATE_PUBLISHED)
-                ? mCircallManager.unpublish()
-                : Tasks.forException(new IllegalStateException());
+        return mCircallManager.unpublish();
     }
 
     @Override
@@ -268,7 +265,6 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
 
     @Override
     public void onStreamPublished(CircallStream stream) {
-        setState(STATE_PUBLISHED);
     }
 
     @Override
@@ -281,13 +277,11 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         // TODO: 2018/9/14 Handle activity is in background case
         stream.setRenderer(getRemoteStreamView(), getPlayConfig());
         mRemoteCircallStream = stream;
-        setState(STATE_SUBSCRIBED);
     }
 
     @Override
     public void onStreamRemoved(CircallStream stream) {
         getRemoteStreamView().setVisibility(View.INVISIBLE);
-        setState(STATE_CONNECTED);
     }
 
     @Override
