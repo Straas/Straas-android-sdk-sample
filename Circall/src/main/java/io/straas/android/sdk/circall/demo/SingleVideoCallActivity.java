@@ -130,6 +130,12 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
     }
 
     @Override
+    protected void setIsSubscribing(boolean isSubscribing) {
+        super.setIsSubscribing(isSubscribing);
+        mBinding.setIsSubscribing(isSubscribing);
+    }
+
+    @Override
     protected int getMenuRes() {
         return R.menu.single_video_call_menu_action;
     }

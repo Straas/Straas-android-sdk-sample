@@ -9,6 +9,9 @@
             name="state"
             type="int"/>
         <variable
+            name="isSubscribing"
+            type="boolean"/>
+        <variable
             name="showActionButtons"
             type="boolean"/>
     </data>
@@ -38,7 +41,7 @@
             android:textStyle="normal"
             android:textColor="#FF6D6A6A"
             android:text="@string/no_rtsp_streaming"
-            android:visibility="@{(state == IPCamBroadcastingViewerActivity.STATE_CONNECTED) ? View.VISIBLE : View.GONE, default=gone}"
+            android:visibility="@{((state == IPCamBroadcastingViewerActivity.STATE_CONNECTED) &amp;&amp; !isSubscribing) ? View.VISIBLE : View.GONE, default=gone}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

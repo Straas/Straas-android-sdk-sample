@@ -9,6 +9,9 @@
             name="state"
             type="int"/>
         <variable
+            name="isSubscribing"
+            type="boolean"/>
+        <variable
             name="showActionButtons"
             type="boolean"/>
         <variable
@@ -45,7 +48,7 @@
             app:seconds="@{seconds}"/>
 
         <include layout="@layout/remote_video_is_unavailable"
-            app:isRemoteNotJoined="@{state == SingleVideoCallActivity.STATE_CONNECTED}"
+            app:isRemoteNotJoined="@{state == SingleVideoCallActivity.STATE_CONNECTED &amp;&amp; !isSubscribing}"
             app:isRemoteVideoOff="@{isRemoteVideoOff}"/>
 
         <io.straas.android.sdk.circall.CircallPlayerView

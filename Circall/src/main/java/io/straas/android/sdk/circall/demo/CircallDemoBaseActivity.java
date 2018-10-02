@@ -160,6 +160,10 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         mState = state;
     }
 
+    protected void setIsSubscribing(boolean isSubscribing) {
+        mIsSubscribing = isSubscribing;
+    }
+
     protected void showFailedDialog(int titleResId, int messageResId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CircallDialogTheme);
         builder.setTitle(titleResId);
@@ -227,7 +231,7 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
     }
 
     protected Task<Void> unsubscribe() {
-        return (mRemoteCircallStream != null)
+        return mIsSubscribing
                 ? mCircallManager.unsubscribe(mRemoteCircallStream)
                 : Tasks.forException(new IllegalStateException());
     }
@@ -277,11 +281,19 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         // TODO: 2018/9/14 Handle activity is in background case
         stream.setRenderer(getRemoteStreamView(), getPlayConfig());
         mRemoteCircallStream = stream;
+        setIsSubscribing(true);
     }
 
     @Override
     public void onStreamRemoved(CircallStream stream) {
+        if (mRemoteCircallStream == null || stream == null) {
+            return;
+        } else if (!TextUtils.equals(mRemoteCircallStream.getStreamId(), stream.getStreamId())) {
+            return;
+        }
         getRemoteStreamView().setVisibility(View.INVISIBLE);
+        mRemoteCircallStream = null;
+        setIsSubscribing(false);
     }
 
     @Override
