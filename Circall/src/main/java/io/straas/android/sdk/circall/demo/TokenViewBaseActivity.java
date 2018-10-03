@@ -47,8 +47,12 @@ public abstract class TokenViewBaseActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         SharedPreferences sharedPreferences = getSharedPreferences(NAME_SHARED_PREFERENCES, MODE_PRIVATE);
-        mBinding.circallToken.setText(sharedPreferences.getString(KEY_CIRCALL_TOKEN, ""));
-        mBinding.circallPublishUrl.setText(sharedPreferences.getString(KEY_PUBLISH_URL, ""));
+        if (TextUtils.isEmpty(mBinding.circallToken.getText())) {
+            mBinding.circallToken.setText(sharedPreferences.getString(KEY_CIRCALL_TOKEN, ""));
+        }
+        if (TextUtils.isEmpty(mBinding.circallPublishUrl.getText())) {
+            mBinding.circallPublishUrl.setText(sharedPreferences.getString(KEY_PUBLISH_URL, ""));
+        }
     }
 
     @Override
@@ -58,6 +62,14 @@ public abstract class TokenViewBaseActivity extends AppCompatActivity {
                 .putString(KEY_CIRCALL_TOKEN, mBinding.circallToken.getText().toString())
                 .putString(KEY_PUBLISH_URL, mBinding.circallPublishUrl.getText().toString())
                 .apply();
+    }
+
+    public void scanCircallToken(View view) {
+        scanCircallToken();
+    }
+
+    public void scanRtspUrl(View view) {
+        scanRtspUrl();
     }
 
     @Override
