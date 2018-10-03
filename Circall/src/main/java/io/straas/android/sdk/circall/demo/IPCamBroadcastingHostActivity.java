@@ -104,6 +104,12 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity {
     }
 
     @Override
+    protected void setIsSubscribing(boolean isSubscribing) {
+        super.setIsSubscribing(isSubscribing);
+        mBinding.setIsSubscribing(isSubscribing);
+    }
+
+    @Override
     protected List<Task<Void>> tasksBeforeDestroy() {
         List<Task<Void>> list = super.tasksBeforeDestroy();
         list.add(unsubscribe());
@@ -128,7 +134,6 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity {
         if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_CONNECTED) {
             mCircallManager.publishWithUrl(getPublishConfig()).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    setState(STATE_PUBLISHED);
                     setShowActionButtons(true);
                 } else {
                     Log.w(getTag(), "Publish fails: " + task.getException());

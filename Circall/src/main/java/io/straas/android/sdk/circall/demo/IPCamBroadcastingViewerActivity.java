@@ -94,6 +94,12 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity {
     }
 
     @Override
+    protected void setIsSubscribing(boolean isSubscribing) {
+        super.setIsSubscribing(isSubscribing);
+        mBinding.setIsSubscribing(isSubscribing);
+    }
+
+    @Override
     protected List<Task<Void>> tasksBeforeDestroy() {
         List<Task<Void>> list = super.tasksBeforeDestroy();
         list.add(unsubscribe());
