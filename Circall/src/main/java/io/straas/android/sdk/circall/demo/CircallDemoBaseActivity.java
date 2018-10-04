@@ -357,6 +357,7 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         try {
             dir = getPicturesFolder();
         } catch (IOException e) {
+            Toast.makeText(this, R.string.screenshot_failed_message, Toast.LENGTH_SHORT).show();
             Log.w(getTag(), "Getting folder for storing pictures failed.");
             return false;
         }
@@ -378,6 +379,7 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
             Toast.makeText(this, R.string.screenshot_success_message, Toast.LENGTH_SHORT).show();
             return true;
         } catch (IOException ignored) {
+            Toast.makeText(this, R.string.screenshot_failed_message, Toast.LENGTH_SHORT).show();
             Log.w(getTag(), "Writing the picture to file failed.");
             return false;
         }
