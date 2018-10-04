@@ -178,7 +178,7 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         switch (item.getItemId()) {
             case R.id.action_screenshot:
                 if (mRemoteCircallStream == null) {
-                    showScreenshotFailedDialog(R.string.screenshot_failed_message_two_way_not_ready);
+                    showScreenshotFailedDialog(R.string.screenshot_failed_message_no_remote_stream);
                     break;
                 }
 

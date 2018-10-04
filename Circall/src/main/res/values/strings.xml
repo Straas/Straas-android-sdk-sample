@@ -15,7 +15,7 @@
     <string name="other_side_camera_is_closed">對方鏡頭關閉中</string>
 
     <string name="screenshot_failed_title">無法拍攝螢幕擷圖</string>
-    <string name="screenshot_failed_message_two_way_not_ready">需等候雙方皆進入面談室後，才可開始拍攝螢幕擷圖</string>
+    <string name="screenshot_failed_message_no_remote_stream">需等候 remote stream 加入, 才可開始截圖</string>
     <string name="screenshot_success_message">截圖成功，儲存至相簿</string>
     <string name="recording_failed_title">無法錄影</string>
     <string name="recording_failed_message_two_way_not_ready">需等候雙方皆進入面談室後，才可開始進行錄影</string>
