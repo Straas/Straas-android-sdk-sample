@@ -155,14 +155,14 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
             case R.id.action_toggle_camera:
                 if (mLocalCircallStream != null) {
                     boolean isCameraOn = mLocalCircallStream.toggleCamera();
-                    item.setIcon(isCameraOn ? R.drawable.ic_camera_off : R.drawable.ic_camera_on);
+                    item.setIcon(isCameraOn ? R.drawable.ic_camera_on : R.drawable.ic_camera_off);
                     mBinding.setIsLocalVideoOff(!isCameraOn);
                 }
                 return true;
             case R.id.action_toggle_mic:
                 if (mLocalCircallStream != null) {
                     boolean isMicOn = mLocalCircallStream.toggleMic();
-                    item.setIcon(isMicOn ? R.drawable.ic_mic_off : R.drawable.ic_mic_on);
+                    item.setIcon(isMicOn ? R.drawable.ic_mic_on : R.drawable.ic_mic_off );
                 }
                 return true;
             default:
