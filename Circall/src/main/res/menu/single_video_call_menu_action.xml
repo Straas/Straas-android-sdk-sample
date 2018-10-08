@@ -10,13 +10,13 @@
 
     <item
         android:id="@+id/action_toggle_camera"
-        android:icon="@drawable/ic_camera_off"
+        android:icon="@drawable/ic_camera_on"
         android:title="Toggle Camera"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/action_toggle_mic"
-        android:icon="@drawable/ic_mic_off"
+        android:icon="@drawable/ic_mic_on"
         android:title="Toggle Mic"
         app:showAsAction="always"/>
 
