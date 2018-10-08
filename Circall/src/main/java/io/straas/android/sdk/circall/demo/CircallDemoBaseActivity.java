@@ -306,8 +306,8 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
 
         // In our demo, this page is only invoked from another activity,
         // so just abort for this onError event to avoid showing freeze screen
-        Toast.makeText(getApplicationContext(), "onError",
-                Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "onError: " + error,
+                Toast.LENGTH_LONG).show();
         finish();
     }
 
@@ -411,8 +411,8 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
                 onConnected();
             } else {
                 Log.e(getTag(), "connect fails: " + task.getException());
-                Toast.makeText(getApplicationContext(), "connect fails",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "connect fails: " + task.getException(),
+                        Toast.LENGTH_LONG).show();
                 finish();
             }
         });
