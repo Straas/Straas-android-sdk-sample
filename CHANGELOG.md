@@ -3,6 +3,15 @@ Change Log
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
 
+## Version 0.10.7
+_2018-10-09_
+
+*   straas-circall
+    *   fix: Crash happens when [destroy](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/circall/CircallManager.html#destroy--) or socket is disconnected issue.
+*   straas-media-core
+    *   fix: Revise seek time could be overridden by history.
+
+
 ## Version 0.10.6
 _2018-09-20_
 
