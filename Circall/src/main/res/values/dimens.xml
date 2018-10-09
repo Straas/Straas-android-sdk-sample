@@ -1,9 +1,6 @@
 <resources>
     <dimen name="straas_logo_top_margin">137dp</dimen>
-    <dimen name="circall_token_top_margin">36dp</dimen>
     <dimen name="scan_margin_bottom">13dp</dimen>
-    <dimen name="enter_room_top_margin">24dp</dimen>
-    <dimen name="information_error_top_margin">22dp</dimen>
     <dimen name="circall_token_text_size">14sp</dimen>
     <dimen name="enter_room_text_size">18sp</dimen>
     <dimen name="circall_token_error_text_size">12sp</dimen>

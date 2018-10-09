@@ -6,7 +6,10 @@
     <data>
         <import type="android.view.View"/>
         <variable
-            name="isRemoteNotJoined"
+            name="show"
+            type="boolean"/>
+        <variable
+            name="isSubscribing"
             type="boolean"/>
         <variable
             name="isRemoteVideoOff"
@@ -33,7 +36,7 @@
             android:id="@+id/unavailable_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:srcCompat="@{isRemoteNotJoined ? @drawable/ic_face : @drawable/ic_remote_camera_closed}"
+            app:srcCompat="@{isSubscribing ? @drawable/ic_remote_camera_closed : @drawable/ic_face}"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/unavailable_reason"
             app:layout_constraintVertical_chainStyle="packed"
@@ -49,7 +52,7 @@
             android:fontFamily="sans-serif"
             android:textStyle="normal"
             android:textColor="#FF6D6A6A"
-            android:text="@{isRemoteNotJoined ? @string/other_side_not_enter_yet : @string/other_side_camera_is_closed}"
+            android:text="@{isSubscribing ? @string/other_side_camera_is_closed : @string/other_side_not_enter_yet}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/unavailable_icon"
             app:layout_constraintEnd_toEndOf="parent"
@@ -58,7 +61,7 @@
         <android.support.constraint.Group
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{(isRemoteNotJoined || isRemoteVideoOff) ? View.VISIBLE : View.GONE, default=gone}"
+            android:visibility="@{show ? View.VISIBLE : View.GONE, default=gone}"
             app:constraint_referenced_ids="unavailable_background,unavailable_icon,unavailable_reason"
             tools:visibility="visible"
             tools:constraint_referenced_ids="unavailable_background,unavailable_icon,unavailable_reason"/>

@@ -177,8 +177,7 @@ public class OperationActivity extends AppCompatActivity {
         bundle.putInt(StraasMediaCore.KEY_VIDEO_RENDER_TYPE, StraasMediaCore.VIDEO_RENDER_TYPE_360);
 
         getMediaControllerCompat().getTransportControls().playFromUri(
-                Uri.parse("https://eu-storage-bitcodin.storage.googleapis.com/bitStorage/" +
-                        "6_9420dbf3e029ff61639267a40b89436e/105560_716c9b2b8abe754541275a8d39d251a3/mpds/105560.mpd"), bundle);
+                Uri.parse("https://bitmovin-a.akamaihd.net/content/playhouse-vr/mpds/105560.mpd"), bundle);
     }
 
     public void playPlaylist(View view) {

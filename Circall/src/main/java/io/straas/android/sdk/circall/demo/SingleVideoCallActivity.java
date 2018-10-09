@@ -1,68 +1,42 @@
 package io.straas.android.sdk.circall.demo;
 
-import android.databinding.BindingMethod;
-import android.databinding.BindingMethods;
-import android.databinding.DataBindingUtil;
-import android.os.Bundle;
+import android.databinding.ViewDataBinding;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.os.SystemClock;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ActionMenuView;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import com.facebook.rebound.SimpleSpringListener;
-import com.facebook.rebound.Spring;
-import com.facebook.rebound.SpringSystem;
-import com.facebook.rebound.SpringUtil;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.Tasks;
+
+import java.util.List;
 
 import io.straas.android.sdk.circall.CircallConfig;
 import io.straas.android.sdk.circall.CircallManager;
-import io.straas.android.sdk.circall.CircallPlayConfig;
+import io.straas.android.sdk.circall.CircallPlayerView;
 import io.straas.android.sdk.circall.CircallPublishConfig;
 import io.straas.android.sdk.circall.CircallRecordingStreamMetadata;
 import io.straas.android.sdk.circall.CircallStream;
-import io.straas.android.sdk.circall.CircallToken;
-import io.straas.android.sdk.circall.interfaces.EventListener;
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.databinding.ActivitySingleVideoCallBinding;
 
-@BindingMethods({
-    @BindingMethod(type = android.widget.ImageView.class,
-        attribute = "app:srcCompat",
-        method = "setImageDrawable")
-})
-
-public class SingleVideoCallActivity extends AppCompatActivity implements EventListener {
-
-    public static final String INTENT_CIRCALL_TOKEN = "circall_token";
+public class SingleVideoCallActivity extends CircallDemoBaseActivity {
 
     private static final String TAG = SingleVideoCallActivity.class.getSimpleName();
-
-    public static final int STATE_IDLE = 0;
-    public static final int STATE_CONNECTING = 1;
-    public static final int STATE_CONNECTED = 2;
-    public static final int STATE_PUBLISHED = 3;
-    public static final int STATE_SUBSCRIBED = 4;
 
     private static final int EVENT_UPDATE_RECORDING_TIME = 101;
 
     private ActivitySingleVideoCallBinding mBinding;
-    private CircallManager mCircallManager;
     private CircallStream mLocalCircallStream;
-    private CircallStream mRemoteCircallStream;
     private String mRecordingId = "";
     private long mRecordingStartTimeMillis;
-
-    private Handler mHandler = new Handler();
 
     private final Handler mMainThreadHandler = new Handler(Looper.getMainLooper()) {
         public void handleMessage(Message msg) {
@@ -78,105 +52,180 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
         }
     };
 
+    //=====================================================================
+    // Abstract methods
+    //=====================================================================
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Utils.requestFullscreenMode(this);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_single_video_call);
+    protected String getTag() {
+        return TAG;
+    }
 
-        CircallManager.initialize().continueWithTask(task -> {
-            if (!task.isSuccessful()) {
-                Log.e(TAG, "init fail: " + task.getException());
-                finish();
-                return Tasks.forException(new RuntimeException());
-            }
+    @Override
+    protected int getContentViewLayoutId() {
+        return R.layout.activity_single_video_call;
+    }
 
-            mCircallManager = task.getResult();
-            mCircallManager.addEventListener(SingleVideoCallActivity.this);
-            return prepare();
-        }).addOnSuccessListener(circallStream -> {
-            String token = getIntent().getStringExtra(INTENT_CIRCALL_TOKEN);
-            if (!TextUtils.isEmpty(token)) {
-                join(new CircallToken(token));
-            } else {
-                Toast.makeText(getApplicationContext(), "Start circall fails due to empty token",
-                        Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        });
+    @Override
+    protected void setBinding(ViewDataBinding binding) {
+        mBinding = (ActivitySingleVideoCallBinding) binding;
+    }
 
-        setSupportActionBar(mBinding.toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        mBinding.actionMenuView.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.action_switch_camera:
-                    if (mLocalCircallStream != null) {
-                        item.setIcon(R.drawable.ic_switch_camera_focus);
-                        mLocalCircallStream.switchCamera().addOnCompleteListener(success -> item.setIcon(R.drawable.ic_switch_camera));
-                    }
-                    break;
-                case R.id.action_toggle_camera:
-                    if (mLocalCircallStream != null) {
-                        boolean isCameraOn = mLocalCircallStream.toggleCamera();
-                        item.setIcon(isCameraOn ? R.drawable.ic_camera_off : R.drawable.ic_camera_on);
-                        mBinding.setIsLocalVideoOff(!isCameraOn);
-                    }
-                    break;
-                case R.id.action_toggle_mic:
-                    if (mLocalCircallStream != null) {
-                        boolean isMicOn = mLocalCircallStream.toggleMic();
-                        item.setIcon(isMicOn ? R.drawable.ic_mic_off : R.drawable.ic_mic_on);
-                    }
-                    break;
-                case R.id.action_screenshot:
-                    if (mRemoteCircallStream == null) {
-                        showScreenshotFailedDialog(R.string.screenshot_failed_message_two_way_not_ready);
+    @Override
+    protected void scaleScreenShotView(float scale) {
+        mBinding.screenshot.setScaleX(scale);
+        mBinding.screenshot.setScaleY(scale);
+    }
+
+    @Override
+    protected void setScreenShotView(Bitmap bitmap) {
+        mBinding.screenshot.setImageBitmap(bitmap);
+    }
+
+    @Override
+    protected ActionMenuView getActionMenuView() {
+        return mBinding.actionMenuView;
+    }
+
+    @Override
+    protected Toolbar getToolbar() {
+        return mBinding.toolbar;
+    }
+
+    @Override
+    protected CircallPlayerView getRemoteStreamView() {
+        return mBinding.fullscreenVideoView;
+    }
+
+    @Override
+    protected void setShowActionButtons(boolean show) {
+        mBinding.setShowActionButtons(show);
+    }
+
+    @Override
+    public void onShowActionButtonsToggled(View view) {
+        mBinding.setShowActionButtons(!mBinding.getShowActionButtons());
+    }
+
+    @Override
+    protected Task<CircallStream> prepare() {
+        if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_IDLE) {
+            return mCircallManager.prepareForCameraCapture(getConfig(), mBinding.pipVideoView, getPlayConfig())
+                    .addOnSuccessListener(circallStream -> mLocalCircallStream = circallStream);
+        }
+        return Tasks.forException(new IllegalStateException());
+    }
+
+    //=====================================================================
+    // Optional implementation
+    //=====================================================================
+    @Override
+    protected void onConnected() {
+        publish();
+    }
+
+    @Override
+    protected void setState(int state) {
+        super.setState(state);
+        mBinding.setState(state);
+    }
+
+    @Override
+    protected void setIsSubscribing(boolean isSubscribing) {
+        super.setIsSubscribing(isSubscribing);
+        mBinding.setIsSubscribing(isSubscribing);
+    }
+
+    @Override
+    protected int getMenuRes() {
+        return R.menu.single_video_call_menu_action;
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        if (super.onMenuItemClick(item)) {
+            return true;
+        }
+        switch (item.getItemId()) {
+            case R.id.action_switch_camera:
+                if (mLocalCircallStream != null) {
+                    item.setIcon(R.drawable.ic_switch_camera_focus);
+                    mLocalCircallStream.switchCamera().addOnCompleteListener(success -> item.setIcon(R.drawable.ic_switch_camera));
+                }
+                return true;
+            case R.id.action_toggle_camera:
+                if (mLocalCircallStream != null) {
+                    boolean isCameraOn = mLocalCircallStream.toggleCamera();
+                    item.setIcon(isCameraOn ? R.drawable.ic_camera_off : R.drawable.ic_camera_on);
+                    mBinding.setIsLocalVideoOff(!isCameraOn);
+                }
+                return true;
+            case R.id.action_toggle_mic:
+                if (mLocalCircallStream != null) {
+                    boolean isMicOn = mLocalCircallStream.toggleMic();
+                    item.setIcon(isMicOn ? R.drawable.ic_mic_off : R.drawable.ic_mic_on);
+                }
+                return true;
+            default:
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    protected List<Task<Void>> tasksBeforeDestroy() {
+        List<Task<Void>> list = super.tasksBeforeDestroy();
+        list.add(stopRecording());
+        list.add(unsubscribe());
+        list.add(unpublish());
+        return list;
+    }
+
+    @Override
+    protected String getEndTitle() {
+        return getResources().getString(R.string.end_single_call_confirmation_title);
+    }
+
+    @Override
+    protected String getEndMessage() {
+        return getResources().getString(R.string.end_single_call_confirmation_message);
+    }
+
+    //================================================================
+    // EventListener
+    //================================================================
+    @Override
+    public void onStreamSubscribed(CircallStream stream) {
+        if (stream == null) {
+            return;
+        }
+
+        super.onStreamSubscribed(stream);
+        mBinding.setIsRemoteVideoOff(!stream.isVideoEnabled());
+        mCircallManager.getRecordingStreamMetadata().addOnCompleteListener(this, task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                for (CircallRecordingStreamMetadata recordingStream : task.getResult()) {
+                    if (TextUtils.equals(recordingStream.getStreamId(), stream.getStreamId())) {
+                        mRecordingId = recordingStream.getRecordingId();
+                        showRecordingStartedFlashingUi();
                         break;
                     }
-
-                    item.setIcon(R.drawable.ic_screenshot_focus);
-                    mRemoteCircallStream.getVideoFrame().addOnSuccessListener(
-                            SingleVideoCallActivity.this,
-                            bitmap -> {
-                                applySpringAnimation();
-                                item.setIcon(R.drawable.ic_screenshot);
-                                mBinding.screenshot.setImageBitmap(bitmap);
-                                // TODO: 2018/9/14 Handle memory leak
-                                mHandler.postDelayed(() -> mBinding.screenshot.setImageBitmap(null), 3000);
-                            });
-                    break;
-                default:
-                    break;
-            }
-            return true;
-        });
-
-        mBinding.setState(STATE_IDLE);
-        mBinding.setShowActionButtons(false);
-    }
-
-    private void applySpringAnimation() {
-        SpringSystem springSystem = SpringSystem.create();
-        Spring spring = springSystem.createSpring();
-        spring.addListener(new SimpleSpringListener() {
-            @Override
-            public void onSpringUpdate(Spring spring) {
-                float scale = (float) SpringUtil.mapValueFromRangeToRange(spring.getCurrentValue(), 0, 1, 1, 0.5);
-                mBinding.screenshot.setScaleX(scale);
-                mBinding.screenshot.setScaleY(scale);
+                }
             }
         });
-        spring.setEndValue(1);
-        // TODO: 2018/9/14 Handle memory leak
-        mHandler.postDelayed(() -> spring.setEndValue(0), 1400);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_action , mBinding.actionMenuView.getMenu());
-        return super.onCreateOptionsMenu(menu);
+    public void onStreamUpdated(CircallStream stream) {
+        if (stream == null) {
+            return;
+        }
+
+        mBinding.setIsRemoteVideoOff(!stream.isVideoEnabled());
     }
 
+    //================================================================
+    // Internal methods
+    //================================================================
     public void onActionRecord(View view) {
         if (mCircallManager == null || mCircallManager.getCircallState() != CircallManager.STATE_CONNECTED) {
             return;
@@ -206,59 +255,17 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
         }
     }
 
-    public void onShowActionButtonsToggled(View view) {
-        boolean isShowing = mBinding.getShowActionButtons();
-        mBinding.setShowActionButtons(!isShowing);
-    }
-
-    @Override
-    public void onDestroy() {
-        destroyCircallManager();
-
-        super.onDestroy();
-    }
-
-    private Task<CircallStream> prepare() {
-        if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_IDLE) {
-            return mCircallManager.prepareForCameraCapture(getConfig(), mBinding.pipVideoView, getPlayConfig())
-                    .addOnCompleteListener(this, task -> {
-                        if (task.isSuccessful()) {
-                            mLocalCircallStream = task.getResult();
-                        } else {
-                            Log.e(TAG, "Prepare fails " + task.getException());
-                        }
-                    });
-        }
-        return Tasks.forException(new IllegalStateException());
-    }
-
-    private void join(CircallToken token) {
-        mBinding.setState(STATE_CONNECTING);
-        mCircallManager.connect(token).continueWithTask(task -> {
-            if (!task.isSuccessful()) {
-                Log.e(TAG, "join fails: " + task.getException());
-                Toast.makeText(getApplicationContext(), "join fails",
-                        Toast.LENGTH_SHORT).show();
-                finish();
-                return Tasks.forException(task.getException());
-            }
-
-            return publish();
-        });
-    }
-
-    private Task<Void> publish() {
+    private void publish() {
         if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_CONNECTED) {
-            final TaskCompletionSource<Void> source = new TaskCompletionSource<>();
             mCircallManager.publishWithCameraCapture(getPublishConfig()).addOnCompleteListener(task -> {
-                mBinding.setState(STATE_CONNECTED);
-                mBinding.setShowActionButtons(true);
-                source.setResult(null);
+                if (task.isSuccessful()) {
+                    setShowActionButtons(true);
+                } else {
+                    Log.w(getTag(), "Publish fails: " + task.getException());
+                    finish();
+                }
             });
-            return source.getTask();
         }
-
-        return Tasks.forException(new IllegalStateException());
     }
 
     private CircallConfig getConfig() {
@@ -274,92 +281,8 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
                 .build();
     }
 
-    private CircallPlayConfig getPlayConfig() {
-        return new CircallPlayConfig.Builder()
-                .scalingMode(CircallPlayConfig.ASPECT_FILL)
-                .build();
-    }
-
-    @Override
-    public void onStreamAdded(CircallStream stream) {
-        if (mCircallManager != null && stream != null) {
-            mCircallManager.subscribe(stream);
-        }
-    }
-
-    @Override
-    public void onStreamPublished(CircallStream stream) {
-        mBinding.setSeconds(STATE_PUBLISHED);
-    }
-
-    @Override
-    public void onStreamSubscribed(CircallStream stream) {
-        if (stream == null) {
-            return;
-        }
-
-        mBinding.fullscreenVideoView.setVisibility(View.VISIBLE);
-        // TODO: 2018/9/14
-        stream.setRenderer(mBinding.fullscreenVideoView, getPlayConfig());
-        mRemoteCircallStream = stream;
-        mBinding.setState(STATE_SUBSCRIBED);
-        mBinding.setIsRemoteVideoOff(!stream.isVideoEnabled());
-
-        mCircallManager.getRecordingStreamMetadata().addOnCompleteListener(this, task -> {
-            if (task.isSuccessful() && task.getResult() != null) {
-                for (CircallRecordingStreamMetadata recordingStream : task.getResult()) {
-                    if (TextUtils.equals(recordingStream.getStreamId(), stream.getStreamId())) {
-                        mRecordingId = recordingStream.getRecordingId();
-                        showRecordingStartedFlashingUi();
-                        break;
-                    }
-                }
-            }
-        });
-
-    }
-
-    @Override
-    public void onStreamRemoved(CircallStream stream) {
-        mBinding.fullscreenVideoView.setVisibility(View.INVISIBLE);
-        mBinding.setState(STATE_CONNECTED);
-    }
-
-    @Override
-    public void onStreamUpdated(CircallStream stream) {
-        if (stream == null) {
-            return;
-        }
-
-        mBinding.setIsRemoteVideoOff(!stream.isVideoEnabled());
-    }
-
-    @Override
-    public void onError(Exception error) {
-        Log.e(TAG, "onError error:" + error);
-
-        // For our 1:1 demo, video calling only invoking from outside page,
-        // so just abort for this onError event to avoid showing freeze screen
-        Toast.makeText(getApplicationContext(), "onError",
-                Toast.LENGTH_SHORT).show();
-        finish();
-    }
-
-    private void showScreenshotFailedDialog(int messageResId) {
-        showFailedDialog(R.string.screenshot_failed_title, messageResId);
-    }
-
     private void showRecordingFailedDialog(int messageResId) {
         showFailedDialog(R.string.recording_failed_title, messageResId);
-    }
-
-    private void showFailedDialog(int titleResId, int messageResId) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CircallDialogTheme);
-        builder.setTitle(titleResId);
-        builder.setMessage(messageResId);
-        builder.setPositiveButton(android.R.string.ok, null);
-        final AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     private void showRecordingStartedFlashingUi() {
@@ -371,44 +294,11 @@ public class SingleVideoCallActivity extends AppCompatActivity implements EventL
         mMainThreadHandler.sendEmptyMessage(EVENT_UPDATE_RECORDING_TIME);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (mBinding.getState() >= STATE_CONNECTED) {
-            showEndCircallConfirmationDialog();
-        } else {
-            super.onBackPressed();
+    private Task<Void> stopRecording() {
+        if (TextUtils.isEmpty(mRecordingId)) {
+            return Tasks.forException(new IllegalStateException());
         }
-    }
-
-    private void showEndCircallConfirmationDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CircallDialogTheme);
-        builder.setTitle(R.string.end_single_call_confirmation_title);
-        builder.setMessage(R.string.end_single_call_confirmation_message);
-        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-            destroyCircallManager();
-
-            finish();
-        });
-        builder.setNegativeButton(android.R.string.cancel, null);
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    private void destroyCircallManager() {
-        if (mCircallManager == null) {
-            return;
-        }
-
-        if (!TextUtils.isEmpty(mRecordingId)) {
-            mCircallManager.stopRecording(mRemoteCircallStream, mRecordingId).addOnCompleteListener(this, task -> {
-                mRecordingId = "";
-
-                mCircallManager.destroy();
-                mCircallManager = null;
-            });
-        } else {
-            mCircallManager.destroy();
-            mCircallManager = null;
-        }
+        return mCircallManager.stopRecording(mRemoteCircallStream, mRecordingId)
+                .addOnCompleteListener(this, task -> mRecordingId = "");
     }
 }

@@ -1,261 +1,108 @@
 package io.straas.android.sdk.circall.demo;
 
-import android.databinding.BindingMethod;
-import android.databinding.BindingMethods;
-import android.databinding.DataBindingUtil;
-import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.Menu;
+import android.databinding.ViewDataBinding;
+import android.graphics.Bitmap;
+import android.support.v7.widget.ActionMenuView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Toast;
 
-import com.facebook.rebound.SimpleSpringListener;
-import com.facebook.rebound.Spring;
-import com.facebook.rebound.SpringSystem;
-import com.facebook.rebound.SpringUtil;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 
+import java.util.List;
+
 import io.straas.android.sdk.circall.CircallManager;
-import io.straas.android.sdk.circall.CircallPlayConfig;
-import io.straas.android.sdk.circall.CircallStream;
-import io.straas.android.sdk.circall.CircallToken;
-import io.straas.android.sdk.circall.interfaces.EventListener;
+import io.straas.android.sdk.circall.CircallPlayerView;
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.databinding.ActivityIpcamBroadcastingBinding;
 
-@BindingMethods({
-    @BindingMethod(type = android.widget.ImageView.class,
-        attribute = "app:srcCompat",
-        method = "setImageDrawable")
-})
-
-public class IPCamBroadcastingViewerActivity extends AppCompatActivity implements EventListener {
-
-    public static final String INTENT_CIRCALL_TOKEN = "circall_token";
+public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity {
 
     private static final String TAG = IPCamBroadcastingViewerActivity.class.getSimpleName();
 
-    public static final int STATE_IDLE = 0;
-    public static final int STATE_CONNECTING = 1;
-    public static final int STATE_CONNECTED = 2;
-    public static final int STATE_PUBLISHED = 3;
-    public static final int STATE_SUBSCRIBED = 4;
-
     private ActivityIpcamBroadcastingBinding mBinding;
-    private CircallManager mCircallManager;
-    private CircallStream mRemoteCircallStream;
-    private Handler mHandler = new Handler();
 
+    //=====================================================================
+    // Abstract methods
+    //=====================================================================
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Utils.requestFullscreenMode(this);
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_ipcam_broadcasting);
-
-        CircallManager.initialize().continueWithTask(task -> {
-            if (!task.isSuccessful()) {
-                Log.e(TAG, "init fail: " + task.getException());
-                finish();
-                return Tasks.forException(new RuntimeException());
-            }
-
-            mCircallManager = task.getResult();
-            mCircallManager.addEventListener(this);
-            return prepare();
-        }).addOnSuccessListener(circallStream -> {
-            String token = getIntent().getStringExtra(INTENT_CIRCALL_TOKEN);
-            if (!TextUtils.isEmpty(token)) {
-                join(new CircallToken(token));
-            } else {
-                Toast.makeText(getApplicationContext(), "Start circall fails due to empty token",
-                        Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        });
-
-        setSupportActionBar(mBinding.toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        mBinding.actionMenuView.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.action_screenshot:
-                    if (mRemoteCircallStream == null) {
-                        showScreenshotFailedDialog(R.string.screenshot_failed_message);
-                        break;
-                    }
-
-                    item.setIcon(R.drawable.ic_screenshot_focus);
-                    mRemoteCircallStream.getVideoFrame().addOnSuccessListener(
-                            IPCamBroadcastingViewerActivity.this,
-                            bitmap -> {
-                                applySpringAnimation();
-                                item.setIcon(R.drawable.ic_screenshot);
-                                mBinding.screenshot.setImageBitmap(bitmap);
-                                // TODO: 2018/9/14 Handle memory leak
-                                mHandler.postDelayed(() -> mBinding.screenshot.setImageBitmap(null), 3000);
-                            });
-                    break;
-                default:
-                    break;
-            }
-            return true;
-        });
-
-        mBinding.setState(STATE_IDLE);
-        mBinding.setShowActionButtons(false);
+    protected String getTag() {
+        return TAG;
     }
 
-    private Task<Void> prepare() {
+    @Override
+    protected int getContentViewLayoutId() {
+        return R.layout.activity_ipcam_broadcasting;
+    }
+
+    @Override
+    protected void setBinding(ViewDataBinding binding) {
+        mBinding = (ActivityIpcamBroadcastingBinding) binding;
+    }
+
+    @Override
+    protected void scaleScreenShotView(float scale) {
+        mBinding.screenshot.setScaleX(scale);
+        mBinding.screenshot.setScaleY(scale);
+    }
+
+    @Override
+    protected void setScreenShotView(Bitmap bitmap) {
+        mBinding.screenshot.setImageBitmap(bitmap);
+    }
+
+    @Override
+    protected ActionMenuView getActionMenuView() {
+        return mBinding.actionMenuView;
+    }
+
+    @Override
+    protected Toolbar getToolbar() {
+        return mBinding.toolbar;
+    }
+
+    @Override
+    protected CircallPlayerView getRemoteStreamView() {
+        return mBinding.fullscreenVideoView;
+    }
+
+    @Override
+    protected void setShowActionButtons(boolean show) {
+        mBinding.setShowActionButtons(show);
+    }
+
+    @Override
+    public void onShowActionButtonsToggled(View view) {
+        mBinding.setShowActionButtons(!mBinding.getShowActionButtons());
+    }
+
+    @Override
+    protected Task<?> prepare() {
         if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_IDLE) {
-            return mCircallManager.prepareForUrl(getApplicationContext())
-                    .addOnFailureListener(this, e -> Log.e(TAG, "Prepare fails " + e));
+            return mCircallManager.prepareForUrl(getApplicationContext());
         }
         return Tasks.forException(new IllegalStateException());
     }
 
-    private void applySpringAnimation() {
-        SpringSystem springSystem = SpringSystem.create();
-        Spring spring = springSystem.createSpring();
-        spring.addListener(new SimpleSpringListener() {
-            @Override
-            public void onSpringUpdate(Spring spring) {
-                float scale = (float) SpringUtil.mapValueFromRangeToRange(spring.getCurrentValue(), 0, 1, 1, 0.5);
-                mBinding.screenshot.setScaleX(scale);
-                mBinding.screenshot.setScaleY(scale);
-            }
-        });
-        spring.setEndValue(1);
-        // TODO: 2018/9/14 Handle memory leak
-        mHandler.postDelayed(() -> spring.setEndValue(0), 1400);
+    //=====================================================================
+    // Optional implementation
+    //=====================================================================
+    @Override
+    protected void setState(int state) {
+        super.setState(state);
+        mBinding.setState(state);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.ipcam_broadcasting_menu_action, mBinding.actionMenuView.getMenu());
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    public void onShowActionButtonsToggled(View view) {
-        boolean isShowing = mBinding.getShowActionButtons();
-        mBinding.setShowActionButtons(!isShowing);
+    protected void setIsSubscribing(boolean isSubscribing) {
+        super.setIsSubscribing(isSubscribing);
+        mBinding.setIsSubscribing(isSubscribing);
     }
 
     @Override
-    public void onDestroy() {
-        destroyCircallManager();
-
-        super.onDestroy();
-    }
-
-    private void join(CircallToken token) {
-        mBinding.setState(STATE_CONNECTING);
-        mCircallManager.connect(token).addOnSuccessListener(aVoid -> {
-            mBinding.setState(STATE_CONNECTED);
-        }).addOnFailureListener(e -> {
-            Log.e(TAG, "join fails: " + e);
-            Toast.makeText(getApplicationContext(), "join fails",
-                    Toast.LENGTH_SHORT).show();
-            finish();
-        });
-    }
-
-    private CircallPlayConfig getPlayConfig() {
-        return new CircallPlayConfig.Builder()
-                .scalingMode(CircallPlayConfig.ASPECT_FILL)
-                .build();
-    }
-
-    @Override
-    public void onStreamAdded(CircallStream stream) {
-        if (mCircallManager != null && stream != null) {
-            mCircallManager.subscribe(stream);
-        }
-    }
-
-    @Override
-    public void onStreamPublished(CircallStream stream) {
-    }
-
-    @Override
-    public void onStreamSubscribed(CircallStream stream) {
-        if (stream == null) {
-            return;
-        }
-
-        mBinding.fullscreenVideoView.setVisibility(View.VISIBLE);
-        stream.setRenderer(mBinding.fullscreenVideoView, getPlayConfig());
-        mRemoteCircallStream = stream;
-        mBinding.setState(STATE_SUBSCRIBED);
-    }
-
-    @Override
-    public void onStreamRemoved(CircallStream stream) {
-        mBinding.fullscreenVideoView.setVisibility(View.INVISIBLE);
-        mBinding.setState(STATE_CONNECTED);
-    }
-
-    @Override
-    public void onStreamUpdated(CircallStream stream) {
-        if (stream == null) {
-            return;
-        }
-    }
-
-    @Override
-    public void onError(Exception error) {
-        Log.e(TAG, "onError error:" + error);
-
-        Toast.makeText(getApplicationContext(), "onError",
-                Toast.LENGTH_SHORT).show();
-        finish();
-    }
-
-    private void showScreenshotFailedDialog(int messageResId) {
-        showFailedDialog(R.string.screenshot_failed_title, messageResId);
-    }
-
-    private void showFailedDialog(int titleResId, int messageResId) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CircallDialogTheme);
-        builder.setTitle(titleResId);
-        builder.setMessage(messageResId);
-        builder.setPositiveButton(android.R.string.ok, null);
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mBinding.getState() == STATE_CONNECTED || mBinding.getState() == STATE_SUBSCRIBED) {
-            showEndCircallConfirmationDialog();
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    private void showEndCircallConfirmationDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.CircallDialogTheme);
-        builder.setTitle(R.string.end_circall_confirmation_title);
-        builder.setMessage(R.string.end_circall_confirmation_message);
-        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> {
-            destroyCircallManager();
-
-            finish();
-        });
-        builder.setNegativeButton(android.R.string.cancel, null);
-        final AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
-    private void destroyCircallManager() {
-        if (mCircallManager == null) {
-            return;
-        }
-
-        mCircallManager.destroy();
-        mCircallManager = null;
+    protected List<Task<Void>> tasksBeforeDestroy() {
+        List<Task<Void>> list = super.tasksBeforeDestroy();
+        list.add(unsubscribe());
+        return list;
     }
 }
