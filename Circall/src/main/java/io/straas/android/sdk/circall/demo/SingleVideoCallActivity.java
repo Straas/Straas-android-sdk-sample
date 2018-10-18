@@ -109,8 +109,11 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
     @Override
     protected Task<CircallStream> prepare() {
         if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_IDLE) {
-            return mCircallManager.prepareForCameraCapture(getConfig(), mBinding.pipVideoView, getPlayConfig())
-                    .addOnSuccessListener(circallStream -> mLocalCircallStream = circallStream);
+            return mCircallManager.prepareForCameraCapture(this, getConfig())
+                    .addOnSuccessListener(circallStream -> {
+                        circallStream.setRenderer(mBinding.pipVideoView, getPlayConfig());
+                        mLocalCircallStream = circallStream;
+                    });
         }
         return Tasks.forException(new IllegalStateException());
     }
