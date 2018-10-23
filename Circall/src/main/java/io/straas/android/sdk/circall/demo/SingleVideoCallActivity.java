@@ -111,7 +111,7 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
         if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_IDLE) {
             return mCircallManager.prepareForCameraCapture(this, getConfig())
                     .addOnSuccessListener(circallStream -> {
-                        mBinding.pipVideoView.setCircallStream(circallStream, getPlayConfig());
+                        mBinding.pipVideoView.setCircallStream(circallStream);
                         mLocalCircallStream = circallStream;
                     });
         }

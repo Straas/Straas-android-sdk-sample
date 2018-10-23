@@ -41,7 +41,6 @@ import java.util.List;
 import java.util.Locale;
 
 import io.straas.android.sdk.circall.CircallManager;
-import io.straas.android.sdk.circall.CircallPlayConfig;
 import io.straas.android.sdk.circall.CircallPlayerView;
 import io.straas.android.sdk.circall.CircallStream;
 import io.straas.android.sdk.circall.CircallToken;
@@ -49,6 +48,8 @@ import io.straas.android.sdk.circall.interfaces.EventListener;
 import io.straas.android.sdk.demo.R;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
+
+import static io.straas.android.sdk.circall.CircallPlayerView.ASPECT_FILL;
 
 @BindingMethods({
         @BindingMethod(type = android.widget.ImageView.class,
@@ -85,6 +86,7 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         Utils.requestFullscreenMode(this);
         ViewDataBinding binding = DataBindingUtil.setContentView(this, getContentViewLayoutId());
         setBinding(binding);
+        getRemoteStreamView().setScalingMode(ASPECT_FILL);
 
         CircallManager.initialize().continueWithTask(task -> {
             if (!task.isSuccessful()) {
@@ -203,12 +205,6 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         return super.onCreateOptionsMenu(menu);
     }
 
-    protected CircallPlayConfig getPlayConfig() {
-        return new CircallPlayConfig.Builder()
-                .scalingMode(CircallPlayConfig.ASPECT_FILL)
-                .build();
-    }
-
     protected List<Task<Void>> tasksBeforeDestroy() {
         return new ArrayList<>();
     }
@@ -279,7 +275,7 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
 
         getRemoteStreamView().setVisibility(View.VISIBLE);
         // TODO: 2018/9/14 Handle activity is in background case
-        getRemoteStreamView().setCircallStream(stream, getPlayConfig());
+        getRemoteStreamView().setCircallStream(stream);
         mRemoteCircallStream = stream;
         setIsSubscribing(true);
     }
