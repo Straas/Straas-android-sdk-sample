@@ -470,7 +470,8 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 Glide.with(getThemeContext())
                         .setDefaultRequestOptions(new RequestOptions()
                                 .placeholder(android.R.color.black))
-                        .load(metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI))
+                        .load(ContextCompat.getDrawable(mImagePoster.getContext(),
+                                R.drawable.vod_thumbnail_audio))
                         .into(mImagePoster);
             } else {
                 mImagePoster.setVisibility(GONE);
