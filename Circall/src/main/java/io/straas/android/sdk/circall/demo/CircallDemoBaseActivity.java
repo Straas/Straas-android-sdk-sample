@@ -41,7 +41,6 @@ import java.util.List;
 import java.util.Locale;
 
 import io.straas.android.sdk.circall.CircallManager;
-import io.straas.android.sdk.circall.CircallPlayConfig;
 import io.straas.android.sdk.circall.CircallPlayerView;
 import io.straas.android.sdk.circall.CircallStream;
 import io.straas.android.sdk.circall.CircallToken;
@@ -49,6 +48,8 @@ import io.straas.android.sdk.circall.interfaces.EventListener;
 import io.straas.android.sdk.demo.R;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
+
+import static io.straas.android.sdk.circall.CircallPlayerView.ASPECT_FILL;
 
 @BindingMethods({
         @BindingMethod(type = android.widget.ImageView.class,
@@ -85,6 +86,7 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         Utils.requestFullscreenMode(this);
         ViewDataBinding binding = DataBindingUtil.setContentView(this, getContentViewLayoutId());
         setBinding(binding);
+        getRemoteStreamView().setScalingMode(ASPECT_FILL);
 
         CircallManager.initialize().continueWithTask(task -> {
             if (!task.isSuccessful()) {
@@ -178,7 +180,7 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         switch (item.getItemId()) {
             case R.id.action_screenshot:
                 if (mRemoteCircallStream == null) {
-                    showScreenshotFailedDialog(R.string.screenshot_failed_message_two_way_not_ready);
+                    showScreenshotFailedDialog(R.string.screenshot_failed_message_no_remote_stream);
                     break;
                 }
 
@@ -201,12 +203,6 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(getMenuRes() , getActionMenuView().getMenu());
         return super.onCreateOptionsMenu(menu);
-    }
-
-    protected CircallPlayConfig getPlayConfig() {
-        return new CircallPlayConfig.Builder()
-                .scalingMode(CircallPlayConfig.ASPECT_FILL)
-                .build();
     }
 
     protected List<Task<Void>> tasksBeforeDestroy() {
@@ -279,7 +275,7 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
 
         getRemoteStreamView().setVisibility(View.VISIBLE);
         // TODO: 2018/9/14 Handle activity is in background case
-        stream.setRenderer(getRemoteStreamView(), getPlayConfig());
+        getRemoteStreamView().setCircallStream(stream);
         mRemoteCircallStream = stream;
         setIsSubscribing(true);
     }
@@ -306,8 +302,8 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
 
         // In our demo, this page is only invoked from another activity,
         // so just abort for this onError event to avoid showing freeze screen
-        Toast.makeText(getApplicationContext(), "onError",
-                Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "onError: " + error,
+                Toast.LENGTH_LONG).show();
         finish();
     }
 
@@ -357,6 +353,7 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         try {
             dir = getPicturesFolder();
         } catch (IOException e) {
+            Toast.makeText(this, R.string.screenshot_failed_message, Toast.LENGTH_SHORT).show();
             Log.w(getTag(), "Getting folder for storing pictures failed.");
             return false;
         }
@@ -378,6 +375,7 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
             Toast.makeText(this, R.string.screenshot_success_message, Toast.LENGTH_SHORT).show();
             return true;
         } catch (IOException ignored) {
+            Toast.makeText(this, R.string.screenshot_failed_message, Toast.LENGTH_SHORT).show();
             Log.w(getTag(), "Writing the picture to file failed.");
             return false;
         }
@@ -409,8 +407,8 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
                 onConnected();
             } else {
                 Log.e(getTag(), "connect fails: " + task.getException());
-                Toast.makeText(getApplicationContext(), "connect fails",
-                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "connect fails: " + task.getException(),
+                        Toast.LENGTH_LONG).show();
                 finish();
             }
         });

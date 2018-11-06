@@ -29,6 +29,7 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <activity android:name="io.straas.android.sdk.circall.demo.SingleVideoCallTokenViewActivity"
+                  android:screenOrientation="portrait"
                   android:label="CirCall - 1:1 conferencing"
                   android:launchMode="singleTop"
                   android:theme="@style/CircallWelcomeTheme"
@@ -42,6 +43,7 @@
                   android:parentActivityName="io.straas.android.sdk.circall.demo.SingleVideoCallTokenViewActivity"/>
 
         <activity android:name="io.straas.android.sdk.circall.demo.IPCamBroadcastingHostTokenViewActivity"
+                  android:screenOrientation="portrait"
                   android:label="CirCall - IPCam broadcasting host"
                   android:launchMode="singleTop"
                   android:theme="@style/CircallWelcomeTheme"
@@ -55,6 +57,7 @@
                   android:parentActivityName="io.straas.android.sdk.circall.demo.IPCamBroadcastingHostTokenViewActivity"/>
 
         <activity android:name="io.straas.android.sdk.circall.demo.IPCamBroadcastingViewerTokenViewActivity"
+                  android:screenOrientation="portrait"
                   android:label="CirCall - IPCam broadcasting viewer"
                   android:launchMode="singleTop"
                   android:theme="@style/CircallWelcomeTheme"
