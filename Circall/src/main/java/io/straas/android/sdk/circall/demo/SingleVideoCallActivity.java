@@ -109,8 +109,11 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
     @Override
     protected Task<CircallStream> prepare() {
         if (mCircallManager != null && mCircallManager.getCircallState() == CircallManager.STATE_IDLE) {
-            return mCircallManager.prepareForCameraCapture(getConfig(), mBinding.pipVideoView, getPlayConfig())
-                    .addOnSuccessListener(circallStream -> mLocalCircallStream = circallStream);
+            return mCircallManager.prepareForCameraCapture(this, getConfig())
+                    .addOnSuccessListener(circallStream -> {
+                        mBinding.pipVideoView.setCircallStream(circallStream);
+                        mLocalCircallStream = circallStream;
+                    });
         }
         return Tasks.forException(new IllegalStateException());
     }
@@ -155,14 +158,14 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
             case R.id.action_toggle_camera:
                 if (mLocalCircallStream != null) {
                     boolean isCameraOn = mLocalCircallStream.toggleCamera();
-                    item.setIcon(isCameraOn ? R.drawable.ic_camera_off : R.drawable.ic_camera_on);
+                    item.setIcon(isCameraOn ? R.drawable.ic_camera_on : R.drawable.ic_camera_off);
                     mBinding.setIsLocalVideoOff(!isCameraOn);
                 }
                 return true;
             case R.id.action_toggle_mic:
                 if (mLocalCircallStream != null) {
                     boolean isMicOn = mLocalCircallStream.toggleMic();
-                    item.setIcon(isMicOn ? R.drawable.ic_mic_off : R.drawable.ic_mic_on);
+                    item.setIcon(isMicOn ? R.drawable.ic_mic_on : R.drawable.ic_mic_off );
                 }
                 return true;
             default:

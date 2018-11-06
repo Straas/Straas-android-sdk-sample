@@ -3,6 +3,19 @@ Change Log
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
 
+## Version 0.10.8
+_2018-11-06_
+
+*   straas-circall
+    *   **Important Change**: Remove `CircallStream#setRender(CircallPlayerView)`, use [CircallPlayerView#setCircallStream(CircallStream)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/circall/CircallPlayerView.html#setCircallStream-io.straas.android.sdk.circall.CircallStream-) instead.
+    *   **Important Change**: Remove `CircallPlayConfig`, use methods in [CircallPlayerView](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/circall/CircallPlayerView.html) like [setScalingMode](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/circall/CircallPlayerView.html#setScalingMode-int-) and [getScalingMode](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/circall/CircallPlayerView.html#getScalingMode--) instead.
+    *   **Important Change**: Extract view related operation from [CircallManager#prepareForCameraCapture](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/circall/CircallManager.html#prepareForCameraCapture-android.content.Context-io.straas.android.sdk.circall.CircallConfig-), you can use [CircallPlayerView#setCircallStream(CircallStream)](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/circall/CircallPlayerView.html#setCircallStream-io.straas.android.sdk.circall.CircallStream-) when you want to do it.
+    *   feat: Remove auto mirror of front camera.
+    *   fix:  Issue that a stream can't be subscribed again after being subscribed.
+
+*   straas-media-core
+    *   fix : Revise playlist item api flow
+
 ## Version 0.10.7
 _2018-10-09_
 

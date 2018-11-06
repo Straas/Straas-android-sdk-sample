@@ -23,7 +23,7 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity {
 
     public static final String INTENT_PUBLISH_URL = "publish_url";
 
-    private static final String TAG = IPCamBroadcastingViewerActivity.class.getSimpleName();
+    private static final String TAG = IPCamBroadcastingHostActivity.class.getSimpleName();
 
     private ActivityIpcamBroadcastingBinding mBinding;
 
