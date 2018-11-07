@@ -121,6 +121,11 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity {
     // EventListener
     //=====================================================================
     @Override
+    public void onStreamAdded(CircallStream stream) {
+        //Do nothing because a host only subscribes his own stream.
+    }
+
+    @Override
     public void onStreamPublished(CircallStream stream) {
         if (mCircallManager != null && stream != null) {
             mCircallManager.subscribe(stream);
