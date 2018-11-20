@@ -3,6 +3,13 @@ Change Log
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
 
+## Version 0.10.9
+_2018-11-20_
+
+*   straas-messaging-ui
+    *   fix: Crash happens when there are too many messages.
+
+
 ## Version 0.10.8
 _2018-11-06_
 
