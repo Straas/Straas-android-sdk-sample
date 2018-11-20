@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaBrowserCompat.MediaItem;
@@ -295,8 +296,19 @@ public class StraasPlayerActivity extends AppCompatActivity {
             public void bind(final MediaItem item) {
                 mTitle.setText(item.getDescription().getTitle());
                 mSubtitle.setText(item.getDescription().getDescription());
+                Context context = mIcon.getContext();
+                Bundle extras = item.getDescription().getExtras();
                 if (item.getDescription().getIconUri() != null) {
                     Glide.with(mIcon.getContext()).load(item.getDescription().getIconUri()).into(mIcon);
+                } else if (extras == null ||
+                        extras.getInt(StraasMediaCore.KEY_VIDEO_RENDER_TYPE) != StraasMediaCore.VIDEO_RENDER_TYPE_NONE) {
+                    Glide.with(mIcon.getContext()).load(ContextCompat.getDrawable(context,
+                            R.drawable.vod_thumbnail))
+                            .into(mIcon);
+                } else {
+                    Glide.with(mIcon.getContext()).load(ContextCompat.getDrawable(context,
+                            R.drawable.vod_thumbnail_audio))
+                            .into(mIcon);
                 }
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
