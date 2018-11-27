@@ -3,6 +3,12 @@ Change Log
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
 
+## Version 0.10.10
+_2018-11-27_
+
+*   feat: Optimize statistics.
+
+
 ## Version 0.10.9
 _2018-11-20_
 
