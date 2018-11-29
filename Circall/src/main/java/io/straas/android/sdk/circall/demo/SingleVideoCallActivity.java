@@ -213,7 +213,7 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
             return;
         }
         if (mRemoteCircallStream == null) {
-            showRecordingFailedDialog(R.string.recording_failed_message_two_way_not_ready);
+            showRecordingFailedDialog(R.string.recording_failed_message_no_remote_stream);
             return;
         }
 
