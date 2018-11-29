@@ -221,7 +221,6 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
             mCircallManager.stopRecording(mRemoteCircallStream, mRecordingId).addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
                     mBinding.setIsRecording(false);
-                    mBinding.actionRecord.setImageResource(R.drawable.ic_recording_off);
                     mRecordingId = "";
                 }
             });
@@ -230,7 +229,6 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
                 if (task.isSuccessful()) {
                     mRecordingId = task.getResult();
                     mBinding.setIsRecording(true);
-                    mBinding.actionRecord.setImageResource(R.drawable.ic_recording_on);
                 } else {
                     showRecordingFailedDialog(R.string.recording_failed_message_not_authorized);
                 }
