@@ -17,7 +17,7 @@ import io.straas.android.sdk.circall.CircallPlayerView;
 import io.straas.android.sdk.circall.CircallPublishWithUrlConfig;
 import io.straas.android.sdk.circall.CircallStream;
 import io.straas.android.sdk.demo.R;
-import io.straas.android.sdk.demo.databinding.ActivityIpcamBroadcastingBinding;
+import io.straas.android.sdk.demo.databinding.ActivityIpcamBroadcastingHostBinding;
 
 public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity {
 
@@ -25,7 +25,7 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity {
 
     private static final String TAG = IPCamBroadcastingHostActivity.class.getSimpleName();
 
-    private ActivityIpcamBroadcastingBinding mBinding;
+    private ActivityIpcamBroadcastingHostBinding mBinding;
 
     //=====================================================================
     // Abstract methods
@@ -37,12 +37,12 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity {
 
     @Override
     protected int getContentViewLayoutId() {
-        return R.layout.activity_ipcam_broadcasting;
+        return R.layout.activity_ipcam_broadcasting_host;
     }
 
     @Override
     protected void setBinding(ViewDataBinding binding) {
-        mBinding = (ActivityIpcamBroadcastingBinding) binding;
+        mBinding = (ActivityIpcamBroadcastingHostBinding) binding;
     }
 
     @Override

@@ -14,13 +14,13 @@ import java.util.List;
 import io.straas.android.sdk.circall.CircallManager;
 import io.straas.android.sdk.circall.CircallPlayerView;
 import io.straas.android.sdk.demo.R;
-import io.straas.android.sdk.demo.databinding.ActivityIpcamBroadcastingBinding;
+import io.straas.android.sdk.demo.databinding.ActivityIpcamBroadcastingViewerBinding;
 
 public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity {
 
     private static final String TAG = IPCamBroadcastingViewerActivity.class.getSimpleName();
 
-    private ActivityIpcamBroadcastingBinding mBinding;
+    private ActivityIpcamBroadcastingViewerBinding mBinding;
 
     //=====================================================================
     // Abstract methods
@@ -32,12 +32,12 @@ public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity {
 
     @Override
     protected int getContentViewLayoutId() {
-        return R.layout.activity_ipcam_broadcasting;
+        return R.layout.activity_ipcam_broadcasting_viewer;
     }
 
     @Override
     protected void setBinding(ViewDataBinding binding) {
-        mBinding = (ActivityIpcamBroadcastingBinding) binding;
+        mBinding = (ActivityIpcamBroadcastingViewerBinding) binding;
     }
 
     @Override
