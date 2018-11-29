@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <import type="android.view.View"/>
+        <import type="io.straas.android.sdk.circall.demo.ui.FlashHint"/>
         <import type="io.straas.android.sdk.circall.demo.SingleVideoCallActivity"/>
         <variable
             name="state"
@@ -23,9 +24,6 @@
         <variable
             name="isRecording"
             type="boolean"/>
-        <variable
-            name="seconds"
-            type="long"/>
     </data>
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -43,9 +41,18 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <include layout="@layout/recording_status"
-            app:isRecording="@{isRecording}"
-            app:seconds="@{seconds}"/>
+        <io.straas.android.sdk.circall.demo.ui.FlashHint
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:src="@drawable/ic_recording_dot"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintVertical_bias="0.0"
+            app:flash="@{isRecording}"/>
 
         <include layout="@layout/remote_video_is_unavailable"
             app:show="@{(state == SingleVideoCallActivity.STATE_CONNECTED) &amp;&amp; (!isSubscribing || isRemoteVideoOff)}"

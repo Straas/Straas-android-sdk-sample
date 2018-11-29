@@ -2,10 +2,6 @@ package io.straas.android.sdk.circall.demo;
 
 import android.databinding.ViewDataBinding;
 import android.graphics.Bitmap;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.os.SystemClock;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -31,26 +27,9 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
 
     private static final String TAG = SingleVideoCallActivity.class.getSimpleName();
 
-    private static final int EVENT_UPDATE_RECORDING_TIME = 101;
-
     private ActivitySingleVideoCallBinding mBinding;
     private CircallStream mLocalCircallStream;
     private String mRecordingId = "";
-    private long mRecordingStartTimeMillis;
-
-    private final Handler mMainThreadHandler = new Handler(Looper.getMainLooper()) {
-        public void handleMessage(Message msg) {
-            switch(msg.what) {
-                case EVENT_UPDATE_RECORDING_TIME:
-                    mBinding.setSeconds((SystemClock.elapsedRealtime() - mRecordingStartTimeMillis) / 1000);
-                    if (mBinding.getIsRecording()) {
-                        mMainThreadHandler.removeMessages(EVENT_UPDATE_RECORDING_TIME);
-                        mMainThreadHandler.sendEmptyMessageDelayed(EVENT_UPDATE_RECORDING_TIME, 1000);
-                    }
-                    break;
-            }
-        }
-    };
 
     //=====================================================================
     // Abstract methods
@@ -209,7 +188,7 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
                 for (CircallRecordingStreamMetadata recordingStream : task.getResult()) {
                     if (TextUtils.equals(recordingStream.getStreamId(), stream.getStreamId())) {
                         mRecordingId = recordingStream.getRecordingId();
-                        showRecordingStartedFlashingUi();
+                        mBinding.setIsRecording(true);
                         break;
                     }
                 }
@@ -250,7 +229,8 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
             mCircallManager.startRecording(mRemoteCircallStream).addOnCompleteListener(this, task -> {
                 if (task.isSuccessful()) {
                     mRecordingId = task.getResult();
-                    showRecordingStartedFlashingUi();
+                    mBinding.setIsRecording(true);
+                    mBinding.actionRecord.setImageResource(R.drawable.ic_recording_on);
                 } else {
                     showRecordingFailedDialog(R.string.recording_failed_message_not_authorized);
                 }
@@ -286,15 +266,6 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
 
     private void showRecordingFailedDialog(int messageResId) {
         showFailedDialog(R.string.recording_failed_title, messageResId);
-    }
-
-    private void showRecordingStartedFlashingUi() {
-        mBinding.setIsRecording(true);
-        mBinding.actionRecord.setImageResource(R.drawable.ic_recording_on);
-
-        mRecordingStartTimeMillis =SystemClock.elapsedRealtime();
-        mMainThreadHandler.removeMessages(EVENT_UPDATE_RECORDING_TIME);
-        mMainThreadHandler.sendEmptyMessage(EVENT_UPDATE_RECORDING_TIME);
     }
 
     private Task<Void> stopRecording() {
