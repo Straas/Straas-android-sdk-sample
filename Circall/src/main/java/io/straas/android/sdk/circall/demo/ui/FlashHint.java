@@ -52,13 +52,12 @@ public class FlashHint extends android.support.v7.widget.AppCompatImageView {
 
     public void setFlash(boolean enabled) {
         mFlashEnabled = enabled;
+        removeCallbacks(mRunFlash);
         if (mFlashEnabled) {
             bringToFront();
-            removeCallbacks(mRunFlash);
             postDelayed(mRunFlash, FLASH_INTERVAL);
         } else {
             setVisibility(View.INVISIBLE);
-            removeCallbacks(mRunFlash);
         }
     }
 
