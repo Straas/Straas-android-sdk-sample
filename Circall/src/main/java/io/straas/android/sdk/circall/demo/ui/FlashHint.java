@@ -44,6 +44,12 @@ public class FlashHint extends android.support.v7.widget.AppCompatImageView {
         setVisibility(View.GONE);
     }
 
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        removeCallbacks(mRunFlash);
+    }
+
     public void setFlash(boolean enabled) {
         mFlashEnabled = enabled;
         if (mFlashEnabled) {
