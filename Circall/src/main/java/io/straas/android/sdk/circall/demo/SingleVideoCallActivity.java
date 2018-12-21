@@ -2,6 +2,8 @@ package io.straas.android.sdk.circall.demo;
 
 import android.databinding.ViewDataBinding;
 import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -22,6 +24,8 @@ import io.straas.android.sdk.circall.CircallRecordingStreamMetadata;
 import io.straas.android.sdk.circall.CircallStream;
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.databinding.ActivitySingleVideoCallBinding;
+
+import static io.straas.android.sdk.circall.CircallPlayerView.ASPECT_FILL;
 
 public class SingleVideoCallActivity extends CircallDemoBaseActivity {
 
@@ -100,6 +104,12 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
     //=====================================================================
     // Optional implementation
     //=====================================================================
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        getRemoteStreamView().setScalingMode(ASPECT_FILL);
+    }
+
     @Override
     protected void onConnected() {
         publish();

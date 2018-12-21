@@ -45,8 +45,6 @@ import io.straas.android.sdk.demo.R;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
-import static io.straas.android.sdk.circall.CircallPlayerView.ASPECT_FILL;
-
 @BindingMethods({
         @BindingMethod(type = android.widget.ImageView.class,
                 attribute = "app:srcCompat",
@@ -82,7 +80,6 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         Utils.requestFullscreenMode(this);
         ViewDataBinding binding = DataBindingUtil.setContentView(this, getContentViewLayoutId());
         setBinding(binding);
-        getRemoteStreamView().setScalingMode(ASPECT_FILL);
 
         CircallManager.initialize().continueWithTask(task -> {
             if (!task.isSuccessful()) {
