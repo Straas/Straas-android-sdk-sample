@@ -467,10 +467,13 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             if (metadata.getBundle().containsKey(StraasMediaCore.KEY_VIDEO_RENDER_TYPE)
                     && metadata.getBundle().getInt(StraasMediaCore.KEY_VIDEO_RENDER_TYPE) == StraasMediaCore.VIDEO_RENDER_TYPE_NONE) {
                 mImagePoster.setVisibility(VISIBLE);
+                boolean hasAlbumArtUri = metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI) != null;
                 Glide.with(getThemeContext())
                         .setDefaultRequestOptions(new RequestOptions()
                                 .placeholder(android.R.color.black))
-                        .load(ContextCompat.getDrawable(mImagePoster.getContext(),
+                        .load(hasAlbumArtUri
+                                ? metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI)
+                                : ContextCompat.getDrawable(mImagePoster.getContext(),
                                 R.drawable.vod_thumbnail_audio))
                         .into(mImagePoster);
             } else {

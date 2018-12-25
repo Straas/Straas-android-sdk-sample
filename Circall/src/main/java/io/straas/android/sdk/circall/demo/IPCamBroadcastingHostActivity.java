@@ -4,6 +4,7 @@ import android.databinding.ViewDataBinding;
 import android.graphics.Bitmap;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 
@@ -17,7 +18,7 @@ import io.straas.android.sdk.circall.CircallPlayerView;
 import io.straas.android.sdk.circall.CircallPublishWithUrlConfig;
 import io.straas.android.sdk.circall.CircallStream;
 import io.straas.android.sdk.demo.R;
-import io.straas.android.sdk.demo.databinding.ActivityIpcamBroadcastingBinding;
+import io.straas.android.sdk.demo.databinding.ActivityIpcamBroadcastingHostBinding;
 
 public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity {
 
@@ -25,7 +26,8 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity {
 
     private static final String TAG = IPCamBroadcastingHostActivity.class.getSimpleName();
 
-    private ActivityIpcamBroadcastingBinding mBinding;
+    private ActivityIpcamBroadcastingHostBinding mBinding;
+    private String mRecordingId = "";
 
     //=====================================================================
     // Abstract methods
@@ -37,12 +39,12 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity {
 
     @Override
     protected int getContentViewLayoutId() {
-        return R.layout.activity_ipcam_broadcasting;
+        return R.layout.activity_ipcam_broadcasting_host;
     }
 
     @Override
     protected void setBinding(ViewDataBinding binding) {
-        mBinding = (ActivityIpcamBroadcastingBinding) binding;
+        mBinding = (ActivityIpcamBroadcastingHostBinding) binding;
     }
 
     @Override
@@ -151,5 +153,37 @@ public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity {
     private CircallPublishWithUrlConfig getPublishConfig() {
         return new CircallPublishWithUrlConfig.Builder()
                 .url(getIntent().getStringExtra(INTENT_PUBLISH_URL)).build();
+    }
+
+    public void onActionRecord(View view) {
+        if (mCircallManager == null || mCircallManager.getCircallState() != CircallManager.STATE_CONNECTED) {
+            return;
+        }
+        if (mRemoteCircallStream == null) {
+            showRecordingFailedDialog(R.string.recording_failed_message_no_remote_stream);
+            return;
+        }
+
+        if (!TextUtils.isEmpty(mRecordingId)) {
+            mCircallManager.stopRecording(mRemoteCircallStream, mRecordingId).addOnCompleteListener(this, task -> {
+                if (task.isSuccessful()) {
+                    mBinding.setIsRecording(false);
+                    mRecordingId = "";
+                }
+            });
+        } else {
+            mCircallManager.startRecording(mRemoteCircallStream).addOnCompleteListener(this, task -> {
+                if (task.isSuccessful()) {
+                    mRecordingId = task.getResult();
+                    mBinding.setIsRecording(true);
+                } else {
+                    showRecordingFailedDialog(R.string.recording_failed_message_not_authorized);
+                }
+            });
+        }
+    }
+
+    private void showRecordingFailedDialog(int messageResId) {
+        showFailedDialog(R.string.recording_failed_title, messageResId);
     }
 }

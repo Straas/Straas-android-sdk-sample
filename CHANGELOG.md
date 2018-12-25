@@ -2,6 +2,16 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.11.0
+_2018-12-25_
+
+*   straas-circall
+    *   **Important Change**: Major module version updated. Previous Circall SDK versions are deprecated now.
+    *   feat: Support recording in IPCam broadcasting scenario.
+    *   change: Disable audio track in [publishWithUrl](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/circall/CircallManager.html#publishWithUrl-io.straas.android.sdk.circall.CircallPublishWithUrlConfig-) scenario.
+*   straas-messaging-ui
+    *   fix: Ensure messages are new when service recover from background.
+
 
 ## Version 0.10.10
 _2018-11-27_
