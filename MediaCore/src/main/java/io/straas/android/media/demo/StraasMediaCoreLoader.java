@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.v4.content.Loader;
 import android.support.v4.media.MediaBrowserCompat.ConnectionCallback;
 
-import io.straas.android.sdk.base.identity.Identity;
+import io.straas.android.sdk.authentication.identity.Identity;
 import io.straas.android.sdk.media.StraasMediaCore;
 
 /**
