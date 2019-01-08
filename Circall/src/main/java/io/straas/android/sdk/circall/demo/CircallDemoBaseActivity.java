@@ -24,10 +24,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.facebook.rebound.SimpleSpringListener;
-import com.facebook.rebound.Spring;
-import com.facebook.rebound.SpringSystem;
-import com.facebook.rebound.SpringUtil;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 
@@ -48,8 +44,6 @@ import io.straas.android.sdk.circall.interfaces.EventListener;
 import io.straas.android.sdk.demo.R;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
-
-import static io.straas.android.sdk.circall.CircallPlayerView.ASPECT_FILL;
 
 @BindingMethods({
         @BindingMethod(type = android.widget.ImageView.class,
@@ -86,7 +80,6 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         Utils.requestFullscreenMode(this);
         ViewDataBinding binding = DataBindingUtil.setContentView(this, getContentViewLayoutId());
         setBinding(binding);
-        getRemoteStreamView().setScalingMode(ASPECT_FILL);
 
         CircallManager.initialize().continueWithTask(task -> {
             if (!task.isSuccessful()) {
@@ -324,9 +317,7 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
     private void storePicture() {
         if (EasyPermissions.hasPermissions(this, STORAGE_PERMISSION)) {
             if (mCapturedPicture != null) {
-                if (storePicture(mCapturedPicture)) {
-                    applySpringAnimation(mCapturedPicture);
-                }
+                storePicture(mCapturedPicture);
                 mCapturedPicture = null;
             }
         } else {
@@ -348,14 +339,14 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
         throw new IOException();
     }
 
-    private boolean storePicture(Bitmap bitmap) {
+    private void storePicture(Bitmap bitmap) {
         File dir;
         try {
             dir = getPicturesFolder();
         } catch (IOException e) {
             Toast.makeText(this, R.string.screenshot_failed_message, Toast.LENGTH_SHORT).show();
             Log.w(getTag(), "Getting folder for storing pictures failed.");
-            return false;
+            return;
         }
         String prefix = new SimpleDateFormat("yyyyMMdd-", Locale.US).format(new Date());
         int index = 1;
@@ -373,30 +364,10 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
             FileOutputStream out = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
             Toast.makeText(this, R.string.screenshot_success_message, Toast.LENGTH_SHORT).show();
-            return true;
         } catch (IOException ignored) {
             Toast.makeText(this, R.string.screenshot_failed_message, Toast.LENGTH_SHORT).show();
             Log.w(getTag(), "Writing the picture to file failed.");
-            return false;
         }
-    }
-
-    private void applySpringAnimation(Bitmap bitmap) {
-        SpringSystem springSystem = SpringSystem.create();
-        Spring spring = springSystem.createSpring();
-        spring.addListener(new SimpleSpringListener() {
-            @Override
-            public void onSpringUpdate(Spring spring) {
-                float scale = (float) SpringUtil.mapValueFromRangeToRange(spring.getCurrentValue(), 0, 1, 1, 0.5);
-                scaleScreenShotView(scale);
-            }
-        });
-        spring.setEndValue(1);
-        // TODO: 2018/9/14 Handle memory leak
-        mHandler.postDelayed(() -> spring.setEndValue(0), 1400);
-        setScreenShotView(bitmap);
-        // TODO: 2018/9/14 Handle memory leak
-        mHandler.postDelayed(() -> setScreenShotView(null), 3000);
     }
 
     private void connect(CircallToken token) {
