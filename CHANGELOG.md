@@ -5,10 +5,9 @@ Change Log
 ## Version 0.11.1
 _2019-01-08_
 
-*   **Important Change**: [CredentialFailException](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/base/credential/CredentialFailException.html) is deprecated , use [New CredentialFailException](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/authentication/credential/CredentialFailException.html) instead.
-*   **Important Change**: [Identity](https://straas.gi
-thub.io/StraaS-android-sdk-sample/io/straas/android/sdk/base/identity/Identity.html) is deprecated , use [New Identity](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/authentication/identity/Identity.html) instead.
-* chore: Remove import of [Android v4 core utils library](https://developer.android.com/topic/libraries/support-library/packages#v4-core-utils).
+*   **Important Change**: [CredentialFailException](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/base/credential/CredentialFailException.html) is deprecated, use [New CredentialFailException](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/authentication/credential/CredentialFailException.html) instead.
+*   **Important Change**: [Identity](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/base/identity/Identity.html) is deprecated, use [New Identity](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/authentication/identity/Identity.html) instead.
+*   chore: Remove import of [Android v4 core utils library](https://developer.android.com/topic/libraries/support-library/packages#v4-core-utils).
 *   straas-circall
     *   fix: Connection fails issue.
 
