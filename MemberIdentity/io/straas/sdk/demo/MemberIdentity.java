@@ -1,6 +1,6 @@
 package io.straas.sdk.demo;
 
-import io.straas.android.sdk.base.identity.Identity;
+import io.straas.android.sdk.authentication.identity.Identity;
 
 public class MemberIdentity {
     /**
