@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -37,12 +38,18 @@ public class StreamingFiltersActivity extends AppCompatActivity {
     };
     private static final int STREAM_PERMISSION_REQUEST = 1;
 
+    private static final float MAX_BRIGHTNESS = 1.0f;
+    private static final float MIN_BRIGHTNESS = 0.0f;
+    private static final float MAX_SKIN_SMOOTHNESS = 2.0f;
+    private static final float MIN_SKIN_SMOOTHNESS = 0.0f;
+
     private StreamManager mStreamManager;
     private CameraController mCameraController;
     private TextureView mTextureView;
     private Button mSwitchCameraButton;
     private ToggleButton mSkinBeautifyToggleButton;
     private SkinBeautifyFilter mSkinBeautifyFilter;
+    private SeekBar mBrightnessSeekBar, mSkinSmoothnessSeekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +79,7 @@ public class StreamingFiltersActivity extends AppCompatActivity {
             Log.e(TAG, "Generate SkinBeautifyFilter failed: " + e);
         }
 
+        initSeekBars();
         checkPermissions();
     }
 
@@ -174,5 +182,72 @@ public class StreamingFiltersActivity extends AppCompatActivity {
         mStreamManager.setFilter(mSkinBeautifyToggleButton.isChecked()
                 ? mSkinBeautifyFilter
                 : null);
+        mBrightnessSeekBar.setEnabled(mSkinBeautifyToggleButton.isChecked());
+        mSkinSmoothnessSeekBar.setEnabled(mSkinBeautifyToggleButton.isChecked());
+    }
+
+    private void initSeekBars() {
+        mBrightnessSeekBar = findViewById(R.id.seek_bar_brightness);
+        mBrightnessSeekBar.setEnabled(false);
+        mSkinSmoothnessSeekBar = findViewById(R.id.seek_bar_skin_smoothness);
+        mSkinSmoothnessSeekBar.setEnabled(false);
+
+        if (mSkinBeautifyFilter == null) {
+            return;
+        }
+        mBrightnessSeekBar.setProgress((int) mapValueFromRangeToRange(
+                mSkinBeautifyFilter.getBrightnessLevel(), MIN_BRIGHTNESS, MAX_BRIGHTNESS,
+                0, mBrightnessSeekBar.getMax()));
+        mBrightnessSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    mSkinBeautifyFilter.setBrightnessLevel(
+                            mapValueFromRangeToRange(progress, 0, seekBar.getMax(),
+                                    MIN_BRIGHTNESS, MAX_BRIGHTNESS));
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        mSkinSmoothnessSeekBar.setProgress((int) mapValueFromRangeToRange(
+                mSkinBeautifyFilter.getSkinSmoothnessLevel(), MIN_SKIN_SMOOTHNESS, MAX_SKIN_SMOOTHNESS,
+                0, mSkinSmoothnessSeekBar.getMax()));
+        mSkinSmoothnessSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    mSkinBeautifyFilter.setSkinSmoothnessLevel(
+                            mapValueFromRangeToRange(progress, 0, seekBar.getMax(),
+                                    MIN_SKIN_SMOOTHNESS, MAX_SKIN_SMOOTHNESS));
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
+    private float mapValueFromRangeToRange(float value, float oldMin, float oldMax, float newMin, float newMax) {
+        float oldRangeSize = oldMax - oldMin;
+        float newRangeSize = newMax - newMin;
+        float oldValueScale = (value - oldMin) / oldRangeSize;
+        return newMin + newRangeSize * oldValueScale;
     }
 }

@@ -37,4 +37,40 @@
             android:onClick="skinBeautify"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/container_brightness_seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_above="@+id/container_skin_smoothness_seek_bar">
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="Brightness"
+            android:gravity="center"/>
+        <SeekBar
+            android:id="@+id/seek_bar_brightness"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/container_skin_smoothness_seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true">
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="Smoothness"
+            android:gravity="center"/>
+        <SeekBar
+            android:id="@+id/seek_bar_skin_smoothness"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"/>
+    </LinearLayout>
+
 </RelativeLayout>
