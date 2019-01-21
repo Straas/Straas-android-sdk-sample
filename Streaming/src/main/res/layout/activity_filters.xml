@@ -27,6 +27,14 @@
             android:text="@string/switch_camera"
             android:enabled="false"
             android:onClick="switchCamera"/>
+        <ToggleButton
+            android:id="@+id/skin_beautify"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="@string/skin_beautify"
+            android:textOff="@string/skin_beautify"
+            android:enabled="false"
+            android:onClick="skinBeautify"/>
     </LinearLayout>
 
 </RelativeLayout>

@@ -11,6 +11,7 @@ import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -22,6 +23,8 @@ import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.streaming.CameraController;
 import io.straas.android.sdk.streaming.StreamConfig;
 import io.straas.android.sdk.streaming.StreamManager;
+import io.straas.android.sdk.streaming.error.StreamException;
+import io.straas.android.sdk.streaming.filter.SkinBeautifyFilter;
 import io.straas.sdk.demo.MemberIdentity;
 
 public class StreamingFiltersActivity extends AppCompatActivity {
@@ -38,6 +41,8 @@ public class StreamingFiltersActivity extends AppCompatActivity {
     private CameraController mCameraController;
     private TextureView mTextureView;
     private Button mSwitchCameraButton;
+    private ToggleButton mSkinBeautifyToggleButton;
+    private SkinBeautifyFilter mSkinBeautifyFilter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,12 @@ public class StreamingFiltersActivity extends AppCompatActivity {
         mTextureView.setKeepScreenOn(true);
 
         mSwitchCameraButton = findViewById(R.id.switch_camera);
+        mSkinBeautifyToggleButton = findViewById(R.id.skin_beautify);
+        try {
+            mSkinBeautifyFilter = new SkinBeautifyFilter(0.5f, 0.5f);
+        } catch (StreamException.InternalException e) {
+            Log.e(TAG, "Generate SkinBeautifyFilter failed: " + e);
+        }
 
         checkPermissions();
     }
@@ -147,11 +158,21 @@ public class StreamingFiltersActivity extends AppCompatActivity {
 
     private void enableAllButtons() {
         mSwitchCameraButton.setEnabled(true);
+        mSkinBeautifyToggleButton.setEnabled(mSkinBeautifyFilter != null);
     }
 
     public void switchCamera(View view) {
         if (mCameraController != null) {
             mCameraController.switchCamera();
         }
+    }
+
+    public void skinBeautify(View view) {
+        if (mStreamManager == null || mSkinBeautifyFilter == null) {
+            return;
+        }
+        mStreamManager.setFilter(mSkinBeautifyToggleButton.isChecked()
+                ? mSkinBeautifyFilter
+                : null);
     }
 }
