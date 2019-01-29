@@ -5,6 +5,7 @@
     <string name="switch_camera">Switch</string>
     <string name="flash">Flash</string>
     <string name="filter">Filter</string>
+    <string name="skin_beautify">Skin beautify</string>
 
     <!-- Screencast Streaming -->
     <string name="hint_screencast_support_api_level">Only support Android 5.0 above for screencast</string>

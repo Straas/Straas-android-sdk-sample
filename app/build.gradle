@@ -15,6 +15,8 @@ dependencies {
     // use this if don't want to include video ads
     //compile "io.straas.android.sdk:straas-media-core:${STRAAS_SDK_VERSION}"
 
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta1'
+
     // optional, only for danmaku effect demo
     implementation 'com.github.ctiao:DanmakuFlameMaster:0.8.3'
 
