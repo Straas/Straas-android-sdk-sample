@@ -19,3 +19,4 @@ io.straas.android.sdk.streaming.error
 io.straas.android.sdk.streaming.filter
 io.straas.android.sdk.streaming.interfaces
 io.straas.android.sdk.streaming.screencast
+org.webrtc
