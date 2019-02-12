@@ -2,6 +2,15 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.11.3
+_2019-02-12_
+
+*   straas-circall
+    *   feat: Internal library upgrade.
+    *   feat: `Alpha` Support more device CPUs from different vendors.
+    *   fix: Race condition between CircallManagers.
+
+
 ## Version 0.11.2
 _2019-01-29_
 
