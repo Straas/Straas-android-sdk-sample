@@ -428,7 +428,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                     setCustomDvrPlaybackAvailable(View.inflate(mThemeContext, R.layout.dvr_playback_available, null));
                 }
 
-                handleMediaSessionExtra(mMediaExtras, true);
+                handleBroadcastStateV2(mMediaExtras, true);
             } else {
                 MediaControllerCompat controller = MediaControllerCompat.getMediaController(mFragmentActivity);
                 if (controller != null) {
@@ -506,7 +506,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 if (mIsLive) {
                     Bundle mediaExtras = (mMediaExtras != null) ? mMediaExtras : getMediaControllerCompat().getExtras();
 
-                    handleMediaSessionExtra(mediaExtras, true);
+                    handleBroadcastStateV2(mediaExtras, true);
                 }
                 if (getKeepScreenOn()) {
                     setKeepScreenOn(false);
@@ -604,7 +604,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                             Bundle mediaExtras = (mMediaExtras != null) ? mMediaExtras :
                                     getMediaControllerCompat().getExtras();
 
-                            handleMediaSessionExtra(mediaExtras, true);
+                            handleBroadcastStateV2(mediaExtras, true);
                         }
                         switchToReplay();
                         if (getKeepScreenOn()) {
@@ -639,7 +639,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                     (mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_STOPPED ||
                             mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_NONE ||
                             mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_ERROR);
-            handleMediaSessionExtra(extras, isStopPlay);
+            handleBroadcastStateV2(extras, isStopPlay);
         }
 
         private boolean isPosterAddedIntoVideoContainer() {
@@ -671,7 +671,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         }
     }
 
-    private void handleMediaSessionExtra(Bundle extras, boolean shouldShowStateUi) {
+    private void handleBroadcastStateV2(Bundle extras, boolean shouldShowStateUi) {
         int broadcastStateV2 = extras.getInt(LIVE_EXTRA_BROADCAST_STATE_V2, BROADCAST_STATE_UNKNOWN);
         if (broadcastStateV2 != BROADCAST_STATE_STARTED && !shouldShowStateUi) {
             return;
