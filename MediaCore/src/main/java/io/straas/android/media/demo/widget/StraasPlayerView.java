@@ -157,7 +157,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
     private FragmentActivity mFragmentActivity;
 
-    private Bundle mLiveBundle;
+    private Bundle mMediaExtras;
     private MediaMetadataCompat mLastMediaMetadata;
     private PlaybackStateCompat mLastPlaybackStateCompat;
     private StraasMediaCore mStraasMediaCore;
@@ -421,13 +421,13 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 boolean isLiveSeekable = metadata.getBundle().getBoolean(VideoCustomMetadata.LIVE_DVR_ENABLED) &&
                         !metadata.getBundle().getBoolean(VideoCustomMetadata.CUSTOM_METADATA_IS_LIVE_LOW_LATENCY_FIRST);
                 switchMode(true, isLiveSeekable);
-                Bundle liveBundle = (mLiveBundle != null) ? mLiveBundle :
+                Bundle mMediaExtras = (StraasPlayerView.this.mMediaExtras != null) ? StraasPlayerView.this.mMediaExtras :
                         getMediaControllerCompat().getExtras();
                 if (isLiveSeekable) {
                     setCustomDvrPlaybackAvailable(View.inflate(mThemeContext, R.layout.dvr_playback_available, null));
                 }
 
-                handleMediaSessionExtra(liveBundle, true);
+                handleMediaSessionExtra(mMediaExtras, true);
             } else {
                 MediaControllerCompat controller = MediaControllerCompat.getMediaController(mFragmentActivity);
                 if (controller != null) {
@@ -503,9 +503,9 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 @ErrorReason.ErrorReasonType String errorType = state.getErrorMessage().toString();
                 mErrorMessageListener.onError(mErrorMessageTextView, errorType);
                 if (mIsLive) {
-                    Bundle liveBundle = (mLiveBundle != null) ? mLiveBundle : getMediaControllerCompat().getExtras();
+                    Bundle mediaExtras = (mMediaExtras != null) ? mMediaExtras : getMediaControllerCompat().getExtras();
 
-                    handleMediaSessionExtra(liveBundle, true);
+                    handleMediaSessionExtra(mediaExtras, true);
                 }
                 if (getKeepScreenOn()) {
                     setKeepScreenOn(false);
@@ -600,10 +600,10 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                     case PlaybackStateCompat.STATE_STOPPED:
                         mCanToggleControllerUi = true;
                         if (mIsLive) {
-                            Bundle liveBundle = (mLiveBundle != null) ? mLiveBundle :
+                            Bundle mediaExtras = (mMediaExtras != null) ? mMediaExtras :
                                     getMediaControllerCompat().getExtras();
 
-                            handleMediaSessionExtra(liveBundle, true);
+                            handleMediaSessionExtra(mediaExtras, true);
                         }
                         switchToReplay();
                         if (getKeepScreenOn()) {
@@ -630,7 +630,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         public void onExtrasChanged(Bundle extras) {
             handleTextTrackExtra(extras);
 
-            mLiveBundle = extras;
+            mMediaExtras = extras;
             if (!mIsLive) {
                 return;
             }
@@ -1698,8 +1698,8 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     }
 
     private void switchToReplay() {
-        Bundle liveBundle = (mLiveBundle != null) ? mLiveBundle : getMediaControllerCompat().getExtras();
-        int broadcastStateV2 = liveBundle.getInt(LIVE_EXTRA_BROADCAST_STATE_V2, BROADCAST_STATE_UNKNOWN);
+        Bundle mediaExtras = (mMediaExtras != null) ? mMediaExtras : getMediaControllerCompat().getExtras();
+        int broadcastStateV2 = mediaExtras.getInt(LIVE_EXTRA_BROADCAST_STATE_V2, BROADCAST_STATE_UNKNOWN);
         if (broadcastStateV2 == BROADCAST_STATE_DVR_PLAYBACK_AVAILABLE && mIsLiveSeekable) {
             setDvrPlaybackAvailableVisibility(VISIBLE);
             refreshLiveDvrUiStatus(PLAYBACK_MODE_LIVE_DVR);
