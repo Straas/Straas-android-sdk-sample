@@ -439,25 +439,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
             String title = metadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE);
             mChannelNameMetadataListener.onMetaChanged(mChannelNameTextView, title);
-
-            if (!isPosterAddedIntoVideoContainer()) {
-                getVideoContainer().addView(mImagePoster, getVideoContainer().getChildCount());
-            }
-            if (metadata.getBundle().containsKey(StraasMediaCore.KEY_VIDEO_RENDER_TYPE)
-                    && metadata.getBundle().getInt(StraasMediaCore.KEY_VIDEO_RENDER_TYPE) == StraasMediaCore.VIDEO_RENDER_TYPE_NONE) {
-                mImagePoster.setVisibility(VISIBLE);
-                boolean hasAlbumArtUri = metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI) != null;
-                Glide.with(getThemeContext())
-                        .setDefaultRequestOptions(new RequestOptions()
-                                .placeholder(android.R.color.black))
-                        .load(hasAlbumArtUri
-                                ? metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI)
-                                : ContextCompat.getDrawable(mImagePoster.getContext(),
-                                R.drawable.vod_thumbnail_audio))
-                        .into(mImagePoster);
-            } else {
-                mImagePoster.setVisibility(GONE);
-            }
         }
 
         @Override
@@ -634,6 +615,27 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
             long summaryViewer = extras.getLong(VideoCustomMetadata.PLAY_COUNT_SUM);
             mSummaryViewerMetadataListener.onMetaChanged(mSummaryViewerTextView, summaryViewer);
+
+            if (!isPosterAddedIntoVideoContainer()) {
+                getVideoContainer().addView(mImagePoster, getVideoContainer().getChildCount());
+            }
+            if (extras.containsKey(StraasMediaCore.KEY_VIDEO_RENDER_TYPE)
+                    && extras.getInt(StraasMediaCore.KEY_VIDEO_RENDER_TYPE) == StraasMediaCore.VIDEO_RENDER_TYPE_NONE) {
+                mImagePoster.setVisibility(VISIBLE);
+                String albumUri = mLastMediaMetadata != null
+                        ? mLastMediaMetadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI)
+                        : null;
+                Glide.with(getThemeContext())
+                        .setDefaultRequestOptions(new RequestOptions()
+                                .placeholder(android.R.color.black))
+                        .load(!TextUtils.isEmpty(albumUri)
+                                ? albumUri
+                                : ContextCompat.getDrawable(mImagePoster.getContext(),
+                                R.drawable.vod_thumbnail_audio))
+                        .into(mImagePoster);
+            } else {
+                mImagePoster.setVisibility(GONE);
+            }
         }
 
         private boolean isPosterAddedIntoVideoContainer() {
