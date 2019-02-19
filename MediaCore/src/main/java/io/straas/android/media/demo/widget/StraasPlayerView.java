@@ -438,10 +438,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             }
 
             String title = metadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE);
-            long summaryViewer = metadata.getBundle().getLong(VideoCustomMetadata.PLAY_COUNT_SUM);
-
             mChannelNameMetadataListener.onMetaChanged(mChannelNameTextView, title);
-            mSummaryViewerMetadataListener.onMetaChanged(mSummaryViewerTextView, summaryViewer);
 
             if (!isPosterAddedIntoVideoContainer()) {
                 getVideoContainer().addView(mImagePoster, getVideoContainer().getChildCount());
@@ -634,6 +631,9 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 }
                 switchMode(false, false);
             }
+
+            long summaryViewer = extras.getLong(VideoCustomMetadata.PLAY_COUNT_SUM);
+            mSummaryViewerMetadataListener.onMetaChanged(mSummaryViewerTextView, summaryViewer);
         }
 
         private boolean isPosterAddedIntoVideoContainer() {
