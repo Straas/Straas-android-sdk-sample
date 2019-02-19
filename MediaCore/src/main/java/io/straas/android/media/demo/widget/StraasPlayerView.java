@@ -418,25 +418,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             }
 
             mIsLive = mediaId.startsWith(StraasMediaCore.LIVE_ID_PREFIX);
-            if (mIsLive) {
-                boolean isLiveSeekable = metadata.getBundle().getBoolean(VideoCustomMetadata.LIVE_DVR_ENABLED) &&
-                        !metadata.getBundle().getBoolean(VideoCustomMetadata.CUSTOM_METADATA_IS_LIVE_LOW_LATENCY_FIRST);
-                switchMode(true, isLiveSeekable);
-                Bundle mMediaExtras = (StraasPlayerView.this.mMediaExtras != null) ? StraasPlayerView.this.mMediaExtras :
-                        getMediaControllerCompat().getExtras();
-                if (isLiveSeekable) {
-                    setCustomDvrPlaybackAvailable(View.inflate(mThemeContext, R.layout.dvr_playback_available, null));
-                }
-
-                handleBroadcastStateV2(mMediaExtras, true);
-            } else {
-                MediaControllerCompat controller = MediaControllerCompat.getMediaController(mFragmentActivity);
-                if (controller != null) {
-                    MediaControllerCompatHelper.setPlaybackSpeed(controller, mCurrentSpeed);
-                }
-                switchMode(false, false);
-
-            }
 
             if (mLastQueueList != null) {
                 if (mLastPlaybackStateCompat.getActiveQueueItemId() == 0) {
@@ -632,14 +613,27 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             handleTextTrackExtra(extras);
 
             mMediaExtras = extras;
-            if (!mIsLive) {
-                return;
+
+            if (mIsLive) {
+                boolean isLiveSeekable = extras.getBoolean(VideoCustomMetadata.LIVE_DVR_ENABLED) &&
+                        !extras.getBoolean(VideoCustomMetadata.CUSTOM_METADATA_IS_LIVE_LOW_LATENCY_FIRST);
+                switchMode(true, isLiveSeekable);
+                if (isLiveSeekable) {
+                    setCustomDvrPlaybackAvailable(View.inflate(mThemeContext, R.layout.dvr_playback_available, null));
+                }
+
+                boolean isStopPlay = mLastPlaybackStateCompat != null &&
+                        (mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_STOPPED ||
+                                mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_NONE ||
+                                mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_ERROR);
+                handleBroadcastStateV2(extras, isStopPlay);
+            } else {
+                MediaControllerCompat controller = MediaControllerCompat.getMediaController(mFragmentActivity);
+                if (controller != null) {
+                    MediaControllerCompatHelper.setPlaybackSpeed(controller, mCurrentSpeed);
+                }
+                switchMode(false, false);
             }
-            boolean isStopPlay = mLastPlaybackStateCompat != null &&
-                    (mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_STOPPED ||
-                            mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_NONE ||
-                            mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_ERROR);
-            handleBroadcastStateV2(extras, isStopPlay);
         }
 
         private boolean isPosterAddedIntoVideoContainer() {
