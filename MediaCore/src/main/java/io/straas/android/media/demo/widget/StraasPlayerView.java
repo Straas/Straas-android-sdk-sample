@@ -417,7 +417,8 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 return;
             }
 
-            if (mediaId.startsWith(StraasMediaCore.LIVE_ID_PREFIX)) {
+            mIsLive = mediaId.startsWith(StraasMediaCore.LIVE_ID_PREFIX);
+            if (mIsLive) {
                 boolean isLiveSeekable = metadata.getBundle().getBoolean(VideoCustomMetadata.LIVE_DVR_ENABLED) &&
                         !metadata.getBundle().getBoolean(VideoCustomMetadata.CUSTOM_METADATA_IS_LIVE_LOW_LATENCY_FIRST);
                 switchMode(true, isLiveSeekable);
@@ -1711,7 +1712,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     }
 
     private void switchMode(boolean isLive, boolean isLiveSeekable) {
-        mIsLive = isLive;
         mIsLiveSeekable = isLiveSeekable;
 
         setPlaybackMode(isLive ? PLAYBACK_MODE_LIVE_EDGE : PLAYBACK_MODE_VOD);
