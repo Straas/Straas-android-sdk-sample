@@ -419,24 +419,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
             mIsLive = mediaId.startsWith(StraasMediaCore.LIVE_ID_PREFIX);
 
-            if (mLastQueueList != null) {
-                if (mLastPlaybackStateCompat.getActiveQueueItemId() == 0) {
-                    if (mColumnPrevious.getVisibility() != GONE) {
-                        mColumnPrevious.setVisibility(GONE);
-                    }
-                } else if (mColumnPrevious.getVisibility() != VISIBLE) {
-                    mColumnPrevious.setVisibility(VISIBLE);
-                }
-
-                if (mLastPlaybackStateCompat.getActiveQueueItemId() == mLastQueueList.size() - 1) {
-                    if (mColumnNext.getVisibility() != GONE) {
-                        mColumnNext.setVisibility(GONE);
-                    }
-                } else if (mColumnNext.getVisibility() != VISIBLE) {
-                    mColumnNext.setVisibility(VISIBLE);
-                }
-            }
-
             String title = metadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE);
             mChannelNameMetadataListener.onMetaChanged(mChannelNameTextView, title);
         }
@@ -458,6 +440,8 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             if (mLastPlaybackStateCompat == null && mTextTrackView != null) {
                 MediaControllerCompatHelper.setCaptionEnable(getMediaControllerCompat(), true);
             }
+            boolean resetPlayListUi = mLastPlaybackStateCompat != null &&
+                    state.getActiveQueueItemId() == mLastPlaybackStateCompat.getActiveQueueItemId();
             mLastPlaybackStateCompat = state;
             if (!TextUtils.isEmpty(state.getErrorMessage())) {
                 @ErrorReason.ErrorReasonType String errorType = state.getErrorMessage().toString();
@@ -475,6 +459,10 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
             if (mColumnErrorMessage.getVisibility() != GONE) {
                 setErrorMessageVisibility(GONE);
+            }
+
+            if (resetPlayListUi) {
+                resetPlayListUi();
             }
 
             if (state.getState() == PlaybackStateCompat.STATE_PLAYING) {
@@ -642,6 +630,26 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             return getVideoContainer().getChildAt(getVideoContainer().getChildCount() - 1) == mImagePoster;
         }
     };
+
+    private void resetPlayListUi() {
+        if (mLastQueueList != null) {
+            if (mLastPlaybackStateCompat.getActiveQueueItemId() == 0) {
+                if (mColumnPrevious.getVisibility() != GONE) {
+                    mColumnPrevious.setVisibility(GONE);
+                }
+            } else if (mColumnPrevious.getVisibility() != VISIBLE) {
+                mColumnPrevious.setVisibility(VISIBLE);
+            }
+
+            if (mLastPlaybackStateCompat.getActiveQueueItemId() == mLastQueueList.size() - 1) {
+                if (mColumnNext.getVisibility() != GONE) {
+                    mColumnNext.setVisibility(GONE);
+                }
+            } else if (mColumnNext.getVisibility() != VISIBLE) {
+                mColumnNext.setVisibility(VISIBLE);
+            }
+        }
+    }
 
     private void handleTextTrackExtra(Bundle extras) {
         if (mTextTrackView == null) {
