@@ -348,7 +348,6 @@ public class OperationActivity extends AppCompatActivity {
                     ", Description: " + metadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_DESCRIPTION) +
                     ", Thumbnail: " + metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI) +
                     ", Created at: " + metadata.getString(MediaMetadataCompat.METADATA_KEY_DATE) +
-                    ", Views: " + metadata.getBundle().getLong(VideoCustomMetadata.PLAY_COUNT_SUM) +
                     ", Duration: " + metadata.getLong(MediaMetadataCompat.METADATA_KEY_DURATION));
         }
 
