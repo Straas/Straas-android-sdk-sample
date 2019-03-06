@@ -31,6 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -42,6 +43,7 @@ import io.straas.android.sdk.messaging.ChatMode;
 import io.straas.android.sdk.messaging.ChatroomManager;
 import io.straas.android.sdk.messaging.ChatroomState;
 import io.straas.android.sdk.messaging.Message;
+import io.straas.android.sdk.messaging.Role;
 import io.straas.android.sdk.messaging.User;
 import io.straas.android.sdk.messaging.demo.widget.BackHandleEditText;
 import io.straas.android.sdk.messaging.demo.widget.BackHandleEditText.OnBackPressListener;
@@ -106,11 +108,29 @@ public class ECommerceActivity extends AppCompatActivity {
     }
 
     public void triggerInput(View view) {
-        if (!mEverSetName) {
-            showSetUserNameDialog();
-        } else {
-            showKeyboard();
+        User currentUser = mChatroomOutputView.getChatroomManager().getCurrentUser();
+        switch (mChatroomOutputView.getChatroomManager().getChatMode()) {
+            case ALL:
+                if (currentUser.isGuest() && !mEverSetName) {
+                    showSetUserNameDialog();
+                    return;
+                }
+                break;
+            case LOGIN:
+                if (currentUser.isGuest()) {
+                    Toast.makeText(this, R.string.hint_sign_in, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                break;
+            case ANCHOR:
+                Role role = currentUser.getRole();
+                if (role == Role.NORMAL || role == Role.BLOCKED || role == Role.UNKNOWN) {
+                    Toast.makeText(this, R.string.hint_no_permission, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                break;
         }
+        showKeyboard();
     }
 
     public void showKeyboard() {
