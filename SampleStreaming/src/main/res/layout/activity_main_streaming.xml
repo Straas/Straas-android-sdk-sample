@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/activity_main"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/black"
+    tools:context="io.straas.android.sdk.streaming.demo.MainActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextureView
+        android:id="@+id/preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:id="@+id/operation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/trigger"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/start"
+            android:enabled="false"
+            android:onClick="trigger"/>
+        <Button
+            android:id="@+id/switch_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/switch_camera"
+            android:enabled="false"
+            android:onClick="switchCamera"/>
+
+        <Button
+            android:id="@+id/flash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/flash"
+            android:enabled="false"
+            android:onClick="flash"/>
+
+        <Button
+            android:id="@+id/filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/filter"
+            android:enabled="false"
+            android:onClick="changeFilter"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_stream_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/operation">
+
+        <RadioGroup
+            android:id="@+id/stream_way"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checkedButton="@+id/stream_way_live_event"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/stream_way_live_event"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stream_way_live_event" />
+
+            <RadioButton
+                android:id="@+id/stream_way_stream_key"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/stream_way_stream_key" />
+        </RadioGroup>
+
+        <EditText
+            android:id="@+id/edit_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/stream_way"
+            android:hint="@string/hint_input_title"
+            android:text="Default title" />
+
+        <FrameLayout
+            android:id="@+id/stream_key_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/stream_way"
+            android:layout_gravity="center_horizontal">
+
+            <EditText
+                android:id="@+id/edit_stream_key"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_input_stream_key"
+                android:paddingEnd="30dp"
+                android:paddingRight="30dp" />
+
+            <ImageButton
+                android:id="@+id/clear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_marginBottom="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:onClick="clearStreamKey"
+                android:padding="@dimen/abc_control_padding_material"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_remove_textfield"
+                tools:visibility="invisible" />
+
+            <ImageButton
+                android:id="@+id/scan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_marginBottom="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:onClick="scanQrcode"
+                android:padding="@dimen/abc_control_padding_material"
+                app:srcCompat="@drawable/ic_scan"
+                tools:visibility="visible" />
+        </FrameLayout>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/stream_stats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@android:color/white" />
+</RelativeLayout>

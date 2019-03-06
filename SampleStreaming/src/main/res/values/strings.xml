@@ -1,0 +1,42 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="hint_need_permission">Need permission to continue</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="switch_camera">Switch</string>
+    <string name="flash">Flash</string>
+    <string name="filter">Filter</string>
+    <string name="skin_beautify">Skin beautify</string>
+
+    <!-- Screencast Streaming -->
+    <string name="hint_screencast_support_api_level">Only support Android 5.0 above for screencast</string>
+    <string name="streaming_default_title">Default Streaming title</string>
+    <string name="streaming_title_hint">title</string>
+    <string name="streaming_default_synopsis">Default Streaming synopsis</string>
+    <string name="streaming_synopsis_hint">synopsis</string>
+    <string name="video_quality">Video Quality:</string>
+    <string name="start_screen_streaming">Start Screen Streaming</string>
+    <string name="screencast_service_title">ScreencastService title</string>
+    <string name="screencast_service_subtitle">ScreencastService subtitle</string>
+    <string name="screencast_notification_channel_id">StraasScreencast</string>
+    <string name="screencast_notification_channel_name">StraasScreencast name</string>
+    <string name="screencast_notification_channel_description">StraasScreencast description</string>
+
+    <string name="video_quality_240p">240p</string>
+    <string name="video_quality_360p">360p</string>
+    <string name="video_quality_480p">480p</string>
+    <string name="video_quality_720p">720p</string>
+
+    <!-- Streaming Statistics Report -->
+    <string name="bps">bps</string>
+    <string name="kilo_bps">Kbps</string>
+    <string name="mega_bps">Mbps</string>
+    <string name="giga_bps">Gbps</string>
+    <string name="bitrate_suffix">"<xliff:g id="number" example="123">%1$s</xliff:g> <xliff:g id="unit" example="Kbps">%2$s</xliff:g>"</string>
+    <string name="stream_stats_format">%1$s\n%2$.1f fps</string>
+
+    <string name="stream_way_live_event">live event</string>
+    <string name="stream_way_stream_key">stream key</string>
+    <string name="hint_input_title">Input live event title.</string>
+    <string name="hint_input_stream_key">Scan or paste your stream key.</string>
+    <string name="error_empty_stream_key">Stream key shouldn\'t be empty.</string>
+</resources>
