@@ -1,0 +1,28 @@
+<resources>
+    <string name="quality_auto">Auto</string>
+    <string name="quality_select">Quality</string>
+    <string name="quality_source">Source</string>
+
+    <string name="speed_select">Speed</string>
+
+    <string name="common_cancel">Cancel</string>
+
+    <string name="live" translatable="false">LIVE</string>
+
+    <string name="broadcast_state_offline">Offline</string>
+    <string name="broadcast_state_ended">Ended</string>
+    <string name="broadcast_state_wait_for_stream">Unplanned outages happened. Please wait…</string>
+    <string name="network_no_connection">Could not connect to server.</string>
+    <string name="common_error">An error occurred. Please try again later.</string>
+    <string name="sdk_out_of_date">Your SDK is out of date. Please contact the developer directly.</string>
+    <string name="developer_key_invalid">The developer key is invalid. Please contact the developer directly.</string>
+    <string name="content_no_exist">This content does not exist.</string>
+    <string name="content_no_public">Sorry, this content is not public.</string>
+    <string name="video_not_available">Sorry, this content is not available.</string>
+    <string name="common_not_available_region">Sorry, this content is not available in your region.</string>
+    <string name="access_permission_denial">No permission to access the resource.</string>
+
+    <string name="notification_channel_id">StraasPlayer</string>
+    <string name="notification_channel_name">StraasPlayer name</string>
+    <string name="notification_channel_description">StraasPlayer description</string>
+</resources>

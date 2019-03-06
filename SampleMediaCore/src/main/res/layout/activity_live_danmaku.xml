@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_live_danmu"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="io.straas.android.media.demo.LiveDanmakuActivity">
+
+    <SurfaceView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="gone"/>
+
+    <io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout
+        android:id="@+id/aspectRatioFrameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black">
+        <io.straas.android.media.demo.widget.StraasPlayerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/straas"/>
+    </io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout>
+
+    <io.straas.android.sdk.messaging.ui.ChatroomOutputView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/aspectRatioFrameLayout"
+        android:layout_above="@android:id/inputArea"
+        android:id="@+id/chat_room"/>
+    <io.straas.android.sdk.messaging.ui.ChatroomInputView
+        android:id="@android:id/inputArea"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

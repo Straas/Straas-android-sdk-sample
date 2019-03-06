@@ -1,1 +1,2 @@
 include ':app', ':circallDemo', ':MemberIdentity', ':QrCode'
+include ':SampleMediaCore'

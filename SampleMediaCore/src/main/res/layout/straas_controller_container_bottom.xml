@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottomContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="56dp"
+    android:layout_alignParentBottom="true">
+
+    <FrameLayout
+        android:id="@+id/bottomLeftColumn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:visibility="gone"
+        android:paddingBottom="8dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="8dp">
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/contentProgressBarColumn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/progress_bar_column_left_margin"
+        android:layout_marginRight="@dimen/progress_bar_column_right_margin"
+        android:visibility="gone"
+        android:layout_toRightOf="@+id/bottomLeftColumn"
+        android:layout_toLeftOf="@+id/bottomRightColumn" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:id="@+id/bottomRightColumn"
+        android:layout_alignParentRight="true">
+
+        <FrameLayout
+            android:id="@+id/bottomRightColumn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/bottomRightColumn1"
+            android:visibility="gone"
+            android:paddingBottom="8dp"
+            android:paddingRight="16dp"
+            android:paddingTop="8dp" />
+
+        <FrameLayout
+            android:id="@+id/bottomRightColumn1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:paddingRight="16dp"/>
+    </LinearLayout>
+
+</RelativeLayout>

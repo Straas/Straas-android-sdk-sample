@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:minHeight="56dp"
+    android:orientation="horizontal"
+    android:id="@+id/upContainer">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1"
+        android:gravity="center|left"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:id="@+id/channelNameColumn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_weight="1"
+            android:paddingLeft="16dp"
+            android:paddingTop="7.5dp" />
+
+        <FrameLayout
+            android:id="@+id/summaryViewerColumn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_weight="1"
+            android:paddingBottom="7.5dp"
+            android:paddingLeft="16dp"
+            android:paddingTop="3dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="top|right"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:id="@+id/customColumnTopRight2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp"/>
+
+        <FrameLayout
+            android:id="@+id/customColumnTopRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp"/>
+
+    </LinearLayout>
+
+</LinearLayout>
