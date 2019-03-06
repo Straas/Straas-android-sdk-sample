@@ -363,13 +363,11 @@ public class MainActivity extends AppCompatActivity {
         }
         if (mTriggerButton.getText().equals(getResources().getString(R.string.start))) {
             mTriggerButton.setText(getResources().getString(R.string.stop));
-            switch (mStreamWaySwitcher.getCheckedRadioButtonId()) {
-                case R.id.stream_way_live_event:
-                    createLiveEventAndStartStreaming(mTitleEdit.getText().toString());
-                    break;
-                case R.id.stream_way_stream_key:
-                    startStreamingWithStreamKey(mStreamKeyEdit.getText().toString());
-                    break;
+            int radioButtonId = mStreamWaySwitcher.getCheckedRadioButtonId();
+            if (radioButtonId == R.id.stream_way_live_event) {
+                createLiveEventAndStartStreaming(mTitleEdit.getText().toString());
+            } else if (radioButtonId == R.id.stream_way_stream_key) {
+                startStreamingWithStreamKey(mStreamKeyEdit.getText().toString());
             }
         } else {
             if (mStreamManager.getStreamState() == STATE_CONNECTING ||
@@ -426,15 +424,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void switchInputView(int checkedId) {
-        switch (checkedId) {
-            case R.id.stream_way_live_event:
-                mStreamKeyPanel.setVisibility(View.GONE);
-                mTitleEdit.setVisibility(View.VISIBLE);
-                break;
-            case R.id.stream_way_stream_key:
-                mTitleEdit.setVisibility(View.GONE);
-                mStreamKeyPanel.setVisibility(View.VISIBLE);
-                break;
+        if (checkedId == R.id.stream_way_live_event) {
+            mStreamKeyPanel.setVisibility(View.GONE);
+            mTitleEdit.setVisibility(View.VISIBLE);
+        } else if (checkedId == R.id.stream_way_stream_key) {
+            mTitleEdit.setVisibility(View.GONE);
+            mStreamKeyPanel.setVisibility(View.VISIBLE);
         }
     }
 

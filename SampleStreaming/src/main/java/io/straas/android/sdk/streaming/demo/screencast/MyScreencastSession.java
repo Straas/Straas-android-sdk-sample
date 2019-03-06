@@ -400,13 +400,11 @@ public final class MyScreencastSession implements ScreencastSession {
 
         @Override
         public void onClick(final View v) {
-            switch (v.getId()) {
-                case R.id.screencast_overlay_start:
-                    broadcastClick();
-                    break;
-                case R.id.screencast_overlay_finish:
-                    destroyService();
-                    break;
+            int id = v.getId();
+            if (id == R.id.screencast_overlay_start) {
+                broadcastClick();
+            } else if (id == R.id.screencast_overlay_finish) {
+                destroyService();
             }
         }
     };
