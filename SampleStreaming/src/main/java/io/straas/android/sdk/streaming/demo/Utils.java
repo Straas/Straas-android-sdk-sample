@@ -3,7 +3,6 @@ package io.straas.android.sdk.streaming.demo;
 import android.content.Context;
 import android.os.Build;
 
-import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.streaming.StreamStatsReport;
 
 public class Utils {

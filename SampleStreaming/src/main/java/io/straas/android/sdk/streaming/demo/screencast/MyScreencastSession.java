@@ -30,11 +30,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.streaming.LiveEventConfig;
 import io.straas.android.sdk.streaming.ScreencastStreamConfig;
 import io.straas.android.sdk.streaming.StreamManager;
 import io.straas.android.sdk.streaming.StreamStatsReport;
+import io.straas.android.sdk.streaming.demo.R;
 import io.straas.android.sdk.streaming.demo.Utils;
 import io.straas.android.sdk.streaming.error.StreamException.LiveCountLimitException;
 import io.straas.android.sdk.streaming.interfaces.EventListener;

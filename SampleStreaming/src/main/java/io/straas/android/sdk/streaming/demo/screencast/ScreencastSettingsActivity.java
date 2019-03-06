@@ -26,8 +26,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import io.straas.android.sdk.demo.identity.MemberIdentity;
-import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.streaming.StreamManager;
+import io.straas.android.sdk.streaming.demo.R;
 
 import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_LIVE_EVENT_SYNOPSIS;
 import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_LIVE_EVENT_TITLE;

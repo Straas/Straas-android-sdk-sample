@@ -33,16 +33,15 @@ import com.google.android.gms.tasks.Tasks;
 
 import java.util.ArrayList;
 
-import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.identity.MemberIdentity;
 import io.straas.android.sdk.demo.qrcode.QrcodeActivity;
 import io.straas.android.sdk.media.LiveEventListener;
-import io.straas.android.sdk.media.StraasMediaCore;
 import io.straas.android.sdk.streaming.CameraController;
 import io.straas.android.sdk.streaming.LiveEventConfig;
 import io.straas.android.sdk.streaming.StreamConfig;
 import io.straas.android.sdk.streaming.StreamManager;
 import io.straas.android.sdk.streaming.StreamStatsReport;
+import io.straas.android.sdk.streaming.demo.R;
 import io.straas.android.sdk.streaming.demo.Utils;
 import io.straas.android.sdk.streaming.demo.filter.GPUImageSupportFilter;
 import io.straas.android.sdk.streaming.demo.filter.GrayImageFilter;
@@ -51,12 +50,12 @@ import io.straas.android.sdk.streaming.error.StreamException.LiveCountLimitExcep
 import io.straas.android.sdk.streaming.interfaces.EventListener;
 import jp.co.cyberagent.android.gpuimage.GPUImageColorInvertFilter;
 
-import static io.straas.android.sdk.demo.R.id.filter;
-import static io.straas.android.sdk.demo.R.id.flash;
-import static io.straas.android.sdk.demo.R.id.switch_camera;
-import static io.straas.android.sdk.demo.R.id.trigger;
 import static io.straas.android.sdk.streaming.StreamManager.STATE_CONNECTING;
 import static io.straas.android.sdk.streaming.StreamManager.STATE_STREAMING;
+import static io.straas.android.sdk.streaming.demo.R.id.filter;
+import static io.straas.android.sdk.streaming.demo.R.id.flash;
+import static io.straas.android.sdk.streaming.demo.R.id.switch_camera;
+import static io.straas.android.sdk.streaming.demo.R.id.trigger;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -237,8 +236,8 @@ public class MainActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception error) {
-                        if (error instanceof LiveCountLimitException){
-                            String liveId = ((LiveCountLimitException)error).getLiveId();
+                        if (error instanceof LiveCountLimitException) {
+                            String liveId = ((LiveCountLimitException) error).getLiveId();
                             Log.d(TAG, "Existing live event: " + liveId);
                             startStreamingWithLiveId(liveId);
                         } else {
@@ -295,12 +294,12 @@ public class MainActivity extends AppCompatActivity {
                                 "a new one.");
                         mStreamManager.endLiveEvent(liveId).addOnSuccessListener(
                                 new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d(TAG, "End live event succeeds: " + liveId);
-                                createLiveEventAndStartStreaming(mTitleEdit.getText().toString());
-                            }
-                        });
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "End live event succeeds: " + liveId);
+                                        createLiveEventAndStartStreaming(mTitleEdit.getText().toString());
+                                    }
+                                });
                     } else {
                         Log.e(TAG, "Start streaming fails " + error);
                         showError(error);
@@ -315,18 +314,18 @@ public class MainActivity extends AppCompatActivity {
     private void startStreamingWithStreamKey(String streamKey) {
         mStreamManager.startStreamingWithStreamKey(streamKey).addOnCompleteListener(
                 new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "Start streaming succeeds");
-                } else {
-                    Log.e(TAG, "Start streaming fails " + task.getException());
-                    showError(task.getException());
-                    mTriggerButton.setText(getResources().getString(R.string.start));
-                    mStreamStats.setText("");
-                }
-            }
-        });
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "Start streaming succeeds");
+                        } else {
+                            Log.e(TAG, "Start streaming fails " + task.getException());
+                            showError(task.getException());
+                            mTriggerButton.setText(getResources().getString(R.string.start));
+                            mStreamStats.setText("");
+                        }
+                    }
+                });
     }
 
     private void stopStreaming() {
@@ -398,7 +397,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void changeFilter(View view) {
         if (mStreamManager != null) {
-            switch(mFilter) {
+            switch (mFilter) {
                 case 0:
                     mFilter += mStreamManager.setFilter(new GrayImageFilter()) ? 1 : 0;
                     break;
@@ -492,6 +491,7 @@ public class MainActivity extends AppCompatActivity {
                 setStreamWidigetVisibility(View.VISIBLE);
             }
         }
+
         @Override
         public void onError(Exception error, @Nullable String liveId) {
             Log.e(TAG, "onError " + error);
