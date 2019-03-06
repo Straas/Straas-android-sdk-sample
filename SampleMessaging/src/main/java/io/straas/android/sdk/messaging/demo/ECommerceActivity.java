@@ -36,7 +36,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.Random;
 
-import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.identity.MemberIdentity;
 import io.straas.android.sdk.messaging.ChatMetadata;
 import io.straas.android.sdk.messaging.ChatMode;

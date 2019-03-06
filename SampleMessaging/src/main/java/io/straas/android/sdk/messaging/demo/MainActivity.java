@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.identity.MemberIdentity;
 import io.straas.android.sdk.messaging.ChatMetadata;
 import io.straas.android.sdk.messaging.ChatMode;
