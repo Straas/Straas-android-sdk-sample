@@ -30,7 +30,6 @@ import java.util.List;
 
 import io.straas.android.media.demo.widget.StraasPlayerView;
 import io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout;
-import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.identity.MemberIdentity;
 import io.straas.android.sdk.media.ImaHelper;
 import io.straas.android.sdk.media.StraasMediaCore;

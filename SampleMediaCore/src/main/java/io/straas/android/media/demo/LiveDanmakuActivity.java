@@ -16,7 +16,6 @@ import com.google.android.gms.tasks.Task;
 
 import io.straas.android.media.demo.widget.StraasPlayerView;
 import io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout;
-import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.media.StraasMediaCore;
 import io.straas.android.sdk.messaging.ChatroomManager;
 import io.straas.android.sdk.messaging.ui.ChatroomInputView;

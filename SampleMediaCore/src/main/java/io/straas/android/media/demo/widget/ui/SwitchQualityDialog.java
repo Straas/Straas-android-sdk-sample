@@ -18,8 +18,8 @@ import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.straas.android.media.demo.R;
 import io.straas.android.media.demo.Utils;
-import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.media.StraasMediaCore;
 
 import static android.support.v7.appcompat.R.attr.alertDialogStyle;

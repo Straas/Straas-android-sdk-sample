@@ -18,9 +18,9 @@ import java.lang.ref.WeakReference;
 import java.util.Formatter;
 import java.util.Locale;
 
+import io.straas.android.media.demo.R;
 import io.straas.android.media.demo.widget.PlayerControl;
 import io.straas.android.media.demo.widget.StraasPlayerView.PlaybackMode;
-import io.straas.android.sdk.demo.R;
 
 import static io.straas.android.media.demo.widget.StraasPlayerView.PLAYBACK_MODE_LIVE_DVR;
 import static io.straas.android.media.demo.widget.StraasPlayerView.PLAYBACK_MODE_LIVE_EDGE;

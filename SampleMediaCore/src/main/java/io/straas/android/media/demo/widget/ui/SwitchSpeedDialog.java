@@ -13,8 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import io.straas.android.media.demo.MediaControllerCompatHelper;
-import io.straas.android.sdk.demo.R;
-import io.straas.android.sdk.media.StraasMediaCore;
+import io.straas.android.media.demo.R;
 
 import static android.support.v7.appcompat.R.attr.alertDialogStyle;
 
