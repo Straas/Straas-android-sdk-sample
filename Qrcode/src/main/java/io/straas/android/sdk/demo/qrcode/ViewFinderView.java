@@ -10,9 +10,9 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.Display;
 import android.view.View;
-
-import com.ikala.android.utils.iKalaUtils;
+import android.view.WindowManager;
 
 public class ViewFinderView extends View {
     private final Paint mPaint;
@@ -61,7 +61,7 @@ public class ViewFinderView extends View {
      */
     private synchronized Rect getFramingRect() {
         if (mFramingRect == null) {
-            Point screenResolution = iKalaUtils.getAppUsableScreenSize(getContext());
+            Point screenResolution = getAppUsableScreenSize(getContext());
             if (screenResolution == null) {
                 // Called early, before init even finished
                 return null;
@@ -72,5 +72,13 @@ public class ViewFinderView extends View {
             mFramingRect = new Rect(leftOffset, topOffset, leftOffset + mScanMaskSize, topOffset + mScanMaskSize);
         }
         return mFramingRect;
+    }
+
+    private static Point getAppUsableScreenSize(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return size;
     }
 }
