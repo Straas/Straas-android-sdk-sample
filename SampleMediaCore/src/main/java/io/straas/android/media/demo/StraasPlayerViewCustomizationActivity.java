@@ -13,11 +13,10 @@ import android.widget.Toast;
 
 import io.straas.android.media.demo.widget.StraasPlayerView;
 import io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout;
+import io.straas.android.sdk.demo.identity.MemberIdentity;
 import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.media.ImaHelper;
 import io.straas.android.sdk.media.StraasMediaCore;
-import io.straas.android.sdk.media.VideoCustomMetadata;
-import io.straas.sdk.demo.MemberIdentity;
 
 import static io.straas.android.media.demo.widget.StraasPlayerView.CUSTOM_COLUMN_BOTTOM_LEFT;
 import static io.straas.android.media.demo.widget.StraasPlayerView.CUSTOM_COLUMN_BOTTOM_RIGHT1;

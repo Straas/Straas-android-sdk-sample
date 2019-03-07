@@ -18,13 +18,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
-    sourceSets.main {
-        java.srcDirs += ['../MemberIdentity']
-    }
 }
 
 dependencies {
+    api project(":MemberIdentity")
     api "io.straas.android.sdk:straas-extension-ima:${STRAAS_SDK_VERSION}"
     // use this if don't want to include video ads
     //api "io.straas.android.sdk:straas-media-core:${STRAAS_SDK_VERSION}"

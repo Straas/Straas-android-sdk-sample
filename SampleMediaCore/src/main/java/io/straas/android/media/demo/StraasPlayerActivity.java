@@ -34,10 +34,9 @@ import java.util.List;
 import io.straas.android.media.demo.widget.StraasPlayerView;
 import io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout;
 import io.straas.android.sdk.demo.R;
+import io.straas.android.sdk.demo.identity.MemberIdentity;
 import io.straas.android.sdk.media.ImaHelper;
 import io.straas.android.sdk.media.StraasMediaCore;
-import io.straas.android.sdk.media.VideoCustomMetadata;
-import io.straas.sdk.demo.MemberIdentity;
 
 /**
  * Demo for querying video list, click item to play.
