@@ -1,1 +1,1 @@
-include ':app', ':circallDemo'
+include ':app', ':circallDemo', ':MemberIdentity'

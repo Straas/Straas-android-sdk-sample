@@ -1,4 +1,4 @@
-package io.straas.sdk.demo;
+package io.straas.android.sdk.demo.identity;
 
 import io.straas.android.sdk.authentication.identity.Identity;
 
