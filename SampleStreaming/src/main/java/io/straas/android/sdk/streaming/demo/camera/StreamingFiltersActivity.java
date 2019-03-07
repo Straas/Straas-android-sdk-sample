@@ -21,12 +21,12 @@ import com.google.android.gms.tasks.Tasks;
 import java.util.ArrayList;
 
 import io.straas.android.sdk.demo.R;
+import io.straas.android.sdk.demo.identity.MemberIdentity;
 import io.straas.android.sdk.streaming.CameraController;
 import io.straas.android.sdk.streaming.StreamConfig;
 import io.straas.android.sdk.streaming.StreamManager;
 import io.straas.android.sdk.streaming.error.StreamException;
 import io.straas.android.sdk.streaming.filter.SkinBeautifyFilter;
-import io.straas.sdk.demo.MemberIdentity;
 
 public class StreamingFiltersActivity extends AppCompatActivity {
 
