@@ -12,7 +12,6 @@ import android.text.TextUtils;
 import android.view.View;
 
 import io.straas.android.sdk.circall.CircallToken;
-import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.databinding.ActivityTokenViewBinding;
 import io.straas.android.sdk.demo.qrcode.QrcodeActivity;
 import pub.devrel.easypermissions.AfterPermissionGranted;

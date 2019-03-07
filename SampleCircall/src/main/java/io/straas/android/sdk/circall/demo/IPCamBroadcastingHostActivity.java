@@ -17,7 +17,6 @@ import io.straas.android.sdk.circall.CircallManager;
 import io.straas.android.sdk.circall.CircallPlayerView;
 import io.straas.android.sdk.circall.CircallPublishWithUrlConfig;
 import io.straas.android.sdk.circall.CircallStream;
-import io.straas.android.sdk.demo.R;
 import io.straas.android.sdk.demo.databinding.ActivityIpcamBroadcastingHostBinding;
 
 public class IPCamBroadcastingHostActivity extends CircallDemoBaseActivity {

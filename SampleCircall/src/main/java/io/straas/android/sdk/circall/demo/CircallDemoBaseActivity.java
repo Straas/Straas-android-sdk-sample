@@ -41,7 +41,6 @@ import io.straas.android.sdk.circall.CircallPlayerView;
 import io.straas.android.sdk.circall.CircallStream;
 import io.straas.android.sdk.circall.CircallToken;
 import io.straas.android.sdk.circall.interfaces.EventListener;
-import io.straas.android.sdk.demo.R;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 

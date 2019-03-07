@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
 
-import io.straas.android.sdk.demo.R;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
 
