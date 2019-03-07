@@ -37,6 +37,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.Random;
 
 import io.straas.android.sdk.demo.R;
+import io.straas.android.sdk.demo.identity.MemberIdentity;
 import io.straas.android.sdk.messaging.ChatMetadata;
 import io.straas.android.sdk.messaging.ChatMode;
 import io.straas.android.sdk.messaging.ChatroomManager;
@@ -47,7 +48,6 @@ import io.straas.android.sdk.messaging.demo.widget.BackHandleEditText;
 import io.straas.android.sdk.messaging.demo.widget.BackHandleEditText.OnBackPressListener;
 import io.straas.android.sdk.messaging.interfaces.EventListener;
 import io.straas.android.sdk.messaging.ui.ChatroomOutputView;
-import io.straas.sdk.demo.MemberIdentity;
 import tyrantgit.widget.HeartLayout;
 
 public class ECommerceActivity extends AppCompatActivity {

@@ -10,6 +10,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import io.straas.android.sdk.demo.R;
+import io.straas.android.sdk.demo.identity.MemberIdentity;
 import io.straas.android.sdk.messaging.ChatMetadata;
 import io.straas.android.sdk.messaging.ChatMode;
 import io.straas.android.sdk.messaging.ChatroomManager;
@@ -21,7 +22,6 @@ import io.straas.android.sdk.messaging.ui.ChatroomInputView;
 import io.straas.android.sdk.messaging.ui.ChatroomOutputView;
 import io.straas.android.sdk.messaging.ui.interfaces.CredentialAuthorizeListener;
 import io.straas.android.sdk.messaging.ui.interfaces.SignInListener;
-import io.straas.sdk.demo.MemberIdentity;
 
 public class MainActivity extends AppCompatActivity {
 
