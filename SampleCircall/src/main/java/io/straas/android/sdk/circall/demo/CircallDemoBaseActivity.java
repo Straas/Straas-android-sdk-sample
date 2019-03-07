@@ -169,13 +169,11 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_screenshot:
-                if (mRemoteCircallStream == null) {
-                    showScreenshotFailedDialog(R.string.screenshot_failed_message_no_remote_stream);
-                    break;
-                }
-
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_screenshot) {
+            if (mRemoteCircallStream == null) {
+                showScreenshotFailedDialog(R.string.screenshot_failed_message_no_remote_stream);
+            } else {
                 item.setIcon(R.drawable.ic_screenshot_focus);
                 mRemoteCircallStream.getVideoFrame().addOnSuccessListener(
                         CircallDemoBaseActivity.this,
@@ -185,8 +183,7 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
                             item.setIcon(R.drawable.ic_screenshot);
                         });
                 return true;
-            default:
-                break;
+            }
         }
         return false;
     }

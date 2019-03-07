@@ -136,28 +136,26 @@ public class SingleVideoCallActivity extends CircallDemoBaseActivity {
         if (super.onMenuItemClick(item)) {
             return true;
         }
-        switch (item.getItemId()) {
-            case R.id.action_switch_camera:
-                if (mLocalCircallStream != null) {
-                    item.setIcon(R.drawable.ic_switch_camera_focus);
-                    mLocalCircallStream.switchCamera().addOnCompleteListener(success -> item.setIcon(R.drawable.ic_switch_camera));
-                }
-                return true;
-            case R.id.action_toggle_camera:
-                if (mLocalCircallStream != null) {
-                    boolean isCameraOn = mLocalCircallStream.toggleCamera();
-                    item.setIcon(isCameraOn ? R.drawable.ic_camera_on : R.drawable.ic_camera_off);
-                    mBinding.setIsLocalVideoOff(!isCameraOn);
-                }
-                return true;
-            case R.id.action_toggle_mic:
-                if (mLocalCircallStream != null) {
-                    boolean isMicOn = mLocalCircallStream.toggleMic();
-                    item.setIcon(isMicOn ? R.drawable.ic_mic_on : R.drawable.ic_mic_off );
-                }
-                return true;
-            default:
-                break;
+        int itemId = item.getItemId();
+        if (itemId == R.id.action_switch_camera) {
+            if (mLocalCircallStream != null) {
+                item.setIcon(R.drawable.ic_switch_camera_focus);
+                mLocalCircallStream.switchCamera().addOnCompleteListener(success -> item.setIcon(R.drawable.ic_switch_camera));
+            }
+            return true;
+        } else if (itemId == R.id.action_toggle_camera) {
+            if (mLocalCircallStream != null) {
+                boolean isCameraOn = mLocalCircallStream.toggleCamera();
+                item.setIcon(isCameraOn ? R.drawable.ic_camera_on : R.drawable.ic_camera_off);
+                mBinding.setIsLocalVideoOff(!isCameraOn);
+            }
+            return true;
+        } else if (itemId == R.id.action_toggle_mic) {
+            if (mLocalCircallStream != null) {
+                boolean isMicOn = mLocalCircallStream.toggleMic();
+                item.setIcon(isMicOn ? R.drawable.ic_mic_on : R.drawable.ic_mic_off );
+            }
+            return true;
         }
         return false;
     }
