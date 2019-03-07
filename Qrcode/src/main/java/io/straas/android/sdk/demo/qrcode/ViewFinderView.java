@@ -14,8 +14,6 @@ import android.view.View;
 
 import com.ikala.android.utils.iKalaUtils;
 
-import io.straas.android.sdk.demo.R;
-
 public class ViewFinderView extends View {
     private final Paint mPaint;
     @ColorInt

@@ -20,8 +20,6 @@ import com.ikala.android.utils.iKalaUtils;
 
 import java.io.IOException;
 
-import io.straas.android.sdk.demo.R;
-
 @SuppressLint("MissingPermission")
 public class QrcodeActivity extends AppCompatActivity implements Callback, OnSuccessListener<Barcode> {
     public static final int LOADER_ID = 0;
