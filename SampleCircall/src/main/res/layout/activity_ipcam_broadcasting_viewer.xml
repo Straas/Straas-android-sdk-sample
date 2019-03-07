@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+        <import type="io.straas.android.sdk.circall.demo.IPCamBroadcastingViewerActivity"/>
+        <variable
+            name="state"
+            type="int"/>
+        <variable
+            name="isSubscribing"
+            type="boolean"/>
+        <variable
+            name="showActionButtons"
+            type="boolean"/>
+    </data>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="io.straas.android.sdk.circall.demo.IPCamBroadcastingViewerActivity"
+        tools:showIn="@layout/activity_single_video_call">
+
+        <io.straas.android.sdk.circall.CircallPlayerView
+            android:id="@+id/fullscreen_video_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="onShowActionButtonsToggled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/unavailable_reason"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="19dp"
+            android:textSize="18sp"
+            android:fontFamily="sans-serif"
+            android:textStyle="normal"
+            android:textColor="#FF6D6A6A"
+            android:text="@string/no_rtsp_streaming"
+            android:visibility="@{((state == IPCamBroadcastingViewerActivity.STATE_CONNECTED) &amp;&amp; !isSubscribing) ? View.VISIBLE : View.GONE, default=gone}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="?actionBarSize"/>
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:id="@+id/toolbar"
+            android:background="#33000000"
+            app:contentInsetStart="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="1.0" >
+
+            <android.support.v7.widget.ActionMenuView
+                android:id="@+id/action_menu_view"
+                android:layout_gravity="left|center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </android.support.v7.widget.Toolbar>
+        <android.support.constraint.Group
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{showActionButtons ? View.VISIBLE : View.GONE, default=gone}"
+            app:constraint_referenced_ids="toolbar"
+            tools:visibility="visible"
+            tools:constraint_referenced_ids="toolbar"/>
+
+        <ImageView
+            android:id="@+id/screenshot"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintVertical_bias="0.5" />
+
+        <include layout="@layout/loading_spinner"
+                 app:isConnecting="@{state == IPCamBroadcastingViewerActivity.STATE_CONNECTING}"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

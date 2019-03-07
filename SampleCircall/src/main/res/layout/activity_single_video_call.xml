@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="android.view.View"/>
+        <import type="io.straas.android.sdk.circall.demo.ui.FlashHint"/>
+        <import type="io.straas.android.sdk.circall.demo.SingleVideoCallActivity"/>
+        <variable
+            name="state"
+            type="int"/>
+        <variable
+            name="isSubscribing"
+            type="boolean"/>
+        <variable
+            name="showActionButtons"
+            type="boolean"/>
+        <variable
+            name="isLocalVideoOff"
+            type="boolean"/>
+        <variable
+            name="isRemoteVideoOff"
+            type="boolean"/>
+        <variable
+            name="isRecording"
+            type="boolean"/>
+    </data>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="io.straas.android.sdk.circall.demo.SingleVideoCallActivity"
+        tools:showIn="@layout/activity_single_video_call">
+
+        <io.straas.android.sdk.circall.CircallPlayerView
+            android:id="@+id/fullscreen_video_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="onShowActionButtonsToggled"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <io.straas.android.sdk.circall.demo.ui.FlashHint
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:src="@drawable/ic_recording_dot"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintVertical_bias="0.0"
+            app:flash="@{isRecording}"/>
+
+        <include layout="@layout/remote_video_is_unavailable"
+            app:show="@{(state == SingleVideoCallActivity.STATE_CONNECTED) &amp;&amp; (!isSubscribing || isRemoteVideoOff)}"
+            app:isSubscribing="@{isSubscribing}"
+            app:isRemoteVideoOff="@{isRemoteVideoOff}"/>
+
+        <io.straas.android.sdk.circall.CircallPlayerView
+            android:id="@+id/pip_video_view"
+            android:layout_width="120dp"
+            android:layout_height="140dp"
+            android:layout_marginStart="@dimen/pip_margin"
+            android:layout_marginBottom="@dimen/pip_margin"
+            app:layout_constraintBottom_toBottomOf="@id/guideline_horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="140dp"
+            app:srcCompat="@drawable/ic_face_close"
+            android:visibility="@{isLocalVideoOff ? View.VISIBLE : View.GONE, default=gone}"
+            app:layout_constraintBottom_toBottomOf="@+id/pip_video_view"
+            app:layout_constraintLeft_toLeftOf="@+id/pip_video_view"
+            app:layout_constraintRight_toRightOf="@+id/pip_video_view"
+            app:layout_constraintTop_toTopOf="@+id/pip_video_view"/>
+
+        <android.support.constraint.Guideline
+            android:id="@+id/guideline_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="?actionBarSize"/>
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:id="@+id/toolbar"
+            android:background="#33000000"
+            app:contentInsetStart="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintVertical_bias="1.0" >
+
+            <android.support.v7.widget.ActionMenuView
+                android:id="@+id/action_menu_view"
+                android:layout_gravity="left|center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </android.support.v7.widget.Toolbar>
+
+        <ImageView
+            android:id="@+id/action_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onActionRecord"
+            android:layout_marginRight="19dp"
+            android:layout_marginBottom="15dp"
+            app:srcCompat="@{isRecording ? @drawable/ic_recording_on : @drawable/ic_recording_off}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="@dimen/abc_control_padding_material"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <android.support.constraint.Group
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{showActionButtons ? View.VISIBLE : View.GONE, default=gone}"
+            app:constraint_referenced_ids="toolbar,action_record"
+            tools:visibility="visible"
+            tools:constraint_referenced_ids="toolbar,action_record"/>
+
+        <ImageView
+            android:id="@+id/screenshot"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintVertical_bias="0.5" />
+
+        <include layout="@layout/loading_spinner"
+            app:isConnecting="@{state == SingleVideoCallActivity.STATE_CONNECTING}"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

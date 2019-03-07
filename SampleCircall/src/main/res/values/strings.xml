@@ -1,0 +1,33 @@
+<resources>
+    <string name="hint_input_circall_token">請貼上或掃描 Circall token</string>
+    <string name="hint_input_circall_publish_url">請貼上或掃描 RTSP URL</string>
+    <string name="enter">進入</string>
+    <string name="enter_room">進入線上面談室</string>
+    <string name="empty_circall_token">*請貼上Circall token</string>
+    <string name="error_circall_token">*Circall token 錯誤</string>
+
+    <string name="qr_code_need_permission">請先允許相機，才可掃描QR Code</string>
+    <string name="circall_need_permission">請先允許相機和麥可風，才可進入線上面談室</string>
+    <string name="picture_store_need_permission">無法儲存截圖，請先允許 StraaS 存取相片</string>
+
+    <string name="connecting">連線中...</string>
+    <string name="other_side_not_enter_yet">對方尚未進入面談室</string>
+    <string name="other_side_camera_is_closed">對方鏡頭關閉中</string>
+
+    <string name="screenshot_failed_title">無法拍攝螢幕擷圖</string>
+    <string name="screenshot_failed_message_no_remote_stream">需等候 remote stream 加入, 才可開始截圖</string>
+    <string name="screenshot_failed_message">截圖失敗</string>
+    <string name="screenshot_success_message">截圖成功，儲存至相簿</string>
+    <string name="recording_failed_title">無法錄影</string>
+    <string name="recording_failed_message_no_remote_stream">需等候 remote stream 加入, 才可開始進行錄影</string>
+    <string name="recording_failed_message_not_authorized">權限不足</string>
+    <string name="end_single_call_confirmation_title">離開面談室</string>
+    <string name="end_single_call_confirmation_message">你確定要離開面談室嗎？</string>
+
+    <string name="no_rtsp_streaming">尚未取得 RTSP 串流</string>
+    <string name="end_circall_confirmation_title">離開</string>
+    <string name="end_circall_confirmation_message">你確定要離開嗎？</string>
+
+    <string name="empty_rtsp_url">*請貼上RTSP URL</string>
+    <string name="error_rtsp_url">*RTSP URL錯誤</string>
+</resources>
