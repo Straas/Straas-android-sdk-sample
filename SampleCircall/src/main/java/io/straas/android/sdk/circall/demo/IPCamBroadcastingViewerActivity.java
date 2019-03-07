@@ -13,7 +13,7 @@ import java.util.List;
 
 import io.straas.android.sdk.circall.CircallManager;
 import io.straas.android.sdk.circall.CircallPlayerView;
-import io.straas.android.sdk.demo.databinding.ActivityIpcamBroadcastingViewerBinding;
+import io.straas.android.sdk.circall.demo.databinding.ActivityIpcamBroadcastingViewerBinding;
 
 public class IPCamBroadcastingViewerActivity extends CircallDemoBaseActivity {
 

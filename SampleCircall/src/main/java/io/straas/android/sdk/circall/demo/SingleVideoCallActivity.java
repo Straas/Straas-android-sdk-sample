@@ -22,7 +22,7 @@ import io.straas.android.sdk.circall.CircallPlayerView;
 import io.straas.android.sdk.circall.CircallPublishConfig;
 import io.straas.android.sdk.circall.CircallRecordingStreamMetadata;
 import io.straas.android.sdk.circall.CircallStream;
-import io.straas.android.sdk.demo.databinding.ActivitySingleVideoCallBinding;
+import io.straas.android.sdk.circall.demo.databinding.ActivitySingleVideoCallBinding;
 
 import static io.straas.android.sdk.circall.CircallPlayerView.ASPECT_FILL;
 
