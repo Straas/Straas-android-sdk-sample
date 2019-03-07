@@ -1,2 +1,2 @@
-include ':app', ':circallDemo', ':MemberIdentity', ':QrCode'
+include ':app', ':MemberIdentity', ':QrCode'
 include ':SampleMediaCore', ':SampleMessaging', ':SampleStreaming', ':SampleCircall'
