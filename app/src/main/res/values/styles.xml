@@ -8,11 +8,6 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="ScreencastSettingsTheme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-    </style>
-
     <style name="CircallWelcomeTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">#FFFFFF</item>
         <item name="colorPrimaryDark">#2D8787</item>
