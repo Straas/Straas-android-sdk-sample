@@ -18,4 +18,11 @@
     <style name="CircallDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorAccent">#FF51C0C2</item>
     </style>
+
+    <style name="CircallWelcomeTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">#FFFFFF</item>
+        <item name="colorPrimaryDark">#2D8787</item>
+        <item name="colorAccent">#FF4081</item>
+        <item name="android:windowBackground">@drawable/bg_circall_welcome</item>
+    </style>
 </resources>
