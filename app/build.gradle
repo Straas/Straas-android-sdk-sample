@@ -35,4 +35,5 @@ android {
 
 dependencies {
     implementation project (":SampleMediaCore")
+    implementation project (":SampleMessaging")
 }
