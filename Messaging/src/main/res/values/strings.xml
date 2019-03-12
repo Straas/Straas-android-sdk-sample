@@ -4,4 +4,6 @@
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="enter_nickname">Please Enter a Nickname.</string>
+    <string name="hint_sign_in">Please sign in</string>
+    <string name="hint_no_permission">Only Anchor can send messages in this chatroom.</string>
 </resources>
