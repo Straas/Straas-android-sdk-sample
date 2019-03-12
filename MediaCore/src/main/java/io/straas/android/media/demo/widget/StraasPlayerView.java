@@ -1036,9 +1036,9 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     }
 
     private boolean isVideoHasTextTracks() {
-        MediaMetadataCompat metadata = getMediaControllerCompat().getMetadata();
-        if (metadata.containsKey(VideoCustomMetadata.TEXT_TRACK_ID_ARRAY)) {
-            String[] ids = metadata.getBundle().getStringArray(VideoCustomMetadata.TEXT_TRACK_ID_ARRAY);
+        Bundle mediaExtras = getMediaControllerCompat().getExtras();
+        if (mediaExtras.containsKey(VideoCustomMetadata.TEXT_TRACK_ID_ARRAY)) {
+            String[] ids = mediaExtras.getStringArray(VideoCustomMetadata.TEXT_TRACK_ID_ARRAY);
             return ids != null && ids.length > 0;
         } else {
             return false;
