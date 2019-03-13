@@ -77,7 +77,7 @@ public class OperationActivity extends AppCompatActivity {
                     public void onConnected() {
                         getMediaControllerCompat().registerCallback(mMediaControllerCallback);
                         if (mIsForeground != getMediaControllerCompat().getExtras().getBoolean(
-                                StraasMediaCore.EXTRA_SERVICE_FOREGROUND_IS_ENABLED, !mIsForeground)) {
+                                VideoCustomMetadata.SERVICE_FOREGROUND_IS_ENABLED, !mIsForeground)) {
                             setForeground(mIsForeground);
                         }
                     }
@@ -368,11 +368,11 @@ public class OperationActivity extends AppCompatActivity {
                     String errorMessage = extras.getString(StraasMediaCore.KEY_MEDIA_BROWSER_ERROR_MESSAGE);
                     Log.e(event, errorReason + ": " + errorMessage);
                     break;
-                case StraasMediaCore.LIVE_EXTRA_STATISTICS_CCU:
+                case VideoCustomMetadata.LIVE_STATISTICS_CCU:
                     // you could also pull the value from getMediaControllerCompat().getExtras().getInt(LIVE_EXTRA_STATISTICS_CCU);
                     Log.d(TAG, "ccu: " + extras.getInt(event));
                     break;
-                case StraasMediaCore.LIVE_EXTRA_STATISTICS_HIT_COUNT:
+                case VideoCustomMetadata.LIVE_STATISTICS_HIT_COUNT:
                     // you could also pull the value from getMediaControllerCompat().getExtras().getInt(LIVE_EXTRA_STATISTICS_HIT_COUNT);
                     Log.d(TAG, "hit count: " + extras.getInt(event));
                     break;
@@ -381,7 +381,7 @@ public class OperationActivity extends AppCompatActivity {
 
         @Override
         public void onExtrasChanged(Bundle extras) {
-            mDisableAudioSwitch.setChecked(extras.getBoolean(StraasMediaCore.EXTRA_IS_AUDIO_DISABLED));
+            mDisableAudioSwitch.setChecked(extras.getBoolean(VideoCustomMetadata.IS_AUDIO_DISABLED));
         }
     };
 
