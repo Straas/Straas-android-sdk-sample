@@ -443,6 +443,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             mLastPlaybackStateCompat = state;
             if (!TextUtils.isEmpty(state.getErrorMessage())) {
                 @ErrorReason.ErrorReasonType String errorType = state.getErrorMessage().toString();
+                setLoadingProgressBarVisible(false);
                 mErrorMessageListener.onError(mErrorMessageTextView, errorType);
                 if (mIsLive) {
                     Bundle mediaExtras = (mMediaExtras != null) ? mMediaExtras : getMediaControllerCompat().getExtras();
