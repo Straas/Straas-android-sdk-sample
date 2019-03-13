@@ -1,6 +1,10 @@
 apply from: "${buildscript.sourceFile.parentFile}/../base_configs.gradle"
 
 android {
+    defaultConfig {
+        multiDexEnabled true
+    }
+
     sourceSets.main {
         java.srcDirs += ['../MediaCore/src/main/java', '../MemberIdentity',
                         '../Messaging/src/main/java', '../Streaming/src/main/java',
