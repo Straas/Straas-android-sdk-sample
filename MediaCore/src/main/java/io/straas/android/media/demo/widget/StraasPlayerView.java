@@ -1483,7 +1483,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             setErrorMessageVisibility(GONE);
             setBroadcastStateVisibility(GONE);
             setDvrPlaybackAvailableVisibility(VISIBLE);
-            textView.setText(R.string.broadcast_state_offline);
         }
     }
 
