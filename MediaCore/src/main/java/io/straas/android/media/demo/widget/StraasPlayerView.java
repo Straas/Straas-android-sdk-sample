@@ -148,7 +148,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private View mLogoView;
     private ContentSeekBar mContentSeekBar;
     private TextView mTextTrackView;
-    private View mDvrPlaybackAvailableView;
 
     private FrameLayout mVideoView;
     private FrameLayout mAdView;
@@ -689,7 +688,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 mBroadcastStateListener.waitForStream(mBroadcastStateView);
                 break;
             case BROADCAST_STATE_DVR_PLAYBACK_AVAILABLE:
-                mBroadcastStateListener.dvrPlaybackAvailable(mDvrPlaybackAvailableView);
+                mBroadcastStateListener.dvrPlaybackAvailable();
                 break;
             case BROADCAST_STATE_STOPPED:
                 mBroadcastStateListener.offline(mBroadcastStateView);
@@ -1319,7 +1318,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     public void setCustomDvrPlaybackAvailable(@NonNull View message) {
         mColumnDvrPlaybackAvailable.removeAllViews();
         mColumnDvrPlaybackAvailable.addView(message);
-        mDvrPlaybackAvailableView = message;
     }
 
     public void setDvrPlaybackAvailableVisibility(int visibility) {
@@ -1472,18 +1470,10 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             textView.setText(R.string.broadcast_state_wait_for_stream);
         }
 
-        void dvrPlaybackAvailable(View dvrPlaybackAvailableView) {
-            if (dvrPlaybackAvailableView == null) {
-                return;
-            }
-            TextView textView = dvrPlaybackAvailableView.findViewById(R.id.text_dvr_playback_end);
-            if (textView == null) {
-                return;
-            }
+        void dvrPlaybackAvailable() {
             setErrorMessageVisibility(GONE);
             setBroadcastStateVisibility(GONE);
             setDvrPlaybackAvailableVisibility(VISIBLE);
-            textView.setText(R.string.broadcast_state_offline);
         }
     }
 
