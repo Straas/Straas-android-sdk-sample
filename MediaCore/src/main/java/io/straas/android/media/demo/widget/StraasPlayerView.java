@@ -349,6 +349,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mAdView = straasMainContainer.findViewById(R.id.adSurfaceView);
         addView(straasMainContainer);
 
+        setCustomDvrPlaybackAvailable(View.inflate(mThemeContext, R.layout.dvr_playback_available, null));
         setAutoHideControllerUiWhenTouch(true);
     }
 
@@ -443,6 +444,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             mLastPlaybackStateCompat = state;
             if (!TextUtils.isEmpty(state.getErrorMessage())) {
                 @ErrorReason.ErrorReasonType String errorType = state.getErrorMessage().toString();
+                setLoadingProgressBarVisible(false);
                 mErrorMessageListener.onError(mErrorMessageTextView, errorType);
                 if (mIsLive) {
                     Bundle mediaExtras = (mMediaExtras != null) ? mMediaExtras : getMediaControllerCompat().getExtras();
@@ -582,9 +584,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 boolean isLiveSeekable = extras.getBoolean(VideoCustomMetadata.LIVE_DVR_ENABLED) &&
                         !extras.getBoolean(VideoCustomMetadata.CUSTOM_METADATA_IS_LIVE_LOW_LATENCY_FIRST);
                 switchMode(true, isLiveSeekable);
-                if (isLiveSeekable) {
-                    setCustomDvrPlaybackAvailable(View.inflate(mThemeContext, R.layout.dvr_playback_available, null));
-                }
 
                 boolean isStopPlay = mLastPlaybackStateCompat != null &&
                         (mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_STOPPED ||
