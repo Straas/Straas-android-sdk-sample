@@ -1724,7 +1724,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             setSummaryViewerVisibility(INVISIBLE);
             setSwitchSpeedViewVisibility(GONE);
             setTextTrackToggleViewVisibility(GONE);
-            setTextTrackViewVisibility(GONE);
 
             setBottomLeftColumnToLiveIcon(true);
         } else {
@@ -1732,7 +1731,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             setSummaryViewerVisibility(VISIBLE);
             setSwitchSpeedViewVisibility(VISIBLE);
             setTextTrackToggleViewVisibility(VISIBLE);
-            setTextTrackViewVisibility(VISIBLE);
 
             removeViewFromCustomColumn(CUSTOM_COLUMN_BOTTOM_LEFT);
         }
