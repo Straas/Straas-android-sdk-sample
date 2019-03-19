@@ -78,10 +78,12 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     public static final int PLAYBACK_MODE_VOD = 0;
     public static final int PLAYBACK_MODE_LIVE_EDGE = 1;
     public static final int PLAYBACK_MODE_LIVE_DVR = 2;
+    public static final int PLAYBACK_MODE_UNKNOWN = 3;
 
     @IntDef({PLAYBACK_MODE_VOD,
             PLAYBACK_MODE_LIVE_EDGE,
-            PLAYBACK_MODE_LIVE_DVR})
+            PLAYBACK_MODE_LIVE_DVR,
+            PLAYBACK_MODE_UNKNOWN})
     @Retention(RetentionPolicy.CLASS)
     public @interface PlaybackMode {}
 
@@ -111,7 +113,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private boolean mIsBind;
     private boolean mIsLive = false;
     private boolean mIsLiveSeekable;
-    @PlaybackMode private int mPlaybackMode = PLAYBACK_MODE_VOD;
+    @PlaybackMode private int mPlaybackMode = PLAYBACK_MODE_UNKNOWN;
     private boolean mCanToggleControllerUi = false;
 
     private View mControllerContainer;
