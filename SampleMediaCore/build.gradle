@@ -1,0 +1,39 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 28
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    api project(":MemberIdentity")
+    api "io.straas.android.sdk:straas-extension-ima:${STRAAS_SDK_VERSION}"
+    // use this if don't want to include video ads
+    //api "io.straas.android.sdk:straas-media-core:${STRAAS_SDK_VERSION}"
+
+    // optional, only for danmaku effect demo
+    api "io.straas.android.sdk:straas-messaging-ui:${STRAAS_SDK_VERSION}"
+    api 'com.github.ctiao:DanmakuFlameMaster:0.8.3'
+
+    api "com.android.support:appcompat-v7:28.0.0"
+    api "com.android.support:recyclerview-v7:28.0.0"
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
