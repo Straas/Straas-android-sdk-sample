@@ -2,6 +2,23 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.12.0
+_2019-03-12_
+
+
+*   **Important Change: Set `compileSdkVersion ` and `targetSdkVersion ` to 28.**
+    *   Upgrade support library to [v28.0.0](https://developer.android.com/topic/libraries/support-library/revisions.html#28-0-0).
+*   **Important Change: Upgrade some libraries**
+    *   feat: Upgrade okhttp to [v3.12.1](https://github.com/square/okhttp/blob/master/CHANGELOG.md#version-3121).
+    *   feat: Upgrade retrofit to [v2.5.0](https://github.com/square/retrofit/blob/master/CHANGELOG.md#version-250-2018-11-18).
+    *   feat: Upgrade glide to [v4.9.0](https://github.com/bumptech/glide/releases/tag/v4.9.0).
+    *   feat: Upgrade okio to [v2.2.2](https://github.com/square/okio/blob/master/CHANGELOG.md#version-222).
+    *   feat: Upgrade some [google play services](https://developers.google.com/android/guides/overview).
+*   **Important Change: Enable [R8](https://developer.android.com/studio/preview/features)**
+*   straas-media-core
+    *   **Important Change: Adjust media metadata interface, see [v0.12.0 upgrade guide](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/v0.12.0-upgrade) for more information.**
+*   **Note: If you encounter method counts over 64K issue in this version, you [can enable multidex](https://developer.android.com/studio/build/multidex) to fix it.**
+
 ## Version 0.11.3
 _2019-02-12_
 
