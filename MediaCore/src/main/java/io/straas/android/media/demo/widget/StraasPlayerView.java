@@ -1733,7 +1733,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     }
 
     private void refreshLiveDvrUiStatus(@PlaybackMode int playbackMode) {
-        if (!mIsLiveSeekable) {
+        if (!mIsLive || !mIsLiveSeekable) {
             return;
         }
 
