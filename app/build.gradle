@@ -1,6 +1,10 @@
 apply from: "${buildscript.sourceFile.parentFile}/../base_configs.gradle"
 
 android {
+    defaultConfig {
+        multiDexEnabled true
+    }
+
     sourceSets.main {
         java.srcDirs += ['../MediaCore/src/main/java', '../MemberIdentity',
                         '../Messaging/src/main/java', '../Streaming/src/main/java',
@@ -34,5 +38,5 @@ dependencies {
     implementation 'tyrant:heartlayout:1.0.1'
 
     // optional, demo for startStreamingWithStreamKey
-    implementation "com.google.android.gms:play-services-vision:11.8.0"
+    implementation "com.google.android.gms:play-services-vision:17.0.2"
 }

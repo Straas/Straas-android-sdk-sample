@@ -69,8 +69,8 @@ import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_STAR
 import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_STOPPED;
 import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_UNKNOWN;
 import static io.straas.android.sdk.media.LiveEventListener.BROADCAST_STATE_WAITING_FOR_STREAM;
-import static io.straas.android.sdk.media.StraasMediaCore.KEY_EXTRA_TEXT_TRACKS;
-import static io.straas.android.sdk.media.StraasMediaCore.LIVE_EXTRA_BROADCAST_STATE_V2;
+import static io.straas.android.sdk.media.VideoCustomMetadata.KEY_TEXT_TRACKS;
+import static io.straas.android.sdk.media.VideoCustomMetadata.LIVE_BROADCAST_STATE_V2;
 
 public final class StraasPlayerView extends FrameLayout implements StraasMediaCore.UiContainer {
     private static final String TAG = StraasPlayerView.class.getSimpleName();
@@ -148,7 +148,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private View mLogoView;
     private ContentSeekBar mContentSeekBar;
     private TextView mTextTrackView;
-    private View mDvrPlaybackAvailableView;
 
     private FrameLayout mVideoView;
     private FrameLayout mAdView;
@@ -157,7 +156,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
     private FragmentActivity mFragmentActivity;
 
-    private Bundle mLiveBundle;
+    private Bundle mMediaExtras;
     private MediaMetadataCompat mLastMediaMetadata;
     private PlaybackStateCompat mLastPlaybackStateCompat;
     private StraasMediaCore mStraasMediaCore;
@@ -349,6 +348,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mAdView = straasMainContainer.findViewById(R.id.adSurfaceView);
         addView(straasMainContainer);
 
+        setCustomDvrPlaybackAvailable(View.inflate(mThemeContext, R.layout.dvr_playback_available, null));
         setAutoHideControllerUiWhenTouch(true);
     }
 
@@ -405,9 +405,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                     TextUtils.equals(metadata.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID),
                             mLastMediaMetadata.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID)) &&
                     TextUtils.equals(metadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE),
-                            mLastMediaMetadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE)) &&
-                    metadata.getBundle().getBoolean(VideoCustomMetadata.CUSTOM_METADATA_IS_LIVE_LOW_LATENCY_FIRST) ==
-                            mLastMediaMetadata.getBundle().getBoolean(VideoCustomMetadata.CUSTOM_METADATA_IS_LIVE_LOW_LATENCY_FIRST))) {
+                            mLastMediaMetadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE)))) {
                 return;
             }
 
@@ -417,68 +415,10 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 return;
             }
 
-            if (mediaId.startsWith(StraasMediaCore.LIVE_ID_PREFIX)) {
-                boolean isLiveSeekable = metadata.getBundle().getBoolean(VideoCustomMetadata.LIVE_DVR_ENABLED) &&
-                        !metadata.getBundle().getBoolean(VideoCustomMetadata.CUSTOM_METADATA_IS_LIVE_LOW_LATENCY_FIRST);
-                switchMode(true, isLiveSeekable);
-                Bundle liveBundle = (mLiveBundle != null) ? mLiveBundle :
-                        getMediaControllerCompat().getExtras();
-                if (isLiveSeekable) {
-                    setCustomDvrPlaybackAvailable(View.inflate(mThemeContext, R.layout.dvr_playback_available, null));
-                }
-
-                handleMediaSessionExtra(liveBundle, true);
-            } else {
-                MediaControllerCompat controller = MediaControllerCompat.getMediaController(mFragmentActivity);
-                if (controller != null) {
-                    MediaControllerCompatHelper.setPlaybackSpeed(controller, mCurrentSpeed);
-                }
-                switchMode(false, false);
-
-            }
-
-            if (mLastQueueList != null) {
-                if (mLastPlaybackStateCompat.getActiveQueueItemId() == 0) {
-                    if (mColumnPrevious.getVisibility() != GONE) {
-                        mColumnPrevious.setVisibility(GONE);
-                    }
-                } else if (mColumnPrevious.getVisibility() != VISIBLE) {
-                    mColumnPrevious.setVisibility(VISIBLE);
-                }
-
-                if (mLastPlaybackStateCompat.getActiveQueueItemId() == mLastQueueList.size() - 1) {
-                    if (mColumnNext.getVisibility() != GONE) {
-                        mColumnNext.setVisibility(GONE);
-                    }
-                } else if (mColumnNext.getVisibility() != VISIBLE) {
-                    mColumnNext.setVisibility(VISIBLE);
-                }
-            }
+            mIsLive = mediaId.startsWith(StraasMediaCore.LIVE_ID_PREFIX);
 
             String title = metadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE);
-            long summaryViewer = metadata.getBundle().getLong(VideoCustomMetadata.PLAY_COUNT_SUM);
-
             mChannelNameMetadataListener.onMetaChanged(mChannelNameTextView, title);
-            mSummaryViewerMetadataListener.onMetaChanged(mSummaryViewerTextView, summaryViewer);
-
-            if (!isPosterAddedIntoVideoContainer()) {
-                getVideoContainer().addView(mImagePoster, getVideoContainer().getChildCount());
-            }
-            if (metadata.getBundle().containsKey(StraasMediaCore.KEY_VIDEO_RENDER_TYPE)
-                    && metadata.getBundle().getInt(StraasMediaCore.KEY_VIDEO_RENDER_TYPE) == StraasMediaCore.VIDEO_RENDER_TYPE_NONE) {
-                mImagePoster.setVisibility(VISIBLE);
-                boolean hasAlbumArtUri = metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI) != null;
-                Glide.with(getThemeContext())
-                        .setDefaultRequestOptions(new RequestOptions()
-                                .placeholder(android.R.color.black))
-                        .load(hasAlbumArtUri
-                                ? metadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI)
-                                : ContextCompat.getDrawable(mImagePoster.getContext(),
-                                R.drawable.vod_thumbnail_audio))
-                        .into(mImagePoster);
-            } else {
-                mImagePoster.setVisibility(GONE);
-            }
         }
 
         @Override
@@ -498,14 +438,17 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             if (mLastPlaybackStateCompat == null && mTextTrackView != null) {
                 MediaControllerCompatHelper.setCaptionEnable(getMediaControllerCompat(), true);
             }
+            boolean resetPlayListUi = mLastPlaybackStateCompat != null &&
+                    state.getActiveQueueItemId() == mLastPlaybackStateCompat.getActiveQueueItemId();
             mLastPlaybackStateCompat = state;
             if (!TextUtils.isEmpty(state.getErrorMessage())) {
                 @ErrorReason.ErrorReasonType String errorType = state.getErrorMessage().toString();
+                setLoadingProgressBarVisible(false);
                 mErrorMessageListener.onError(mErrorMessageTextView, errorType);
                 if (mIsLive) {
-                    Bundle liveBundle = (mLiveBundle != null) ? mLiveBundle : getMediaControllerCompat().getExtras();
+                    Bundle mediaExtras = (mMediaExtras != null) ? mMediaExtras : getMediaControllerCompat().getExtras();
 
-                    handleMediaSessionExtra(liveBundle, true);
+                    handleBroadcastStateV2(mediaExtras, true);
                 }
                 if (getKeepScreenOn()) {
                     setKeepScreenOn(false);
@@ -515,6 +458,10 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
             if (mColumnErrorMessage.getVisibility() != GONE) {
                 setErrorMessageVisibility(GONE);
+            }
+
+            if (resetPlayListUi) {
+                resetPlayListUi();
             }
 
             if (state.getState() == PlaybackStateCompat.STATE_PLAYING) {
@@ -600,10 +547,10 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                     case PlaybackStateCompat.STATE_STOPPED:
                         mCanToggleControllerUi = true;
                         if (mIsLive) {
-                            Bundle liveBundle = (mLiveBundle != null) ? mLiveBundle :
+                            Bundle mediaExtras = (mMediaExtras != null) ? mMediaExtras :
                                     getMediaControllerCompat().getExtras();
 
-                            handleMediaSessionExtra(liveBundle, true);
+                            handleBroadcastStateV2(mediaExtras, true);
                         }
                         switchToReplay();
                         if (getKeepScreenOn()) {
@@ -630,15 +577,49 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         public void onExtrasChanged(Bundle extras) {
             handleTextTrackExtra(extras);
 
-            mLiveBundle = extras;
-            if (!mIsLive) {
-                return;
+            mMediaExtras = extras;
+
+            if (mIsLive) {
+                boolean isLiveSeekable = extras.getBoolean(VideoCustomMetadata.LIVE_DVR_ENABLED) &&
+                        !extras.getBoolean(VideoCustomMetadata.CUSTOM_METADATA_IS_LIVE_LOW_LATENCY_FIRST);
+                switchMode(true, isLiveSeekable);
+
+                boolean isStopPlay = mLastPlaybackStateCompat != null &&
+                        (mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_STOPPED ||
+                                mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_NONE ||
+                                mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_ERROR);
+                handleBroadcastStateV2(extras, isStopPlay);
+            } else {
+                MediaControllerCompat controller = MediaControllerCompat.getMediaController(mFragmentActivity);
+                if (controller != null) {
+                    MediaControllerCompatHelper.setPlaybackSpeed(controller, mCurrentSpeed);
+                }
+                switchMode(false, false);
             }
-            boolean isStopPlay = mLastPlaybackStateCompat != null &&
-                    (mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_STOPPED ||
-                            mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_NONE ||
-                            mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_ERROR);
-            handleMediaSessionExtra(extras, isStopPlay);
+
+            long summaryViewer = extras.getLong(VideoCustomMetadata.PLAY_COUNT_SUM);
+            mSummaryViewerMetadataListener.onMetaChanged(mSummaryViewerTextView, summaryViewer);
+
+            if (!isPosterAddedIntoVideoContainer()) {
+                getVideoContainer().addView(mImagePoster, getVideoContainer().getChildCount());
+            }
+            if (extras.containsKey(StraasMediaCore.KEY_VIDEO_RENDER_TYPE)
+                    && extras.getInt(StraasMediaCore.KEY_VIDEO_RENDER_TYPE) == StraasMediaCore.VIDEO_RENDER_TYPE_NONE) {
+                mImagePoster.setVisibility(VISIBLE);
+                String albumUri = mLastMediaMetadata != null
+                        ? mLastMediaMetadata.getString(MediaMetadataCompat.METADATA_KEY_ALBUM_ART_URI)
+                        : null;
+                Glide.with(getThemeContext())
+                        .setDefaultRequestOptions(new RequestOptions()
+                                .placeholder(android.R.color.black))
+                        .load(!TextUtils.isEmpty(albumUri)
+                                ? albumUri
+                                : ContextCompat.getDrawable(mImagePoster.getContext(),
+                                R.drawable.vod_thumbnail_audio))
+                        .into(mImagePoster);
+            } else {
+                mImagePoster.setVisibility(GONE);
+            }
         }
 
         private boolean isPosterAddedIntoVideoContainer() {
@@ -646,12 +627,32 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         }
     };
 
+    private void resetPlayListUi() {
+        if (mLastQueueList != null) {
+            if (mLastPlaybackStateCompat.getActiveQueueItemId() == 0) {
+                if (mColumnPrevious.getVisibility() != GONE) {
+                    mColumnPrevious.setVisibility(GONE);
+                }
+            } else if (mColumnPrevious.getVisibility() != VISIBLE) {
+                mColumnPrevious.setVisibility(VISIBLE);
+            }
+
+            if (mLastPlaybackStateCompat.getActiveQueueItemId() == mLastQueueList.size() - 1) {
+                if (mColumnNext.getVisibility() != GONE) {
+                    mColumnNext.setVisibility(GONE);
+                }
+            } else if (mColumnNext.getVisibility() != VISIBLE) {
+                mColumnNext.setVisibility(VISIBLE);
+            }
+        }
+    }
+
     private void handleTextTrackExtra(Bundle extras) {
         if (mTextTrackView == null) {
             return;
         }
-        if (extras.containsKey(KEY_EXTRA_TEXT_TRACKS) && getMediaControllerCompat().isCaptioningEnabled()) {
-            ArrayList<CharSequence> texts = extras.getCharSequenceArrayList(KEY_EXTRA_TEXT_TRACKS);
+        if (extras.containsKey(KEY_TEXT_TRACKS) && getMediaControllerCompat().isCaptioningEnabled()) {
+            ArrayList<CharSequence> texts = extras.getCharSequenceArrayList(KEY_TEXT_TRACKS);
             if (texts == null || texts.isEmpty()) {
                 mTextTrackView.setVisibility(GONE);
             } else {
@@ -670,8 +671,8 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         }
     }
 
-    private void handleMediaSessionExtra(Bundle extras, boolean shouldShowStateUi) {
-        int broadcastStateV2 = extras.getInt(LIVE_EXTRA_BROADCAST_STATE_V2, BROADCAST_STATE_UNKNOWN);
+    private void handleBroadcastStateV2(Bundle extras, boolean shouldShowStateUi) {
+        int broadcastStateV2 = extras.getInt(LIVE_BROADCAST_STATE_V2, BROADCAST_STATE_UNKNOWN);
         if (broadcastStateV2 != BROADCAST_STATE_STARTED && !shouldShowStateUi) {
             return;
         }
@@ -687,7 +688,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 mBroadcastStateListener.waitForStream(mBroadcastStateView);
                 break;
             case BROADCAST_STATE_DVR_PLAYBACK_AVAILABLE:
-                mBroadcastStateListener.dvrPlaybackAvailable(mDvrPlaybackAvailableView);
+                mBroadcastStateListener.dvrPlaybackAvailable();
                 break;
             case BROADCAST_STATE_STOPPED:
                 mBroadcastStateListener.offline(mBroadcastStateView);
@@ -1033,9 +1034,9 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     }
 
     private boolean isVideoHasTextTracks() {
-        MediaMetadataCompat metadata = getMediaControllerCompat().getMetadata();
-        if (metadata.containsKey(VideoCustomMetadata.TEXT_TRACK_ID_ARRAY)) {
-            String[] ids = metadata.getBundle().getStringArray(VideoCustomMetadata.TEXT_TRACK_ID_ARRAY);
+        Bundle mediaExtras = getMediaControllerCompat().getExtras();
+        if (mediaExtras.containsKey(VideoCustomMetadata.TEXT_TRACK_ID_ARRAY)) {
+            String[] ids = mediaExtras.getStringArray(VideoCustomMetadata.TEXT_TRACK_ID_ARRAY);
             return ids != null && ids.length > 0;
         } else {
             return false;
@@ -1317,7 +1318,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     public void setCustomDvrPlaybackAvailable(@NonNull View message) {
         mColumnDvrPlaybackAvailable.removeAllViews();
         mColumnDvrPlaybackAvailable.addView(message);
-        mDvrPlaybackAvailableView = message;
     }
 
     public void setDvrPlaybackAvailableVisibility(int visibility) {
@@ -1470,18 +1470,10 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             textView.setText(R.string.broadcast_state_wait_for_stream);
         }
 
-        void dvrPlaybackAvailable(View dvrPlaybackAvailableView) {
-            if (dvrPlaybackAvailableView == null) {
-                return;
-            }
-            TextView textView = dvrPlaybackAvailableView.findViewById(R.id.text_dvr_playback_end);
-            if (textView == null) {
-                return;
-            }
+        void dvrPlaybackAvailable() {
             setErrorMessageVisibility(GONE);
             setBroadcastStateVisibility(GONE);
             setDvrPlaybackAvailableVisibility(VISIBLE);
-            textView.setText(R.string.broadcast_state_offline);
         }
     }
 
@@ -1698,8 +1690,8 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     }
 
     private void switchToReplay() {
-        Bundle liveBundle = (mLiveBundle != null) ? mLiveBundle : getMediaControllerCompat().getExtras();
-        int broadcastStateV2 = liveBundle.getInt(LIVE_EXTRA_BROADCAST_STATE_V2, BROADCAST_STATE_UNKNOWN);
+        Bundle mediaExtras = (mMediaExtras != null) ? mMediaExtras : getMediaControllerCompat().getExtras();
+        int broadcastStateV2 = mediaExtras.getInt(LIVE_BROADCAST_STATE_V2, BROADCAST_STATE_UNKNOWN);
         if (broadcastStateV2 == BROADCAST_STATE_DVR_PLAYBACK_AVAILABLE && mIsLiveSeekable) {
             setDvrPlaybackAvailableVisibility(VISIBLE);
             refreshLiveDvrUiStatus(PLAYBACK_MODE_LIVE_DVR);
@@ -1711,7 +1703,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     }
 
     private void switchMode(boolean isLive, boolean isLiveSeekable) {
-        mIsLive = isLive;
         mIsLiveSeekable = isLiveSeekable;
 
         setPlaybackMode(isLive ? PLAYBACK_MODE_LIVE_EDGE : PLAYBACK_MODE_VOD);
@@ -1722,7 +1713,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             setSummaryViewerVisibility(INVISIBLE);
             setSwitchSpeedViewVisibility(GONE);
             setTextTrackToggleViewVisibility(GONE);
-            setTextTrackViewVisibility(GONE);
 
             setBottomLeftColumnToLiveIcon(true);
         } else {
@@ -1730,7 +1720,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             setSummaryViewerVisibility(VISIBLE);
             setSwitchSpeedViewVisibility(VISIBLE);
             setTextTrackToggleViewVisibility(VISIBLE);
-            setTextTrackViewVisibility(VISIBLE);
 
             removeViewFromCustomColumn(CUSTOM_COLUMN_BOTTOM_LEFT);
         }
