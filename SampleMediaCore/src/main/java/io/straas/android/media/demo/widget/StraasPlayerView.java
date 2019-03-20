@@ -174,6 +174,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private SparseArrayCompat<ViewGroup> mCustomColumnList = new SparseArrayCompat<>();
     private List<QueueItem> mLastQueueList;
     private int mUIBroadcastState = BROADCAST_STATE_UNKNOWN;
+    private boolean mHasModeSwitched;
 
     public interface SwitchQualityViewClickListener {
         void onFormatCallback(ArrayList<Format> formats, int currentIndex);
@@ -538,6 +539,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                         }
                         break;
                     case PlaybackStateCompat.STATE_NONE:
+                        mHasModeSwitched = false;
                         mCanToggleControllerUi = false;
                         hideControllerViews();
                         refreshLiveDvrUiStatus(PLAYBACK_MODE_LIVE_EDGE);
@@ -1703,6 +1705,10 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     }
 
     private void switchMode(boolean isLive, boolean isLiveSeekable) {
+        if (mHasModeSwitched) {
+            return;
+        }
+        mHasModeSwitched = true;
         mIsLiveSeekable = isLiveSeekable;
 
         setPlaybackMode(isLive ? PLAYBACK_MODE_LIVE_EDGE : PLAYBACK_MODE_VOD);
