@@ -24,7 +24,6 @@ import io.straas.android.media.demo.widget.StraasPlayerView.PlaybackMode;
 
 import static io.straas.android.media.demo.widget.StraasPlayerView.PLAYBACK_MODE_LIVE_DVR;
 import static io.straas.android.media.demo.widget.StraasPlayerView.PLAYBACK_MODE_LIVE_EDGE;
-import static io.straas.android.media.demo.widget.StraasPlayerView.PLAYBACK_MODE_UNKNOWN;
 import static io.straas.android.media.demo.widget.StraasPlayerView.PLAYBACK_MODE_VOD;
 
 public class ContentSeekBar extends RelativeLayout {
@@ -46,7 +45,7 @@ public class ContentSeekBar extends RelativeLayout {
     private TrackingListener mTrackingListener;
     private LiveDvrPositionTimeStringListener mLiveDvrPositionTimeStringListener;
 
-    @PlaybackMode private int mPlaybackMode = PLAYBACK_MODE_UNKNOWN;
+    @PlaybackMode private int mPlaybackMode = PLAYBACK_MODE_VOD;
 
     public interface TrackingListener {
         void onTrackingTouch(boolean isTracking);
@@ -148,7 +147,6 @@ public class ContentSeekBar extends RelativeLayout {
                     mProgress.setProgress(mProgress.getMax());
                 }
             case PLAYBACK_MODE_LIVE_DVR:
-            case PLAYBACK_MODE_UNKNOWN:
                 if (mCurrentTime != null) {
                     mCurrentTime.setVisibility(View.GONE);
                 }

@@ -78,12 +78,10 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     public static final int PLAYBACK_MODE_VOD = 0;
     public static final int PLAYBACK_MODE_LIVE_EDGE = 1;
     public static final int PLAYBACK_MODE_LIVE_DVR = 2;
-    public static final int PLAYBACK_MODE_UNKNOWN = 3;
 
     @IntDef({PLAYBACK_MODE_VOD,
             PLAYBACK_MODE_LIVE_EDGE,
-            PLAYBACK_MODE_LIVE_DVR,
-            PLAYBACK_MODE_UNKNOWN})
+            PLAYBACK_MODE_LIVE_DVR})
     @Retention(RetentionPolicy.CLASS)
     public @interface PlaybackMode {}
 
@@ -113,7 +111,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private boolean mIsBind;
     private boolean mIsLive = false;
     private boolean mIsLiveSeekable;
-    @PlaybackMode private int mPlaybackMode = PLAYBACK_MODE_UNKNOWN;
+    @PlaybackMode private int mPlaybackMode = PLAYBACK_MODE_VOD;
     private boolean mCanToggleControllerUi = false;
 
     private View mControllerContainer;
@@ -176,6 +174,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private SparseArrayCompat<ViewGroup> mCustomColumnList = new SparseArrayCompat<>();
     private List<QueueItem> mLastQueueList;
     private int mUIBroadcastState = BROADCAST_STATE_UNKNOWN;
+    private boolean mHasModeSwitched;
 
     public interface SwitchQualityViewClickListener {
         void onFormatCallback(ArrayList<Format> formats, int currentIndex);
@@ -540,7 +539,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                         }
                         break;
                     case PlaybackStateCompat.STATE_NONE:
-                        setPlaybackMode(PLAYBACK_MODE_UNKNOWN);
+                        mHasModeSwitched = false;
                         mCanToggleControllerUi = false;
                         hideControllerViews();
                         refreshLiveDvrUiStatus(PLAYBACK_MODE_LIVE_EDGE);
@@ -1706,11 +1705,11 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     }
 
     private void switchMode(boolean isLive, boolean isLiveSeekable) {
-        mIsLiveSeekable = isLiveSeekable;
-
-        if (mPlaybackMode != PLAYBACK_MODE_UNKNOWN) {
+        if (mHasModeSwitched) {
             return;
         }
+        mHasModeSwitched = true;
+        mIsLiveSeekable = isLiveSeekable;
 
         setPlaybackMode(isLive ? PLAYBACK_MODE_LIVE_EDGE : PLAYBACK_MODE_VOD);
         setColumnContentSeekBarMargin();
