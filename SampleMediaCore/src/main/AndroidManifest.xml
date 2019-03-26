@@ -1,0 +1,27 @@
+<manifest package="io.straas.android.media.demo"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <application>
+        <activity android:name="io.straas.android.media.demo.StraasPlayerActivity"
+                  android:label="MediaCore - VideoList"
+                  android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
+
+        <activity android:name="io.straas.android.media.demo.OperationActivity"
+                  android:label="MediaCore - Operation"
+                  android:screenOrientation="portrait"
+                  android:launchMode="singleTop"
+                  android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
+
+        <activity android:name="io.straas.android.media.demo.StraasPlayerViewCustomizationActivity"
+                  android:label="MediaCore - Player view customization"
+                  android:configChanges="orientation|keyboardHidden|screenSize"
+                  android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
+
+        <activity android:name="io.straas.android.media.demo.LiveDanmakuActivity"
+                  android:label="MediaCore - Live stream + Danmaku"
+                  android:configChanges="orientation|keyboardHidden|screenSize"
+                  android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
+    </application>
+</manifest>

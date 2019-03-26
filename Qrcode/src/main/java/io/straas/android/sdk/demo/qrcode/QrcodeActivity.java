@@ -16,11 +16,8 @@ import android.view.SurfaceView;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.barcode.Barcode;
-import com.ikala.android.utils.iKalaUtils;
 
 import java.io.IOException;
-
-import io.straas.android.sdk.demo.R;
 
 @SuppressLint("MissingPermission")
 public class QrcodeActivity extends AppCompatActivity implements Callback, OnSuccessListener<Barcode> {
@@ -35,10 +32,10 @@ public class QrcodeActivity extends AppCompatActivity implements Callback, OnSuc
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrcode);
-        Toolbar toolbar = iKalaUtils.getView(this, R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        SurfaceView surfaceView = iKalaUtils.getView(this, R.id.surfaceview);
+        SurfaceView surfaceView = findViewById(R.id.surfaceview);
         surfaceView.getHolder().addCallback(this);
         getSupportLoaderManager().initLoader(LOADER_ID, null, new LoaderCallbacks<CameraSource>() {
             @Override
