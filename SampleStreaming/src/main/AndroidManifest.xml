@@ -1,0 +1,34 @@
+<manifest package="io.straas.android.sdk.streaming.demo"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+
+    <application>
+        <activity android:name="io.straas.android.sdk.streaming.demo.camera.MainActivity"
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        android:screenOrientation="portrait"
+        android:label="Streaming SDK demo"
+        android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
+
+        <activity android:name="io.straas.android.sdk.streaming.demo.camera.StreamingFiltersActivity"
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        android:screenOrientation="portrait"
+        android:label="Streaming SDK demo - Filters"
+        android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
+
+        <activity android:name="io.straas.android.sdk.streaming.demo.screencast.ScreencastSettingsActivity"
+        android:theme="@style/ScreencastSettingsTheme"
+        android:windowSoftInputMode="adjustResize"
+        android:label="Streaming SDK demo - Screencast"
+        android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
+
+        <activity
+            android:name="io.straas.android.sdk.demo.qrcode.QrcodeActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+
+        <meta-data
+        android:name="io.straas.android.sdk.streaming.SCREENCAST_SESSION_CLASS_NAME"
+        android:value="io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession"/>
+    </application>
+
+</manifest>
