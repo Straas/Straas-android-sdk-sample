@@ -576,7 +576,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             mMediaExtras = extras;
 
             if (isLive(mLastMediaMetadata)) {
-                switchMode(true, isLiveSeekable(extras), mIsEdge);
+                switchMode(parsePlaybackMode(true, isLiveSeekable(extras), mIsEdge));
 
                 boolean isStopPlay = mLastPlaybackStateCompat != null &&
                         (mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_STOPPED ||
@@ -588,7 +588,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 if (controller != null) {
                     MediaControllerCompatHelper.setPlaybackSpeed(controller, mCurrentSpeed);
                 }
-                switchMode(false, false, mIsEdge);
+                switchMode(parsePlaybackMode(false, false, mIsEdge));
             }
 
             long summaryViewer = extras.getLong(VideoCustomMetadata.PLAY_COUNT_SUM);
@@ -1696,21 +1696,11 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mColumnPause.setVisibility(INVISIBLE);
     }
 
-    private void switchMode(boolean isLive, boolean isLiveSeekable, boolean isEdge) {
-        int playbackMode;
-        if (isLive) {
-            if (isLiveSeekable) {
-                playbackMode = isEdge ? PLAYBACK_MODE_LIVE_DVR_EDGE : PLAYBACK_MODE_LIVE_DVR;
-            } else {
-                playbackMode = PLAYBACK_MODE_LIVE;
-            }
-        } else {
-            playbackMode = PLAYBACK_MODE_VOD;
-        }
+    private void switchMode(@PlaybackMode int playbackMode) {
         setPlaybackMode(playbackMode);
         setColumnContentSeekBarMargin();
 
-        if (isLive) {
+        if (isLive(playbackMode)) {
             setContentSeekBarVisibility(isLiveSeekable(playbackMode)? VISIBLE : GONE);
             setSummaryViewerVisibility(INVISIBLE);
             setSwitchSpeedViewVisibility(GONE);
@@ -1777,6 +1767,19 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private void setBottomLeftColumnToLivePositionTime() {
         mLivePositionTimeTextView = (TextView) View.inflate(mThemeContext, R.layout.live_view, null);
         setCustomViewToColumn(mLivePositionTimeTextView, CUSTOM_COLUMN_BOTTOM_LEFT);
+    }
+
+    @PlaybackMode
+    private static int parsePlaybackMode(boolean isLive, boolean isLiveSeekable, boolean isEdge) {
+        if (isLive) {
+            if (isLiveSeekable) {
+                return isEdge ? PLAYBACK_MODE_LIVE_DVR_EDGE : PLAYBACK_MODE_LIVE_DVR;
+            } else {
+                return PLAYBACK_MODE_LIVE;
+            }
+        } else {
+            return PLAYBACK_MODE_VOD;
+        }
     }
 
     private static boolean isLiveSeekable(Bundle mediaExtras) {
