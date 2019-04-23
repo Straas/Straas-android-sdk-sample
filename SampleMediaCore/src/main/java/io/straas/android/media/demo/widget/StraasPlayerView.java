@@ -111,7 +111,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private boolean mEnableDefaultBroadcastStateMessage;
 
     private boolean mIsBind;
-    private boolean mIsLiveSeekable;
     @PlaybackMode private int mPlaybackMode = PLAYBACK_MODE_VOD;
     private boolean mCanToggleControllerUi = false;
 
@@ -577,9 +576,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             mMediaExtras = extras;
 
             if (isLive(mLastMediaMetadata)) {
-                mIsLiveSeekable = extras.getBoolean(VideoCustomMetadata.LIVE_DVR_ENABLED) &&
-                        !extras.getBoolean(VideoCustomMetadata.CUSTOM_METADATA_IS_LIVE_LOW_LATENCY_FIRST);
-                switchMode(true, mIsLiveSeekable, mIsEdge);
+                switchMode(true, isLiveSeekable(extras), mIsEdge);
 
                 boolean isStopPlay = mLastPlaybackStateCompat != null &&
                         (mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_STOPPED ||
@@ -591,7 +588,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 if (controller != null) {
                     MediaControllerCompatHelper.setPlaybackSpeed(controller, mCurrentSpeed);
                 }
-                mIsLiveSeekable = false;
                 switchMode(false, false, mIsEdge);
             }
 
@@ -1544,7 +1540,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         public void onTrackingTouch(boolean isTracking) {
             if (isTracking) {
                 Utils.stopAnimation(mControllerContainer, mColumnPlayPause);
-                if (mIsLiveSeekable) {
+                if (isLiveSeekable(mPlaybackMode)) {
                     setBottomLeftColumnToLivePositionTime();
                 }
             } else {
@@ -1690,7 +1686,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private void switchToReplay() {
         Bundle mediaExtras = (mMediaExtras != null) ? mMediaExtras : getMediaControllerCompat().getExtras();
         int broadcastStateV2 = mediaExtras.getInt(LIVE_BROADCAST_STATE_V2, BROADCAST_STATE_UNKNOWN);
-        if (broadcastStateV2 == BROADCAST_STATE_DVR_PLAYBACK_AVAILABLE && mIsLiveSeekable) {
+        if (broadcastStateV2 == BROADCAST_STATE_DVR_PLAYBACK_AVAILABLE && isLiveSeekable(mPlaybackMode)) {
             setDvrPlaybackAvailableVisibility(VISIBLE);
             refreshLiveDvrUiStatus(false);
         } else {
@@ -1715,7 +1711,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         setColumnContentSeekBarMargin();
 
         if (isLive) {
-            setContentSeekBarVisibility(mIsLiveSeekable ? VISIBLE : GONE);
+            setContentSeekBarVisibility(isLiveSeekable(playbackMode)? VISIBLE : GONE);
             setSummaryViewerVisibility(INVISIBLE);
             setSwitchSpeedViewVisibility(GONE);
             setTextTrackToggleViewVisibility(GONE);
@@ -1756,7 +1752,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         // workaround to place different margins for vod & live-dvr respectively
         int leftMargin = getResources().getDimensionPixelSize(R.dimen.progress_bar_column_left_margin);
         int rightMargin = getResources().getDimensionPixelSize(R.dimen.progress_bar_column_left_margin);
-        if (mIsLiveSeekable) {
+        if (isLiveSeekable(mPlaybackMode)) {
             leftMargin = getResources().getDimensionPixelSize(R.dimen.progress_bar_column_live_dvr_left_margin);
             rightMargin = getResources().getDimensionPixelSize(R.dimen.progress_bar_column_live_dvr_right_margin);
         }
@@ -1781,6 +1777,15 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private void setBottomLeftColumnToLivePositionTime() {
         mLivePositionTimeTextView = (TextView) View.inflate(mThemeContext, R.layout.live_view, null);
         setCustomViewToColumn(mLivePositionTimeTextView, CUSTOM_COLUMN_BOTTOM_LEFT);
+    }
+
+    private static boolean isLiveSeekable(Bundle mediaExtras) {
+        return mediaExtras != null && mediaExtras.getBoolean(VideoCustomMetadata.LIVE_DVR_ENABLED) &&
+                !mediaExtras.getBoolean(VideoCustomMetadata.CUSTOM_METADATA_IS_LIVE_LOW_LATENCY_FIRST);
+    }
+
+    private static boolean isLiveSeekable(@PlaybackMode int playbackMode) {
+        return playbackMode == PLAYBACK_MODE_LIVE_DVR || playbackMode == PLAYBACK_MODE_LIVE_DVR_EDGE;
     }
 
     private static boolean isLive(MediaMetadataCompat mediaMetadataCompat) {
