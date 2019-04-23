@@ -575,8 +575,9 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
             mMediaExtras = extras;
 
-            if (isLive(mLastMediaMetadata)) {
-                switchMode(parsePlaybackMode(true, isLiveSeekable(extras), mIsEdge));
+            boolean isLive = isLive(mLastMediaMetadata);
+            if (isLive) {
+                switchMode(parsePlaybackMode(isLive, isLiveSeekable(extras), mIsEdge));
 
                 boolean isStopPlay = mLastPlaybackStateCompat != null &&
                         (mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_STOPPED ||
@@ -588,7 +589,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 if (controller != null) {
                     MediaControllerCompatHelper.setPlaybackSpeed(controller, mCurrentSpeed);
                 }
-                switchMode(parsePlaybackMode(false, false, mIsEdge));
+                switchMode(parsePlaybackMode(isLive, false, mIsEdge));
             }
 
             long summaryViewer = extras.getLong(VideoCustomMetadata.PLAY_COUNT_SUM);
