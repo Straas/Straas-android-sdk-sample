@@ -111,7 +111,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private boolean mEnableDefaultBroadcastStateMessage;
 
     private boolean mIsBind;
-    private boolean mIsLive = false;
     private boolean mIsLiveSeekable;
     @PlaybackMode private int mPlaybackMode = PLAYBACK_MODE_VOD;
     private boolean mCanToggleControllerUi = false;
@@ -413,12 +412,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             }
 
             mLastMediaMetadata = metadata;
-            String mediaId = mLastMediaMetadata.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID);
-            if (TextUtils.isEmpty(mediaId)) {
-                return;
-            }
-
-            mIsLive = mediaId.startsWith(StraasMediaCore.LIVE_ID_PREFIX);
 
             String title = metadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE);
             mChannelNameMetadataListener.onMetaChanged(mChannelNameTextView, title);
@@ -448,7 +441,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 @ErrorReason.ErrorReasonType String errorType = state.getErrorMessage().toString();
                 setLoadingProgressBarVisible(false);
                 mErrorMessageListener.onError(mErrorMessageTextView, errorType);
-                if (mIsLive) {
+                if (isLive(mPlaybackMode)) {
                     Bundle mediaExtras = (mMediaExtras != null) ? mMediaExtras : getMediaControllerCompat().getExtras();
 
                     handleBroadcastStateV2(mediaExtras, true);
@@ -502,7 +495,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                         // After AD playing ends, SDK player will seek the live streaming to
                         // the real-time coverage of live automatically for all kinds of live:
                         // normal live, low latency, and live-dvr
-                        if (mIsLive) {
+                        if (isLive(mPlaybackMode)) {
                             refreshLiveDvrUiStatus(true);
                         }
                         break;
@@ -549,7 +542,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                         }
                     case PlaybackStateCompat.STATE_STOPPED:
                         mCanToggleControllerUi = true;
-                        if (mIsLive) {
+                        if (isLive(mPlaybackMode)) {
                             Bundle mediaExtras = (mMediaExtras != null) ? mMediaExtras :
                                     getMediaControllerCompat().getExtras();
 
@@ -583,7 +576,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
             mMediaExtras = extras;
 
-            if (mIsLive) {
+            if (isLive(mLastMediaMetadata)) {
                 mIsLiveSeekable = extras.getBoolean(VideoCustomMetadata.LIVE_DVR_ENABLED) &&
                         !extras.getBoolean(VideoCustomMetadata.CUSTOM_METADATA_IS_LIVE_LOW_LATENCY_FIRST);
                 switchMode(true, mIsLiveSeekable, mIsEdge);
@@ -1788,5 +1781,20 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private void setBottomLeftColumnToLivePositionTime() {
         mLivePositionTimeTextView = (TextView) View.inflate(mThemeContext, R.layout.live_view, null);
         setCustomViewToColumn(mLivePositionTimeTextView, CUSTOM_COLUMN_BOTTOM_LEFT);
+    }
+
+    private static boolean isLive(MediaMetadataCompat mediaMetadataCompat) {
+        if (mediaMetadataCompat == null) {
+            return false;
+        }
+        String mediaId = mediaMetadataCompat.getString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID);
+        if (TextUtils.isEmpty(mediaId)) {
+            return false;
+        }
+        return mediaId.startsWith(StraasMediaCore.LIVE_ID_PREFIX);
+    }
+
+    private static boolean isLive(@PlaybackMode int playbackMode) {
+        return playbackMode != PLAYBACK_MODE_VOD;
     }
 }
