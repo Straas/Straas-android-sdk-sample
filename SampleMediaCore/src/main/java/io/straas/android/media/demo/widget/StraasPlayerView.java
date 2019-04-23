@@ -76,11 +76,13 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private static final String TAG = StraasPlayerView.class.getSimpleName();
 
     public static final int PLAYBACK_MODE_VOD = 0;
-    public static final int PLAYBACK_MODE_LIVE_EDGE = 1;
-    public static final int PLAYBACK_MODE_LIVE_DVR = 2;
+    public static final int PLAYBACK_MODE_LIVE = 1;
+    public static final int PLAYBACK_MODE_LIVE_DVR_EDGE = 2;
+    public static final int PLAYBACK_MODE_LIVE_DVR = 3;
 
     @IntDef({PLAYBACK_MODE_VOD,
-            PLAYBACK_MODE_LIVE_EDGE,
+            PLAYBACK_MODE_LIVE,
+            PLAYBACK_MODE_LIVE_DVR_EDGE,
             PLAYBACK_MODE_LIVE_DVR})
     @Retention(RetentionPolicy.CLASS)
     public @interface PlaybackMode {}
@@ -174,6 +176,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private SparseArrayCompat<ViewGroup> mCustomColumnList = new SparseArrayCompat<>();
     private List<QueueItem> mLastQueueList;
     private int mUIBroadcastState = BROADCAST_STATE_UNKNOWN;
+    private boolean mIsEdge = true;
 
     public interface SwitchQualityViewClickListener {
         void onFormatCallback(ArrayList<Format> formats, int currentIndex);
@@ -500,7 +503,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                         // the real-time coverage of live automatically for all kinds of live:
                         // normal live, low latency, and live-dvr
                         if (mIsLive) {
-                            refreshLiveDvrUiStatus(PLAYBACK_MODE_LIVE_EDGE);
+                            refreshLiveDvrUiStatus(true);
                         }
                         break;
                 }
@@ -525,8 +528,8 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                         }
                         break;
                     case PlaybackStateCompat.STATE_PAUSED:
-                        if (mPlaybackMode == PLAYBACK_MODE_LIVE_EDGE) {
-                            refreshLiveDvrUiStatus(PLAYBACK_MODE_LIVE_DVR);
+                        if (mPlaybackMode == PLAYBACK_MODE_LIVE_DVR_EDGE) {
+                            refreshLiveDvrUiStatus(false);
                         }
 
                         mCanToggleControllerUi = false;
@@ -540,7 +543,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                     case PlaybackStateCompat.STATE_NONE:
                         mCanToggleControllerUi = false;
                         hideControllerViews();
-                        refreshLiveDvrUiStatus(PLAYBACK_MODE_LIVE_EDGE);
+                        refreshLiveDvrUiStatus(true);
                         if (getKeepScreenOn()) {
                             setKeepScreenOn(false);
                         }
@@ -551,6 +554,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                                     getMediaControllerCompat().getExtras();
 
                             handleBroadcastStateV2(mediaExtras, true);
+                            refreshLiveDvrUiStatus(true);
                         }
                         switchToReplay();
                         if (getKeepScreenOn()) {
@@ -580,9 +584,9 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             mMediaExtras = extras;
 
             if (mIsLive) {
-                boolean isLiveSeekable = extras.getBoolean(VideoCustomMetadata.LIVE_DVR_ENABLED) &&
+                mIsLiveSeekable = extras.getBoolean(VideoCustomMetadata.LIVE_DVR_ENABLED) &&
                         !extras.getBoolean(VideoCustomMetadata.CUSTOM_METADATA_IS_LIVE_LOW_LATENCY_FIRST);
-                switchMode(true, isLiveSeekable);
+                switchMode(true, mIsLiveSeekable, mIsEdge);
 
                 boolean isStopPlay = mLastPlaybackStateCompat != null &&
                         (mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_STOPPED ||
@@ -594,7 +598,8 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 if (controller != null) {
                     MediaControllerCompatHelper.setPlaybackSpeed(controller, mCurrentSpeed);
                 }
-                switchMode(false, false);
+                mIsLiveSeekable = false;
+                switchMode(false, false, mIsEdge);
             }
 
             long summaryViewer = extras.getLong(VideoCustomMetadata.PLAY_COUNT_SUM);
@@ -1551,7 +1556,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 }
             } else {
                 Utils.toggleViewVisibilityWithAnimation(AUTO_HIDE_DELAY_MILLIS, mControllerContainer, mColumnPlayPause);
-                refreshLiveDvrUiStatus(PLAYBACK_MODE_LIVE_DVR);
+                refreshLiveDvrUiStatus(false);
             }
         }
     };
@@ -1577,7 +1582,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             resetPlayPauseUiWithControllerVisibility();
             switchToPause();
             Utils.toggleViewVisibilityWithAnimation(AUTO_HIDE_DELAY_MILLIS, mControllerContainer, mColumnPlayPause);
-            refreshLiveDvrUiStatus(PLAYBACK_MODE_LIVE_EDGE);
+            refreshLiveDvrUiStatus(true);
         }
     };
 
@@ -1694,7 +1699,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         int broadcastStateV2 = mediaExtras.getInt(LIVE_BROADCAST_STATE_V2, BROADCAST_STATE_UNKNOWN);
         if (broadcastStateV2 == BROADCAST_STATE_DVR_PLAYBACK_AVAILABLE && mIsLiveSeekable) {
             setDvrPlaybackAvailableVisibility(VISIBLE);
-            refreshLiveDvrUiStatus(PLAYBACK_MODE_LIVE_DVR);
+            refreshLiveDvrUiStatus(false);
         } else {
             mColumnReplay.setVisibility(VISIBLE);
         }
@@ -1702,10 +1707,18 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         mColumnPause.setVisibility(INVISIBLE);
     }
 
-    private void switchMode(boolean isLive, boolean isLiveSeekable) {
-        mIsLiveSeekable = isLiveSeekable;
-
-        setPlaybackMode(isLive ? PLAYBACK_MODE_LIVE_EDGE : PLAYBACK_MODE_VOD);
+    private void switchMode(boolean isLive, boolean isLiveSeekable, boolean isEdge) {
+        int playbackMode;
+        if (isLive) {
+            if (isLiveSeekable) {
+                playbackMode = isEdge ? PLAYBACK_MODE_LIVE_DVR_EDGE : PLAYBACK_MODE_LIVE_DVR;
+            } else {
+                playbackMode = PLAYBACK_MODE_LIVE;
+            }
+        } else {
+            playbackMode = PLAYBACK_MODE_VOD;
+        }
+        setPlaybackMode(playbackMode);
         setColumnContentSeekBarMargin();
 
         if (isLive) {
@@ -1714,7 +1727,8 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             setSwitchSpeedViewVisibility(GONE);
             setTextTrackToggleViewVisibility(GONE);
 
-            setBottomLeftColumnToLiveIcon(true);
+            setBottomLeftColumnToLiveIcon(playbackMode == PLAYBACK_MODE_LIVE_DVR_EDGE
+                    || playbackMode == PLAYBACK_MODE_LIVE);
         } else {
             setContentSeekBarVisibility(VISIBLE);
             setSummaryViewerVisibility(VISIBLE);
@@ -1725,24 +1739,20 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         }
     }
 
-    private void refreshLiveDvrUiStatus(@PlaybackMode int playbackMode) {
-        if (!mIsLive || !mIsLiveSeekable) {
+    private void refreshLiveDvrUiStatus(boolean isEdge) {
+        mIsEdge = isEdge;
+        if (mPlaybackMode != PLAYBACK_MODE_LIVE_DVR && mPlaybackMode != PLAYBACK_MODE_LIVE_DVR_EDGE) {
             return;
         }
-
-        switch(playbackMode) {
-            case PLAYBACK_MODE_LIVE_EDGE:
-            case PLAYBACK_MODE_LIVE_DVR:
-                setPlaybackMode(playbackMode);
-                setBottomLeftColumnToLiveIcon(playbackMode == PLAYBACK_MODE_LIVE_EDGE);
-                break;
-            case PLAYBACK_MODE_VOD:
-            default:
-                break;
-        }
+        int playbackMode = mIsEdge ? PLAYBACK_MODE_LIVE_DVR_EDGE : PLAYBACK_MODE_LIVE_DVR;
+        setPlaybackMode(playbackMode);
+        setBottomLeftColumnToLiveIcon(isEdge);
     }
 
     private void setPlaybackMode(@PlaybackMode int playbackMode) {
+        if (playbackMode == mPlaybackMode) {
+            return;
+        }
         mPlaybackMode = playbackMode;
         if (mContentSeekBar != null) {
             mContentSeekBar.setPlaybackMode(mPlaybackMode);
