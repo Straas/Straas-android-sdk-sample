@@ -26,6 +26,9 @@ dependencies {
     // use this if don't want to include video ads
     //api "io.straas.android.sdk:straas-media-core:${STRAAS_SDK_VERSION}"
 
+    // optional, only for playing DASH link via playFromUri
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.9.6'
+
     // optional, only for danmaku effect demo
     api "io.straas.android.sdk:straas-messaging-ui:${STRAAS_SDK_VERSION}"
     api 'com.github.ctiao:DanmakuFlameMaster:0.8.3'
