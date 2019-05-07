@@ -410,6 +410,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             }
 
             mLastMediaMetadata = metadata;
+            adjustUi();
 
             String title = metadata.getString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE);
             mChannelNameMetadataListener.onMetaChanged(mChannelNameTextView, title);
@@ -573,23 +574,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             handleTextTrackExtra(extras);
 
             mMediaExtras = extras;
-
-            boolean isLive = isLive(mLastMediaMetadata);
-            if (isLive) {
-                switchMode(parsePlaybackMode(isLive, isLiveSeekable(extras), mIsEdge));
-
-                boolean isStopPlay = mLastPlaybackStateCompat != null &&
-                        (mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_STOPPED ||
-                                mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_NONE ||
-                                mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_ERROR);
-                handleBroadcastStateV2(extras, isStopPlay);
-            } else {
-                MediaControllerCompat controller = MediaControllerCompat.getMediaController(mFragmentActivity);
-                if (controller != null) {
-                    MediaControllerCompatHelper.setPlaybackSpeed(controller, mCurrentSpeed);
-                }
-                switchMode(parsePlaybackMode(isLive, false, mIsEdge));
-            }
+            adjustUi();
 
             long summaryViewer = extras.getLong(VideoCustomMetadata.PLAY_COUNT_SUM);
             mSummaryViewerMetadataListener.onMetaChanged(mSummaryViewerTextView, summaryViewer);
@@ -618,6 +603,25 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
         private boolean isPosterAddedIntoVideoContainer() {
             return getVideoContainer().getChildAt(getVideoContainer().getChildCount() - 1) == mImagePoster;
+        }
+
+        private void adjustUi() {
+            boolean isLive = isLive(mLastMediaMetadata);
+            if (isLive) {
+                switchMode(parsePlaybackMode(isLive, isLiveSeekable(mMediaExtras), mIsEdge));
+
+                boolean isStopPlay = mLastPlaybackStateCompat != null &&
+                        (mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_STOPPED ||
+                                mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_NONE ||
+                                mLastPlaybackStateCompat.getState() == PlaybackStateCompat.STATE_ERROR);
+                handleBroadcastStateV2(mMediaExtras, isStopPlay);
+            } else {
+                MediaControllerCompat controller = MediaControllerCompat.getMediaController(mFragmentActivity);
+                if (controller != null) {
+                    MediaControllerCompatHelper.setPlaybackSpeed(controller, mCurrentSpeed);
+                }
+                switchMode(parsePlaybackMode(isLive, false, mIsEdge));
+            }
         }
     };
 
