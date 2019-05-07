@@ -386,7 +386,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         public void onQueueChanged(List<QueueItem> queue) {
             mLastQueueList = queue;
             if (mLastQueueList == null) {
-                mLastMediaMetadata = null;
                 if (mColumnPrevious.getVisibility() != GONE) {
                     mColumnPrevious.setVisibility(GONE);
                 }
