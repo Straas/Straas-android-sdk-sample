@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,6 +46,7 @@ public class StraasPlayerActivity extends AppCompatActivity {
     private static final String TAG = StraasPlayerActivity.class.getSimpleName();
     private Adapter mAdapter;
     private StraasMediaCore mStraasMediaCore;
+    private EditText mPlaylistIdEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +82,6 @@ public class StraasPlayerActivity extends AppCompatActivity {
                         // remove setImaHelper if you don't want to include ad system (IMA)
                         .setImaHelper(ImaHelper.newInstance());
                 getMediaControllerCompat().registerCallback(mMediaControllerCallback);
-                if (mAdapter != null) {
-                    getMediaBrowser().unsubscribe(getMediaBrowser().getRoot());
-                    getMediaBrowser().subscribe(getMediaBrowser().getRoot(), mSubscriptionCallback);
-                }
             }
 
             @Override
@@ -107,7 +105,35 @@ public class StraasPlayerActivity extends AppCompatActivity {
                 }
             }
         });
+        mPlaylistIdEditText = findViewById(R.id.edit_text_playlist_id);
+    }
 
+    public void loadVodList(View view) {
+        if (mStraasMediaCore == null || mAdapter == null) {
+            return;
+        }
+        unsubscribe();
+        mAdapter.clearAllItems();
+        getMediaBrowser().subscribe(StraasMediaCore.PARENT_ID_VODS, mSubscriptionCallback);
+    }
+
+    public void loadPlaylist(View view) {
+        if (mStraasMediaCore == null || mAdapter == null) {
+            return;
+        }
+        unsubscribe();
+        mAdapter.clearAllItems();
+        String playlistId = mPlaylistIdEditText.getText().toString();
+        if (!TextUtils.isEmpty(playlistId)) {
+            getMediaBrowser().subscribe(playlistId, mSubscriptionCallback);
+        }
+    }
+
+    private void unsubscribe() {
+        if (mStraasMediaCore == null) {
+            return;
+        }
+        getMediaBrowser().unsubscribe(StraasMediaCore.PARENT_ID_VODS);
     }
 
     private MediaBrowserCompat getMediaBrowser() {
@@ -245,6 +271,13 @@ public class StraasPlayerActivity extends AppCompatActivity {
             }
 
             return true;
+        }
+
+        public void clearAllItems() {
+            int itemCount = mEnableLoadMore ? mMediaItems.size() + 1 : mMediaItems.size();
+            mEnableLoadMore = false;
+            mMediaItems.clear();
+            notifyItemRangeRemoved(0, itemCount);
         }
 
         @Override

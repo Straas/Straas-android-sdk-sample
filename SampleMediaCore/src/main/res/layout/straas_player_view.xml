@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <SurfaceView
         android:layout_width="0dp"
@@ -21,9 +23,64 @@
             android:id="@+id/straas"/>
     </io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout>
 
+    <LinearLayout
+        android:id="@+id/vod_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/category_margin_left"
+        android:layout_below="@id/straasPlayer">
+
+        <TextView
+            android:layout_width="@dimen/category_title_width"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/category_title_text_size"
+            android:text="Vod List"/>
+
+        <EditText
+            android:layout_width="@dimen/edit_text_width"
+            android:layout_height="wrap_content"
+            android:enabled="false"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Load"
+            android:onClick="loadVodList"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/playlist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="@dimen/category_margin_left"
+        android:layout_below="@id/vod_list">
+
+        <TextView
+            android:layout_width="@dimen/category_title_width"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/category_title_text_size"
+            android:text="Playlist"/>
+
+        <EditText
+            android:id="@+id/edit_text_playlist_id"
+            android:layout_width="@dimen/edit_text_width"
+            android:layout_height="wrap_content"
+            android:hint="Playlist ID"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Load"
+            android:onClick="loadPlaylist"/>
+
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@android:id/list"
-        android:layout_below="@id/straasPlayer"
+        android:layout_below="@id/playlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
