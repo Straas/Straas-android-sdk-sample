@@ -243,11 +243,13 @@ public class StraasPlayerActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             if (holder instanceof ViewHolder) {
+                if (position == mMediaItems.size() - 1 && mEnableLoadMore) {
+                    if (mLoadMoreListener != null) {
+                        mLoadMoreListener.onLoadMore();
+                    }
+                }
                 ((ViewHolder)holder).bind(mMediaItems.get(position));
             } else if (holder instanceof LoadingViewHolder) {
-                if (mLoadMoreListener != null) {
-                    mLoadMoreListener.onLoadMore();
-                }
             }
         }
 
