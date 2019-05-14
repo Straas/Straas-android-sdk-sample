@@ -15,7 +15,7 @@
     <io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/straasPlayer"
+        android:id="@+id/straas_player"
         android:background="@android:color/black">
         <io.straas.android.media.demo.widget.StraasPlayerView
             android:layout_width="match_parent"
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginLeft="@dimen/category_margin_left"
-        android:layout_below="@id/straasPlayer">
+        android:layout_below="@id/straas_player">
 
         <TextView
             android:layout_width="@dimen/category_title_width"

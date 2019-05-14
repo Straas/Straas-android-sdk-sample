@@ -58,7 +58,7 @@ public class StraasPlayerActivity extends AppCompatActivity {
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
 
-        AspectRatioFrameLayout aspectRatioFrameLayout = findViewById(R.id.straasPlayer);
+        AspectRatioFrameLayout aspectRatioFrameLayout = findViewById(R.id.straas_player);
         if (aspectRatioFrameLayout != null) {
             aspectRatioFrameLayout.setAspectRatio(1.778f);
         }
