@@ -47,6 +47,7 @@ public class StraasPlayerActivity extends AppCompatActivity {
     private Adapter mAdapter;
     private StraasMediaCore mStraasMediaCore;
     private EditText mPlaylistIdEditText;
+    private String mLastParentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,8 +101,8 @@ public class StraasPlayerActivity extends AppCompatActivity {
             public void onLoadMore() {
                 String pageToken = Utils.extractPageToken(mAdapter.getMediaItems());
                 if (!TextUtils.isEmpty(pageToken)) {
-                    getMediaBrowser().unsubscribe(pageToken);
-                    getMediaBrowser().subscribe(pageToken, mSubscriptionCallback);
+                    unsubscribe();
+                    subscribe(pageToken);
                 }
             }
         });
@@ -114,7 +115,7 @@ public class StraasPlayerActivity extends AppCompatActivity {
         }
         unsubscribe();
         mAdapter.clearAllItems();
-        getMediaBrowser().subscribe(StraasMediaCore.PARENT_ID_VODS, mSubscriptionCallback);
+        subscribe(StraasMediaCore.PARENT_ID_VODS);
     }
 
     public void loadPlaylist(View view) {
@@ -123,17 +124,22 @@ public class StraasPlayerActivity extends AppCompatActivity {
         }
         unsubscribe();
         mAdapter.clearAllItems();
-        String playlistId = mPlaylistIdEditText.getText().toString();
-        if (!TextUtils.isEmpty(playlistId)) {
-            getMediaBrowser().subscribe(playlistId, mSubscriptionCallback);
+        subscribe(mPlaylistIdEditText.getText().toString());
+    }
+
+    private void subscribe(String parentId) {
+        mLastParentId = parentId;
+        if (TextUtils.isEmpty(parentId)) {
+            return;
         }
+        getMediaBrowser().subscribe(parentId, mSubscriptionCallback);
     }
 
     private void unsubscribe() {
-        if (mStraasMediaCore == null) {
+        if (mStraasMediaCore == null || TextUtils.isEmpty(mLastParentId)) {
             return;
         }
-        getMediaBrowser().unsubscribe(StraasMediaCore.PARENT_ID_VODS);
+        getMediaBrowser().unsubscribe(mLastParentId);
     }
 
     private MediaBrowserCompat getMediaBrowser() {
