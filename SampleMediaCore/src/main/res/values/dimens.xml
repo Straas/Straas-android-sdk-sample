@@ -15,4 +15,9 @@
     <dimen name="danmaku_text_size">16sp</dimen>
     <dimen name="danmaku_text_height">18dp</dimen>
     <dimen name="danmaku_shadow_radius">2dp</dimen>
+
+    <dimen name="category_margin_left">10dp</dimen>
+    <dimen name="category_title_width">80dp</dimen>
+    <dimen name="edit_text_width">120dp</dimen>
+    <dimen name="category_title_text_size">20sp</dimen>
 </resources>

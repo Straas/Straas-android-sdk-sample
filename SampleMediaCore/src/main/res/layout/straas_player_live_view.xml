@@ -19,7 +19,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/straasPlayer">
+        android:id="@+id/straas_player">
 
         <io.straas.android.media.demo.widget.StraasPlayerView
             android:layout_width="match_parent"
@@ -29,7 +29,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@android:id/list"
-        android:layout_below="@id/straasPlayer"
+        android:layout_below="@id/straas_player"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layoutManager="LinearLayoutManager"
