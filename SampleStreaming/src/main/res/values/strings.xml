@@ -5,6 +5,7 @@
     <string name="switch_camera">Switch</string>
     <string name="flash">Flash</string>
     <string name="filter">Filter</string>
+    <string name="mute">Mute</string>
     <string name="skin_beautify">Skin beautify</string>
 
     <!-- Screencast Streaming -->
