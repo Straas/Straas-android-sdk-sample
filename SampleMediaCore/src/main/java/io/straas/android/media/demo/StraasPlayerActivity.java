@@ -113,6 +113,7 @@ public class StraasPlayerActivity extends AppCompatActivity {
         if (mStraasMediaCore == null || mAdapter == null) {
             return;
         }
+        stopPlayer();
         unsubscribe();
         mAdapter.clearAllItems();
         subscribe(StraasMediaCore.PARENT_ID_VODS);
@@ -122,6 +123,7 @@ public class StraasPlayerActivity extends AppCompatActivity {
         if (mStraasMediaCore == null || mAdapter == null) {
             return;
         }
+        stopPlayer();
         unsubscribe();
         mAdapter.clearAllItems();
         subscribe(mPlaylistIdEditText.getText().toString());
@@ -140,6 +142,10 @@ public class StraasPlayerActivity extends AppCompatActivity {
             return;
         }
         getMediaBrowser().unsubscribe(mLastParentId);
+    }
+
+    private void stopPlayer() {
+        MediaControllerCompat.getMediaController(this).getTransportControls().stop();
     }
 
     private MediaBrowserCompat getMediaBrowser() {

@@ -385,14 +385,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
         @Override
         public void onQueueChanged(List<QueueItem> queue) {
             mLastQueueList = queue;
-            if (mLastQueueList == null) {
-                if (mColumnPrevious.getVisibility() != GONE) {
-                    mColumnPrevious.setVisibility(GONE);
-                }
-                if (mColumnNext.getVisibility() != GONE) {
-                    mColumnNext.setVisibility(GONE);
-                }
-            }
+            resetPlayListUi();
         }
 
         @Override
@@ -504,6 +497,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                     mColumnAdPlay.setVisibility(GONE);
                 }
 
+                mVideoView.setVisibility(state.getState() == PlaybackStateCompat.STATE_NONE ? GONE : VISIBLE);
                 switch (state.getState()) {
                     case PlaybackStateCompat.STATE_BUFFERING:
                         loadingProgressBarVisibility = VISIBLE;
@@ -539,6 +533,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                         if (getKeepScreenOn()) {
                             setKeepScreenOn(false);
                         }
+                        break;
                     case PlaybackStateCompat.STATE_STOPPED:
                         mCanToggleControllerUi = true;
                         if (isLive(mPlaybackMode)) {
@@ -641,6 +636,13 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 }
             } else if (mColumnNext.getVisibility() != VISIBLE) {
                 mColumnNext.setVisibility(VISIBLE);
+            }
+        } else {
+            if (mColumnPrevious.getVisibility() != GONE) {
+                mColumnPrevious.setVisibility(GONE);
+            }
+            if (mColumnNext.getVisibility() != GONE) {
+                mColumnNext.setVisibility(GONE);
             }
         }
     }
