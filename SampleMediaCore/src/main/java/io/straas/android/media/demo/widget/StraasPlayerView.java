@@ -532,6 +532,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                         if (getKeepScreenOn()) {
                             setKeepScreenOn(false);
                         }
+                        break;
                     case PlaybackStateCompat.STATE_STOPPED:
                         mCanToggleControllerUi = true;
                         if (isLive(mPlaybackMode)) {
