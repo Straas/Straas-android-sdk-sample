@@ -497,6 +497,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                     mColumnAdPlay.setVisibility(GONE);
                 }
 
+                mVideoView.setVisibility(state.getState() == PlaybackStateCompat.STATE_NONE ? GONE : VISIBLE);
                 switch (state.getState()) {
                     case PlaybackStateCompat.STATE_BUFFERING:
                         loadingProgressBarVisibility = VISIBLE;
