@@ -23,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -45,6 +46,8 @@ public class StraasPlayerActivity extends AppCompatActivity {
     private static final String TAG = StraasPlayerActivity.class.getSimpleName();
     private Adapter mAdapter;
     private StraasMediaCore mStraasMediaCore;
+    private EditText mPlaylistIdEditText;
+    private String mLastParentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +59,7 @@ public class StraasPlayerActivity extends AppCompatActivity {
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
 
-        AspectRatioFrameLayout aspectRatioFrameLayout = findViewById(R.id.straasPlayer);
+        AspectRatioFrameLayout aspectRatioFrameLayout = findViewById(R.id.straas_player);
         if (aspectRatioFrameLayout != null) {
             aspectRatioFrameLayout.setAspectRatio(1.778f);
         }
@@ -80,10 +83,6 @@ public class StraasPlayerActivity extends AppCompatActivity {
                         // remove setImaHelper if you don't want to include ad system (IMA)
                         .setImaHelper(ImaHelper.newInstance());
                 getMediaControllerCompat().registerCallback(mMediaControllerCallback);
-                if (mAdapter != null) {
-                    getMediaBrowser().unsubscribe(getMediaBrowser().getRoot());
-                    getMediaBrowser().subscribe(getMediaBrowser().getRoot(), mSubscriptionCallback);
-                }
             }
 
             @Override
@@ -102,12 +101,51 @@ public class StraasPlayerActivity extends AppCompatActivity {
             public void onLoadMore() {
                 String pageToken = Utils.extractPageToken(mAdapter.getMediaItems());
                 if (!TextUtils.isEmpty(pageToken)) {
-                    getMediaBrowser().unsubscribe(pageToken);
-                    getMediaBrowser().subscribe(pageToken, mSubscriptionCallback);
+                    unsubscribe();
+                    subscribe(pageToken);
                 }
             }
         });
+        mPlaylistIdEditText = findViewById(R.id.edit_text_playlist_id);
+    }
 
+    public void loadVodList(View view) {
+        if (mStraasMediaCore == null || mAdapter == null) {
+            return;
+        }
+        stopPlayer();
+        unsubscribe();
+        mAdapter.clearAllItems();
+        subscribe(StraasMediaCore.PARENT_ID_VODS);
+    }
+
+    public void loadPlaylist(View view) {
+        if (mStraasMediaCore == null || mAdapter == null) {
+            return;
+        }
+        stopPlayer();
+        unsubscribe();
+        mAdapter.clearAllItems();
+        subscribe(mPlaylistIdEditText.getText().toString());
+    }
+
+    private void subscribe(String parentId) {
+        mLastParentId = parentId;
+        if (TextUtils.isEmpty(parentId)) {
+            return;
+        }
+        getMediaBrowser().subscribe(parentId, mSubscriptionCallback);
+    }
+
+    private void unsubscribe() {
+        if (mStraasMediaCore == null || TextUtils.isEmpty(mLastParentId)) {
+            return;
+        }
+        getMediaBrowser().unsubscribe(mLastParentId);
+    }
+
+    private void stopPlayer() {
+        MediaControllerCompat.getMediaController(this).getTransportControls().stop();
     }
 
     private MediaBrowserCompat getMediaBrowser() {
@@ -217,11 +255,13 @@ public class StraasPlayerActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             if (holder instanceof ViewHolder) {
+                if (position == mMediaItems.size() - 1 && mEnableLoadMore) {
+                    if (mLoadMoreListener != null) {
+                        mLoadMoreListener.onLoadMore();
+                    }
+                }
                 ((ViewHolder)holder).bind(mMediaItems.get(position));
             } else if (holder instanceof LoadingViewHolder) {
-                if (mLoadMoreListener != null) {
-                    mLoadMoreListener.onLoadMore();
-                }
             }
         }
 
@@ -245,6 +285,13 @@ public class StraasPlayerActivity extends AppCompatActivity {
             }
 
             return true;
+        }
+
+        public void clearAllItems() {
+            int itemCount = mEnableLoadMore ? mMediaItems.size() + 1 : mMediaItems.size();
+            mEnableLoadMore = false;
+            mMediaItems.clear();
+            notifyItemRangeRemoved(0, itemCount);
         }
 
         @Override

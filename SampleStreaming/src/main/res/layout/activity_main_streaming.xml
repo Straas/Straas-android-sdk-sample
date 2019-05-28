@@ -55,11 +55,22 @@
 
     </LinearLayout>
 
+    <ToggleButton
+        android:id="@+id/mute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/operation"
+        android:textOn="@string/mute"
+        android:textOff="@string/mute"
+        android:enabled="false"
+        android:checked="false"
+        android:onClick="toggleMute"/>
+
     <RelativeLayout
         android:id="@+id/layout_stream_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/operation">
+        android:layout_below="@id/mute">
 
         <RadioGroup
             android:id="@+id/stream_way"

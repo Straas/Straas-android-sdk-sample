@@ -22,8 +22,9 @@ import io.straas.android.media.demo.R;
 import io.straas.android.media.demo.widget.PlayerControl;
 import io.straas.android.media.demo.widget.StraasPlayerView.PlaybackMode;
 
+import static io.straas.android.media.demo.widget.StraasPlayerView.PLAYBACK_MODE_LIVE;
 import static io.straas.android.media.demo.widget.StraasPlayerView.PLAYBACK_MODE_LIVE_DVR;
-import static io.straas.android.media.demo.widget.StraasPlayerView.PLAYBACK_MODE_LIVE_EDGE;
+import static io.straas.android.media.demo.widget.StraasPlayerView.PLAYBACK_MODE_LIVE_DVR_EDGE;
 import static io.straas.android.media.demo.widget.StraasPlayerView.PLAYBACK_MODE_VOD;
 
 public class ContentSeekBar extends RelativeLayout {
@@ -120,7 +121,7 @@ public class ContentSeekBar extends RelativeLayout {
         int position = mPlayer.getCurrentPosition();
         int duration = mPlayer.getDuration();
         if (mProgress != null) {
-            if (mPlaybackMode == PLAYBACK_MODE_LIVE_EDGE) {
+            if (mPlaybackMode == PLAYBACK_MODE_LIVE_DVR_EDGE) {
                 mProgress.setProgress(mProgress.getMax());
             } else if (duration > 0) {
                 // use long to avoid overflow
@@ -142,10 +143,11 @@ public class ContentSeekBar extends RelativeLayout {
     public void setPlaybackMode(@PlaybackMode int PlaybackMode) {
         mPlaybackMode = PlaybackMode;
         switch (mPlaybackMode) {
-            case PLAYBACK_MODE_LIVE_EDGE:
+            case PLAYBACK_MODE_LIVE_DVR_EDGE:
                 if (mProgress != null) {
                     mProgress.setProgress(mProgress.getMax());
                 }
+            case PLAYBACK_MODE_LIVE:
             case PLAYBACK_MODE_LIVE_DVR:
                 if (mCurrentTime != null) {
                     mCurrentTime.setVisibility(View.GONE);
@@ -240,7 +242,7 @@ public class ContentSeekBar extends RelativeLayout {
             if (mCurrentTime != null)
                 mCurrentTime.setText(stringForTime((int) newPosition));
 
-            if (mPlaybackMode == PLAYBACK_MODE_LIVE_EDGE || mPlaybackMode == PLAYBACK_MODE_LIVE_DVR) {
+            if (mPlaybackMode == PLAYBACK_MODE_LIVE_DVR_EDGE || mPlaybackMode == PLAYBACK_MODE_LIVE_DVR) {
                 sendLiveDvrPositionTimeStringChangedEvent(getLiveDvrPositionTimeString((int) Math.max(duration - newPosition, 0L)));
             }
         }

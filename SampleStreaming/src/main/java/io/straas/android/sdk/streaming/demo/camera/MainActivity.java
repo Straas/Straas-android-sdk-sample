@@ -24,6 +24,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText mStreamKeyEdit;
     private TextView mStreamStats;
     private Button mTriggerButton, mSwitchCameraButton, mFlashButton, mFilterButton;
+    private ToggleButton mMuteButton;
     private int mFilter = 0;
     private static final String[] STREAM_PERMISSIONS = {
             Manifest.permission.CAMERA,
@@ -104,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         mSwitchCameraButton = findViewById(switch_camera);
         mFlashButton = findViewById(flash);
         mFilterButton = findViewById(filter);
+        mMuteButton = findViewById(R.id.mute);
         mTitleEdit = findViewById(R.id.edit_title);
         mStreamStats = findViewById(R.id.stream_stats);
         mStreamWaySwitcher = findViewById(R.id.stream_way);
@@ -220,6 +223,7 @@ public class MainActivity extends AppCompatActivity {
         mSwitchCameraButton.setEnabled(true);
         mFlashButton.setEnabled(true);
         mFilterButton.setEnabled(true);
+        mMuteButton.setEnabled(true);
     }
 
     private void createLiveEventAndStartStreaming(String title) {
@@ -407,6 +411,13 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
             mFilter %= 3;
+        }
+    }
+
+    public void toggleMute(View view) {
+        if (mStreamManager != null) {
+            mStreamManager.setAudioEnabled(!mMuteButton.isChecked());
+            mMuteButton.setChecked(!mStreamManager.isAudioEnabled());
         }
     }
 

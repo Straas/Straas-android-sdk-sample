@@ -5,7 +5,7 @@
 
     <application>
         <activity android:name="io.straas.android.media.demo.StraasPlayerActivity"
-                  android:label="MediaCore - VideoList"
+                  android:label="MediaCore - Video list &amp; Playlist"
                   android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
 
         <activity android:name="io.straas.android.media.demo.OperationActivity"

@@ -287,6 +287,10 @@ public class OperationActivity extends AppCompatActivity {
         mStraasMediaCore.setPlaneProjectionMode(StraasMediaCore.PLANE_PROJECTION_MODE_FIT);
     }
 
+    public void full(View view) {
+        mStraasMediaCore.setPlaneProjectionMode(StraasMediaCore.PLANE_PROJECTION_MODE_FULL);
+    }
+
     public void normal(View view) {
         mStraasMediaCore.setDisplayMode(StraasMediaCore.DISPLAY_MODE_NORMAL);
     }
