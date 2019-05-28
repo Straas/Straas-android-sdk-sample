@@ -2,6 +2,23 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.13.0
+_2019-05-28_
+
+
+*   Support using Gradle 5.4.1 to import StraaS Android SDK.
+*   straas-media-core
+    *   **Important Change: Upgrade ExoPlayer to [v2.10.0](https://github.com/google/ExoPlayer/blob/release-v2/RELEASENOTES.md#2100).** 
+    *  [subscription of playlist](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/Browse-items#interact-with-mediaitem) 
+        *   Support [pagination](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/Browse-items#pagination).
+        *   **Important Change: Adjust the return item count each time to 20.**
+        *   **Important Change: The [Media items queue](https://developer.android.com/reference/android/support/v4/media/session/MediaControllerCompat#getQueue()) of playlist depends on how many items you have been [subscribed](https://developer.android.com/reference/android/support/v4/media/MediaBrowserCompat.html#subscribe(java.lang.String,%2520android.support.v4.media.MediaBrowserCompat.SubscriptionCallback)), which will change the behavior of [skipToPrevious](https://developer.android.com/reference/android/media/session/MediaController.TransportControls#skipToPrevious()) and [skipToNext](https://developer.android.com/reference/android/media/session/MediaController.TransportControls#skipToNext()).**
+    *   fix: Crash happens after broadcaster stop streaming in low latency scenario.
+*   straas-streaming
+    *   feat: Support mute function, you can use [setAudioEnabled](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/streaming/StreamManager.html#setAudioEnabled-boolean-) to control mute or not.
+
+
+
 ## Version 0.12.0
 _2019-03-12_
 
