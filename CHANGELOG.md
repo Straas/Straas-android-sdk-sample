@@ -2,9 +2,15 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.13.1
+_2019-06-11_
+
+*   straas-media-core
+    *   feat: Optimize statistics.
+
+
 ## Version 0.13.0
 _2019-05-28_
-
 
 *   Support using Gradle 5.4.1 to import StraaS Android SDK.
 *   straas-media-core
