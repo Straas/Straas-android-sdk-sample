@@ -2,6 +2,15 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.13.2
+_2019-06-19_
+
+*   straas-media-core
+    *   **Important Change: To make player be able to keep playing in [multi-window](https://developer.android.com/guide/topics/ui/multi-window) case, we adjust the rendering lifecycle to start rendering in [onActivityStarted](https://developer.android.com/reference/android/app/Application.ActivityLifecycleCallbacks.html#onActivityStarted(android.app.Activity)) and stop rendering in [onActivityStopped](https://developer.android.com/reference/android/app/Application.ActivityLifecycleCallbacks.html#onActivityStopped(android.app.Activity))(These used to be [onActivityResumed](https://developer.android.com/reference/android/app/Application.ActivityLifecycleCallbacks.html#onActivityResumed(android.app.Activity)) and [onActivityPaused](https://developer.android.com/reference/android/app/Application.ActivityLifecycleCallbacks.html#onActivityPaused(android.app.Activity))).**
+    *   feat: Not to send error when [play task](https://developer.android.com/reference/android/media/session/MediaController.TransportControls.html#playFromMediaId(java.lang.String,%20android.os.Bundle)) is stopped by another external command.
+     *   fix: Prevent video blocking at the beginning of stream under [low latency mode](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#PLAY_OPTION_LIVE_LOW_LATENCY_FIRST).
+
+
 ## Version 0.13.1
 _2019-06-11_
 
