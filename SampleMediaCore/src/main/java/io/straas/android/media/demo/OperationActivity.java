@@ -358,7 +358,7 @@ public class OperationActivity extends AppCompatActivity {
         public void onPlaybackStateChanged(PlaybackStateCompat state) {
             if (TextUtils.isEmpty(state.getErrorMessage())) {
                 Log.d(TAG, state.toString());
-            } else {
+            } else if (state.getExtras() != null){
                 Log.e(TAG, state.toString() + " " + state.getExtras().getString(StraasMediaCore.EVENT_PLAYER_ERROR_MESSAGE, ""));
             }
         }
