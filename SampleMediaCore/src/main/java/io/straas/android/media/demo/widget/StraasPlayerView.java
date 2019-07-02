@@ -1790,7 +1790,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
 
     private static boolean isLiveSeekable(Bundle mediaExtras) {
         return mediaExtras != null && mediaExtras.getBoolean(VideoCustomMetadata.LIVE_DVR_ENABLED) &&
-                !mediaExtras.getBoolean(VideoCustomMetadata.CUSTOM_METADATA_IS_LIVE_LOW_LATENCY_FIRST);
+                !mediaExtras.getBoolean(VideoCustomMetadata.CUSTOM_METADATA_IS_LIVE_LOW_LATENCY);
     }
 
     private static boolean isLiveSeekable(@PlaybackMode int playbackMode) {

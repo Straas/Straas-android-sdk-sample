@@ -67,7 +67,7 @@ public class OperationActivity extends AppCompatActivity {
         playerView.initialize(this);
 
         prepareEditText();
-        mLowLatencyFirst = findViewById(R.id.low_latency_first);
+        mLowLatencyFirst = findViewById(R.id.low_latency);
         mDisableAudioSwitch = findViewById(R.id.disableAudio);
 
         mStraasMediaCore = new StraasMediaCore(playerView, MemberIdentity.ME,
@@ -225,7 +225,7 @@ public class OperationActivity extends AppCompatActivity {
             private Bundle getLiveStreamingExtras() {
                 if (mLowLatencyFirst != null && mLowLatencyFirst.isChecked()) {
                     Bundle bundle = new Bundle();
-                    bundle.putBoolean(StraasMediaCore.PLAY_OPTION_LIVE_LOW_LATENCY_FIRST, true);
+                    bundle.putBoolean(StraasMediaCore.PLAY_OPTION_LIVE_LOW_LATENCY, true);
                     return bundle;
                 }
 
@@ -358,7 +358,7 @@ public class OperationActivity extends AppCompatActivity {
         public void onPlaybackStateChanged(PlaybackStateCompat state) {
             if (TextUtils.isEmpty(state.getErrorMessage())) {
                 Log.d(TAG, state.toString());
-            } else {
+            } else if (state.getExtras() != null){
                 Log.e(TAG, state.toString() + " " + state.getExtras().getString(StraasMediaCore.EVENT_PLAYER_ERROR_MESSAGE, ""));
             }
         }
