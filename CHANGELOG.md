@@ -2,6 +2,15 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.14.0
+_2019-07-02_
+
+*   straas-media-core
+    *   [Low latency](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#PLAY_OPTION_LIVE_LOW_LATENCY)
+        *   **Important Change: Throwing exception instead of falling back to HLS stream when error occurs..**
+        *   **Important Change: Rename StraasMediaCore#PLAY_OPTION_LIVE_LOW_LATENCY_FIRST and VideoCustomMetadata#CUSTOM_METADATA_IS_LIVE_LOW_LATENCY_FIRST to [StraasMediaCore#PLAY_OPTION_LIVE_LOW_LATENCY](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#PLAY_OPTION_LIVE_LOW_LATENCY) and [VideoCustomMetadata#CUSTOM_METADATA_IS_LIVE_LOW_LATENCY](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/VideoCustomMetadata.html#CUSTOM_METADATA_IS_LIVE_LOW_LATENCY).**
+
+
 ## Version 0.13.2
 _2019-06-19_
 
