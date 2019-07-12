@@ -25,4 +25,6 @@
     <string name="notification_channel_id">StraasPlayer</string>
     <string name="notification_channel_name">StraasPlayer name</string>
     <string name="notification_channel_description">StraasPlayer description</string>
+
+    <string name="rationale_request_location">You could permit location access for usage analysis.</string>
 </resources>
