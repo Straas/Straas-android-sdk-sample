@@ -84,15 +84,16 @@ public class OperationActivity extends AppCompatActivity {
                             setForeground(mIsForeground);
                         }
 
-                        mLocationCollector = new LocationCollector(OperationActivity.this,
-                                getMediaControllerCompat());
-                        if (mLocationCollector.checkPermission()) {
-                            mLocationCollector.start();
-                        } else {
-                            EasyPermissions.requestPermissions(OperationActivity.this,
-                                    getString(R.string.rationale_request_location),
-                                    LocationCollector.REQUEST_CODE, LocationCollector.PERMISSIONS);
-                        }
+                        // Uncomment these to enable location collection
+                        //mLocationCollector = new LocationCollector(OperationActivity.this,
+                        //        getMediaControllerCompat());
+                        //if (mLocationCollector.checkPermission()) {
+                        //    mLocationCollector.start();
+                        //} else {
+                        //    EasyPermissions.requestPermissions(OperationActivity.this,
+                        //            getString(R.string.rationale_request_location),
+                        //            LocationCollector.REQUEST_CODE, LocationCollector.PERMISSIONS);
+                        //}
                     }
                 })
                 // remove setImaHelper if you don't want to include ad system (IMA)
