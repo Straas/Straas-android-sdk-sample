@@ -26,8 +26,8 @@ public class LocationCollector {
             Manifest.permission.ACCESS_COARSE_LOCATION,
     };
 
-    private static final long MIN_INTERVAL = 1000;
-    private static final float MIN_DISTANCE = 0.1f;
+    private final long MIN_INTERVAL = 1000;
+    private final float MIN_DISTANCE = 0.1f;
 
     private Context mContext;
     private MediaControllerCompat mMediaController;
@@ -67,7 +67,7 @@ public class LocationCollector {
         setLocation(null);
     }
 
-    private void showCurrentLocation() {
+    private void showLocationFromMediaBrowserService() {
         mMediaController.sendCommand(StraasMediaCore.COMMAND_GET_LOCATION, null,
                 new ResultReceiver(new Handler()) {
                     @Override
@@ -94,7 +94,7 @@ public class LocationCollector {
         @Override
         public void onLocationChanged(final Location location) {
             setLocation(location);
-            showCurrentLocation();
+            showLocationFromMediaBrowserService();
         }
 
         @Override public void onStatusChanged(String provider, int status, Bundle extras) {
