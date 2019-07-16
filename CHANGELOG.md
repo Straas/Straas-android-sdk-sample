@@ -2,6 +2,13 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.14.1
+_2019-07-16_
+
+*   straas-media-core
+    *   feat: Optimize statistics.
+
+
 ## Version 0.14.0
 _2019-07-02_
 
