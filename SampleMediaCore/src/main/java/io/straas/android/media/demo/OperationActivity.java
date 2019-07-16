@@ -85,7 +85,7 @@ public class OperationActivity extends AppCompatActivity {
                         }
 
                         // Uncomment these to enable location collection
-                        //mLocationCollector = new LocationCollector(OperationActivity.this,
+                        //mLocationCollector = new LocationCollector(OperationActivity.this.getApplicationContext(),
                         //        getMediaControllerCompat());
                         //if (mLocationCollector.checkPermission()) {
                         //    mLocationCollector.start();
