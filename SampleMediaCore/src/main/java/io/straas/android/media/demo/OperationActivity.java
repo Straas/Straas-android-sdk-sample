@@ -35,6 +35,7 @@ import io.straas.android.sdk.media.ImaHelper;
 import io.straas.android.sdk.media.StraasMediaCore;
 import io.straas.android.sdk.media.VideoCustomMetadata;
 import io.straas.android.sdk.media.notification.NotificationOptions;
+import pub.devrel.easypermissions.EasyPermissions;
 
 import static android.app.NotificationManager.IMPORTANCE_LOW;
 
@@ -42,6 +43,8 @@ import static android.app.NotificationManager.IMPORTANCE_LOW;
  * Demo for some of the operations to browse and play medias.
  */
 public class OperationActivity extends AppCompatActivity {
+
+    public static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     private static final String SHARE_PREFERENCE_KEY = "StraaS";
     private static final String FOREGROUND_KEY = "foreground";
@@ -55,6 +58,7 @@ public class OperationActivity extends AppCompatActivity {
     private StraasMediaCore mStraasMediaCore;
     private Checkable mLowLatency, mDisableAudioSwitch;
     private boolean mIsForeground;
+    private LocationCollector mLocationCollector;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +83,17 @@ public class OperationActivity extends AppCompatActivity {
                                 VideoCustomMetadata.SERVICE_FOREGROUND_IS_ENABLED, !mIsForeground)) {
                             setForeground(mIsForeground);
                         }
+
+                        // Uncomment these to enable location collection
+                        //mLocationCollector = new LocationCollector(OperationActivity.this.getApplicationContext(),
+                        //        getMediaControllerCompat());
+                        //if (mLocationCollector.checkPermission()) {
+                        //    mLocationCollector.start();
+                        //} else {
+                        //    EasyPermissions.requestPermissions(OperationActivity.this,
+                        //            getString(R.string.rationale_request_location),
+                        //            LocationCollector.REQUEST_CODE, LocationCollector.PERMISSIONS);
+                        //}
                     }
                 })
                 // remove setImaHelper if you don't want to include ad system (IMA)
@@ -91,8 +106,19 @@ public class OperationActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LocationCollector.REQUEST_CODE) {
+            EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, mLocationCollector);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mLocationCollector != null) {
+            mLocationCollector.stop();
+        }
         getMediaBrowser().disconnect();
     }
 
