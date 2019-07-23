@@ -2,6 +2,13 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.14.2
+_2019-07-23_
+
+*   straas-media-core
+    *   feat: Add location log function, see [wiki](https://github.com/StraaS/StraaS-android-sdk-sample/wiki/Additional-functions#log-location) for more information.
+
+
 ## Version 0.14.1
 _2019-07-16_
 
