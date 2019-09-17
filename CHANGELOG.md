@@ -2,6 +2,12 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.14.3
+_2019-09-17_
+
+*   straas-messaging
+    *   feat: Support banned words. If a client sends a sentence which includes a banned word, this request will fail and the client will receive a [BannedWordException](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/messaging/MessagingException.BannedWordException.html). See [StraaS Messaging Service document](https://github.com/StraaS/StraaS-web-document/wiki/Messaging-Service-Concept#banned-word-mechanism) for more details.
+
 ## Version 0.14.2
 _2019-07-23_
 
