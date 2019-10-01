@@ -13,6 +13,7 @@
     <string name="broadcast_state_ended">Ended</string>
     <string name="broadcast_state_wait_for_stream">Unplanned outages happened. Please wait…</string>
     <string name="network_no_connection">Could not connect to server.</string>
+    <string name="slow_internet_speed">The internet speed is too slow. Please check your network condition and try again.</string>
     <string name="common_error">An error occurred. Please try again later.</string>
     <string name="sdk_out_of_date">Your SDK is out of date. Please contact the developer directly.</string>
     <string name="developer_key_invalid">The developer key is invalid. Please contact the developer directly.</string>

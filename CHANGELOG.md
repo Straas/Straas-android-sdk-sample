@@ -2,6 +2,13 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.14.4
+_2019-10-01_
+
+*   straas-media-core
+    *   feat: Add error type [SLOW_INTERNET_SPEED](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.ErrorReason.html#SLOW_INTERNET_SPEED) for slow internet speed condition.
+
+
 ## Version 0.14.3
 _2019-09-17_
 
