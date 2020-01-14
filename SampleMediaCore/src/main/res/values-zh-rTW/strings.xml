@@ -21,4 +21,5 @@
 	<string name="video_not_available">此影片無法觀看</string>
 	<string name="common_not_available_region">您所在的地區無法觀看此內容</string>
 	<string name="access_permission_denial">您沒有權限存取所要求的資源</string>
+	<string name="too_many_requests">API 請求頻率超過限制</string>
 </resources>
