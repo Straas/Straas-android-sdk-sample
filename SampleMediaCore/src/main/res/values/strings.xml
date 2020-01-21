@@ -22,7 +22,7 @@
     <string name="video_not_available">Sorry, this content is not available.</string>
     <string name="common_not_available_region">Sorry, this content is not available in your region.</string>
     <string name="access_permission_denial">No permission to access the resource.</string>
-    <string name="too_many_requests">Requests over the rate limit.</string>
+    <string name="too_many_requests">The server is busy. Please try again later.</string>
 
     <string name="notification_channel_id">StraasPlayer</string>
     <string name="notification_channel_name">StraasPlayer name</string>
