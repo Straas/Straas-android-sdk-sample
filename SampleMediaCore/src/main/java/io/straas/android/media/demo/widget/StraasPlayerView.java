@@ -1407,6 +1407,9 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                     case ErrorReason.MEDIA_PERMISSION_DENIAL:
                         message = getContext().getString(R.string.access_permission_denial);
                         break;
+                    case ErrorReason.TOO_MANY_REQUESTS:
+                        message = getContext().getString(R.string.too_many_requests);
+                        break;
                     case ErrorReason.TEMPORARILY_UNAVAILABLE:
                     case ErrorReason.DATA_DESERIALIZE_ERROR:
                     case ErrorReason.INTERNAL_ERROR:

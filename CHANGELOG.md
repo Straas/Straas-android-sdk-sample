@@ -2,6 +2,12 @@ Change Log
 ==========
 *   If you want to upgrade StraaS Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.14.5
+_2020-02-18_
+
+*   straas-media-core
+    *   feat: Add error type [TOO_MANY_REQUESTS](https://straas.github.io/StraaS-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.ErrorReason.html#TOO_MANY_REQUESTS), this occurs when there are too many requests for the server.
+
 ## Version 0.14.4
 _2019-10-01_
 
