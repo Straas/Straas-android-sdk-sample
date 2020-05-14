@@ -104,7 +104,7 @@
                     <EditText
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
-                        android:id="@+id/hls_live_sync_duration_count"
+                        android:id="@+id/hls_live_sync_interval_count"
                         android:inputType="number"/>
                 </LinearLayout>
                 <Button
