@@ -19,10 +19,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.Checkable;
-import android.widget.Switch;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import com.google.android.exoplayer2.C;
 
@@ -57,6 +54,7 @@ public class OperationActivity extends AppCompatActivity {
     private static final String TAG = OperationActivity.class.getSimpleName();
     private StraasMediaCore mStraasMediaCore;
     private Checkable mLowLatency, mDisableAudioSwitch;
+    private EditText mHlsLiveSyncIntervalCount;
     private boolean mIsForeground;
     private LocationCollector mLocationCollector;
 
@@ -72,6 +70,7 @@ public class OperationActivity extends AppCompatActivity {
 
         prepareEditText();
         mLowLatency = findViewById(R.id.low_latency);
+        mHlsLiveSyncIntervalCount = findViewById(R.id.hls_live_sync_interval_count);
         mDisableAudioSwitch = findViewById(R.id.disableAudio);
 
         mStraasMediaCore = new StraasMediaCore(playerView, MemberIdentity.ME,
@@ -249,13 +248,21 @@ public class OperationActivity extends AppCompatActivity {
             }
 
             private Bundle getLiveStreamingExtras() {
+                Bundle bundle = new Bundle();
                 if (mLowLatency != null && mLowLatency.isChecked()) {
-                    Bundle bundle = new Bundle();
                     bundle.putBoolean(StraasMediaCore.PLAY_OPTION_LIVE_LOW_LATENCY, true);
-                    return bundle;
+                }
+                if (mHlsLiveSyncIntervalCount != null) {
+                    String text = mHlsLiveSyncIntervalCount.getText().toString();
+                    try {
+                        int liveSyncIntervalCount = Integer.parseInt(text);
+                        bundle.putInt(StraasMediaCore.PLAY_OPTION_HLS_LIVE_SYNC_INTERVAL_COUNT, liveSyncIntervalCount);
+                    } catch (NumberFormatException e) {
+                        Log.d(TAG, "Wrong hls live sync duration count format: " + text);
+                    }
                 }
 
-                return null;
+                return bundle;
             }
         });
 
