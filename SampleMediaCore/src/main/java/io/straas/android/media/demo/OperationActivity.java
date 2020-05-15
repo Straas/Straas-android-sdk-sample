@@ -43,7 +43,7 @@ public class OperationActivity extends AppCompatActivity {
 
     public static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
 
-    private static final String SHARE_PREFERENCE_KEY = "StraaS";
+    private static final String SHARE_PREFERENCE_KEY = "Straas";
     private static final String FOREGROUND_KEY = "foreground";
 
     // change these three attributes to fit with your CMS.

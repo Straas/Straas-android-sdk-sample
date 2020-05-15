@@ -1,4 +1,4 @@
-Welcome to StraaS.io and thanks for submitting an issue!
+Welcome to Straas.io and thanks for submitting an issue!
 
 Please search the existing issues before filing a new one, including issues that
 are closed. 
