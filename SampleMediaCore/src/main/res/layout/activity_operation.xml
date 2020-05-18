@@ -55,10 +55,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp">
-                <android.support.design.widget.TextInputEditText
+                <io.straas.android.media.demo.widget.ui.RecordTextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/vod"
+                    android:tag="vod"
                     android:hint="VOD ID:"/>
                 <Button
                     android:layout_width="wrap_content"
@@ -82,10 +83,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp">
-                <android.support.design.widget.TextInputEditText
+                <io.straas.android.media.demo.widget.ui.RecordTextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/live"
+                    android:tag="live"
                     android:hint="Live event ID:"/>
                 <Switch
                     android:layout_width="wrap_content"
@@ -119,10 +121,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp">
-                <android.support.design.widget.TextInputEditText
+                <io.straas.android.media.demo.widget.ui.RecordTextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/playlist"
+                    android:tag="playlist"
                     android:hint="Playlist ID:"/>
                 <Button
                     android:layout_width="wrap_content"
