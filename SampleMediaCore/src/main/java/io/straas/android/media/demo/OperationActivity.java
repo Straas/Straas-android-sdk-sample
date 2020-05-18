@@ -428,19 +428,16 @@ public class OperationActivity extends AppCompatActivity {
         final RecordTextInputEditText playlist = findViewById(R.id.playlist);
         if (!TextUtils.isEmpty(VIDEO_ID)) {
             vod.setText(VIDEO_ID);
-            vod.recordCurrentText();
         } else {
             VIDEO_ID = vod.getEditableText().toString();
         }
         if (!TextUtils.isEmpty(LIVE_VIDEO_ID)) {
             live.setText(LIVE_VIDEO_ID);
-            live.recordCurrentText();
         } else {
             LIVE_VIDEO_ID = live.getEditableText().toString();
         }
         if (!TextUtils.isEmpty(PLAYLIST_ID)) {
             playlist.setText(PLAYLIST_ID);
-            playlist.recordCurrentText();
         } else {
             PLAYLIST_ID = playlist.getEditableText().toString();
         }
@@ -458,7 +455,6 @@ public class OperationActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 VIDEO_ID = s.toString();
-                vod.recordCurrentText();
             }
         });
 
@@ -476,7 +472,6 @@ public class OperationActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 LIVE_VIDEO_ID = s.toString();
-                live.recordCurrentText();
             }
         });
 
@@ -494,7 +489,6 @@ public class OperationActivity extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 PLAYLIST_ID = s.toString();
-                playlist.recordCurrentText();
             }
         });
     }

@@ -2,8 +2,8 @@ package io.straas.android.media.demo.widget.ui;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.text.TextUtils;
-import android.util.AttributeSet;
+import android.text.*;
+import android.util.*;
 
 import io.straas.android.media.demo.*;
 
@@ -11,6 +11,8 @@ public class RecordTextInputEditText extends android.support.design.widget.TextI
 
     private static final String SP_NAME = "SP_RECORD_TEXT_INPUT_EDIT_TEXT";
     private static final String DEFAULT_SP_KEY = "DEFAULT_SP_KEY";
+
+    private boolean mListening;
 
     public RecordTextInputEditText(Context context) {
         this(context, null);
@@ -27,6 +29,7 @@ public class RecordTextInputEditText extends android.support.design.widget.TextI
 
     private void init() {
         setText(getRecord());
+        mListening = true;
     }
 
     private SharedPreferences getSharedPreferences() {
@@ -44,11 +47,22 @@ public class RecordTextInputEditText extends android.support.design.widget.TextI
         return getSharedPreferences().getString(getSharedPreferencesKey(), null);
     }
 
-    public void recordCurrentText() {
+    private void recordCurrentText() {
         if (getText() == null) {
             return;
         }
         String text = getText().toString();
         getSharedPreferences().edit().putString(getSharedPreferencesKey(), text).apply();
+    }
+
+    //============================================================================
+    // override methods
+    //============================================================================
+    @Override
+    protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
+        super.onTextChanged(text, start, lengthBefore, lengthAfter);
+        if (mListening) {
+            recordCurrentText();
+        }
     }
 }
