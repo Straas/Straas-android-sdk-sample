@@ -9,8 +9,8 @@ import io.straas.android.media.demo.*;
 
 public class RecordTextInputEditText extends android.support.design.widget.TextInputEditText {
 
-    private static final String KEY_RECORD = "RECORD";
-    private static final String DEFAULT_SP_NAME = "SP_RECORD_TEXT_INPUT_EDIT_TEXT";
+    private static final String SP_NAME = "SP_RECORD_TEXT_INPUT_EDIT_TEXT";
+    private static final String DEFAULT_SP_KEY = "DEFAULT_SP_KEY";
 
     public RecordTextInputEditText(Context context) {
         this(context, null);
@@ -29,19 +29,19 @@ public class RecordTextInputEditText extends android.support.design.widget.TextI
         setText(getRecord());
     }
 
-    private String getRecord() {
-        return getSharedPreferences().getString(KEY_RECORD, null);
-    }
-
     private SharedPreferences getSharedPreferences() {
-        return getContext().getSharedPreferences(getSharedPreferencesName(), Context.MODE_PRIVATE);
+        return getContext().getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
     }
 
-    private String getSharedPreferencesName() {
+    private String getSharedPreferencesKey() {
         if (getTag() != null) {
             return getTag().toString();
         }
-        return DEFAULT_SP_NAME;
+        return DEFAULT_SP_KEY;
+    }
+
+    private String getRecord() {
+        return getSharedPreferences().getString(getSharedPreferencesKey(), null);
     }
 
     public void recordCurrentText() {
@@ -49,6 +49,6 @@ public class RecordTextInputEditText extends android.support.design.widget.TextI
             return;
         }
         String text = getText().toString();
-        getSharedPreferences().edit().putString(KEY_RECORD, text).apply();
+        getSharedPreferences().edit().putString(getSharedPreferencesKey(), text).apply();
     }
 }
