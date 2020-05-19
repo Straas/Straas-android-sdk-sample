@@ -1,11 +1,12 @@
 package io.straas.android.media.demo;
 
 import android.app.NotificationChannel;
-import android.content.Context;
+import android.content.*;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.*;
 import android.support.v4.media.MediaBrowserCompat;
 import android.support.v4.media.MediaBrowserCompat.ConnectionCallback;
 import android.support.v4.media.MediaBrowserCompat.MediaItem;
@@ -26,7 +27,7 @@ import com.google.android.exoplayer2.C;
 import java.util.List;
 
 import io.straas.android.media.demo.widget.StraasPlayerView;
-import io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout;
+import io.straas.android.media.demo.widget.ui.*;
 import io.straas.android.sdk.demo.identity.MemberIdentity;
 import io.straas.android.sdk.media.ImaHelper;
 import io.straas.android.sdk.media.StraasMediaCore;
@@ -422,17 +423,23 @@ public class OperationActivity extends AppCompatActivity {
     };
 
     private void prepareEditText() {
-        TextView vod = findViewById(R.id.vod);
-        TextView live = findViewById(R.id.live);
-        TextView playlist = findViewById(R.id.playlist);
+        final RecordTextInputEditText vod = findViewById(R.id.vod);
+        final RecordTextInputEditText live = findViewById(R.id.live);
+        final RecordTextInputEditText playlist = findViewById(R.id.playlist);
         if (!TextUtils.isEmpty(VIDEO_ID)) {
             vod.setText(VIDEO_ID);
+        } else {
+            VIDEO_ID = vod.getEditableText().toString();
         }
         if (!TextUtils.isEmpty(LIVE_VIDEO_ID)) {
             live.setText(LIVE_VIDEO_ID);
+        } else {
+            LIVE_VIDEO_ID = live.getEditableText().toString();
         }
         if (!TextUtils.isEmpty(PLAYLIST_ID)) {
             playlist.setText(PLAYLIST_ID);
+        } else {
+            PLAYLIST_ID = playlist.getEditableText().toString();
         }
         vod.addTextChangedListener(new TextWatcher() {
             @Override
