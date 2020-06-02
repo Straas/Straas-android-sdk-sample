@@ -2,6 +2,13 @@ Change Log
 ==========
 *   If you want to upgrade Straas Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.14.6
+_2020-06-02_
+
+*   straas-media-core
+    *   feat: Support playing encrypted Straas media.
+    *   feat: Support [PLAY_OPTION_HLS_LIVE_SYNC_INTERVAL_COUNT](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#PLAY_OPTION_HLS_LIVE_SYNC_INTERVAL_COUNT) for reducing the latency.
+
 ## Version 0.14.5
 _2020-02-18_
 
