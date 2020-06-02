@@ -53,7 +53,7 @@ public abstract class CircallDemoBaseActivity extends AppCompatActivity implemen
 
     public static final String INTENT_CIRCALL_TOKEN = "circall_token";
 
-    private static final String ALBUM_FOLDER = "StraaS";
+    private static final String ALBUM_FOLDER = "Straas";
 
     private static final String[] STORAGE_PERMISSION = {
             Manifest.permission.WRITE_EXTERNAL_STORAGE

@@ -55,10 +55,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp">
-                <android.support.design.widget.TextInputEditText
+                <io.straas.android.media.demo.widget.ui.RecordTextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/vod"
+                    android:tag="vod"
                     android:hint="VOD ID:"/>
                 <Button
                     android:layout_width="wrap_content"
@@ -82,22 +83,37 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp">
-                <android.support.design.widget.TextInputEditText
+                <io.straas.android.media.demo.widget.ui.RecordTextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/live"
+                    android:tag="live"
                     android:hint="Live event ID:"/>
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="play live streaming"
-                    android:onClick="playLiveStreaming"/>
                 <Switch
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/low_latency"
                     android:text="LOW LATENCY"
                     android:checked="false" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="hls live sync duration count: "/>
+                    <EditText
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/hls_live_sync_interval_count"
+                        android:inputType="number"/>
+                </LinearLayout>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="play live streaming"
+                    android:onClick="playLiveStreaming"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -105,10 +121,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp">
-                <android.support.design.widget.TextInputEditText
+                <io.straas.android.media.demo.widget.ui.RecordTextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/playlist"
+                    android:tag="playlist"
                     android:hint="Playlist ID:"/>
                 <Button
                     android:layout_width="wrap_content"

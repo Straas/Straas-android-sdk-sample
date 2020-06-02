@@ -8,7 +8,7 @@
 
     <string name="qr_code_need_permission">請先允許相機，才可掃描QR Code</string>
     <string name="circall_need_permission">請先允許相機和麥可風，才可進入線上面談室</string>
-    <string name="picture_store_need_permission">無法儲存截圖，請先允許 StraaS 存取相片</string>
+    <string name="picture_store_need_permission">無法儲存截圖，請先允許 Straas 存取相片</string>
 
     <string name="connecting">連線中...</string>
     <string name="other_side_not_enter_yet">對方尚未進入面談室</string>
