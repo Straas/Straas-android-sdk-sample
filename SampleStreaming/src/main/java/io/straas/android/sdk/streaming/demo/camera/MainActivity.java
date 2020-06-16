@@ -61,6 +61,9 @@ import static io.straas.android.sdk.streaming.demo.R.id.trigger;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Streaming";
+
+    private static final int QRCODE_REQUEST_STREAM_KEY = 1;
+
     private StreamManager mStreamManager;
     private CameraController mCameraController;
     private TextureView mTextureView;
@@ -120,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initEditStreamKey() {
-        final ImageView clearButton = findViewById(R.id.clear);
-        final ImageView scanButton = findViewById(R.id.scan);
+        final ImageView clearButton = findViewById(R.id.clear_stream_key);
+        final ImageView scanButton = findViewById(R.id.scan_stream_key);
         mStreamKeyEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -427,7 +430,8 @@ public class MainActivity extends AppCompatActivity {
         }
         destroy();
         Intent intent = new Intent(this, QrcodeActivity.class);
-        startActivityForResult(intent, 1);
+        int requestCode = QRCODE_REQUEST_STREAM_KEY;
+        startActivityForResult(intent, requestCode);
     }
 
     public void clearStreamKey(View view) {
@@ -454,12 +458,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            String streamKey = data.getStringExtra(QrcodeActivity.KEY_QR_CODE_VALUE);
-            if (!isPureText(streamKey)) {
-                Toast.makeText(this, R.string.error_wrong_format, Toast.LENGTH_LONG).show();
-                return;
+            String value = data.getStringExtra(QrcodeActivity.KEY_QR_CODE_VALUE);
+            if (requestCode == QRCODE_REQUEST_STREAM_KEY) {
+                if (!isPureText(value)) {
+                    Toast.makeText(this, R.string.error_wrong_format, Toast.LENGTH_LONG).show();
+                    return;
+                }
+                mStreamKeyEdit.setText(value);
             }
-            mStreamKeyEdit.setText(streamKey);
         }
     }
 

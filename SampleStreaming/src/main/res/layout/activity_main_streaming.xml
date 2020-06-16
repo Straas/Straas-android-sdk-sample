@@ -116,7 +116,7 @@
                 android:paddingRight="30dp" />
 
             <ImageButton
-                android:id="@+id/clear"
+                android:id="@+id/clear_stream_key"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"
@@ -129,7 +129,7 @@
                 tools:visibility="invisible" />
 
             <ImageButton
-                android:id="@+id/scan"
+                android:id="@+id/scan_stream_key"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"
