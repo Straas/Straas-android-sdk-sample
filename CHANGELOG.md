@@ -2,6 +2,11 @@ Change Log
 ==========
 *   If you want to upgrade Straas Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.14.8
+_2020-06-23_
+
+*   Internal improvements.
+
 ## Version 0.14.7
 _2020-06-16_
 

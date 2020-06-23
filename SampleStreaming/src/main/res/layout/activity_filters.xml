@@ -27,13 +27,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <ToggleButton
-        android:id="@+id/skin_beautify"
+        android:id="@+id/beauty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:enabled="false"
-        android:onClick="skinBeautify"
-        android:textOff="@string/skin_beautify"
-        android:textOn="@string/skin_beautify"
+        android:onClick="beauty"
+        android:textOff="@string/beauty"
+        android:textOn="@string/beauty"
         app:layout_constraintLeft_toRightOf="@id/switch_camera"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -64,7 +64,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
     <SeekBar
-        android:id="@+id/seek_bar_skin_smoothness"
+        android:id="@+id/seek_bar_smoothness"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@id/smoothness_description"
