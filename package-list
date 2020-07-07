@@ -3,9 +3,6 @@ io.straas.android.sdk.authentication.identity
 io.straas.android.sdk.base.credential
 io.straas.android.sdk.base.identity
 io.straas.android.sdk.base.interfaces
-io.straas.android.sdk.circall
-io.straas.android.sdk.circall.exception
-io.straas.android.sdk.circall.interfaces
 io.straas.android.sdk.media
 io.straas.android.sdk.media.notification
 io.straas.android.sdk.messaging
