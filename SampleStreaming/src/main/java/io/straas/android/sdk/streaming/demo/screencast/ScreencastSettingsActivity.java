@@ -25,7 +25,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import io.straas.android.sdk.demo.identity.MemberIdentity;
+import io.straas.android.sdk.demo.common.MemberIdentity;
 import io.straas.android.sdk.streaming.StreamManager;
 import io.straas.android.sdk.streaming.demo.R;
 

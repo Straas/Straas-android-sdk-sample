@@ -14,7 +14,7 @@ import com.google.android.gms.tasks.*;
 
 import java.util.*;
 
-import io.straas.android.sdk.demo.identity.*;
+import io.straas.android.sdk.demo.common.*;
 import io.straas.android.sdk.streaming.*;
 import io.straas.android.sdk.streaming.demo.R;
 import io.straas.android.sdk.streaming.demo.filter.beauty.*;
