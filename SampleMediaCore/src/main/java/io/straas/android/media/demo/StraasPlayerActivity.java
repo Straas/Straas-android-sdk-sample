@@ -1,42 +1,31 @@
 package io.straas.android.media.demo;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.ContextWrapper;
+import android.app.*;
+import android.content.*;
 import android.content.res.Configuration;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
+import android.os.*;
+import android.support.annotation.*;
 import android.support.v4.app.LoaderManager;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.Loader;
-import android.support.v4.media.MediaBrowserCompat;
-import android.support.v4.media.MediaBrowserCompat.MediaItem;
-import android.support.v4.media.MediaBrowserCompat.SubscriptionCallback;
-import android.support.v4.media.MediaMetadataCompat;
-import android.support.v4.media.session.MediaControllerCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.support.v4.content.*;
+import android.support.v4.media.*;
+import android.support.v4.media.MediaBrowserCompat.*;
+import android.support.v4.media.session.*;
+import android.support.v7.app.*;
+import android.support.v7.widget.*;
+import android.text.*;
+import android.util.*;
+import android.view.*;
+import android.widget.*;
 
-import com.bumptech.glide.Glide;
+import com.bumptech.glide.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import io.straas.android.media.demo.widget.StraasPlayerView;
-import io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout;
-import io.straas.android.sdk.demo.identity.MemberIdentity;
-import io.straas.android.sdk.media.ImaHelper;
-import io.straas.android.sdk.media.StraasMediaCore;
+import io.straas.android.media.demo.widget.*;
+import io.straas.android.media.demo.widget.ui.*;
+import io.straas.android.sdk.demo.common.*;
+import io.straas.android.sdk.media.*;
 
 /**
  * Demo for querying video list, click item to play.
@@ -70,7 +59,7 @@ public class StraasPlayerActivity extends AppCompatActivity {
         getSupportLoaderManager().initLoader(0, null, new LoaderManager.LoaderCallbacks<StraasMediaCore>() {
             @Override
             public Loader<StraasMediaCore> onCreateLoader(int id, Bundle args) {
-                return new StraasMediaCoreLoader(StraasPlayerActivity.this, MemberIdentity.ME);
+                return createStraasMediaCoreLoader();
             }
 
             @Override
@@ -107,6 +96,10 @@ public class StraasPlayerActivity extends AppCompatActivity {
             }
         });
         mPlaylistIdEditText = findViewById(R.id.edit_text_playlist_id);
+    }
+
+    protected Loader<StraasMediaCore> createStraasMediaCoreLoader() {
+        return new StraasMediaCoreLoader(StraasPlayerActivity.this, MemberIdentity.ME);
     }
 
     public void loadVodList(View view) {

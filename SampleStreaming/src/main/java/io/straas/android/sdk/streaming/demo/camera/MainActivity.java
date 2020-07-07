@@ -34,7 +34,7 @@ import com.google.android.gms.tasks.Tasks;
 
 import java.util.ArrayList;
 
-import io.straas.android.sdk.demo.identity.MemberIdentity;
+import io.straas.android.sdk.demo.common.MemberIdentity;
 import io.straas.android.sdk.demo.qrcode.QrcodeActivity;
 import io.straas.android.sdk.media.LiveEventListener;
 import io.straas.android.sdk.streaming.CameraController;

@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import io.straas.android.media.demo.widget.StraasPlayerView;
 import io.straas.android.media.demo.widget.ui.AspectRatioFrameLayout;
-import io.straas.android.sdk.demo.identity.MemberIdentity;
+import io.straas.android.sdk.demo.common.MemberIdentity;
 import io.straas.android.sdk.media.ImaHelper;
 import io.straas.android.sdk.media.StraasMediaCore;
 

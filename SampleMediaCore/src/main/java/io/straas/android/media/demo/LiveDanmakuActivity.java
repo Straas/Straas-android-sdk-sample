@@ -20,7 +20,7 @@ import io.straas.android.sdk.media.StraasMediaCore;
 import io.straas.android.sdk.messaging.ChatroomManager;
 import io.straas.android.sdk.messaging.ui.ChatroomInputView;
 import io.straas.android.sdk.messaging.ui.ChatroomOutputView;
-import io.straas.android.sdk.demo.identity.MemberIdentity;
+import io.straas.android.sdk.demo.common.MemberIdentity;
 import master.flame.danmaku.ui.widget.DanmakuSurfaceView;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
