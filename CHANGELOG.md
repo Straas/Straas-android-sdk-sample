@@ -2,6 +2,12 @@ Change Log
 ==========
 *   If you want to upgrade Straas Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.15.0
+_2020-09-01_
+
+*   **Important Change: Throw [PublishException](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/streaming/error/StreamException.PublishException.html) instead of [ServerException](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/streaming/error/StreamException.ServerException.html) if a publish error has occurred.**
+*   **Important Change: Adjust the default fps in streaming SDK to 30 frames/sec (20 fps in previous SDK versions) and add [setFps](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/streaming/StreamConfig.Builder.html#fps-int-) to support fps setting.**
+
 ## Version 0.14.9
 _2020-07-07_
 
