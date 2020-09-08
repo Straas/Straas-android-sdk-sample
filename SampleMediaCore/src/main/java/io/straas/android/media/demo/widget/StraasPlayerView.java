@@ -807,6 +807,10 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
      * @param visibility visibility for error message.
      */
     public void setErrorMessageVisibility(int visibility) {
+        if (visibility == VISIBLE) {
+            mCanToggleControllerUi = false;
+            setBroadcastStateVisibility(GONE);
+        }
         mColumnErrorMessage.setVisibility(visibility);
     }
 
@@ -827,6 +831,10 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
      * @param visibility visibility for broadcast state message.
      */
     public void setBroadcastStateVisibility(int visibility) {
+        if (visibility == VISIBLE) {
+            mCanToggleControllerUi = false;
+            setErrorMessageVisibility(GONE);
+        }
         mColumnBroadcastState.setVisibility(visibility);
     }
 
@@ -1387,7 +1395,7 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
     private class ErrorMessageListener {
         void onError(TextView errorMessageTextView, @ErrorReason.ErrorReasonType String errorType) {
             if (errorMessageTextView != null) {
-                mColumnErrorMessage.setVisibility(VISIBLE);
+                setErrorMessageVisibility(VISIBLE);
 
                 String message;
 
@@ -1409,6 +1417,9 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                         break;
                     case ErrorReason.TOO_MANY_REQUESTS:
                         message = getContext().getString(R.string.too_many_requests);
+                        break;
+                    case ErrorReason.PLAYLIST_STUCK:
+                        message = getContext().getString(R.string.playlist_stuck);
                         break;
                     case ErrorReason.TEMPORARILY_UNAVAILABLE:
                     case ErrorReason.DATA_DESERIALIZE_ERROR:
@@ -1440,7 +1451,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             if (textView == null) {
                 return;
             }
-            setErrorMessageVisibility(GONE);
             setBroadcastStateVisibility(VISIBLE);
             textView.setText(R.string.broadcast_state_offline);
         }
@@ -1453,7 +1463,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             if (textView == null) {
                 return;
             }
-            setErrorMessageVisibility(GONE);
             setBroadcastStateVisibility(VISIBLE);
             textView.setText(R.string.broadcast_state_ended);
         }
@@ -1471,7 +1480,6 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
             if (textView == null) {
                 return;
             }
-            setErrorMessageVisibility(GONE);
             setBroadcastStateVisibility(VISIBLE);
             textView.setText(R.string.broadcast_state_wait_for_stream);
         }
