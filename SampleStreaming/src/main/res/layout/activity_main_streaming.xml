@@ -107,10 +107,11 @@
             android:layout_below="@id/stream_way"
             android:layout_gravity="center_horizontal">
 
-            <EditText
+            <io.straas.android.sdk.demo.common.widget.RecordTextInputEditText
                 android:id="@+id/edit_stream_key"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:tag="stream_key"
                 android:hint="@string/hint_input_stream_key"
                 android:paddingEnd="30dp"
                 android:paddingRight="30dp" />

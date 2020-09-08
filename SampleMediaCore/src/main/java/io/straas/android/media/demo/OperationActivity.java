@@ -353,6 +353,10 @@ public class OperationActivity extends AppCompatActivity {
         MediaControllerCompatHelper.setAudibility(getMediaControllerCompat(), disable);
     }
 
+    public void playerRetry(View view) {
+        MediaControllerCompatHelper.playerRetry(getMediaControllerCompat());
+    }
+
     private final MediaControllerCompat.Callback mMediaControllerCallback = new MediaControllerCompat.Callback() {
 
         @Override

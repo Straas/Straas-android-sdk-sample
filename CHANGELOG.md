@@ -2,6 +2,14 @@ Change Log
 ==========
 *   If you want to upgrade Straas Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.15.1
+_2020-09-08_
+
+*   straas-media-core
+    *   feat: Add [COMMAND_PLAYER_RETRY](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#COMMAND_PLAYER_RETRY) for better user experience. Note that this function is in BETA stage now.
+    *   feat: Add [PLAYLIST_STUCK](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.ErrorReason.html#PLAYLIST_STUCK) for the situation that playlist is stuck.
+
+
 ## Version 0.15.0
 _2020-09-01_
 
