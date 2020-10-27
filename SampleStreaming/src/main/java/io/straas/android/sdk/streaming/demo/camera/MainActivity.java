@@ -170,11 +170,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private StreamConfig getConfig() {
-        return new StreamConfig.Builder()
+        StreamConfig.Builder builder =  new StreamConfig.Builder()
                 .camera(StreamConfig.CAMERA_FRONT)
                 .fitAllCamera(true)
-                .fps(30)
-                .build();
+                .fps(30);
+        onCustomStreamConfig(builder);
+        return builder.build();
+    }
+
+    protected void onCustomStreamConfig(StreamConfig.Builder builder) {
+
     }
 
     private Task<CameraController> preview() {
