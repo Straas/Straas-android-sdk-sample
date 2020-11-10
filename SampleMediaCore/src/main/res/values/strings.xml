@@ -13,6 +13,8 @@
     <string name="broadcast_state_ended">Ended</string>
     <string name="broadcast_state_wait_for_stream">Unplanned outages happened. Please wait…</string>
     <string name="network_no_connection">Could not connect to server.</string>
+    <string name="data_source_error">An error occurred when trying to read from the streams. Please check the network state and try again.</string>
+    <string name="unauthorized">Unauthorized. The member token is invalid or expired. Please try to get a new one.</string>
     <string name="slow_internet_speed">The internet speed is too slow. Please check your network condition and try again.</string>
     <string name="common_error">An error occurred. Please try again later.</string>
     <string name="sdk_out_of_date">Your SDK is out of date. Please contact the developer directly.</string>
