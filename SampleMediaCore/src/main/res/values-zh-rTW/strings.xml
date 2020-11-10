@@ -12,6 +12,8 @@
 	<string name="broadcast_state_ended">直播已結束</string>
 	<string name="broadcast_state_wait_for_stream">直播意外中斷，請稍等</string>
 	<string name="network_no_connection">無法連線至伺服器</string>
+	<string name="data_source_error">讀取串流時發生錯誤，請檢查網路狀態並重試</string>
+	<string name="unauthorized">認證失敗，member token 無效或已過期，請嘗試重新取得新的 member token</string>
 	<string name="slow_internet_speed">與伺服器之連線速度過慢, 請檢查網路狀況並重試</string>
 	<string name="common_error">發生錯誤，請稍候再試</string>
 	<string name="sdk_out_of_date">SDK 已過期，請聯繫軟體開發商</string>

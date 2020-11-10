@@ -1400,8 +1400,14 @@ public final class StraasPlayerView extends FrameLayout implements StraasMediaCo
                 String message;
 
                 switch (errorType) {
+                    case ErrorReason.UNAUTHORIZED:
+                        message = getContext().getString(R.string.unauthorized);
+                        break;
                     case ErrorReason.SLOW_INTERNET_SPEED:
                         message = getContext().getString(R.string.slow_internet_speed);
+                        break;
+                    case ErrorReason.DATA_SOURCE_ERROR:
+                        message = getContext().getString(R.string.data_source_error);
                         break;
                     case ErrorReason.NETWORK_ERROR:
                         message = getContext().getString(R.string.network_no_connection);

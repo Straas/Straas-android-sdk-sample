@@ -2,6 +2,14 @@ Change Log
 ==========
 *   If you want to upgrade Straas Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.17.0
+_2020-11-10_
+
+*   straas-media-core
+    *   **Important Change: Add [ErrorReason#UNAUTHORIZED](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.ErrorReason.html#UNAUTHORIZED), which is from some cases of [ErrorReason#UNKNOWN](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.ErrorReason.html#UNKNOWN).**
+    *   **Important Change: Add [ErrorReason#DATA_SOURCE_ERROR](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.ErrorReason.html#DATA_SOURCE_ERROR), which is from some cases of [ErrorReason#NETWORK_ERROR](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.ErrorReason.html#NETWORK_ERROR).**
+
+
 ## Version 0.16.0
 _2020-10-27_
 
