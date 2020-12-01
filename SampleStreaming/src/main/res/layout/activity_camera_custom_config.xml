@@ -20,7 +20,21 @@
             android:inputType="number"/>
     </android.support.design.widget.TextInputLayout>
 
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="3dp">
+        <io.straas.android.sdk.demo.common.widget.RecordTextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/streaming_max_video_h"
+            android:tag="streaming_max_video_height"
+            android:hint="maximum video height(pixel)"
+            android:inputType="number"/>
+    </android.support.design.widget.TextInputLayout>
+
     <Button
+        android:layout_marginTop="12dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btn_start_camera"

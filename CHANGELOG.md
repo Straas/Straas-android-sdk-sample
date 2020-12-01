@@ -2,6 +2,16 @@ Change Log
 ==========
 *   If you want to upgrade Straas Android SDK, please check all the **Important Change** below from your current version.
 
+
+## Version 0.18.0
+_2020-12-01_
+
+*   straas-streaming
+    *   **Important Change: Add [StreamingConfig.Builder#maxVideoHeight(...)](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/streaming/StreamConfig.Builder.html#maxVideoHeight-int-) and deprecate the old API: [StreamConfig.Builder#highestResolution(...)](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/streaming/StreamConfig.Builder.html#highestResolution-io.straas.android.sdk.streaming.Resolution-).**
+*   straas-media-core
+    *   fix: Prevent old UI Container from keeping effective after [StraasMediaCore#setUiContainer(...)](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#setUiContainer-io.straas.android.sdk.media.StraasMediaCore.UiContainer-) is invoked.
+
+
 ## Version 0.17.0
 _2020-11-10_
 

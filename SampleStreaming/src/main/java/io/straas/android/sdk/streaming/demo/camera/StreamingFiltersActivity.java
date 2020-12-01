@@ -52,7 +52,9 @@ public class StreamingFiltersActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<StreamManager> task) {
                         if (!task.isSuccessful()) {
-                            Log.e(TAG, "init fail " + task.getException());
+                            String msg = "Initialization fails, error: " + task.getException();
+                            Toast.makeText(StreamingFiltersActivity.this, msg, Toast.LENGTH_LONG).show();
+                            Log.e(TAG, msg);
                             return;
                         }
                         mStreamManager = task.getResult();

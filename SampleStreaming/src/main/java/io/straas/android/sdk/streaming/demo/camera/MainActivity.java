@@ -68,7 +68,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<StreamManager> task) {
                         if (!task.isSuccessful()) {
-                            Log.e(TAG, "init fail " + task.getException());
+                            String msg = "Initialization fails, error: " + task.getException();
+                            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
+                            Log.e(TAG, msg);
                             return;
                         }
                         mStreamManager = task.getResult();
@@ -193,7 +195,9 @@ public class MainActivity extends AppCompatActivity {
                                 mCameraController = task.getResult();
                                 enableAllButtons();
                             } else {
-                                Log.e(TAG, "Prepare fails " + task.getException());
+                                String msg = "Prepare fails " + task.getException();
+                                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
+                                Log.e(TAG, msg);
                             }
                         }
                     });
