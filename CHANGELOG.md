@@ -3,6 +3,13 @@ Change Log
 *   If you want to upgrade Straas Android SDK, please check all the **Important Change** below from your current version.
 
 
+## Version 0.19.0
+_2020-12-29_
+
+*   straas-media-core
+    *   feat: Improve the tracking of user experience.
+
+
 ## Version 0.18.0
 _2020-12-01_
 
