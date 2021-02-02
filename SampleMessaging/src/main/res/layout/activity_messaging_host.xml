@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:padding="12dp">
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="3dp">
@@ -15,9 +15,9 @@
             android:id="@+id/chatroom_rest_host"
             android:tag="chatroom_rest_host"
             android:hint="Chatroom restful API server host"/>
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <io.straas.android.sdk.demo.common.widget.RecordTextInputEditText
@@ -26,9 +26,9 @@
             android:id="@+id/chatroom_socket_host"
             android:tag="chatroom_socket_host"
             android:hint="Chatroom socket server host"/>
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <io.straas.android.sdk.demo.common.widget.RecordTextInputEditText
@@ -37,7 +37,7 @@
             android:id="@+id/chatroom_cms_host"
             android:tag="chatroom_cms_host"
             android:hint="Chatroom CMS restful API server host"/>
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:layout_width="wrap_content"

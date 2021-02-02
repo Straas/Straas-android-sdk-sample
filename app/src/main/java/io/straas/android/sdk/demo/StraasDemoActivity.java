@@ -1,26 +1,19 @@
 package io.straas.android.sdk.demo;
 
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.content.*;
+import android.content.pm.*;
+import android.os.*;
+import android.text.*;
+import android.view.*;
+import android.widget.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import androidx.annotation.*;
+import androidx.appcompat.app.*;
+import androidx.recyclerview.widget.*;
+
+import static android.view.ViewGroup.LayoutParams.*;
 
 public class StraasDemoActivity extends AppCompatActivity {
     @Override

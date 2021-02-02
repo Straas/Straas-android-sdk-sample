@@ -2,10 +2,10 @@ package io.straas.android.sdk.messaging.demo;
 
 import android.content.*;
 import android.os.*;
-import android.support.annotation.*;
-import android.support.v7.app.*;
 import android.view.*;
 
+import androidx.annotation.*;
+import androidx.appcompat.app.*;
 import io.straas.android.sdk.demo.common.widget.*;
 
 public class MessagingHostActivity extends AppCompatActivity {

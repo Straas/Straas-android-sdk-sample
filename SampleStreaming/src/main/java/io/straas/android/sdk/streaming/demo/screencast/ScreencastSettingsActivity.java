@@ -1,39 +1,30 @@
 package io.straas.android.sdk.streaming.demo.screencast;
 
-import android.Manifest;
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.media.projection.MediaProjectionManager;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.util.SimpleArrayMap;
-import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.*;
+import android.annotation.*;
+import android.app.*;
+import android.content.*;
+import android.content.pm.*;
+import android.media.projection.*;
+import android.net.*;
+import android.os.*;
+import android.provider.*;
+import android.text.*;
+import android.util.*;
+import android.view.*;
+import android.widget.*;
 
-import java.util.ArrayList;
+import java.util.*;
 
-import io.straas.android.sdk.demo.common.MemberIdentity;
-import io.straas.android.sdk.streaming.StreamManager;
+import androidx.annotation.*;
+import androidx.appcompat.app.*;
+import androidx.collection.*;
+import androidx.core.app.*;
+import io.straas.android.sdk.demo.common.*;
+import io.straas.android.sdk.streaming.*;
 import io.straas.android.sdk.streaming.demo.R;
 
-import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_LIVE_EVENT_SYNOPSIS;
-import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_LIVE_EVENT_TITLE;
-import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_LIVE_VIDEO_QUALITY;
-import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_SCREEN_CAPTURE_INTENT_RESULT_CODE;
-import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.EXTRA_SCREEN_CAPTURE_INTENT_RESULT_DATA;
+import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.*;
 
 public class ScreencastSettingsActivity extends AppCompatActivity {
 

@@ -7,7 +7,7 @@
     android:padding="12dp"
     tools:context="io.straas.android.sdk.streaming.demo.camera.ConfigSettingActivity">
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="3dp">
@@ -18,9 +18,9 @@
             android:tag="streaming_max_bitrate"
             android:hint="maximum bitrate(bit/sec)"
             android:inputType="number"/>
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="3dp">
@@ -31,7 +31,7 @@
             android:tag="streaming_max_video_height"
             android:hint="maximum video height(pixel)"
             android:inputType="number"/>
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:layout_marginTop="12dp"

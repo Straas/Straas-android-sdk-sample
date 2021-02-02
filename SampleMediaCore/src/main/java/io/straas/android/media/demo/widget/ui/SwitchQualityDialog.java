@@ -1,29 +1,26 @@
 package io.straas.android.media.demo.widget.ui;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.res.TypedArray;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.media.session.MediaControllerCompat;
-import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
+import android.app.*;
+import android.content.*;
+import android.content.res.*;
+import android.os.*;
+import android.support.v4.media.session.*;
+import android.text.*;
 
-import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.*;
+import java.util.regex.*;
 
+import androidx.annotation.*;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
 import io.straas.android.media.demo.R;
 import io.straas.android.media.demo.Utils;
-import io.straas.android.sdk.media.StraasMediaCore;
+import io.straas.android.sdk.media.*;
 
-import static android.support.v7.appcompat.R.attr.alertDialogStyle;
-import static android.support.v7.appcompat.R.styleable.AlertDialog;
+import static androidx.appcompat.R.attr.*;
+import static androidx.appcompat.R.styleable.*;
 
 public class SwitchQualityDialog extends DialogFragment implements
         DialogInterface.OnClickListener {

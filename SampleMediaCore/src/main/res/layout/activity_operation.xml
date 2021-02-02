@@ -57,7 +57,7 @@
                 android:text="player retry"
                 android:onClick="playerRetry"/>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp">
@@ -82,9 +82,9 @@
                     android:layout_height="wrap_content"
                     android:text="query item info"
                     android:onClick="queryMediaItemInfo"/>
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -120,9 +120,9 @@
                     android:layout_height="wrap_content"
                     android:text="play live streaming"
                     android:onClick="playLiveStreaming"/>
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -138,7 +138,7 @@
                     android:layout_height="wrap_content"
                     android:text="play playlist"
                     android:onClick="playPlaylist"/>
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:layout_width="wrap_content"

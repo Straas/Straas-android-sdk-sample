@@ -1,21 +1,19 @@
 package io.straas.android.media.demo.widget.ui;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.res.TypedArray;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.media.session.MediaControllerCompat;
-import android.support.v7.app.AlertDialog;
+import android.app.*;
+import android.content.*;
+import android.content.res.*;
+import android.os.*;
+import android.support.v4.media.session.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
-import io.straas.android.media.demo.MediaControllerCompatHelper;
-import io.straas.android.media.demo.R;
+import androidx.annotation.*;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.DialogFragment;
+import io.straas.android.media.demo.*;
 
-import static android.support.v7.appcompat.R.attr.alertDialogStyle;
+import static androidx.appcompat.R.attr.*;
 
 public class SwitchSpeedDialog extends DialogFragment {
 
@@ -45,7 +43,7 @@ public class SwitchSpeedDialog extends DialogFragment {
         builder.setTitle(R.string.speed_select);
         builder.setNegativeButton(R.string.common_cancel, null);
         String[] optionList = initOptionList();
-        TypedArray a = builder.getContext().obtainStyledAttributes(null, android.support.v7.appcompat.R.styleable.AlertDialog,
+        TypedArray a = builder.getContext().obtainStyledAttributes(null, androidx.appcompat.R.styleable.AlertDialog,
                 alertDialogStyle, 0);
         a.recycle();
 

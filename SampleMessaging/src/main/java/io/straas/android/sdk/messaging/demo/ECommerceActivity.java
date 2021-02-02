@@ -1,55 +1,33 @@
 package io.straas.android.sdk.messaging.demo;
 
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.os.Build;
-import android.os.Bundle;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.util.SimpleArrayMap;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatEditText;
-import android.support.v7.widget.AppCompatImageView;
-import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.InputFilter;
-import android.text.InputType;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.TypedValue;
-import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.content.*;
+import android.os.*;
+import android.text.*;
+import android.util.*;
+import android.view.*;
+import android.view.View.*;
+import android.view.inputmethod.*;
+import android.widget.*;
 
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.*;
 
-import java.util.Random;
+import java.util.*;
 
-import io.straas.android.sdk.demo.common.MemberIdentity;
-import io.straas.android.sdk.messaging.ChatMetadata;
-import io.straas.android.sdk.messaging.ChatMode;
-import io.straas.android.sdk.messaging.ChatroomManager;
-import io.straas.android.sdk.messaging.ChatroomState;
+import androidx.annotation.*;
+import androidx.appcompat.app.*;
+import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.*;
+import androidx.collection.*;
+import androidx.core.content.*;
+import io.straas.android.sdk.demo.common.*;
 import io.straas.android.sdk.messaging.Message;
-import io.straas.android.sdk.messaging.Role;
-import io.straas.android.sdk.messaging.User;
-import io.straas.android.sdk.messaging.demo.widget.BackHandleEditText;
-import io.straas.android.sdk.messaging.demo.widget.BackHandleEditText.OnBackPressListener;
+import io.straas.android.sdk.messaging.*;
+import io.straas.android.sdk.messaging.demo.widget.*;
+import io.straas.android.sdk.messaging.demo.widget.BackHandleEditText.*;
 import io.straas.android.sdk.messaging.interfaces.EventListener;
-import io.straas.android.sdk.messaging.ui.ChatroomOutputView;
-import tyrantgit.widget.HeartLayout;
+import io.straas.android.sdk.messaging.ui.*;
+import tyrantgit.widget.*;
 
 public class ECommerceActivity extends AppCompatActivity {
 

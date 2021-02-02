@@ -4,11 +4,9 @@ import android.app.*;
 import android.content.*;
 import android.net.*;
 import android.os.*;
-import android.support.annotation.*;
 import android.support.v4.media.*;
 import android.support.v4.media.MediaBrowserCompat.*;
 import android.support.v4.media.session.*;
-import android.support.v7.app.*;
 import android.text.*;
 import android.util.*;
 import android.view.*;
@@ -18,6 +16,8 @@ import com.google.android.exoplayer2.*;
 
 import java.util.*;
 
+import androidx.annotation.*;
+import androidx.appcompat.app.*;
 import io.straas.android.media.demo.widget.*;
 import io.straas.android.media.demo.widget.ui.*;
 import io.straas.android.sdk.demo.common.*;

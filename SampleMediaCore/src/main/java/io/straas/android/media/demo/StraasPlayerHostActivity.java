@@ -1,12 +1,12 @@
 package io.straas.android.media.demo;
 
 import android.content.*;
-import android.support.v4.content.Loader;
 
+import androidx.loader.content.Loader;
 import io.straas.android.sdk.demo.common.*;
 import io.straas.android.sdk.media.*;
 
-import static io.straas.android.media.demo.MediaCoreHostActivity.EXTRA_REST_HOST;
+import static io.straas.android.media.demo.MediaCoreHostActivity.*;
 
 public class StraasPlayerHostActivity extends StraasPlayerActivity {
 

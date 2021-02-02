@@ -2,17 +2,11 @@ package io.straas.android.media.demo;
 
 import android.app.*;
 import android.content.*;
-import android.content.res.Configuration;
+import android.content.res.*;
 import android.os.*;
-import android.support.annotation.*;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
-import android.support.v4.content.*;
 import android.support.v4.media.*;
 import android.support.v4.media.MediaBrowserCompat.*;
 import android.support.v4.media.session.*;
-import android.support.v7.app.*;
-import android.support.v7.widget.*;
 import android.text.*;
 import android.util.*;
 import android.view.*;
@@ -22,6 +16,12 @@ import com.bumptech.glide.*;
 
 import java.util.*;
 
+import androidx.annotation.*;
+import androidx.appcompat.app.*;
+import androidx.core.content.*;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.Loader;
+import androidx.recyclerview.widget.*;
 import io.straas.android.media.demo.widget.*;
 import io.straas.android.media.demo.widget.ui.*;
 import io.straas.android.sdk.demo.common.*;
