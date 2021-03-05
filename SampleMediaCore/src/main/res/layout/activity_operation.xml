@@ -51,11 +51,17 @@
                 android:onClick="setAudibility"
                 android:id="@+id/disableAudio"/>
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="player retry"
+                android:onClick="playerRetry"/>
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp">
-                <io.straas.android.media.demo.widget.ui.RecordTextInputEditText
+                <io.straas.android.sdk.demo.common.widget.RecordTextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/vod"
@@ -83,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp">
-                <io.straas.android.media.demo.widget.ui.RecordTextInputEditText
+                <io.straas.android.sdk.demo.common.widget.RecordTextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/live"
@@ -121,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp">
-                <io.straas.android.media.demo.widget.ui.RecordTextInputEditText
+                <io.straas.android.sdk.demo.common.widget.RecordTextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/playlist"

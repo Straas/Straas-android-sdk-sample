@@ -2,6 +2,67 @@ Change Log
 ==========
 *   If you want to upgrade Straas Android SDK, please check all the **Important Change** below from your current version.
 
+
+## Version 0.19.0
+_2020-12-29_
+
+*   straas-media-core
+    *   feat: Improve the tracking of user experience.
+
+
+## Version 0.18.0
+_2020-12-01_
+
+*   straas-streaming
+    *   **Important Change: Add [StreamingConfig.Builder#maxVideoHeight(...)](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/streaming/StreamConfig.Builder.html#maxVideoHeight-int-) and deprecate the old API: [StreamConfig.Builder#highestResolution(...)](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/streaming/StreamConfig.Builder.html#highestResolution-io.straas.android.sdk.streaming.Resolution-).**
+*   straas-media-core
+    *   fix: Prevent old UI Container from keeping effective after [StraasMediaCore#setUiContainer(...)](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#setUiContainer-io.straas.android.sdk.media.StraasMediaCore.UiContainer-) is invoked.
+
+
+## Version 0.17.0
+_2020-11-10_
+
+*   straas-media-core
+    *   **Important Change: Add [ErrorReason#UNAUTHORIZED](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.ErrorReason.html#UNAUTHORIZED), which is from some cases of [ErrorReason#UNKNOWN](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.ErrorReason.html#UNKNOWN).**
+    *   **Important Change: Add [ErrorReason#DATA_SOURCE_ERROR](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.ErrorReason.html#DATA_SOURCE_ERROR), which is from some cases of [ErrorReason#NETWORK_ERROR](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.ErrorReason.html#NETWORK_ERROR).**
+
+
+## Version 0.16.0
+_2020-10-27_
+
+*   straas-streaming
+    *   feat: Add [maxBitrate](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/streaming/StreamConfig.Builder.html#maxBitrate-java.lang.Integer-) for limiting the video bitrate.
+
+
+## Version 0.15.1
+_2020-09-08_
+
+*   straas-media-core
+    *   feat: Add [COMMAND_PLAYER_RETRY](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.html#COMMAND_PLAYER_RETRY) for better user experience. Note that this function is in BETA stage now.
+    *   feat: Add [PLAYLIST_STUCK](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/media/StraasMediaCore.ErrorReason.html#PLAYLIST_STUCK) for the situation that playlist is stuck.
+
+
+## Version 0.15.0
+_2020-09-01_
+
+*   **Important Change: Throw [PublishException](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/streaming/error/StreamException.PublishException.html) instead of [ServerException](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/streaming/error/StreamException.ServerException.html) if a publish error has occurred.**
+*   **Important Change: Adjust the default fps in streaming SDK to 30 frames/sec (20 fps in previous SDK versions) and add [setFps](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/streaming/StreamConfig.Builder.html#fps-int-) to support fps setting.**
+
+## Version 0.14.9
+_2020-07-07_
+
+*   Internal improvements.
+
+## Version 0.14.8
+_2020-06-23_
+
+*   Internal improvements.
+
+## Version 0.14.7
+_2020-06-16_
+
+*   Internal improvements.
+
 ## Version 0.14.6
 _2020-06-02_
 

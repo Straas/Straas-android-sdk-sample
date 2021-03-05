@@ -1,41 +1,33 @@
 package io.straas.android.media.demo;
 
-import android.app.NotificationChannel;
+import android.app.*;
 import android.content.*;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.*;
-import android.support.v4.media.MediaBrowserCompat;
-import android.support.v4.media.MediaBrowserCompat.ConnectionCallback;
-import android.support.v4.media.MediaBrowserCompat.MediaItem;
-import android.support.v4.media.MediaDescriptionCompat;
-import android.support.v4.media.MediaMetadataCompat;
-import android.support.v4.media.session.MediaControllerCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.View;
+import android.net.*;
+import android.os.*;
+import android.support.annotation.*;
+import android.support.v4.media.*;
+import android.support.v4.media.MediaBrowserCompat.*;
+import android.support.v4.media.session.*;
+import android.support.v7.app.*;
+import android.text.*;
+import android.util.*;
+import android.view.*;
 import android.widget.*;
 
-import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.*;
 
-import java.util.List;
+import java.util.*;
 
-import io.straas.android.media.demo.widget.StraasPlayerView;
+import io.straas.android.media.demo.widget.*;
 import io.straas.android.media.demo.widget.ui.*;
-import io.straas.android.sdk.demo.identity.MemberIdentity;
-import io.straas.android.sdk.media.ImaHelper;
-import io.straas.android.sdk.media.StraasMediaCore;
-import io.straas.android.sdk.media.VideoCustomMetadata;
-import io.straas.android.sdk.media.notification.NotificationOptions;
-import pub.devrel.easypermissions.EasyPermissions;
+import io.straas.android.sdk.demo.common.*;
+import io.straas.android.sdk.demo.common.widget.*;
+import io.straas.android.sdk.media.*;
+import io.straas.android.sdk.media.StraasMediaCore.*;
+import io.straas.android.sdk.media.notification.*;
+import pub.devrel.easypermissions.*;
 
-import static android.app.NotificationManager.IMPORTANCE_LOW;
+import static android.app.NotificationManager.*;
 
 /**
  * Demo for some of the operations to browse and play medias.
@@ -74,35 +66,23 @@ public class OperationActivity extends AppCompatActivity {
         mHlsLiveSyncIntervalCount = findViewById(R.id.hls_live_sync_interval_count);
         mDisableAudioSwitch = findViewById(R.id.disableAudio);
 
-        mStraasMediaCore = new StraasMediaCore(playerView, MemberIdentity.ME,
-                new ConnectionCallback() {
-                    @Override
-                    public void onConnected() {
-                        getMediaControllerCompat().registerCallback(mMediaControllerCallback);
-                        if (mIsForeground != getMediaControllerCompat().getExtras().getBoolean(
-                                VideoCustomMetadata.SERVICE_FOREGROUND_IS_ENABLED, !mIsForeground)) {
-                            setForeground(mIsForeground);
-                        }
-
-                        // Uncomment these to enable location collection
-                        //mLocationCollector = new LocationCollector(OperationActivity.this.getApplicationContext(),
-                        //        getMediaControllerCompat());
-                        //if (mLocationCollector.checkPermission()) {
-                        //    mLocationCollector.start();
-                        //} else {
-                        //    EasyPermissions.requestPermissions(OperationActivity.this,
-                        //            getString(R.string.rationale_request_location),
-                        //            LocationCollector.REQUEST_CODE, LocationCollector.PERMISSIONS);
-                        //}
-                    }
-                })
-                // remove setImaHelper if you don't want to include ad system (IMA)
-                .setImaHelper(ImaHelper.newInstance());
+        MediaCoreConfig.Builder configBuilder = new MediaCoreConfig.Builder()
+                .setIdentity(MemberIdentity.ME)
+                .setUiContainer(playerView)
+                .setConnectionCallback(mConnectionCallback);
+        onCustomizeMediaCoreConfig(configBuilder);
+        mStraasMediaCore = new StraasMediaCore(configBuilder.build());
+        // remove this line: setImaHelper if you don't want to include ad system (IMA)
+        mStraasMediaCore.setImaHelper(ImaHelper.newInstance());
         getMediaBrowser().connect();
 
         mIsForeground = getSharedPreferences(SHARE_PREFERENCE_KEY, Context.MODE_PRIVATE)
                 .getBoolean(FOREGROUND_KEY, false);
         ((Checkable) findViewById(R.id.switch_foreground)).setChecked(mIsForeground);
+    }
+
+    protected void onCustomizeMediaCoreConfig(MediaCoreConfig.Builder builder) {
+
     }
 
     @Override
@@ -125,9 +105,6 @@ public class OperationActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        StraasPlayerView playerView = findViewById(R.id.straas);
-        playerView.hideControllerViews();
-
         if (getMediaControllerCompat() != null) {
             getMediaControllerCompat().getTransportControls().play();
         }
@@ -376,6 +353,10 @@ public class OperationActivity extends AppCompatActivity {
         MediaControllerCompatHelper.setAudibility(getMediaControllerCompat(), disable);
     }
 
+    public void playerRetry(View view) {
+        MediaControllerCompatHelper.playerRetry(getMediaControllerCompat());
+    }
+
     private final MediaControllerCompat.Callback mMediaControllerCallback = new MediaControllerCompat.Callback() {
 
         @Override
@@ -492,4 +473,32 @@ public class OperationActivity extends AppCompatActivity {
             }
         });
     }
+
+    private ConnectionCallback mConnectionCallback = new ConnectionCallback() {
+        @Override
+        public void onConnected() {
+            getMediaControllerCompat().registerCallback(mMediaControllerCallback);
+            if (mIsForeground != getMediaControllerCompat().getExtras().getBoolean(
+                    VideoCustomMetadata.SERVICE_FOREGROUND_IS_ENABLED, !mIsForeground)) {
+                setForeground(mIsForeground);
+            }
+
+            // Uncomment these to enable location collection
+            //mLocationCollector = new LocationCollector(OperationActivity.this.getApplicationContext(),
+            //        getMediaControllerCompat());
+            //if (mLocationCollector.checkPermission()) {
+            //    mLocationCollector.start();
+            //} else {
+            //    EasyPermissions.requestPermissions(OperationActivity.this,
+            //            getString(R.string.rationale_request_location),
+            //            LocationCollector.REQUEST_CODE, LocationCollector.PERMISSIONS);
+            //}
+        }
+
+        @Override
+        public void onConnectionFailed() {
+            Toast.makeText(OperationActivity.this, "Connection fails, this may be caused by validation failure",
+                    Toast.LENGTH_LONG).show();
+        }
+    };
 }

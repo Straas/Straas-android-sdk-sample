@@ -211,6 +211,10 @@ public class MediaControllerCompatHelper {
         controller.getTransportControls().sendCustomAction(StraasMediaCore.COMMAND_DISABLE_AUDIO, bundle);
     }
 
+    public static void playerRetry(@NonNull MediaControllerCompat controller) {
+        controller.getTransportControls().sendCustomAction(StraasMediaCore.COMMAND_PLAYER_RETRY, null);
+    }
+
     public static void playAtLiveEdge(@NonNull MediaControllerCompat controller) {
         controller.getTransportControls().sendCustomAction(StraasMediaCore.COMMAND_PLAY_AT_LIVE_EDGE, null);
     }

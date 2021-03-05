@@ -13,6 +13,8 @@
     <string name="broadcast_state_ended">Ended</string>
     <string name="broadcast_state_wait_for_stream">Unplanned outages happened. Please wait…</string>
     <string name="network_no_connection">Could not connect to server.</string>
+    <string name="data_source_error">An error occurred when trying to read from the streams. Please check the network state and try again.</string>
+    <string name="unauthorized">Unauthorized. The member token is invalid or expired. Please try to get a new one.</string>
     <string name="slow_internet_speed">The internet speed is too slow. Please check your network condition and try again.</string>
     <string name="common_error">An error occurred. Please try again later.</string>
     <string name="sdk_out_of_date">Your SDK is out of date. Please contact the developer directly.</string>
@@ -23,6 +25,7 @@
     <string name="common_not_available_region">Sorry, this content is not available in your region.</string>
     <string name="access_permission_denial">No permission to access the resource.</string>
     <string name="too_many_requests">The server is busy. Please try again later.</string>
+    <string name="playlist_stuck">The playlist is stuck. Please try again.</string>
 
     <string name="notification_channel_id">StraasPlayer</string>
     <string name="notification_channel_name">StraasPlayer name</string>

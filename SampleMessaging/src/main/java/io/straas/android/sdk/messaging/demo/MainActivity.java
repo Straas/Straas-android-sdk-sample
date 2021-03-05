@@ -1,26 +1,20 @@
 package io.straas.android.sdk.messaging.demo;
 
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.util.SimpleArrayMap;
-import android.support.v7.app.AppCompatActivity;
+import android.os.*;
+import android.support.annotation.*;
+import android.support.v4.util.*;
+import android.support.v7.app.*;
+import android.widget.*;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.*;
 
-import io.straas.android.sdk.demo.identity.MemberIdentity;
-import io.straas.android.sdk.messaging.ChatMetadata;
-import io.straas.android.sdk.messaging.ChatMode;
-import io.straas.android.sdk.messaging.ChatroomManager;
+import io.straas.android.sdk.authentication.identity.*;
+import io.straas.android.sdk.demo.common.*;
 import io.straas.android.sdk.messaging.Message;
-import io.straas.android.sdk.messaging.RawData;
-import io.straas.android.sdk.messaging.User;
-import io.straas.android.sdk.messaging.interfaces.EventListener;
-import io.straas.android.sdk.messaging.ui.ChatroomInputView;
-import io.straas.android.sdk.messaging.ui.ChatroomOutputView;
-import io.straas.android.sdk.messaging.ui.interfaces.CredentialAuthorizeListener;
-import io.straas.android.sdk.messaging.ui.interfaces.SignInListener;
+import io.straas.android.sdk.messaging.*;
+import io.straas.android.sdk.messaging.interfaces.*;
+import io.straas.android.sdk.messaging.ui.*;
+import io.straas.android.sdk.messaging.ui.interfaces.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,7 +29,20 @@ public class MainActivity extends AppCompatActivity {
         mChatroomOutputView = findViewById(R.id.chat_room);
         mChatroomOutputView.setCredentialAuthorizeListener(mCredentialAuthorizeListener);
         mChatroomOutputView.setEventListener(mEventListener);
-        mChatroomOutputView.connect(CHATROOM_NAME, MemberIdentity.ME);
+
+        ChatroomManager.ChatroomConfig.Builder configBuilder = new ChatroomManager.ChatroomConfig.Builder();
+        onCustomizeChatroomConfig(configBuilder);
+        // If you don't need the function of custom domain, you could create an empty ChatroomConfig
+        // or use the method which doesn't need a ChatroomConfig: ChatroomManager#connect(String, Identity)
+        mChatroomOutputView.connect(CHATROOM_NAME, MemberIdentity.ME, configBuilder.build());
+    }
+
+    protected void onCustomizeChatroomConfig(ChatroomManager.ChatroomConfig.Builder builder) {
+
+    }
+
+    protected void connect(ChatroomOutputView chatroomOutputView, String chatroomName, Identity identity) {
+        chatroomOutputView.connect(chatroomName, identity);
     }
 
     private CredentialAuthorizeListener mCredentialAuthorizeListener =
@@ -50,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Exception error) {
-
+                    Toast.makeText(MainActivity.this, "Validation fails, error: " + error,
+                            Toast.LENGTH_LONG).show();
                 }
             };
 

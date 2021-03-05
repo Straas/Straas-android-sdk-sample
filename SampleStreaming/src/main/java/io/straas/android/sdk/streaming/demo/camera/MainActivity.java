@@ -1,66 +1,43 @@
 package io.straas.android.sdk.streaming.demo.camera;
 
-import android.Manifest;
-import android.app.Activity;
+import android.*;
+import android.app.*;
 import android.arch.lifecycle.Observer;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.TextureView;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ToggleButton;
+import android.content.*;
+import android.content.pm.*;
+import android.os.*;
+import android.support.annotation.*;
+import android.support.v4.app.*;
+import android.support.v7.app.*;
+import android.text.*;
+import android.util.*;
+import android.view.*;
+import android.widget.*;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
+import com.google.android.gms.tasks.*;
 
-import java.util.ArrayList;
+import java.util.*;
 
-import io.straas.android.sdk.demo.identity.MemberIdentity;
-import io.straas.android.sdk.demo.qrcode.QrcodeActivity;
-import io.straas.android.sdk.media.LiveEventListener;
-import io.straas.android.sdk.streaming.CameraController;
-import io.straas.android.sdk.streaming.LiveEventConfig;
-import io.straas.android.sdk.streaming.StreamConfig;
-import io.straas.android.sdk.streaming.StreamManager;
-import io.straas.android.sdk.streaming.StreamStatsReport;
+import io.straas.android.sdk.demo.common.*;
+import io.straas.android.sdk.demo.qrcode.*;
+import io.straas.android.sdk.media.*;
+import io.straas.android.sdk.streaming.*;
 import io.straas.android.sdk.streaming.demo.R;
 import io.straas.android.sdk.streaming.demo.Utils;
-import io.straas.android.sdk.streaming.demo.filter.GPUImageSupportFilter;
-import io.straas.android.sdk.streaming.demo.filter.GrayImageFilter;
-import io.straas.android.sdk.streaming.error.StreamException.EventExpiredException;
-import io.straas.android.sdk.streaming.error.StreamException.LiveCountLimitException;
+import io.straas.android.sdk.streaming.demo.filter.*;
+import io.straas.android.sdk.streaming.error.StreamException.*;
 import io.straas.android.sdk.streaming.interfaces.EventListener;
-import jp.co.cyberagent.android.gpuimage.GPUImageColorInvertFilter;
+import jp.co.cyberagent.android.gpuimage.*;
 
-import static io.straas.android.sdk.streaming.StreamManager.STATE_CONNECTING;
-import static io.straas.android.sdk.streaming.StreamManager.STATE_STREAMING;
-import static io.straas.android.sdk.streaming.demo.R.id.filter;
-import static io.straas.android.sdk.streaming.demo.R.id.flash;
-import static io.straas.android.sdk.streaming.demo.R.id.switch_camera;
-import static io.straas.android.sdk.streaming.demo.R.id.trigger;
+import static io.straas.android.sdk.streaming.StreamManager.*;
+import static io.straas.android.sdk.streaming.demo.R.id.*;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "Streaming";
+
+    private static final int QRCODE_REQUEST_STREAM_KEY = 1;
+
     private StreamManager mStreamManager;
     private CameraController mCameraController;
     private TextureView mTextureView;
@@ -91,7 +68,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<StreamManager> task) {
                         if (!task.isSuccessful()) {
-                            Log.e(TAG, "init fail " + task.getException());
+                            String msg = "Initialization fails, error: " + task.getException();
+                            Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
+                            Log.e(TAG, msg);
                             return;
                         }
                         mStreamManager = task.getResult();
@@ -120,8 +99,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initEditStreamKey() {
-        final ImageView clearButton = findViewById(R.id.clear);
-        final ImageView scanButton = findViewById(R.id.scan);
+        final ImageView clearButton = findViewById(R.id.clear_stream_key);
+        final ImageView scanButton = findViewById(R.id.scan_stream_key);
         mStreamKeyEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -193,10 +172,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private StreamConfig getConfig() {
-        return new StreamConfig.Builder()
+        StreamConfig.Builder builder =  new StreamConfig.Builder()
                 .camera(StreamConfig.CAMERA_FRONT)
                 .fitAllCamera(true)
-                .build();
+                .fps(30);
+        onCustomStreamConfig(builder);
+        return builder.build();
+    }
+
+    protected void onCustomStreamConfig(StreamConfig.Builder builder) {
+
     }
 
     private Task<CameraController> preview() {
@@ -210,7 +195,9 @@ public class MainActivity extends AppCompatActivity {
                                 mCameraController = task.getResult();
                                 enableAllButtons();
                             } else {
-                                Log.e(TAG, "Prepare fails " + task.getException());
+                                String msg = "Prepare fails " + task.getException();
+                                Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
+                                Log.e(TAG, msg);
                             }
                         }
                     });
@@ -427,7 +414,8 @@ public class MainActivity extends AppCompatActivity {
         }
         destroy();
         Intent intent = new Intent(this, QrcodeActivity.class);
-        startActivityForResult(intent, 1);
+        int requestCode = QRCODE_REQUEST_STREAM_KEY;
+        startActivityForResult(intent, requestCode);
     }
 
     public void clearStreamKey(View view) {
@@ -454,12 +442,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            String streamKey = data.getStringExtra(QrcodeActivity.KEY_QR_CODE_VALUE);
-            if (!isPureText(streamKey)) {
-                Toast.makeText(this, R.string.error_wrong_format, Toast.LENGTH_LONG).show();
-                return;
+            String value = data.getStringExtra(QrcodeActivity.KEY_QR_CODE_VALUE);
+            if (requestCode == QRCODE_REQUEST_STREAM_KEY) {
+                if (!isPureText(value)) {
+                    Toast.makeText(this, R.string.error_wrong_format, Toast.LENGTH_LONG).show();
+                    return;
+                }
+                mStreamKeyEdit.setText(value);
             }
-            mStreamKeyEdit.setText(streamKey);
         }
     }
 
@@ -468,7 +458,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showError(Exception exception) {
-        Toast.makeText(this, exception.toString(), Toast.LENGTH_LONG).show();
+        String msg = exception.toString();
+        if (exception instanceof PublishException) {
+            msg = "Publish error: " + ((PublishException) exception).getErrorCode();
+        }
+        Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
 
     @Override

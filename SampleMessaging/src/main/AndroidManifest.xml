@@ -11,5 +11,12 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:screenOrientation="portrait"
         android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity"/>
+
+        <activity android:name=".MessagingHostActivity"
+        android:label="Messaging - Custom domain"
+        android:parentActivityName="io.straas.android.sdk.demo.StraasDemoActivity" />
+
+        <activity android:name=".MainHostActivity"
+            android:parentActivityName=".MessagingHostActivity" />
     </application>
 </manifest>

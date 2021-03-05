@@ -107,16 +107,17 @@
             android:layout_below="@id/stream_way"
             android:layout_gravity="center_horizontal">
 
-            <EditText
+            <io.straas.android.sdk.demo.common.widget.RecordTextInputEditText
                 android:id="@+id/edit_stream_key"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:tag="stream_key"
                 android:hint="@string/hint_input_stream_key"
                 android:paddingEnd="30dp"
                 android:paddingRight="30dp" />
 
             <ImageButton
-                android:id="@+id/clear"
+                android:id="@+id/clear_stream_key"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"
@@ -129,7 +130,7 @@
                 tools:visibility="invisible" />
 
             <ImageButton
-                android:id="@+id/scan"
+                android:id="@+id/scan_stream_key"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"

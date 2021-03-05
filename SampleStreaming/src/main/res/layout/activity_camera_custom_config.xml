@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="12dp"
+    tools:context="io.straas.android.sdk.streaming.demo.camera.ConfigSettingActivity">
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="3dp">
+        <io.straas.android.sdk.demo.common.widget.RecordTextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/streaming_max_bitrate"
+            android:tag="streaming_max_bitrate"
+            android:hint="maximum bitrate(bit/sec)"
+            android:inputType="number"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="3dp">
+        <io.straas.android.sdk.demo.common.widget.RecordTextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/streaming_max_video_h"
+            android:tag="streaming_max_video_height"
+            android:hint="maximum video height(pixel)"
+            android:inputType="number"/>
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:layout_marginTop="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_start_camera"
+        android:text="Streaming SDK demo"
+        android:textAllCaps="false"
+        android:onClick="startActivity" />
+</LinearLayout>

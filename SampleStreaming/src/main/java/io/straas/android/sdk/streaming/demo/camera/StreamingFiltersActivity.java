@@ -1,32 +1,23 @@
 package io.straas.android.sdk.streaming.demo.camera;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.TextureView;
-import android.view.View;
-import android.widget.Button;
-import android.widget.SeekBar;
-import android.widget.Toast;
-import android.widget.ToggleButton;
+import android.*;
+import android.content.pm.*;
+import android.os.*;
+import android.support.annotation.*;
+import android.support.v4.app.*;
+import android.support.v7.app.*;
+import android.util.*;
+import android.view.*;
+import android.widget.*;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
+import com.google.android.gms.tasks.*;
 
-import java.util.ArrayList;
+import java.util.*;
 
-import io.straas.android.sdk.demo.identity.MemberIdentity;
-import io.straas.android.sdk.streaming.CameraController;
-import io.straas.android.sdk.streaming.StreamConfig;
-import io.straas.android.sdk.streaming.StreamManager;
+import io.straas.android.sdk.demo.common.*;
+import io.straas.android.sdk.streaming.*;
 import io.straas.android.sdk.streaming.demo.R;
-import io.straas.android.sdk.streaming.error.StreamException;
-import io.straas.android.sdk.streaming.filter.SkinBeautifyFilter;
+import io.straas.android.sdk.streaming.demo.filter.beauty.*;
 
 public class StreamingFiltersActivity extends AppCompatActivity {
 
@@ -40,16 +31,16 @@ public class StreamingFiltersActivity extends AppCompatActivity {
 
     private static final float MAX_BRIGHTNESS = 1.0f;
     private static final float MIN_BRIGHTNESS = 0.0f;
-    private static final float MAX_SKIN_SMOOTHNESS = 2.0f;
-    private static final float MIN_SKIN_SMOOTHNESS = 0.0f;
+    private static final float MAX_SMOOTHNESS = 1.0f;
+    private static final float MIN_SMOOTHNESS = 0.0f;
 
     private StreamManager mStreamManager;
     private CameraController mCameraController;
     private TextureView mTextureView;
     private Button mSwitchCameraButton;
-    private ToggleButton mSkinBeautifyToggleButton;
-    private SkinBeautifyFilter mSkinBeautifyFilter;
-    private SeekBar mBrightnessSeekBar, mSkinSmoothnessSeekBar;
+    private ToggleButton mBeautyButton;
+    private BeautyFilter mBeautyFilter;
+    private SeekBar mBrightnessSeekBar, mSmoothnessSeekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +52,9 @@ public class StreamingFiltersActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<StreamManager> task) {
                         if (!task.isSuccessful()) {
-                            Log.e(TAG, "init fail " + task.getException());
+                            String msg = "Initialization fails, error: " + task.getException();
+                            Toast.makeText(StreamingFiltersActivity.this, msg, Toast.LENGTH_LONG).show();
+                            Log.e(TAG, msg);
                             return;
                         }
                         mStreamManager = task.getResult();
@@ -72,11 +65,11 @@ public class StreamingFiltersActivity extends AppCompatActivity {
         mTextureView.setKeepScreenOn(true);
 
         mSwitchCameraButton = findViewById(R.id.switch_camera);
-        mSkinBeautifyToggleButton = findViewById(R.id.skin_beautify);
+        mBeautyButton = findViewById(R.id.beauty);
         try {
-            mSkinBeautifyFilter = new SkinBeautifyFilter(0.5f, 0.5f);
-        } catch (StreamException.InternalException e) {
-            Log.e(TAG, "Generate SkinBeautifyFilter failed: " + e);
+            mBeautyFilter = new BeautyFilter(this);
+        } catch (IllegalArgumentException e) {
+            Log.e(TAG, "Create BeautyFilter failed: " + e);
         }
 
         initSeekBars();
@@ -166,7 +159,7 @@ public class StreamingFiltersActivity extends AppCompatActivity {
 
     private void enableAllButtons() {
         mSwitchCameraButton.setEnabled(true);
-        mSkinBeautifyToggleButton.setEnabled(mSkinBeautifyFilter != null);
+        mBeautyButton.setEnabled(mBeautyFilter != null);
     }
 
     public void switchCamera(View view) {
@@ -175,34 +168,34 @@ public class StreamingFiltersActivity extends AppCompatActivity {
         }
     }
 
-    public void skinBeautify(View view) {
-        if (mStreamManager == null || mSkinBeautifyFilter == null) {
+    public void beauty(View view) {
+        if (mStreamManager == null || mBeautyFilter == null) {
             return;
         }
-        mStreamManager.setFilter(mSkinBeautifyToggleButton.isChecked()
-                ? mSkinBeautifyFilter
+        mStreamManager.setFilter(mBeautyButton.isChecked()
+                ? mBeautyFilter
                 : null);
-        mBrightnessSeekBar.setEnabled(mSkinBeautifyToggleButton.isChecked());
-        mSkinSmoothnessSeekBar.setEnabled(mSkinBeautifyToggleButton.isChecked());
+        mBrightnessSeekBar.setEnabled(mBeautyButton.isChecked());
+        mSmoothnessSeekBar.setEnabled(mBeautyButton.isChecked());
     }
 
     private void initSeekBars() {
         mBrightnessSeekBar = findViewById(R.id.seek_bar_brightness);
         mBrightnessSeekBar.setEnabled(false);
-        mSkinSmoothnessSeekBar = findViewById(R.id.seek_bar_skin_smoothness);
-        mSkinSmoothnessSeekBar.setEnabled(false);
+        mSmoothnessSeekBar = findViewById(R.id.seek_bar_smoothness);
+        mSmoothnessSeekBar.setEnabled(false);
 
-        if (mSkinBeautifyFilter == null) {
+        if (mBeautyFilter == null) {
             return;
         }
         mBrightnessSeekBar.setProgress((int) mapValueFromRangeToRange(
-                mSkinBeautifyFilter.getBrightnessLevel(), MIN_BRIGHTNESS, MAX_BRIGHTNESS,
+                mBeautyFilter.getBrightnessLevel(), MIN_BRIGHTNESS, MAX_BRIGHTNESS,
                 0, mBrightnessSeekBar.getMax()));
         mBrightnessSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    mSkinBeautifyFilter.setBrightnessLevel(
+                    mBeautyFilter.setBrightnessLevel(
                             mapValueFromRangeToRange(progress, 0, seekBar.getMax(),
                                     MIN_BRIGHTNESS, MAX_BRIGHTNESS));
                 }
@@ -219,16 +212,16 @@ public class StreamingFiltersActivity extends AppCompatActivity {
             }
         });
 
-        mSkinSmoothnessSeekBar.setProgress((int) mapValueFromRangeToRange(
-                mSkinBeautifyFilter.getSkinSmoothnessLevel(), MIN_SKIN_SMOOTHNESS, MAX_SKIN_SMOOTHNESS,
-                0, mSkinSmoothnessSeekBar.getMax()));
-        mSkinSmoothnessSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        mSmoothnessSeekBar.setProgress((int) mapValueFromRangeToRange(
+                mBeautyFilter.getSmoothnessLevel(), MIN_SMOOTHNESS, MAX_SMOOTHNESS,
+                0, mSmoothnessSeekBar.getMax()));
+        mSmoothnessSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    mSkinBeautifyFilter.setSkinSmoothnessLevel(
+                    mBeautyFilter.setSmoothnessLevel(
                             mapValueFromRangeToRange(progress, 0, seekBar.getMax(),
-                                    MIN_SKIN_SMOOTHNESS, MAX_SKIN_SMOOTHNESS));
+                                    MIN_SMOOTHNESS, MAX_SMOOTHNESS));
                 }
             }
 
