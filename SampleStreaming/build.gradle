@@ -1,15 +1,14 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 28
-
     defaultConfig {
         minSdkVersion 18
-        targetSdkVersion 28
+        compileSdkVersion 30
+        targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     buildTypes {
@@ -23,8 +22,8 @@ android {
 dependencies {
     api project(":SampleCommon")
     api "io.straas.android.sdk:straas-streaming:${STRAAS_SDK_VERSION}"
-    api "com.android.support:appcompat-v7:28.0.0"
-    api "com.android.support.constraint:constraint-layout:1.1.0-beta1"
+    api "androidx.appcompat:appcompat:1.2.0"
+    api 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     // optional, demo for filter usage
     api 'jp.co.cyberagent.android.gpuimage:gpuimage-library:1.4.1'
@@ -38,6 +37,6 @@ dependencies {
     api project(":QrCode")
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

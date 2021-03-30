@@ -3,9 +3,6 @@ package io.straas.android.sdk.streaming.demo.camera;
 import android.*;
 import android.content.pm.*;
 import android.os.*;
-import android.support.annotation.*;
-import android.support.v4.app.*;
-import android.support.v7.app.*;
 import android.util.*;
 import android.view.*;
 import android.widget.*;
@@ -14,6 +11,9 @@ import com.google.android.gms.tasks.*;
 
 import java.util.*;
 
+import androidx.annotation.*;
+import androidx.appcompat.app.*;
+import androidx.core.app.*;
 import io.straas.android.sdk.demo.common.*;
 import io.straas.android.sdk.streaming.*;
 import io.straas.android.sdk.streaming.demo.R;

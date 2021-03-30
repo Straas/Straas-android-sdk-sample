@@ -1,16 +1,13 @@
 package io.straas.android.sdk.demo.qrcode;
 
-import android.content.Context;
-import android.support.v4.content.AsyncTaskLoader;
-import android.util.Log;
+import android.content.*;
+import android.util.*;
 
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskCompletionSource;
-import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.MultiProcessor;
-import com.google.android.gms.vision.Tracker;
-import com.google.android.gms.vision.barcode.Barcode;
-import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.android.gms.tasks.*;
+import com.google.android.gms.vision.*;
+import com.google.android.gms.vision.barcode.*;
+
+import androidx.loader.content.AsyncTaskLoader;
 
 final class CameraSourceLoader extends AsyncTaskLoader<CameraSource> {
     private CameraSource mCameraSource;

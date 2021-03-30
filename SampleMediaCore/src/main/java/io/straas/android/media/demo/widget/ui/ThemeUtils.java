@@ -1,12 +1,12 @@
 package io.straas.android.media.demo.widget.ui;
 
-import android.content.Context;
-import android.content.res.ColorStateList;
-import android.content.res.TypedArray;
-import android.graphics.Color;
-import android.support.annotation.AttrRes;
-import android.support.v4.graphics.ColorUtils;
-import android.util.TypedValue;
+import android.content.*;
+import android.content.res.*;
+import android.graphics.*;
+import android.util.*;
+
+import androidx.annotation.*;
+import androidx.core.graphics.*;
 
 public class ThemeUtils {
     private static final ThreadLocal<TypedValue> TL_TYPED_VALUE = new ThreadLocal<>();
@@ -22,7 +22,7 @@ public class ThemeUtils {
     private static final int[] TEMP_ARRAY = new int[1];
 
     public static ColorStateList getDefaultColorStateList(Context context) {
-        return getDefaultColorStateList(context, android.support.v7.appcompat.R.attr.colorControlNormal);
+        return getDefaultColorStateList(context, androidx.appcompat.R.attr.colorControlNormal);
     }
 
     public static ColorStateList getDefaultColorStateList(Context context, @AttrRes int baseColorThemeAttr) {
@@ -33,7 +33,7 @@ public class ThemeUtils {
 
         final int colorControlNormal = getThemeAttrColor(context, baseColorThemeAttr);
         final int colorControlActivated = getThemeAttrColor(context,
-                android.support.v7.appcompat.R.attr.colorControlActivated);
+                androidx.appcompat.R.attr.colorControlActivated);
 
         return getColorStateList(context, colorControlNormal, colorControlActivated);
     }
@@ -46,7 +46,7 @@ public class ThemeUtils {
 
         // Disabled state
         states[i] = DISABLED_STATE_SET;
-        colors[i] = getDisabledThemeAttrColor(context, android.support.v7.appcompat.R.attr.colorControlNormal);
+        colors[i] = getDisabledThemeAttrColor(context, androidx.appcompat.R.attr.colorControlNormal);
         i++;
 
         states[i] = FOCUSED_STATE_SET;

@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 
-public class BackHandleEditText extends android.support.v7.widget.AppCompatEditText {
+public class BackHandleEditText extends androidx.appcompat.widget.AppCompatEditText {
 
     private OnBackPressListener mOnBackPressListener;
 

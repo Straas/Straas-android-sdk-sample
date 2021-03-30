@@ -3,9 +3,11 @@ package io.straas.android.sdk.demo.common.widget;
 import android.content.*;
 import android.util.*;
 
+import com.google.android.material.textfield.*;
+
 import io.straas.android.sdk.demo.common.*;
 
-public class RecordTextInputEditText extends android.support.design.widget.TextInputEditText {
+public class RecordTextInputEditText extends TextInputEditText {
 
     private static final String SP_NAME = "SP_RECORD_TEXT_INPUT_EDIT_TEXT";
     private static final String DEFAULT_SP_KEY = "DEFAULT_SP_KEY";

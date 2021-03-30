@@ -7,7 +7,7 @@
     android:padding="12dp"
     tools:context="io.straas.android.media.demo.MediaCoreHostActivity">
 
-    <android.support.design.widget.TextInputLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="3dp">
@@ -17,7 +17,7 @@
             android:id="@+id/media_core_rest"
             android:tag="media_core_rest"
             android:hint="MediaCore restful API server host"/>
-    </android.support.design.widget.TextInputLayout>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:layout_width="wrap_content"

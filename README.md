@@ -1,5 +1,3 @@
-[![Download](https://api.bintray.com/packages/straas-io/maven/straas-base/images/download.svg) ](https://bintray.com/bintray/jcenter?filterByPkgName=straas)
-
 # android-sdk-sample
 Samples & documentation for the Straas Android SDK.
 
@@ -18,35 +16,49 @@ User Identity
 Read [Identity](https://github.com/Straas/Straas-android-sdk-sample/wiki/User-Identity) first.
 To change the identity in out sample, change the Identity declared in `MemberIdentity.ME`.
 
-Usage
+Using Straas Android SDK
 -----
-To add these dependencies on jCenter using Gradle.
+#### 1. Add repositories ####
+
+Add repositories in the `build.gradle` file in the root of your project:
+
+```gradle
+repositories {
+    google()
+    jcenter()
+    maven { url "https://raw.githubusercontent.com/Straas/Straas-android-sdk-releases/main" }
+}
+```
+
+#### 2. Add Straas module dependencies ####
+
+Then, add the dependencies in the `build.gradle` file of your app module:
 
 X.X.X is the your preferred version. For the version information, see
 [CHANGELOG](https://github.com/Straas/Straas-android-sdk-sample/blob/master/CHANGELOG.md)
 
 - Media browser & playback + Ad integration (`minSdkVersion` 16):
-```
+```gradle
 compile 'io.straas.android.sdk:straas-extension-ima:X.X.X'
 ```
 
 - Media browser & playback only (`minSdkVersion` 16):
-```
+```gradle
 compile 'io.straas.android.sdk:straas-media-core:X.X.X'
 ```
 
 - ChatRoom  (`minSdkVersion` 14):
-```
+```gradle
 compile 'io.straas.android.sdk:straas-messaging:X.X.X'
 ```
 
 - ChatRoom with UI (`minSdkVersion` 14):
-```
+```gradle
 compile 'io.straas.android.sdk:straas-messaging-ui:X.X.X'
 ```
 
 - Streaming (`minSdkVersion` 18):
-```
+```gradle
 compile 'io.straas.android.sdk:straas-streaming:X.X.X'
 ```
 

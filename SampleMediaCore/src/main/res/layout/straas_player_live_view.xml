@@ -27,7 +27,7 @@
             android:id="@+id/straas"/>
     </FrameLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@android:id/list"
         android:layout_below="@id/straas_player"
         android:layout_width="match_parent"

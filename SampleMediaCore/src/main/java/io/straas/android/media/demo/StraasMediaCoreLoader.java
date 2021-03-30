@@ -1,10 +1,10 @@
 package io.straas.android.media.demo;
 
 import android.content.*;
-import android.support.v4.content.Loader;
 import android.support.v4.media.MediaBrowserCompat.*;
 import android.widget.*;
 
+import androidx.loader.content.Loader;
 import io.straas.android.sdk.authentication.identity.*;
 import io.straas.android.sdk.media.*;
 

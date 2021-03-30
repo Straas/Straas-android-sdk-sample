@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.support.v7.widget.AppCompatSeekBar;
+import androidx.appcompat.widget.AppCompatSeekBar;
 import android.util.AttributeSet;
 
 import io.straas.android.media.demo.R;

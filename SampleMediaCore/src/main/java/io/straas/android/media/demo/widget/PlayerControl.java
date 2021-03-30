@@ -1,16 +1,15 @@
 package io.straas.android.media.demo.widget;
 
-import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.media.MediaMetadataCompat;
-import android.support.v4.media.session.MediaControllerCompat;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.widget.MediaController;
+import android.os.*;
+import android.support.v4.media.*;
+import android.support.v4.media.session.*;
+import android.widget.*;
 
-import io.straas.android.sdk.media.StraasMediaCore;
+import androidx.annotation.*;
+import androidx.fragment.app.*;
+import io.straas.android.sdk.media.*;
 
-import static io.straas.android.sdk.media.StraasMediaCore.LIVE_EXTRA_CURRENT_DATE_TIME;
+import static io.straas.android.sdk.media.StraasMediaCore.*;
 
 /**
  * An implementation of {@link MediaController.MediaPlayerControl} for controlling an {@link MediaControllerCompat} instance.
