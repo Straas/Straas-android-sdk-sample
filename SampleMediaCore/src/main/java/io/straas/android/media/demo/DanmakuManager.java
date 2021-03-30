@@ -1,33 +1,24 @@
 package io.straas.android.media.demo;
 
-import android.app.Activity;
-import android.app.Application;
-import android.content.ComponentCallbacks;
-import android.content.res.Configuration;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.util.ArrayMap;
-import android.support.v4.util.SimpleArrayMap;
-import android.text.TextPaint;
-import android.util.Log;
-import android.view.View;
+import android.app.*;
+import android.content.*;
+import android.content.res.*;
+import android.graphics.*;
+import android.os.*;
+import android.text.*;
+import android.util.*;
+import android.view.*;
 
-import io.straas.android.sdk.messaging.ChatMetadata;
-import io.straas.android.sdk.messaging.ChatMode;
+import androidx.annotation.*;
+import androidx.collection.ArrayMap;
+import androidx.collection.*;
 import io.straas.android.sdk.messaging.Message;
-import io.straas.android.sdk.messaging.User;
-import io.straas.android.sdk.messaging.interfaces.EventListener;
-import master.flame.danmaku.controller.DrawHandler;
-import master.flame.danmaku.controller.IDanmakuView;
-import master.flame.danmaku.danmaku.model.BaseDanmaku;
-import master.flame.danmaku.danmaku.model.DanmakuTimer;
-import master.flame.danmaku.danmaku.model.IDanmakus;
-import master.flame.danmaku.danmaku.model.IDisplayer;
-import master.flame.danmaku.danmaku.model.android.DanmakuContext;
-import master.flame.danmaku.danmaku.model.android.Danmakus;
-import master.flame.danmaku.danmaku.model.android.SpannedCacheStuffer;
-import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
+import io.straas.android.sdk.messaging.*;
+import io.straas.android.sdk.messaging.interfaces.*;
+import master.flame.danmaku.controller.*;
+import master.flame.danmaku.danmaku.model.*;
+import master.flame.danmaku.danmaku.model.android.*;
+import master.flame.danmaku.danmaku.parser.*;
 
 class DanmakuManager implements Application.ActivityLifecycleCallbacks, EventListener, ComponentCallbacks {
     private final Activity mActivity;

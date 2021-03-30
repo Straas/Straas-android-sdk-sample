@@ -3,6 +3,16 @@ Change Log
 *   If you want to upgrade Straas Android SDK, please check all the **Important Change** below from your current version.
 
 
+## Version 0.20.1
+_2021-03-30_
+
+*   **Important Change: Move SDK out of JCenter from this version. See [here](https://github.com/Straas/Straas-android-sdk-sample/wiki/Straas-Android-SDK-migration) for more information.**
+*   **Target Android API 30.**
+    *   **Important Change: [Migrating to AndroidX](https://developer.android.com/jetpack/androidx/migrate) and upgrade Jetpack libraries.**
+*   straas-media-core
+    *   fix: Notification buttons are working now.
+
+
 ## Version 0.19.0
 _2020-12-29_
 

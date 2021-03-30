@@ -1,49 +1,30 @@
 package io.straas.android.sdk.streaming.demo.screencast;
 
-import android.annotation.TargetApi;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.content.Context;
-import android.content.Intent;
-import android.media.projection.MediaProjection;
-import android.media.projection.MediaProjectionManager;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
-import android.os.SystemClock;
-import android.support.annotation.Keep;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.util.SimpleArrayMap;
-import android.text.TextUtils;
-import android.util.DisplayMetrics;
-import android.util.Log;
+import android.annotation.*;
+import android.app.*;
+import android.content.*;
+import android.media.projection.*;
+import android.os.*;
+import android.text.*;
 import android.util.Size;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.Toast;
+import android.util.*;
+import android.view.*;
+import android.widget.*;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.*;
 
-import io.straas.android.sdk.streaming.LiveEventConfig;
-import io.straas.android.sdk.streaming.ScreencastStreamConfig;
-import io.straas.android.sdk.streaming.StreamManager;
-import io.straas.android.sdk.streaming.StreamStatsReport;
+import androidx.annotation.*;
+import androidx.collection.*;
+import io.straas.android.sdk.streaming.*;
 import io.straas.android.sdk.streaming.demo.R;
-import io.straas.android.sdk.streaming.demo.Utils;
-import io.straas.android.sdk.streaming.error.StreamException.LiveCountLimitException;
-import io.straas.android.sdk.streaming.interfaces.EventListener;
-import io.straas.android.sdk.streaming.screencast.ScreencastSession;
+import io.straas.android.sdk.streaming.demo.*;
+import io.straas.android.sdk.streaming.error.StreamException.*;
+import io.straas.android.sdk.streaming.interfaces.*;
+import io.straas.android.sdk.streaming.screencast.*;
 
-import static android.app.NotificationManager.IMPORTANCE_LOW;
-import static android.content.Context.MEDIA_PROJECTION_SERVICE;
-import static android.content.Context.WINDOW_SERVICE;
-import static io.straas.android.sdk.streaming.StreamManager.STATE_CONNECTING;
+import static android.app.NotificationManager.*;
+import static android.content.Context.*;
+import static io.straas.android.sdk.streaming.StreamManager.*;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 @Keep

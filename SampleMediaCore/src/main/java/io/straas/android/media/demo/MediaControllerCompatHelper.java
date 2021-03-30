@@ -1,22 +1,20 @@
 package io.straas.android.media.demo;
 
-import android.app.Activity;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.ResultReceiver;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.media.session.MediaControllerCompat;
+import android.app.*;
+import android.net.*;
+import android.os.*;
+import android.support.v4.media.session.*;
 
-import com.google.android.exoplayer2.C.ContentType;
-import com.google.android.exoplayer2.Format;
+import com.google.android.exoplayer2.C.*;
+import com.google.android.exoplayer2.*;
 
-import java.util.ArrayList;
+import java.util.*;
 
-import io.straas.android.media.demo.widget.ui.SwitchQualityDialog;
-import io.straas.android.sdk.media.StraasMediaCore;
-import io.straas.android.sdk.media.notification.NotificationOptions;
+import androidx.annotation.*;
+import androidx.fragment.app.*;
+import io.straas.android.media.demo.widget.ui.*;
+import io.straas.android.sdk.media.*;
+import io.straas.android.sdk.media.notification.*;
 
 /**
  * This class wrap some {@link MediaControllerCompat} functionality which needs {@link Bundle}

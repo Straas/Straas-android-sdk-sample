@@ -1,13 +1,13 @@
 package io.straas.android.sdk.messaging.demo;
 
 import android.os.*;
-import android.support.annotation.*;
-import android.support.v4.util.*;
-import android.support.v7.app.*;
 import android.widget.*;
 
 import com.google.android.gms.tasks.*;
 
+import androidx.annotation.*;
+import androidx.appcompat.app.*;
+import androidx.collection.*;
 import io.straas.android.sdk.authentication.identity.*;
 import io.straas.android.sdk.demo.common.*;
 import io.straas.android.sdk.messaging.Message;

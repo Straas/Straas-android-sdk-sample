@@ -1,23 +1,22 @@
 package io.straas.android.sdk.demo.qrcode;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.Loader;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
-import android.view.SurfaceHolder;
-import android.view.SurfaceHolder.Callback;
-import android.view.SurfaceView;
+import android.annotation.*;
+import android.content.*;
+import android.os.*;
+import android.view.*;
+import android.view.SurfaceHolder.*;
 
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.gms.tasks.*;
+import com.google.android.gms.vision.*;
+import com.google.android.gms.vision.barcode.*;
 
-import java.io.IOException;
+import java.io.*;
+
+import androidx.annotation.*;
+import androidx.appcompat.app.*;
+import androidx.appcompat.widget.*;
+import androidx.loader.app.LoaderManager.*;
+import androidx.loader.content.Loader;
 
 @SuppressLint("MissingPermission")
 public class QrcodeActivity extends AppCompatActivity implements Callback, OnSuccessListener<Barcode> {
