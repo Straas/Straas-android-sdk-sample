@@ -3,6 +3,12 @@ Change Log
 *   If you want to upgrade Straas Android SDK, please check all the **Important Change** below from your current version.
 
 
+## Version 0.20.2
+_2021-05-12_
+
+*   fix: Some exceptions can't be accessed because of proguard issue.
+
+
 ## Version 0.20.1
 _2021-03-30_
 
