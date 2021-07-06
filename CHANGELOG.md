@@ -3,6 +3,15 @@ Change Log
 *   If you want to upgrade Straas Android SDK, please check all the **Important Change** below from your current version.
 
 
+## Version 0.21.0
+_2021-07-06_
+
+*   straas-messaging
+    *   **Important Change: Remove ArchivedMessagesManager.**
+*   straas-media-core
+    *   fix: In some cases, app ANR after receiving media button action.
+
+
 ## Version 0.20.2
 _2021-05-12_
 
