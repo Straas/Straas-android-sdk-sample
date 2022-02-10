@@ -3,6 +3,13 @@ Change Log
 *   If you want to upgrade Straas Android SDK, please check all the **Important Change** below from your current version.
 
 
+## Version 0.22.0
+_2022-02-10_
+
+*   straas-messaging
+    *   feat: Adjust the max text length of [sendMessage](https://straas.github.io/Straas-android-sdk-sample/io/straas/android/sdk/messaging/ChatroomManager.html#sendMessage-java.lang.String-) to 500.
+
+
 ## Version 0.21.0
 _2021-07-06_
 
