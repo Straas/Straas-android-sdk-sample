@@ -3,10 +3,8 @@ apply plugin: 'com.android.library'
 android {
     defaultConfig {
         minSdkVersion 14
-        compileSdkVersion 30
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        compileSdkVersion 31
+        targetSdkVersion 31
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
@@ -22,7 +20,7 @@ android {
 dependencies {
     api "io.straas.android.sdk:straas-authentication:${STRAAS_SDK_VERSION}"
 
-    api 'com.google.android.material:material:1.2.1'
+    api 'com.google.android.material:material:1.6.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

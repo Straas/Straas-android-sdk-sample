@@ -2,7 +2,8 @@
           xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
         <activity
-        android:name="io.straas.android.sdk.demo.qrcode.QrcodeActivity"
-        android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:name="io.straas.android.sdk.demo.qrcode.QrcodeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
     </application>
 </manifest>

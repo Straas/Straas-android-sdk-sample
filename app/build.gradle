@@ -6,8 +6,8 @@ android {
     defaultConfig {
         applicationId "io.straas.android.sdk.demo"
         minSdkVersion 18
-        compileSdkVersion 30
-        targetSdkVersion 30
+        compileSdkVersion 31
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
