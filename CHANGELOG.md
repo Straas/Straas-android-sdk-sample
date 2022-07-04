@@ -3,6 +3,14 @@ Change Log
 *   If you want to upgrade Straas Android SDK, please check all the **Important Change** below from your current version.
 
 
+## Version 0.23.0
+_2022-05-20_
+
+*   straas-media-core
+    *   feat: Set [exported](https://developer.android.com/guide/topics/manifest/receiver-element#exported) of [MediaButtonReceiver](https://developer.android.com/reference/androidx/media/session/MediaButtonReceiver) to false explicitly.
+    *   fix: Crash issue in low latency mode.
+
+
 ## Version 0.22.0
 _2022-02-10_
 
