@@ -1,13 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId "io.straas.android.sdk.demo"
         minSdkVersion 18
-        compileSdkVersion 31
-        targetSdkVersion 31
+        compileSdk 34
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
 
@@ -40,6 +39,7 @@ android {
     dataBinding {
         enabled = true
     }
+    namespace 'io.straas.android.sdk.demo'
 }
 
 dependencies {

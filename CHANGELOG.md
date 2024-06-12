@@ -2,6 +2,11 @@ Change Log
 ==========
 *   If you want to upgrade Straas Android SDK, please check all the **Important Change** below from your current version.
 
+## Version 0.24.0
+_2024-06-12_
+
+*   **Target Android API 34.**
+
 
 ## Version 0.23.0
 _2022-05-20_

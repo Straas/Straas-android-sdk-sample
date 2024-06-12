@@ -9,7 +9,7 @@ import android.widget.*;
 import androidx.annotation.*;
 import androidx.appcompat.app.*;
 import io.straas.android.sdk.demo.common.widget.*;
-import io.straas.android.sdk.streaming.demo.*;
+import io.straas.android.sdk.demo.streaming.R;
 
 public class ConfigSettingActivity extends AppCompatActivity {
 

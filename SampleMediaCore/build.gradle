@@ -1,10 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
+    namespace 'io.straas.android.sdk.demo.media'
+
     defaultConfig {
         minSdkVersion 16
-        compileSdkVersion 31
-        targetSdkVersion 31
+        compileSdk 34
+        targetSdkVersion 34
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }

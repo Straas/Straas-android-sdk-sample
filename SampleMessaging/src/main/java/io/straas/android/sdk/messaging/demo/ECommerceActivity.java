@@ -21,6 +21,7 @@ import androidx.appcompat.widget.*;
 import androidx.collection.*;
 import androidx.core.content.*;
 import io.straas.android.sdk.demo.common.*;
+import io.straas.android.sdk.demo.messaging.R;
 import io.straas.android.sdk.messaging.Message;
 import io.straas.android.sdk.messaging.*;
 import io.straas.android.sdk.messaging.demo.widget.*;

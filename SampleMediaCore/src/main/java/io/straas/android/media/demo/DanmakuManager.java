@@ -13,6 +13,7 @@ import androidx.annotation.*;
 import androidx.collection.ArrayMap;
 import androidx.collection.*;
 import io.straas.android.sdk.messaging.Message;
+import io.straas.android.sdk.demo.media.R;
 import io.straas.android.sdk.messaging.*;
 import io.straas.android.sdk.messaging.interfaces.*;
 import master.flame.danmaku.controller.*;
