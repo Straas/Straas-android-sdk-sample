@@ -7,6 +7,7 @@ import android.view.*;
 import androidx.annotation.*;
 import androidx.appcompat.app.*;
 import io.straas.android.sdk.demo.common.widget.*;
+import io.straas.android.sdk.demo.messaging.R;
 
 public class MessagingHostActivity extends AppCompatActivity {
 

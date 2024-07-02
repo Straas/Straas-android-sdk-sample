@@ -29,10 +29,10 @@ import androidx.core.widget.*;
 import androidx.fragment.app.*;
 import androidx.vectordrawable.graphics.drawable.*;
 import io.straas.android.media.demo.*;
-import io.straas.android.media.demo.R;
 import io.straas.android.media.demo.Utils;
 import io.straas.android.media.demo.MediaControllerCompatHelper.*;
 import io.straas.android.media.demo.widget.ui.*;
+import io.straas.android.sdk.demo.media.R;
 import io.straas.android.sdk.media.*;
 import io.straas.android.sdk.media.StraasMediaCore.*;
 

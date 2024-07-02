@@ -15,8 +15,8 @@ import androidx.annotation.*;
 import androidx.appcompat.app.*;
 import androidx.core.app.*;
 import io.straas.android.sdk.demo.common.*;
+import io.straas.android.sdk.demo.streaming.R;
 import io.straas.android.sdk.streaming.*;
-import io.straas.android.sdk.streaming.demo.R;
 import io.straas.android.sdk.streaming.demo.filter.beauty.*;
 
 public class StreamingFiltersActivity extends AppCompatActivity {

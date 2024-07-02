@@ -15,8 +15,9 @@ import com.google.android.gms.tasks.*;
 
 import androidx.annotation.*;
 import androidx.collection.*;
+
+import io.straas.android.sdk.demo.streaming.R;
 import io.straas.android.sdk.streaming.*;
-import io.straas.android.sdk.streaming.demo.R;
 import io.straas.android.sdk.streaming.demo.*;
 import io.straas.android.sdk.streaming.error.StreamException.*;
 import io.straas.android.sdk.streaming.interfaces.*;

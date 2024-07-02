@@ -3,8 +3,8 @@ apply plugin: 'com.android.library'
 android {
     defaultConfig {
         minSdkVersion 18
-        compileSdkVersion 31
-        targetSdkVersion 31
+        compileSdk 34
+        targetSdkVersion 34
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
@@ -15,6 +15,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    namespace 'io.straas.android.sdk.demo.streaming'
 }
 
 dependencies {

@@ -21,8 +21,8 @@ import androidx.appcompat.app.*;
 import androidx.collection.*;
 import androidx.core.app.*;
 import io.straas.android.sdk.demo.common.*;
+import io.straas.android.sdk.demo.streaming.R;
 import io.straas.android.sdk.streaming.*;
-import io.straas.android.sdk.streaming.demo.R;
 
 import static io.straas.android.sdk.streaming.demo.screencast.MyScreencastSession.*;
 

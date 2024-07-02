@@ -20,7 +20,7 @@ import android.view.WindowManager;
 
 import java.io.IOException;
 
-import io.straas.android.sdk.streaming.demo.R;
+import io.straas.android.sdk.demo.streaming.R;
 
 @SuppressLint("ViewConstructor")
 final class CameraOverlayLayout extends OverlayLayout implements TextureView.SurfaceTextureListener {

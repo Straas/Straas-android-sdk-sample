@@ -7,6 +7,7 @@ import android.view.*;
 import androidx.annotation.*;
 import androidx.appcompat.app.*;
 import io.straas.android.sdk.demo.common.widget.*;
+import io.straas.android.sdk.demo.media.R;
 
 public class MediaCoreHostActivity extends AppCompatActivity {
 

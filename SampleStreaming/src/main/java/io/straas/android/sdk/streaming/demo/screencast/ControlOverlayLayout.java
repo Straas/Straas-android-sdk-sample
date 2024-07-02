@@ -6,12 +6,13 @@ import android.text.format.DateUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;
-import io.straas.android.sdk.streaming.demo.R;
 
 import static io.straas.android.sdk.streaming.StreamManager.STATE_CONNECTING;
 import static io.straas.android.sdk.streaming.StreamManager.STATE_IDLE;
 import static io.straas.android.sdk.streaming.StreamManager.STATE_PREPARED;
 import static io.straas.android.sdk.streaming.StreamManager.STATE_STREAMING;
+
+import io.straas.android.sdk.demo.streaming.R;
 
 @SuppressLint("ViewConstructor")
 final class ControlOverlayLayout extends OverlayLayout implements View.OnClickListener {

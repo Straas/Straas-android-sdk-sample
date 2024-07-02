@@ -15,7 +15,8 @@ import java.util.regex.*;
 import androidx.annotation.*;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import io.straas.android.media.demo.R;
+
+import io.straas.android.sdk.demo.media.R;
 import io.straas.android.media.demo.Utils;
 import io.straas.android.sdk.media.*;
 

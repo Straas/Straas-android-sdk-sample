@@ -20,9 +20,10 @@ import androidx.core.app.*;
 import androidx.lifecycle.Observer;
 import io.straas.android.sdk.demo.common.*;
 import io.straas.android.sdk.demo.qrcode.*;
+import io.straas.android.sdk.demo.streaming.R;
+
 import io.straas.android.sdk.media.*;
 import io.straas.android.sdk.streaming.*;
-import io.straas.android.sdk.streaming.demo.R;
 import io.straas.android.sdk.streaming.demo.Utils;
 import io.straas.android.sdk.streaming.demo.filter.*;
 import io.straas.android.sdk.streaming.error.StreamException.*;
@@ -30,7 +31,6 @@ import io.straas.android.sdk.streaming.interfaces.EventListener;
 import jp.co.cyberagent.android.gpuimage.*;
 
 import static io.straas.android.sdk.streaming.StreamManager.*;
-import static io.straas.android.sdk.streaming.demo.R.id.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -81,10 +81,10 @@ public class MainActivity extends AppCompatActivity {
         mTextureView = findViewById(R.id.preview);
         mTextureView.setKeepScreenOn(true);
 
-        mTriggerButton = findViewById(trigger);
-        mSwitchCameraButton = findViewById(switch_camera);
-        mFlashButton = findViewById(flash);
-        mFilterButton = findViewById(filter);
+        mTriggerButton = findViewById(R.id.trigger);
+        mSwitchCameraButton = findViewById(R.id.switch_camera);
+        mFlashButton = findViewById(R.id.flash);
+        mFilterButton = findViewById(R.id.filter);
         mMuteButton = findViewById(R.id.mute);
         mTitleEdit = findViewById(R.id.edit_title);
         mStreamStats = findViewById(R.id.stream_stats);

@@ -8,7 +8,7 @@ import android.graphics.Rect;
 import androidx.appcompat.widget.AppCompatSeekBar;
 import android.util.AttributeSet;
 
-import io.straas.android.media.demo.R;
+import io.straas.android.sdk.demo.media.R;
 
 public class DottedSeekBar extends AppCompatSeekBar {
 

@@ -10,6 +10,7 @@ import androidx.appcompat.app.*;
 import androidx.collection.*;
 import io.straas.android.sdk.authentication.identity.*;
 import io.straas.android.sdk.demo.common.*;
+import io.straas.android.sdk.demo.messaging.R;
 import io.straas.android.sdk.messaging.Message;
 import io.straas.android.sdk.messaging.*;
 import io.straas.android.sdk.messaging.interfaces.*;

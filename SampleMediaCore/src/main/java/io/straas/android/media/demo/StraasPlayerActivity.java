@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.*;
 import io.straas.android.media.demo.widget.*;
 import io.straas.android.media.demo.widget.ui.*;
 import io.straas.android.sdk.demo.common.*;
+import io.straas.android.sdk.demo.media.R;
 import io.straas.android.sdk.media.*;
 
 /**
